@@ -5,6 +5,7 @@ import { Accordion } from "@/components/ui/accordion"
 export async function EventsTimeline({ events }: { events: Event[] }) {
 	const renderEvent = events.map(event => (
 		<EventItem
+			key={event.id}
 			id={event.id.toString()}
 			EventTitle={event.name}
 			open_for_signup={event.open_for_signup}
