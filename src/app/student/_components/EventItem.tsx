@@ -1,9 +1,8 @@
-import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { DateTime } from "luxon"
 
 export function EventItem({
-	children,
 	EventTitle,
 	open_for_signup,
 	registration_required,
@@ -12,6 +11,7 @@ export function EventItem({
 	registration_end,
 	image_url
 }: {
+	id: string
 	children?: React.ReactNode
 	EventTitle: string
 	open_for_signup: boolean
@@ -21,15 +21,11 @@ export function EventItem({
 	registration_end: number
 	image_url: string
 }) {
-	const expandable = children != null
+	const expandable = false
 	return (
-		<AccordionItem
-			value={EventTitle}
-			disabled={!expandable}
-			className="border-none">
+		<Card className="border-none">
 			<div className="absolute -start-1.5 mt-3.5 h-3 w-3 rounded-full border border-white bg-melon-700"></div>
-			<AccordionTrigger
-				disabled={!expandable}
+			<div
 				className={cn(
 					"mb-2 ml-4 w-full rounded px-2 pb-4 pt-0 text-left font-normal hover:no-underline",
 					{ "transition hover:bg-slate-700": expandable }
@@ -64,7 +60,7 @@ export function EventItem({
 						)}
 					</div>
 				</div>
-			</AccordionTrigger>
-		</AccordionItem>
+			</div>
+		</Card>
 	)
 }
