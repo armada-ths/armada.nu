@@ -1,23 +1,32 @@
-import { P } from "@/app/_components/Paragraph"
-import {
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger
-} from "@/components/ui/accordion"
+import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { cn } from "@/lib/utils"
+import { DateTime } from "luxon"
 
 export function EventItem({
 	children,
-	title,
-	dateString
+	EventTitle,
+	open_for_signup,
+	registration_required,
+	location,
+	event_start,
+	registration_end,
+	image_url
 }: {
 	children?: React.ReactNode
-	title: string
-	dateString: string
+	EventTitle: string
+	open_for_signup: boolean
+	registration_required: boolean
+	location: string
+	event_start: number
+	registration_end: number
+	image_url: string
 }) {
 	const expandable = children != null
 	return (
-		<AccordionItem value={title} disabled={!expandable} className="border-none">
+		<AccordionItem
+			value={EventTitle}
+			disabled={!expandable}
+			className="border-none">
 			<div className="absolute -start-1.5 mt-3.5 h-3 w-3 rounded-full border border-white bg-melon-700"></div>
 			<AccordionTrigger
 				disabled={!expandable}
@@ -26,15 +35,36 @@ export function EventItem({
 					{ "transition hover:bg-slate-700": expandable }
 				)}>
 				<div>
-					<P className="text-stone-400">{dateString}</P>
-					<div className="flex w-full justify-between ">
-						<h3 className="text-2xl md:text-3xl">{title}</h3>
+					<div className="flex w-full justify-between">
+						<h3 className="text-2xl md:text-3xl">{EventTitle}</h3>
+					</div>
+					<div>{location}</div>
+					<div>
+						Event Start:
+						{DateTime.fromMillis(event_start * 1000).toFormat("yyyy MMM dd")}
+					</div>
+					<div className="flex items-center">
+						<div
+							className={`mx-2 flex h-3 w-3 rounded-full ${open_for_signup ? "bg-green-400" : "bg-red-500"}`}></div>
+						{open_for_signup ? (
+							<div> Open for signup </div>
+						) : (
+							<div> Close for signup </div>
+						)}
+					</div>
+					{registration_required ? (
+						<div>Registration required</div>
+					) : (
+						<div></div>
+					)}
+					<div>
+						Registration Due:
+						{DateTime.fromMillis(registration_end * 1000).toFormat(
+							"yyyy MMM dd"
+						)}
 					</div>
 				</div>
 			</AccordionTrigger>
-			<AccordionContent className="-mt-2 ml-1 px-5 text-base">
-				{children}
-			</AccordionContent>
 		</AccordionItem>
 	)
 }
