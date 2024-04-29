@@ -1,11 +1,11 @@
 import { Page } from "@/components/shared/Page"
 
-export default function EventsPage() {
-	return (<Page.Background withIndents>
+export default async function StudentEventPage() {
+	return (
+		<Page.Background withIndents>
 			<Page.Boundary>
-				<Page.Header>
-					Hello
-				</Page.Header>
+				<Page.Header>Events</Page.Header>
 			</Page.Boundary>
-	</Page.Background>)
+		</Page.Background>
+	)
 }
