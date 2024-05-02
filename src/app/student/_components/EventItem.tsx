@@ -1,68 +1,47 @@
-import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { cn } from "@/lib/utils"
 import { DateTime } from "luxon"
 
 export function EventItem({
 	id,
-	EventTitle,
-	open_for_signup,
-	registration_required,
-	location,
+	title,
 	event_start,
 	registration_end,
 	image_url
 }: {
 	id: string
-	children?: React.ReactNode
-	EventTitle: string
-	open_for_signup: boolean
-	registration_required: boolean
-	location: string
+	title: string
 	event_start: number
 	registration_end: number
-	image_url: string
+	image_url?: string
 }) {
-	const expandable = false
 	return (
-		<AccordionItem value={id} disabled={!expandable} className="border-none">
-			<div className="absolute -start-1.5 mt-3.5 h-3 w-3 rounded-full border border-white bg-melon-700"></div>
-			<AccordionTrigger
-				disabled={true}
-				className={cn(
-					"mb-2 ml-4 w-full rounded px-2 pb-4 pt-0 text-left font-normal hover:no-underline",
-					{ "transition hover:bg-slate-700": expandable }
-				)}>
-				<div>
-					<div className="flex w-full justify-between">
-						<h3 className="text-2xl md:text-3xl">{EventTitle}</h3>
-					</div>
-					<div>{location}</div>
-					<div>
-						Event Start:
-						{DateTime.fromMillis(event_start * 1000).toFormat("yyyy MMM dd")}
-					</div>
-					<div className="flex items-center">
-						<div
-							className={`mx-2 flex h-3 w-3 rounded-full ${open_for_signup ? "bg-green-400" : "bg-red-500"}`}></div>
-						{open_for_signup ? (
-							<div> Open for signup </div>
-						) : (
-							<div> Close for signup </div>
-						)}
-					</div>
-					{registration_required ? (
-						<div>Registration required</div>
-					) : (
-						<div></div>
-					)}
-					<div>
-						Registration Due:
+		<div className="mb-6 ml-6 w-5/6 rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 hover:brightness-95 md:w-3/5">
+			<a
+				href="#"
+				className="flex flex-auto flex-col items-center md:h-48 md:max-w-xl md:flex-row">
+				<div className="absolute -start-1.5 mt-3.5 h-3 w-3 rounded-full border border-white bg-melon-700"></div>
+				{image_url && (
+					<img
+						className="h-full w-full rounded-t-lg object-contain md:h-48 md:w-48 md:rounded-l-lg md:rounded-tr-none "
+						src={image_url}
+						alt=""
+					/>
+				)}
+				<div className="flex flex-col justify-between md:pl-5">
+					<h5 className="mb-4 mt-5 font-bold text-gray-900 dark:text-white md:mb-12 md:text-2xl">
+						{title}
+					</h5>
+					<p className="mb-1 text-xs text-gray-700 dark:text-gray-400">
+						Registration end:{" "}
 						{DateTime.fromMillis(registration_end * 1000).toFormat(
 							"yyyy MMM dd"
 						)}
-					</div>
+					</p>
+					<p className="mb-4 text-xs text-gray-700 dark:text-gray-400">
+						Event start:{" "}
+						{DateTime.fromMillis(event_start * 1000).toFormat("yyyy MMM dd")}
+					</p>
 				</div>
-			</AccordionTrigger>
-		</AccordionItem>
+			</a>
+		</div>
 	)
 }

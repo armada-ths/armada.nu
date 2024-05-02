@@ -5,7 +5,7 @@ import { Suspense } from "react"
 
 export default async function StudentEventPage() {
 	const events = await fetchEvents()
-	console.log(events)
+
 	return (
 		<Page.Background withIndents>
 			<Page.Boundary>
