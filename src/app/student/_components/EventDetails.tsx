@@ -1,20 +1,13 @@
 import { P } from "@/app/_components/Paragraph"
-import { Button } from "@/components/ui/button"
 import { Page } from "@/components/shared/Page"
 import { Event } from "@/components/shared/hooks/api/useEvents"
+import { Button } from "@/components/ui/button"
+import { cn, formatTimestampAsDate, formatTimestampAsTime } from "@/lib/utils"
 
-import { MapPin, Calendar, Clock, Utensils, Coins } from "lucide-react"
-import { DateTime } from "luxon"
-import { ReactNode } from "react"
+import { Calendar, Clock, Coins, MapPin, Utensils } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-
-function timestampToDateString(epochSeconds: number) {
-	return DateTime.fromMillis(epochSeconds * 1000).toFormat("dd LLL, yyyy")
-}
-function timestampToTimeString(epochSeconds: number) {
-	return DateTime.fromMillis(epochSeconds * 1000).toFormat("HH:mm")
-}
+import { ReactNode } from "react"
 
 function InfoBoxItem({
 	label,
@@ -37,11 +30,17 @@ function InfoBoxItem({
 	)
 }
 
-export default function EventDetails({ event }: { event: Event }) {
+export default function EventDetails({
+	event,
+	className
+}: {
+	event: Event
+	className?: string
+}) {
 	event.description =
 		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid rem quis enim nulla ipsa et praesentium aut autem non? Exercitationem harum tenetur incidunt in doloremque nostrum inventore veniam libero ipsa atque porro praesentium consequuntur excepturi necessitatibus, doloribus, aspernatur saepe eos quibusdam soluta dolorem ad voluptates laudantium debitis? Obcaecati autem consectetur laborum aspernatur non veniam ut tempora? Culpa sint id itaque sed rerum ipsa doloremque minima, nihil quos maiores ea laboriosam ab harum ut error eveniet quas sapiente optio iste, atque quibusdam? Ipsam numquam unde iste tempore! Aspernatur officia commodi expedita iste, dolor ad? Obcaecati quam quae dolor, fuga porro quis!"
 	return (
-		<div className="mx-auto max-w-[600px] lg:max-w-[1000px]">
+		<div className={cn("mx-auto max-w-[600px] lg:max-w-[1000px]", className)}>
 			<Page.Header>{event.name}</Page.Header>
 			<div className="mt-4 flex flex-col gap-8 lg:flex-row">
 				<div className="lg:w-3/5">
@@ -57,7 +56,7 @@ export default function EventDetails({ event }: { event: Event }) {
 					<P className="mt-0">{event.description}</P>
 				</div>
 
-				<div className=" mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-gradient-to-br from-emerald-950 to-50% to-stone-900 p-5 lg:w-2/5 ">
+				<div className=" mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-gradient-to-br from-emerald-950 to-neutral-900 to-50% p-5 lg:w-2/5 ">
 					{/* Top row */}
 					<InfoBoxItem
 						label="Location"
@@ -65,11 +64,11 @@ export default function EventDetails({ event }: { event: Event }) {
 						icon={<MapPin size={16} />}></InfoBoxItem>
 					<InfoBoxItem
 						label="Date"
-						value={timestampToDateString(event.event_start)}
+						value={formatTimestampAsDate(event.event_start)}
 						icon={<Calendar size={16} />}></InfoBoxItem>
 					<InfoBoxItem
 						label="Time"
-						value={`${timestampToTimeString(event.event_start)} - ${timestampToTimeString(event.event_end)}`}
+						value={`${formatTimestampAsTime(event.event_start)} - ${formatTimestampAsTime(event.event_end)}`}
 						icon={<Clock size={16} />}></InfoBoxItem>
 
 					{/* Separator */}
@@ -87,14 +86,21 @@ export default function EventDetails({ event }: { event: Event }) {
 						value={`${event.fee} kr`}
 						icon={<Coins size={16} />}></InfoBoxItem>
 
+					{event.open_for_signup && event.registration_end && (
+						<p className="text-stone-400 mt-3 text-xs -mb-1">Registration closes {formatTimestampAsDate(event.registration_end)}</p>
+					)}
+
 					{/* Signup */}
 					{event.open_for_signup ? (
-						<Button className="mt-5">
-							<Link href={event.signup_link ?? ""}>Sign Up!</Link>
+						<Button>
+							<Link href={event.signup_link ?? ""}>Sign Up</Link>
 						</Button>
 					) : (
-						<Button className="mt-5" disabled>
-							Registration closed
+						<Button disabled>
+							Registration closed{" "}
+							{event.registration_end
+								? formatTimestampAsDate(event.registration_end)
+								: ""}
 						</Button>
 					)}
 				</div>

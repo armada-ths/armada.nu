@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { DateTime } from "luxon"
 import { Metadata } from "next"
 import Link from "next/link"
+import { formatDate } from "@/lib/utils"
 
 export const metadata: Metadata = {
 	title: `Packages - Armada Exhibitor`,
@@ -39,12 +40,6 @@ function FAQItem({
 
 export default async function Packages() {
 	const dates = await fetchDates()
-
-	function formatDate(date: string) {
-		return DateTime.fromISO(date).toFormat(
-			`d MMMM${DateTime.fromISO(date).year !== DateTime.now().year ? " YYYY" : ""}`
-		)
-	}
 
 	return (
 		<Page.Background withIndents>

@@ -8,12 +8,6 @@ export async function CurrentStatus() {
 	const dates = await fetchDates()
 	const today = Date.now() //.toISOString();
 
-	function formatDate(date: string) {
-		return DateTime.fromISO(date).toFormat(
-			`d MMMM ${DateTime.fromISO(date).year !== DateTime.now().year ? " YYYY" : ""}`
-		)
-	}
-
 	if (today < new Date(dates.ir.start).getTime()) {
 		return (
 			<StatusModuleItem title="Registration is opening soon!">
