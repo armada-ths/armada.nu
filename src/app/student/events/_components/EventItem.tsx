@@ -15,7 +15,6 @@ export function EventItem({ event }: { event: Event }) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const [modalOpen, setModalOpen] = useState(false)
-	console.log("rendering", id, modalOpen, searchParams.get("id"))
 
 	useEffect(() => {
 		const queryId = searchParams.get("id")
