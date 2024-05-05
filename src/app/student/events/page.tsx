@@ -1,7 +1,6 @@
-import { EventsTimeline } from "@/app/student/_components/EventsTimeLine"
+import { EventsTimeline } from "@/app/student/events/_components/EventsTimeLine"
 import { Page } from "@/components/shared/Page"
 import { fetchEvents } from "@/components/shared/hooks/api/useEvents"
-import { Suspense } from "react"
 
 export default async function StudentEventPage() {
 	const events = await fetchEvents()
@@ -10,9 +9,7 @@ export default async function StudentEventPage() {
 		<Page.Background withIndents>
 			<Page.Boundary>
 				<Page.Header>Events</Page.Header>
-				<Suspense>
-					<EventsTimeline events={events} />
-				</Suspense>
+				<EventsTimeline events={events} />
 			</Page.Boundary>
 		</Page.Background>
 	)

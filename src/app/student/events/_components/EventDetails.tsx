@@ -38,19 +38,19 @@ export default function EventDetails({
 	className?: string
 }) {
 	event.description =
-		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid rem quis enim nulla ipsa et praesentium aut autem non? Exercitationem harum tenetur incidunt in doloremque nostrum inventore veniam libero ipsa atque porro praesentium consequuntur excepturi necessitatibus, doloribus, aspernatur saepe eos quibusdam soluta dolorem ad voluptates laudantium debitis? Obcaecati autem consectetur laborum aspernatur non veniam ut tempora? Culpa sint id itaque sed rerum ipsa doloremque minima, nihil quos maiores ea laboriosam ab harum ut error eveniet quas sapiente optio iste, atque quibusdam? Ipsam numquam unde iste tempore! Aspernatur officia commodi expedita iste, dolor ad? Obcaecati quam quae dolor, fuga porro quis!"
+		"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente beatae non omnis laborum fugiat, rerum vel aliquid cupiditate rem voluptatem doloremque odio dicta ducimus debitis est consequuntur libero voluptatibus suscipit pariatur. Delectus quisquam suscipit natus ea ducimus dignissimos ipsam molestias quos sunt. Expedita perferendis molestiae a nostrum quidem eligendi esse tempore, porro quia id itaque ullam eum nihil necessitatibus neque, illum fugiat error quae mollitia! Eius officia saepe adipisci vitae facilis! Ipsa, nisi, aspernatur illum labore laboriosam, voluptatem cum laudantium perspiciatis provident neque obcaecati! Aliquid animi vero, debitis eum quam dolorem earum commodi officia ducimus eaque perspiciatis quod illo ex!"
 	return (
 		<div className={cn("mx-auto max-w-[600px] lg:max-w-[1000px]", className)}>
 			<Page.Header>{event.name}</Page.Header>
-			<div className="mt-4 flex flex-col gap-8 lg:flex-row">
+			<div className="mt-4 flex flex-col-reverse gap-8 lg:flex-row">
 				<div className="lg:w-3/5">
 					{event.image_url && (
 						<Image
 							className="float-left mb-2 mr-5 mt-2 rounded-md"
 							src={event.image_url}
 							alt="" // TODO
-							width={150}
-							height={150}
+							width={200}
+							height={200}
 						/>
 					)}
 					<P className="mt-0">{event.description}</P>

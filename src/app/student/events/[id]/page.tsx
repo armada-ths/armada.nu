@@ -1,7 +1,31 @@
-import EventDetails from "@/app/student/_components/EventDetails"
+import EventDetails from "@/app/student/events/_components/EventDetails"
 import { Page } from "@/components/shared/Page"
-import { notFound } from "next/navigation"
 import { fetchEvents } from "@/components/shared/hooks/api/useEvents"
+import { notFound } from "next/navigation"
+import { Metadata } from "next"
+
+async function getEvent(eventId: string) {
+	const events = await fetchEvents()
+	const event = events.find(event => event.id.toString() === eventId)
+	if (event == null) return notFound()
+	return event
+}
+
+export async function generateMetadata({
+	params
+}: {
+	params: { id: string }
+}): Promise<Metadata> {
+	const event = await getEvent(params.id)
+
+	return {
+		title: `Armada event: ${event.name}`,
+		description: event.description,
+		openGraph: {
+			images: [event.image_url ?? ""]
+		}
+	}
+}
 
 export async function generateStaticParams() {
 	const events = await fetchEvents()
@@ -15,10 +39,7 @@ export default async function EventDetailsPage({
 }: {
 	params: { id: string }
 }) {
-	const id = Number.parseInt(params.id)
-	const events = await fetchEvents()
-	const event = events.find(event => event.id == id)
-	if (event == null) return notFound()
+	const event = await getEvent(params.id)
 
 	return (
 		<Page.Background withIndents>

@@ -1,4 +1,4 @@
-import { EventItem } from "@/app/student/_components/EventItem"
+import { EventItem } from "@/app/student/events/_components/EventItem"
 import { Event } from "@/components/shared/hooks/api/useEvents"
 
 export function EventsTimeline({ events }: { events: Event[] }) {

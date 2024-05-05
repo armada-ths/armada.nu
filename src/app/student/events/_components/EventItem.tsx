@@ -1,6 +1,6 @@
 "use client"
 
-import EventDetails from "@/app/student/_components/EventDetails"
+import EventDetails from "@/app/student/events/_components/EventDetails"
 import Modal from "@/components/shared/Modal"
 import { Event } from "@/components/shared/hooks/api/useEvents"
 import { formatTimestampAsDate } from "@/lib/utils"
@@ -9,14 +9,13 @@ import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
-import "../../globals.css"
-
 export function EventItem({ event }: { event: Event }) {
 	const { id, name, event_start, registration_end, image_url } = event
-
+	
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const [modalOpen, setModalOpen] = useState(false)
+	console.log("rendering", id, modalOpen, searchParams.get("id"))
 
 	useEffect(() => {
 		const queryId = searchParams.get("id")
@@ -37,7 +36,7 @@ export function EventItem({ event }: { event: Event }) {
 			</Modal>
 
 			<div className="absolute -start-1.5 mt-3.5 h-3 w-3 rounded-full border border-white bg-melon-700"></div>
-			<div className="mb-6 ml-6 w-11/12 rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:brightness-95 hover:scale-[1.02] sm:w-3/5 sm:min-w-[500px]">
+			<div className="mb-6 ml-6 w-11/12 rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95 sm:w-3/5 sm:min-w-[500px]">
 				<Link
 					href={`/student/events?id=${id}`}
 					className="flex flex-auto flex-col sm:h-48 sm:flex-row sm:items-center">
