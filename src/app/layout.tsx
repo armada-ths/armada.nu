@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		title: `THS Armada ${DateTime.now().year} Career Fair`,
 		description:
-			"Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.",
+			`Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
 		url: "https://armada.nu",
 		type: "website",
 		images: [

@@ -24,7 +24,7 @@ export async function generateStaticParams() {
 	const exhibitors = years.flatMap(x => x.exhibitors)
 
 	return exhibitors.map(exhibitor => ({
-		slug: `/exhibitors/${exhibitor.id}`
+		exhibitor: exhibitor.id.toString()
 	}))
 }
 

@@ -73,9 +73,7 @@ export async function ExhibitorTimeline() {
 				dateStringISO={dates.ir.end}
 				title="Initial Registration ends"></TimelineItem>
 
-			<TimelineItem
-				dateStringISO={dates.ir.acceptance}
-				title="Acceptance date">
+			<TimelineItem dateStringISO={dates.ir.acceptance} title="Acceptance date">
 				<P className="text-stone-400">
 					We will get back to everyone who made an Initial Registration by{" "}
 					{formatDate(dates.ir.end)}. This is when you will know 100% for sure

@@ -4,6 +4,7 @@ import Link from "next/link"
 import * as React from "react"
 
 import { Page } from "@/components/shared/Page"
+import { feature } from "@/components/shared/feature"
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import {
 	NavigationMenu as BaseNavigationMenu,
@@ -22,62 +23,79 @@ import { DateTime } from "luxon"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 
-const companyLinks: { title: string; href: string; description: string }[] = [
+type NavigationLink = {
+	title: string
+	href: string
+	description: string
+	enabled: boolean
+}
+
+const companyLinks: NavigationLink[] = [
 	{
 		title: "Registration",
 		href: "https://register.armada.nu/register",
-		description: `Signup as an exhibitor for the fair ${DateTime.now().year}`
+		description: `Signup as an exhibitor for the fair ${DateTime.now().year}`,
+		enabled: true
 	},
 	{
 		title: "Packages",
 		href: "/exhibitor/packages",
-		description: "See what we have to offer"
+		description: "See what we have to offer",
+		enabled: true
 	},
 	{
 		title: "Why Armada",
 		href: "/exhibitor",
-		description: "The industry's top engineers come from KTH"
+		description: "The industry's top engineers come from KTH",
+		enabled: true
 	},
 	{
 		title: "Timeline - Step by Step",
 		href: "/exhibitor/timeline",
-		description: "Your guide to the fair"
+		description: "Your guide to the fair",
+		enabled: true
 	}
 ]
 
-const studentLinks: { title: string; href: string; description: string }[] = [
+const studentLinks: NavigationLink[] = [
 	{
 		title: "Exhibitors",
 		href: "/student/exhibitors",
-		description: `Get an in depth look at the companies attending the fair`
+		description: `Get an in depth look at the companies attending the fair`,
+		enabled: true
 	},
-	/* 	{
+	{
 		title: "Events",
 		href: "/student/events",
-		description: "See the events leading up to the fair"
-	}, */
+		description: "See the events leading up to the fair",
+		enabled: feature("EVENT_PAGE")
+	},
 	{
 		title: "Recruitment",
 		href: "/student/recruitment",
-		description: `Join Armada ${DateTime.now().year}. See which roles are available`
+		description: `Join Armada ${DateTime.now().year}. See which roles are available`,
+		enabled: true
 	}
 ]
 
-const aboutLinks: { title: string; href: string; description: string }[] = [
+const aboutLinks: NavigationLink[] = [
 	{
 		title: "About Armada",
 		href: "/about",
-		description: `Get to know the Armada organization`
+		description: `Get to know the Armada organization`,
+		enabled: true
 	},
-	/* 	{
+	{
 		title: "Events",
 		href: "/student/events",
-		description: "See the events leading up to the fair"
-	}, */
+		description: "See the events leading up to the fair",
+		enabled: feature("EVENT_PAGE")
+	},
 	{
 		title: "Team",
 		href: "/about/team",
-		description: `Get to know the team working on Armada ${DateTime.now().year}`
+		description: `Get to know the team working on Armada ${DateTime.now().year}`,
+		enabled: true
 	}
 ]
 
@@ -136,44 +154,50 @@ export function NavigationMenu(
 					<Page.Header tier="secondary" className="text-2xl">
 						Student
 					</Page.Header>
-					{studentLinks.map(component => (
-						<div key={component.href} className="mt-2">
-							<Link
-								onClick={() => setSheetOpen(false)}
-								className="font-bebas-neue text-xl text-melon-700"
-								href={component.href}>
-								{component.title}
-							</Link>
-						</div>
-					))}
+					{studentLinks
+						.filter(link => link.enabled)
+						.map(component => (
+							<div key={component.href} className="mt-2">
+								<Link
+									onClick={() => setSheetOpen(false)}
+									className="font-bebas-neue text-xl text-melon-700"
+									href={component.href}>
+									{component.title}
+								</Link>
+							</div>
+						))}
 					<Separator className="my-4" />
 					<Page.Header tier="secondary" className="text-2xl">
 						Exhibitor
 					</Page.Header>
-					{companyLinks.map(component => (
-						<div key={component.href} className="mt-2">
-							<Link
-								onClick={() => setSheetOpen(false)}
-								className="font-bebas-neue text-xl text-melon-700"
-								href={component.href}>
-								{component.title}
-							</Link>
-						</div>
-					))}
+					{companyLinks
+						.filter(link => link.enabled)
+						.map(component => (
+							<div key={component.href} className="mt-2">
+								<Link
+									onClick={() => setSheetOpen(false)}
+									className="font-bebas-neue text-xl text-melon-700"
+									href={component.href}>
+									{component.title}
+								</Link>
+							</div>
+						))}
 					<Separator className="my-4" />
 					<Page.Header tier="secondary" className="text-2xl">
 						About us
 					</Page.Header>
-					{aboutLinks.map(component => (
-						<div key={component.href} className="mt-2">
-							<Link
-								onClick={() => setSheetOpen(false)}
-								className="font-bebas-neue text-xl text-melon-700"
-								href={component.href}>
-								{component.title}
-							</Link>
-						</div>
-					))}
+					{aboutLinks
+						.filter(link => link.enabled)
+						.map(component => (
+							<div key={component.href} className="mt-2">
+								<Link
+									onClick={() => setSheetOpen(false)}
+									className="font-bebas-neue text-xl text-melon-700"
+									href={component.href}>
+									{component.title}
+								</Link>
+							</div>
+						))}
 				</SheetContent>
 			</Sheet>
 			{/** BaseNavigationMenu is used for desktop navigation  */}
@@ -201,14 +225,16 @@ export function NavigationMenu(
 							</Link>
 							<NavigationMenuContent>
 								<ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-									{studentLinks.map(component => (
-										<ListItem
-											key={component.href}
-											href={component.href}
-											title={component.title}>
-											{component.description}
-										</ListItem>
-									))}
+									{studentLinks
+										.filter(link => link.enabled)
+										.map(component => (
+											<ListItem
+												key={component.href}
+												href={component.href}
+												title={component.title}>
+												{component.description}
+											</ListItem>
+										))}
 								</ul>
 							</NavigationMenuContent>
 						</NavigationMenuItem>
@@ -220,14 +246,16 @@ export function NavigationMenu(
 							</Link>
 							<NavigationMenuContent>
 								<ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-									{companyLinks.map(component => (
-										<ListItem
-											key={component.title}
-											title={component.title}
-											href={component.href}>
-											{component.description}
-										</ListItem>
-									))}
+									{companyLinks
+										.filter(link => link.enabled)
+										.map(component => (
+											<ListItem
+												key={component.title}
+												title={component.title}
+												href={component.href}>
+												{component.description}
+											</ListItem>
+										))}
 								</ul>
 							</NavigationMenuContent>
 						</NavigationMenuItem>
@@ -239,14 +267,16 @@ export function NavigationMenu(
 							</Link>
 							<NavigationMenuContent>
 								<ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-									{aboutLinks.map(component => (
-										<ListItem
-											key={component.title}
-											title={component.title}
-											href={component.href}>
-											{component.description}
-										</ListItem>
-									))}
+									{aboutLinks
+										.filter(link => link.enabled)
+										.map(component => (
+											<ListItem
+												key={component.title}
+												title={component.title}
+												href={component.href}>
+												{component.description}
+											</ListItem>
+										))}
 								</ul>
 							</NavigationMenuContent>
 						</NavigationMenuItem>
