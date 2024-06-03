@@ -1,8 +1,9 @@
 import EventDetails from "@/app/student/events/_components/EventDetails"
 import { Page } from "@/components/shared/Page"
+import { feature } from "@/components/shared/feature"
 import { fetchEvents } from "@/components/shared/hooks/api/useEvents"
-import { notFound } from "next/navigation"
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 async function getEvent(eventId: string) {
 	const events = await fetchEvents()
@@ -39,6 +40,10 @@ export default async function EventDetailsPage({
 }: {
 	params: { id: string }
 }) {
+	if (!feature("EVENT_PAGE")) {
+		return notFound()
+	}
+
 	const event = await getEvent(params.id)
 
 	return (
