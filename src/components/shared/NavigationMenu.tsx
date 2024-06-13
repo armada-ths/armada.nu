@@ -51,11 +51,11 @@ const studentLinks: { title: string; href: string; description: string }[] = [
 		href: "/student/exhibitors",
 		description: `Get an in depth look at the companies attending the fair`
 	},
-	/* 	{
+	{
 		title: "Events",
 		href: "/student/events",
 		description: "See the events leading up to the fair"
-	}, */
+	},
 	{
 		title: "Recruitment",
 		href: "/student/recruitment",
