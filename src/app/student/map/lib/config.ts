@@ -1,4 +1,9 @@
-import { FillLayer, LineLayer, BackgroundLayer } from "react-map-gl/maplibre"
+import { FeatureCollection, LineString } from "geojson"
+import { BackgroundLayer, FillLayer, LineLayer } from "react-map-gl/maplibre"
+import nymblePlan2DataRaw from "../data/nymble-plan2.json"
+
+export type GeoJsonLinesData = FeatureCollection<LineString>
+export const geoJsonNymblePlan2Data = nymblePlan2DataRaw as GeoJsonLinesData
 
 const style = {
   boothFillColor: "#89bc82",
@@ -10,6 +15,9 @@ const style = {
 
   buildingOutlineColor: "#ff0000",
   buildingOutlineWidth: 2,
+
+  buildingStructureColor: "#17845A",
+  buildingStructureWidth: 2,
 
   backgroundColor: "#40d07e",
   backgroundOpacity: 0.2
@@ -57,5 +65,15 @@ export const backgroundLayerStyle: BackgroundLayer = {
   paint: {
     "background-color": style.backgroundColor,
     "background-opacity": style.backgroundOpacity
+  }
+}
+
+export const nymbleSecondFloorStructure: LineLayer = {
+  source: "nymble-plan2",
+  id: "nymble-plan2",
+  type: "line",
+  paint: {
+    "line-color": style.buildingStructureColor,
+    "line-width": style.buildingStructureWidth
   }
 }

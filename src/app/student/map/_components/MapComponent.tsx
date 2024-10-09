@@ -1,8 +1,7 @@
 import { BoothPopup } from "@/app/student/map/_components/BoothPopup"
 import {
   BoothID,
-  geoJsonBoothDataByLocation,
-  geoJsonBuildingData
+  geoJsonBoothDataByLocation
 } from "@/app/student/map/lib/booths"
 import { Location } from "@/app/student/map/lib/locations"
 import "maplibre-gl/dist/maplibre-gl.css"
@@ -18,7 +17,8 @@ import { BoothMap, GeoJsonBooth } from "../lib/booths"
 import {
   backgroundLayerStyle,
   boothLayerStyle,
-  buildingLayerStyle
+  geoJsonNymblePlan2Data,
+  nymbleSecondFloorStructure
 } from "../lib/config"
 import { BoothMarker } from "./BoothMarker"
 
@@ -163,7 +163,6 @@ export function MapComponent({
         ]}
         mapStyle="https://api.maptiler.com/maps/977e9770-60b4-4b8a-94e9-a9fa8db4c68d/style.json?key=57xj41WPFBbOEWiVSSwL">
         <Layer {...backgroundLayerStyle}></Layer>
-
         <Source
           id="booths"
           type="geojson"
@@ -172,16 +171,23 @@ export function MapComponent({
           <Layer {...boothLayerStyle}></Layer>
         </Source>
 
-        <Source
+        {/* <Source
           id="buildings"
           type="geojson"
           promoteId={"id"}
           data={geoJsonBuildingData}>
           <Layer {...buildingLayerStyle}></Layer>
+        </Source> */}
+
+        <Source
+          id="nymble-plan2"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonNymblePlan2Data}>
+          <Layer {...nymbleSecondFloorStructure}></Layer>
         </Source>
 
         {markers}
-
         {activeBooth && <BoothPopup key={activeBooth.id} booth={activeBooth} />}
       </MapboxMap>
     </div>
