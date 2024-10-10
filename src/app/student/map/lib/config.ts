@@ -22,6 +22,7 @@ const style = {
   boothHoveredFillColor: "#a0df98",
   boothNotFilteredOpacity: 0.4,
 
+  buildingBackgroundColor: "#1A201C",
   buildingOutlineColor: "#ff0000",
   buildingOutlineWidth: 2,
 
@@ -77,13 +78,12 @@ export const boothLayerStyle: FillLayer = {
   }
 }
 
-export const buildingLayerStyle: LineLayer = {
+export const buildingLayerStyle: FillLayer = {
   source: "buildings",
   id: "buildings",
-  type: "line",
+  type: "fill",
   paint: {
-    "line-color": style.buildingOutlineColor,
-    "line-width": style.buildingOutlineWidth
+    "fill-color": style.buildingBackgroundColor
   }
 }
 
@@ -114,18 +114,18 @@ export const nymblePlan2RouteLayerStyle: LineLayer = {
     "line-color": [
       "case",
       ["==", ["get", "lineType"], LineType.Route],
-      style.routeColor, // Green for Route lines
+      style.routeColor,
       ["==", ["get", "lineType"], LineType.RouteHint],
-      style.routeHintColor, // Blue for RouteHint lines
-      style.buildingStructureColor // Default color for other lines
+      style.routeHintColor,
+      style.buildingStructureColor
     ],
     "line-width": [
       "case",
       ["==", ["get", "lineType"], LineType.Route],
-      style.routeWidth, // Medium for Route lines
+      style.routeWidth,
       ["==", ["get", "lineType"], LineType.RouteHint],
-      style.routeHintWidth, // Thinner for RouteHint lines
-      style.buildingStructureWidth // Default width for other lines
+      style.routeHintWidth,
+      style.buildingStructureWidth
     ],
     // Apply dash pattern for Route lines
     "line-dasharray": ["literal", [2, 2]]
@@ -142,16 +142,16 @@ export const nymblePlan2PointLayerStyle: CircleLayer = {
     "circle-color": [
       "case",
       ["==", ["get", "pointType"], PointType.Exit],
-      "#FF0000", // Red for Exit points
+      "#FF0000",
       ["==", ["get", "pointType"], PointType.Door],
-      "#00FF00", // Green for Door points
+      "#00FF00",
       ["==", ["get", "pointType"], PointType.WC],
-      "#0000FF", // Blue for WC points
+      "#0000FF",
       ["==", ["get", "pointType"], PointType.Stair],
-      "#FFFF00", // Yellow for Stair points
+      "#FFFF00",
       ["==", ["get", "pointType"], PointType.Disability],
-      "#FFA500", // Orange for Disability points
-      "#000000" // Default color for other points
+      "#FFA500",
+      "#000000"
     ],
     "circle-radius": 6
   }

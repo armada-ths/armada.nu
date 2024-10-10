@@ -1,7 +1,8 @@
 import { BoothPopup } from "@/app/student/map/_components/BoothPopup"
 import {
   BoothID,
-  geoJsonBoothDataByLocation
+  geoJsonBoothDataByLocation,
+  geoJsonBuildingData
 } from "@/app/student/map/lib/booths"
 import { Location } from "@/app/student/map/lib/locations"
 import "maplibre-gl/dist/maplibre-gl.css"
@@ -17,6 +18,7 @@ import { BoothMap, GeoJsonBooth } from "../lib/booths"
 import {
   backgroundLayerStyle,
   boothLayerStyle,
+  buildingLayerStyle,
   geoJsonNymblePlan2Data,
   geoJsonNymblePlan2RoutesData,
   nymblePlan2LineLayerStyle,
@@ -174,13 +176,13 @@ export function MapComponent({
           <Layer {...boothLayerStyle}></Layer>
         </Source>
 
-        {/* <Source
+        <Source
           id="buildings"
           type="geojson"
           promoteId={"id"}
           data={geoJsonBuildingData}>
           <Layer {...buildingLayerStyle}></Layer>
-        </Source> */}
+        </Source>
 
         <Source
           id="nymble-plan2-style"
