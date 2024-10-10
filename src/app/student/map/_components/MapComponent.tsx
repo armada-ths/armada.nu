@@ -18,7 +18,10 @@ import {
   backgroundLayerStyle,
   boothLayerStyle,
   geoJsonNymblePlan2Data,
-  nymbleSecondFloorStructure
+  geoJsonNymblePlan2RoutesData,
+  nymblePlan2LineLayerStyle,
+  nymblePlan2PointLayerStyle,
+  nymblePlan2RouteLayerStyle
 } from "../lib/config"
 import { BoothMarker } from "./BoothMarker"
 
@@ -180,11 +183,27 @@ export function MapComponent({
         </Source> */}
 
         <Source
-          id="nymble-plan2"
+          id="nymble-plan2-style"
           type="geojson"
           promoteId={"id"}
           data={geoJsonNymblePlan2Data}>
-          <Layer {...nymbleSecondFloorStructure}></Layer>
+          <Layer {...nymblePlan2LineLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="nymble-plan2-routes"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonNymblePlan2RoutesData}>
+          <Layer {...nymblePlan2RouteLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="nymble-plan2-points"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonNymblePlan2Data}>
+          <Layer {...nymblePlan2PointLayerStyle}></Layer>
         </Source>
 
         {markers}

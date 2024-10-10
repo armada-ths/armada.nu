@@ -1,9 +1,18 @@
-import { FeatureCollection, LineString } from "geojson"
-import { BackgroundLayer, FillLayer, LineLayer } from "react-map-gl/maplibre"
-import nymblePlan2DataRaw from "../data/nymble-plan2.json"
+import { FeatureCollection, LineString, Point } from "geojson"
+import {
+  BackgroundLayer,
+  CircleLayer,
+  FillLayer,
+  LineLayer
+} from "react-map-gl/maplibre"
+import nymblePlan2DataRaw from "../data/nymble.plan2.json"
+import nymblePlan2RoutesDataRaw from "../data/nymble.plan2.routes.json"
 
+export type GeoJsonPlanData = FeatureCollection<LineString | Point>
 export type GeoJsonLinesData = FeatureCollection<LineString>
-export const geoJsonNymblePlan2Data = nymblePlan2DataRaw as GeoJsonLinesData
+export const geoJsonNymblePlan2Data = nymblePlan2DataRaw as GeoJsonPlanData
+export const geoJsonNymblePlan2RoutesData =
+  nymblePlan2RoutesDataRaw as GeoJsonLinesData
 
 const style = {
   boothFillColor: "#89bc82",
@@ -17,12 +26,31 @@ const style = {
   buildingOutlineWidth: 2,
 
   buildingStructureColor: "#17845A",
-  buildingStructureWidth: 2,
+  buildingStructureWidth: 3,
+
+  routeColor: "#F3ECC3",
+  routeWidth: 2,
+
+  routeHintColor: "#F3E592",
+  routeHintWidth: 1,
 
   backgroundColor: "#40d07e",
   backgroundOpacity: 0.2
 } as const
 
+export enum LineType {
+  Boundary = "Boundary",
+  Route = "Route",
+  RouteHint = "RouteHint"
+}
+
+export enum PointType {
+  Exit = "Exit",
+  Door = "Door",
+  WC = "WC",
+  Stair = "Stair",
+  Disability = "Disability"
+}
 // features can be styled based on properties or feature state using a weird expression language, see:
 // https://docs.mapbox.com/style-spec/reference/expressions/#data-expressions for reference
 
@@ -68,12 +96,63 @@ export const backgroundLayerStyle: BackgroundLayer = {
   }
 }
 
-export const nymbleSecondFloorStructure: LineLayer = {
-  source: "nymble-plan2",
-  id: "nymble-plan2",
+export const nymblePlan2LineLayerStyle: LineLayer = {
+  source: "nymble.plan2",
+  id: "nymble-plan2-lines",
   type: "line",
   paint: {
     "line-color": style.buildingStructureColor,
     "line-width": style.buildingStructureWidth
+  }
+}
+
+export const nymblePlan2RouteLayerStyle: LineLayer = {
+  source: "nymble.plan2.routes",
+  id: "nymble-plan2-lines-routes",
+  type: "line",
+  paint: {
+    "line-color": [
+      "case",
+      ["==", ["get", "lineType"], LineType.Route],
+      style.routeColor, // Green for Route lines
+      ["==", ["get", "lineType"], LineType.RouteHint],
+      style.routeHintColor, // Blue for RouteHint lines
+      style.buildingStructureColor // Default color for other lines
+    ],
+    "line-width": [
+      "case",
+      ["==", ["get", "lineType"], LineType.Route],
+      style.routeWidth, // Medium for Route lines
+      ["==", ["get", "lineType"], LineType.RouteHint],
+      style.routeHintWidth, // Thinner for RouteHint lines
+      style.buildingStructureWidth // Default width for other lines
+    ],
+    // Apply dash pattern for Route lines
+    "line-dasharray": ["literal", [2, 2]]
+  }
+}
+
+// CircleLayer for points
+export const nymblePlan2PointLayerStyle: CircleLayer = {
+  source: "nymble.plan2",
+  id: "nymble-plan2-points",
+  type: "circle",
+  filter: ["==", "$type", "Point"],
+  paint: {
+    "circle-color": [
+      "case",
+      ["==", ["get", "pointType"], PointType.Exit],
+      "#FF0000", // Red for Exit points
+      ["==", ["get", "pointType"], PointType.Door],
+      "#00FF00", // Green for Door points
+      ["==", ["get", "pointType"], PointType.WC],
+      "#0000FF", // Blue for WC points
+      ["==", ["get", "pointType"], PointType.Stair],
+      "#FFFF00", // Yellow for Stair points
+      ["==", ["get", "pointType"], PointType.Disability],
+      "#FFA500", // Orange for Disability points
+      "#000000" // Default color for other points
+    ],
+    "circle-radius": 6
   }
 }
