@@ -6,12 +6,6 @@ export interface SurveyData {
   IndustryType?: string[]
 }
 
-export enum FormState {
-  Programme = 1,
-  JobType = 2,
-  IndustryType = 3
-}
-
 export const programmeList = [
   "Architecture",
   "Biotechnology",

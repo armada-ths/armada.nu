@@ -5,8 +5,9 @@ import {
   geoJsonBuildingData
 } from "@/app/student/map/lib/booths"
 import { Location } from "@/app/student/map/lib/locations"
+import { useFeatureState } from "@/components/shared/hooks/useFeatureState"
 import "maplibre-gl/dist/maplibre-gl.css"
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
   Layer,
   MapLayerMouseEvent,
@@ -26,35 +27,6 @@ import {
   nymblePlan2RouteLayerStyle
 } from "../lib/config"
 import { BoothMarker } from "./BoothMarker"
-
-// Keep mapbox feature state in sync with component state
-// to allow for styling of the features
-function useFeatureState(
-  mapRef: MutableRefObject<MapRef | null>,
-  boothIds: BoothID[],
-  stateKey: "active" | "hover" | "filtered"
-) {
-  useEffect(() => {
-    const map = mapRef.current
-    if (map == null || boothIds.length === 0) return
-
-    for (const boothId of boothIds) {
-      map.setFeatureState(
-        { source: "booths", id: boothId },
-        { [stateKey]: true }
-      )
-    }
-
-    return () => {
-      for (const boothId of boothIds) {
-        map.setFeatureState(
-          { source: "booths", id: boothId },
-          { [stateKey]: false }
-        )
-      }
-    }
-  }, [boothIds, stateKey])
-}
 
 export function MapComponent({
   boothsById,
@@ -185,29 +157,33 @@ export function MapComponent({
           <Layer {...boothLayerStyle}></Layer>
         </Source>
 
-        <Source
-          id="nymble-plan2-style"
-          type="geojson"
-          promoteId={"id"}
-          data={geoJsonNymblePlan2Data}>
-          <Layer {...nymblePlan2LineLayerStyle}></Layer>
-        </Source>
+        {location.id === "nymble/2" && (
+          <>
+            <Source
+              id="nymble-plan2-style"
+              type="geojson"
+              promoteId={"id"}
+              data={geoJsonNymblePlan2Data}>
+              <Layer {...nymblePlan2LineLayerStyle}></Layer>
+            </Source>
 
-        <Source
-          id="nymble-plan2-routes"
-          type="geojson"
-          promoteId={"id"}
-          data={geoJsonNymblePlan2RoutesData}>
-          <Layer {...nymblePlan2RouteLayerStyle}></Layer>
-        </Source>
+            <Source
+              id="nymble-plan2-routes"
+              type="geojson"
+              promoteId={"id"}
+              data={geoJsonNymblePlan2RoutesData}>
+              <Layer {...nymblePlan2RouteLayerStyle}></Layer>
+            </Source>
 
-        <Source
-          id="nymble-plan2-points"
-          type="geojson"
-          promoteId={"id"}
-          data={geoJsonNymblePlan2Data}>
-          <Layer {...nymblePlan2PointLayerStyle}></Layer>
-        </Source>
+            <Source
+              id="nymble-plan2-points"
+              type="geojson"
+              promoteId={"id"}
+              data={geoJsonNymblePlan2Data}>
+              <Layer {...nymblePlan2PointLayerStyle}></Layer>
+            </Source>
+          </>
+        )}
 
         {markers}
         {activeBooth && <BoothPopup key={activeBooth.id} booth={activeBooth} />}

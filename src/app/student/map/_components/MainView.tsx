@@ -68,7 +68,7 @@ export default function MainView({
 
   useEffect(() => {
     // A new survey page for filter when using mobile
-    if (!openSurvey && width && width < 768) {
+    if (openSurvey && width && width < 768) {
       router.push("/student/map/survey")
     }
   }, [width])
