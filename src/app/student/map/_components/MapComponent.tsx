@@ -96,7 +96,7 @@ export function MapComponent({
 
     mapRef.current?.flyTo({
       center: booth.center as [number, number],
-      zoom: 18.5,
+      zoom: 19.5,
       speed: 0.8
     })
   }, [activeBoothId, boothsById])
@@ -168,13 +168,6 @@ export function MapComponent({
         ]}
         mapStyle="https://api.maptiler.com/maps/977e9770-60b4-4b8a-94e9-a9fa8db4c68d/style.json?key=57xj41WPFBbOEWiVSSwL">
         <Layer {...backgroundLayerStyle}></Layer>
-        <Source
-          id="booths"
-          type="geojson"
-          promoteId={"id"}
-          data={currentGeoJsonBoothData}>
-          <Layer {...boothLayerStyle}></Layer>
-        </Source>
 
         <Source
           id="buildings"
@@ -182,6 +175,14 @@ export function MapComponent({
           promoteId={"id"}
           data={geoJsonBuildingData}>
           <Layer {...buildingLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="booths"
+          type="geojson"
+          promoteId={"id"}
+          data={currentGeoJsonBoothData}>
+          <Layer {...boothLayerStyle}></Layer>
         </Source>
 
         <Source
