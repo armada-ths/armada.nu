@@ -1,4 +1,5 @@
 import Providers from "@/app/providers"
+import { Footer } from "@/components/shared/Footer"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DateTime } from "luxon"
@@ -71,6 +72,7 @@ export default function RootLayout({
         <SpeedInsights />
         <Providers>{children}</Providers>
         <DevToolbar />
+        <Footer />
       </body>
     </html>
   )
