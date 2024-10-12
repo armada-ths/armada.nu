@@ -12,6 +12,7 @@ import {
   geoJsonBuildingData,
   makeBooth
 } from "@/app/student/map/lib/booths"
+import { backgroundLayerStyle } from "@/app/student/map/lib/config"
 import { Location } from "@/app/student/map/lib/locations"
 import { getPolygonCenter } from "@/app/student/map/lib/utils"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
@@ -19,22 +20,7 @@ import MapboxDraw, { DrawMode } from "@mapbox/mapbox-gl-draw"
 import { Feature, Polygon } from "geojson"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { useEffect, useMemo, useRef, useState } from "react"
-import {
-  BackgroundLayer,
-  Layer,
-  Map as MapboxMap,
-  MapRef,
-  Popup
-} from "react-map-gl/maplibre"
-
-const backgroundLayerStyle: BackgroundLayer = {
-  id: "background",
-  type: "background",
-  paint: {
-    "background-color": "#40d07e",
-    "background-opacity": 0.2
-  }
-}
+import { Layer, Map as MapboxMap, MapRef, Popup } from "react-map-gl/maplibre"
 
 export type FeatureMap = Map<BoothID, GeoJsonBooth>
 

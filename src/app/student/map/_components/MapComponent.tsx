@@ -52,7 +52,7 @@ export function MapComponent({
   const mapRef = useRef<MapRef>(null)
 
   const [markerScale, setMarkerScale] = useState(1)
-  const [geoJsonPlanData, setGeojsonPlanData] = useState(geoJsonNymblePlan2Data)
+  const [geoJsonPlanData, setGeoJsonPlanData] = useState(geoJsonNymblePlan2Data)
   const [geoJsonNymblePlanRoutesData, setGeoJsonNymblePlanRoutesData] =
     useState(geoJsonNymblePlan2RoutesData)
   // Fly to location center on change
@@ -68,16 +68,17 @@ export function MapComponent({
   useEffect(() => {
     switch (location.id) {
       case "nymble/2": {
-        setGeojsonPlanData(geoJsonNymblePlan2Data)
+        setGeoJsonPlanData(geoJsonNymblePlan2Data)
         setGeoJsonNymblePlanRoutesData(geoJsonNymblePlan2RoutesData)
         break
       }
       case "nymble/3": {
-        setGeojsonPlanData(geoJsonNymblePlan3Data)
+        setGeoJsonPlanData(geoJsonNymblePlan3Data)
         setGeoJsonNymblePlanRoutesData(geoJsonNymblePlan3RoutesData)
         break
       }
       case "library":
+        //TODO: library plan data
         break
     }
   }, [location])
@@ -86,7 +87,7 @@ export function MapComponent({
     if (activeBoothId == null) return
     const booth = boothsById.get(activeBoothId)
     if (!booth) return
-
+    //TODO: Maybe booth.center should be booth-specific and zoom in more?
     mapRef.current?.flyTo({
       center: booth.center as [number, number],
       zoom: 19.5,
@@ -162,6 +163,7 @@ export function MapComponent({
         mapStyle="https://api.maptiler.com/maps/977e9770-60b4-4b8a-94e9-a9fa8db4c68d/style.json?key=57xj41WPFBbOEWiVSSwL">
         <Layer {...backgroundLayerStyle}></Layer>
 
+        {/** Order sensitive! */}
         <Source
           id="buildings"
           type="geojson"
@@ -169,6 +171,7 @@ export function MapComponent({
           data={geoJsonPlanData}>
           <Layer {...buildingLayerStyle}></Layer>
         </Source>
+
         <Source
           id="booths"
           type="geojson"
