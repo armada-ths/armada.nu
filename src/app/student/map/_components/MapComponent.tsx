@@ -5,6 +5,7 @@ import {
 } from "@/app/student/map/lib/booths"
 import { Location } from "@/app/student/map/lib/locations"
 import { useFeatureState } from "@/components/shared/hooks/useFeatureState"
+import { useGeoJsonPlanData } from "@/components/shared/hooks/useGeoJsonPlanData"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
@@ -19,17 +20,12 @@ import {
   backgroundLayerStyle,
   boothLayerStyle,
   buildingLayerStyle,
-  geoJsonNymblePlan2Data,
-  geoJsonNymblePlan2RoutesData,
-  geoJsonNymblePlan3Data,
-  geoJsonNymblePlan3RoutesData,
   lineLayerStyle,
   pointLayerStyle,
   routeLayerStyle
 } from "../lib/config"
 import { BoothMarker } from "./BoothMarker"
 
-// TODO: switch data using state management (based on locationID)
 export function MapComponent({
   boothsById,
   location,
@@ -52,9 +48,6 @@ export function MapComponent({
   const mapRef = useRef<MapRef>(null)
 
   const [markerScale, setMarkerScale] = useState(1)
-  const [geoJsonPlanData, setGeoJsonPlanData] = useState(geoJsonNymblePlan2Data)
-  const [geoJsonNymblePlanRoutesData, setGeoJsonNymblePlanRoutesData] =
-    useState(geoJsonNymblePlan2RoutesData)
   // Fly to location center on change
   useEffect(() => {
     const { longitude, latitude, zoom } = location.center
@@ -65,23 +58,9 @@ export function MapComponent({
   })
 
   //Change layer style data source based on selected location
-  useEffect(() => {
-    switch (location.id) {
-      case "nymble/2": {
-        setGeoJsonPlanData(geoJsonNymblePlan2Data)
-        setGeoJsonNymblePlanRoutesData(geoJsonNymblePlan2RoutesData)
-        break
-      }
-      case "nymble/3": {
-        setGeoJsonPlanData(geoJsonNymblePlan3Data)
-        setGeoJsonNymblePlanRoutesData(geoJsonNymblePlan3RoutesData)
-        break
-      }
-      case "library":
-        //TODO: library plan data
-        break
-    }
-  }, [location])
+  const [geoJsonPlanData, geoJsonNymblePlanRoutesData] =
+    useGeoJsonPlanData(location)
+
   // Fly to selected booth on change
   useEffect(() => {
     if (activeBoothId == null) return
