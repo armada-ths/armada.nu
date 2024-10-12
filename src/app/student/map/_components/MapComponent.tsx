@@ -1,8 +1,7 @@
 import { BoothPopup } from "@/app/student/map/_components/BoothPopup"
 import {
   BoothID,
-  geoJsonBoothDataByLocation,
-  geoJsonBuildingData
+  geoJsonBoothDataByLocation
 } from "@/app/student/map/lib/booths"
 import { Location } from "@/app/student/map/lib/locations"
 import { useFeatureState } from "@/components/shared/hooks/useFeatureState"
@@ -22,12 +21,15 @@ import {
   buildingLayerStyle,
   geoJsonNymblePlan2Data,
   geoJsonNymblePlan2RoutesData,
-  nymblePlan2LineLayerStyle,
-  nymblePlan2PointLayerStyle,
-  nymblePlan2RouteLayerStyle
+  geoJsonNymblePlan3Data,
+  geoJsonNymblePlan3RoutesData,
+  lineLayerStyle,
+  pointLayerStyle,
+  routeLayerStyle
 } from "../lib/config"
 import { BoothMarker } from "./BoothMarker"
 
+// TODO: switch data using state management (based on locationID)
 export function MapComponent({
   boothsById,
   location,
@@ -50,7 +52,9 @@ export function MapComponent({
   const mapRef = useRef<MapRef>(null)
 
   const [markerScale, setMarkerScale] = useState(1)
-
+  const [geoJsonPlanData, setGeojsonPlanData] = useState(geoJsonNymblePlan2Data)
+  const [geoJsonNymblePlanRoutesData, setGeoJsonNymblePlanRoutesData] =
+    useState(geoJsonNymblePlan2RoutesData)
   // Fly to location center on change
   useEffect(() => {
     const { longitude, latitude, zoom } = location.center
@@ -60,6 +64,23 @@ export function MapComponent({
     })
   })
 
+  //Change layer style data source based on selected location
+  useEffect(() => {
+    switch (location.id) {
+      case "nymble/2": {
+        setGeojsonPlanData(geoJsonNymblePlan2Data)
+        setGeoJsonNymblePlanRoutesData(geoJsonNymblePlan2RoutesData)
+        break
+      }
+      case "nymble/3": {
+        setGeojsonPlanData(geoJsonNymblePlan3Data)
+        setGeoJsonNymblePlanRoutesData(geoJsonNymblePlan3RoutesData)
+        break
+      }
+      case "library":
+        break
+    }
+  }, [location])
   // Fly to selected booth on change
   useEffect(() => {
     if (activeBoothId == null) return
@@ -145,10 +166,9 @@ export function MapComponent({
           id="buildings"
           type="geojson"
           promoteId={"id"}
-          data={geoJsonBuildingData}>
+          data={geoJsonPlanData}>
           <Layer {...buildingLayerStyle}></Layer>
         </Source>
-
         <Source
           id="booths"
           type="geojson"
@@ -157,33 +177,29 @@ export function MapComponent({
           <Layer {...boothLayerStyle}></Layer>
         </Source>
 
-        {location.id === "nymble/2" && (
-          <>
-            <Source
-              id="nymble-plan2-style"
-              type="geojson"
-              promoteId={"id"}
-              data={geoJsonNymblePlan2Data}>
-              <Layer {...nymblePlan2LineLayerStyle}></Layer>
-            </Source>
+        <Source
+          id="nymble-plan-style"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonPlanData}>
+          <Layer {...lineLayerStyle}></Layer>
+        </Source>
 
-            <Source
-              id="nymble-plan2-routes"
-              type="geojson"
-              promoteId={"id"}
-              data={geoJsonNymblePlan2RoutesData}>
-              <Layer {...nymblePlan2RouteLayerStyle}></Layer>
-            </Source>
+        <Source
+          id="nymble-plan-routes"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonNymblePlanRoutesData}>
+          <Layer {...routeLayerStyle}></Layer>
+        </Source>
 
-            <Source
-              id="nymble-plan2-points"
-              type="geojson"
-              promoteId={"id"}
-              data={geoJsonNymblePlan2Data}>
-              <Layer {...nymblePlan2PointLayerStyle}></Layer>
-            </Source>
-          </>
-        )}
+        <Source
+          id="nymble-plan-points"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonPlanData}>
+          <Layer {...pointLayerStyle}></Layer>
+        </Source>
 
         {markers}
         {activeBooth && <BoothPopup key={activeBooth.id} booth={activeBooth} />}

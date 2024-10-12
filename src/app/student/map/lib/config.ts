@@ -1,4 +1,4 @@
-import { FeatureCollection, LineString, Point } from "geojson"
+import { FeatureCollection, LineString, Point, Polygon } from "geojson"
 import {
   BackgroundLayer,
   CircleLayer,
@@ -7,12 +7,17 @@ import {
 } from "react-map-gl/maplibre"
 import nymblePlan2DataRaw from "../data/nymble.plan2.json"
 import nymblePlan2RoutesDataRaw from "../data/nymble.plan2.routes.json"
+import nymblePlan3DataRaw from "../data/nymble.plan3.json"
+import nymblePlan3RoutesDataRaw from "../data/nymble.plan3.routes.json"
 
-export type GeoJsonPlanData = FeatureCollection<LineString | Point>
+export type GeoJsonPlanData = FeatureCollection<Polygon | LineString | Point>
 export type GeoJsonLinesData = FeatureCollection<LineString>
 export const geoJsonNymblePlan2Data = nymblePlan2DataRaw as GeoJsonPlanData
 export const geoJsonNymblePlan2RoutesData =
   nymblePlan2RoutesDataRaw as GeoJsonLinesData
+export const geoJsonNymblePlan3Data = nymblePlan3DataRaw as GeoJsonPlanData
+export const geoJsonNymblePlan3RoutesData =
+  nymblePlan3RoutesDataRaw as GeoJsonLinesData
 
 const style = {
   boothFillColor: "#89bc82",
@@ -82,6 +87,7 @@ export const buildingLayerStyle: FillLayer = {
   source: "buildings",
   id: "buildings",
   type: "fill",
+  filter: ["==", "$type", "Polygon"],
   paint: {
     "fill-color": style.buildingBackgroundColor
   }
@@ -96,20 +102,22 @@ export const backgroundLayerStyle: BackgroundLayer = {
   }
 }
 
-export const nymblePlan2LineLayerStyle: LineLayer = {
-  source: "nymble.plan2",
-  id: "nymble-plan2-lines",
+export const lineLayerStyle: LineLayer = {
+  source: "lines",
+  id: "lines",
   type: "line",
+  filter: ["==", "$type", "LineString"],
   paint: {
     "line-color": style.buildingStructureColor,
     "line-width": style.buildingStructureWidth
   }
 }
 
-export const nymblePlan2RouteLayerStyle: LineLayer = {
-  source: "nymble.plan2.routes",
-  id: "nymble-plan2-lines-routes",
+export const routeLayerStyle: LineLayer = {
+  source: "routes",
+  id: "routes",
   type: "line",
+  filter: ["==", "$type", "LineString"],
   paint: {
     "line-color": [
       "case",
@@ -133,9 +141,9 @@ export const nymblePlan2RouteLayerStyle: LineLayer = {
 }
 
 // CircleLayer for points
-export const nymblePlan2PointLayerStyle: CircleLayer = {
-  source: "nymble.plan2",
-  id: "nymble-plan2-points",
+export const pointLayerStyle: CircleLayer = {
+  source: "points",
+  id: "points",
   type: "circle",
   filter: ["==", "$type", "Point"],
   paint: {

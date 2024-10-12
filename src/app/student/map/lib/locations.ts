@@ -1,4 +1,4 @@
-export type LocationId = "nymble/1" | "nymble/2" | "nymble/3" | "library"
+export type LocationId = "nymble/2" | "nymble/3" | "library" //Removed nymble/1, we only show plan 2, 3 and library
 
 export type Location = {
   id: LocationId
@@ -19,11 +19,6 @@ const libraryCenter = {
 }
 
 export const locations: Location[] = [
-  {
-    id: "nymble/1",
-    label: "Nymble - floor 1",
-    center: nymbleCenter
-  },
   {
     id: "nymble/2",
     label: "Nymble - floor 2",

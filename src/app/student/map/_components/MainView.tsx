@@ -29,8 +29,8 @@ export default function MainView({
   boothsById: BoothMap
   exhibitorsById: Map<number, Exhibitor>
 }) {
-  // url: /student/map?floor=[nymble/1|nymble/2|nymble/3|library]&lat=[number]&lng=[number]&zoom=[number]
-  // if floor is not provided or is invalid, default to nymble/1
+  // url: /student/map?floor=[nymble/2|nymble/3|library]&lat=[number]&lng=[number]&zoom=[number]
+  // if floor is not provided or is invalid, default to nymble/2
   // if lat, lng or zoom is not provided, default to location center
 
   const searchParams = useSearchParams()
@@ -38,7 +38,7 @@ export default function MainView({
   const router = useRouter()
   const surveyData = useSurveyData()
 
-  const floorUrlString = searchParams.get("floor") ?? "nymble/1"
+  const floorUrlString = searchParams.get("floor") ?? "nymble/2"
   const [locationId, setLocationId] = useState<LocationId>(
     validLocationId(floorUrlString) ? floorUrlString : defaultLocation.id
   )
