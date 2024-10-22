@@ -3,11 +3,11 @@ import {
   locations,
   validLocationId
 } from "@/app/student/map/lib/locations"
+import { getPolygonCenter } from "@/app/student/map/lib/utils"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import type { Feature, FeatureCollection, Polygon, Position } from "geojson"
 import boothDataRaw from "../data/booths.json"
 import buildingsDataRaw from "../data/buildings.json"
-import { getPolygonCenter } from "@/app/student/map/lib/utils"
 
 export type BoothID = number
 

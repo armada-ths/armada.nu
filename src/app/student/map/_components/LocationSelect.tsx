@@ -17,7 +17,7 @@ export default function SelectLocation({
   setActiveBoothId: (id: number | null) => void
 }) {
   return (
-    <div className="absolute top-2 justify-self-center rounded-full sm:right-2">
+    <div className="absolute right-2 top-2 justify-self-center rounded-full">
       <Select
         value={locationId}
         onValueChange={(id: LocationId) => {

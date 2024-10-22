@@ -12,29 +12,28 @@ import {
   geoJsonBuildingData,
   makeBooth
 } from "@/app/student/map/lib/booths"
+import {
+  backgroundLayerStyle,
+  buildingLayerStyle,
+  lineLayerStyle,
+  routeLayerStyle,
+  symbolLayerStyle
+} from "@/app/student/map/lib/config"
 import { Location } from "@/app/student/map/lib/locations"
 import { getPolygonCenter } from "@/app/student/map/lib/utils"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { useGeoJsonPlanData } from "@/components/shared/hooks/useGeoJsonPlanData"
 import MapboxDraw, { DrawMode } from "@mapbox/mapbox-gl-draw"
 import { Feature, Polygon } from "geojson"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
-  BackgroundLayer,
   Layer,
   Map as MapboxMap,
   MapRef,
-  Popup
+  Popup,
+  Source
 } from "react-map-gl/maplibre"
-
-const backgroundLayerStyle: BackgroundLayer = {
-  id: "background",
-  type: "background",
-  paint: {
-    "background-color": "#40d07e",
-    "background-opacity": 0.2
-  }
-}
 
 export type FeatureMap = Map<BoothID, GeoJsonBooth>
 
@@ -52,6 +51,9 @@ export default function EditorMapComponent({
   const [mapLoaded, setMapLoaded] = useState(false)
 
   const [showBuildings, setShowBuildings] = useState(false)
+
+  const [geoJsonPlanData, geoJsonNymblePlanRoutesData] =
+    useGeoJsonPlanData(location)
 
   const geoJsonData = showBuildings ? geoJsonBuildingData : geoJsonBoothData
 
@@ -212,6 +214,39 @@ export default function EditorMapComponent({
         ]}
         mapStyle="https://api.maptiler.com/maps/977e9770-60b4-4b8a-94e9-a9fa8db4c68d/style.json?key=57xj41WPFBbOEWiVSSwL">
         <Layer {...backgroundLayerStyle}></Layer>
+
+        {/** Order sensitive! */}
+        <Source
+          id="buildings"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonPlanData}>
+          <Layer {...buildingLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="nymble-plan-style"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonPlanData}>
+          <Layer {...lineLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="nymble-plan-routes"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonNymblePlanRoutesData}>
+          <Layer {...routeLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="nymble-plan-points"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonPlanData}>
+          <Layer {...symbolLayerStyle}></Layer>
+        </Source>
 
         {mapLoaded && !showBuildings && markers}
 

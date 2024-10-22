@@ -1,12 +1,13 @@
 import { BoothPopup } from "@/app/student/map/_components/BoothPopup"
 import {
   BoothID,
-  geoJsonBoothDataByLocation,
-  geoJsonBuildingData
+  geoJsonBoothDataByLocation
 } from "@/app/student/map/lib/booths"
 import { Location } from "@/app/student/map/lib/locations"
+import { useFeatureState } from "@/components/shared/hooks/useFeatureState"
+import { useGeoJsonPlanData } from "@/components/shared/hooks/useGeoJsonPlanData"
 import "maplibre-gl/dist/maplibre-gl.css"
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
   Layer,
   MapLayerMouseEvent,
@@ -16,40 +17,15 @@ import {
 } from "react-map-gl/maplibre"
 import { BoothMap, GeoJsonBooth } from "../lib/booths"
 import {
+  addMapIconAssets,
   backgroundLayerStyle,
   boothLayerStyle,
-  buildingLayerStyle
+  buildingLayerStyle,
+  lineLayerStyle,
+  routeLayerStyle,
+  symbolLayerStyle
 } from "../lib/config"
 import { BoothMarker } from "./BoothMarker"
-
-// Keep mapbox feature state in sync with component state
-// to allow for styling of the features
-function useFeatureState(
-  mapRef: MutableRefObject<MapRef | null>,
-  boothIds: BoothID[],
-  stateKey: "active" | "hover" | "filtered"
-) {
-  useEffect(() => {
-    const map = mapRef.current
-    if (map == null || boothIds.length === 0) return
-
-    for (const boothId of boothIds) {
-      map.setFeatureState(
-        { source: "booths", id: boothId },
-        { [stateKey]: true }
-      )
-    }
-
-    return () => {
-      for (const boothId of boothIds) {
-        map.setFeatureState(
-          { source: "booths", id: boothId },
-          { [stateKey]: false }
-        )
-      }
-    }
-  }, [boothIds, stateKey])
-}
 
 export function MapComponent({
   boothsById,
@@ -81,17 +57,28 @@ export function MapComponent({
       center: [longitude, latitude],
       zoom: zoom
     })
-  })
+  }, [])
+
+  useEffect(() => {
+    // Load icon assets for points location
+    if (mapRef && !mapRef.current?.hasImage("exit-icon")) {
+      addMapIconAssets(mapRef)
+    }
+  }, [mapRef.current])
+
+  //Change layer style data source based on selected location
+  const [geoJsonPlanData, geoJsonNymblePlanRoutesData] =
+    useGeoJsonPlanData(location)
 
   // Fly to selected booth on change
   useEffect(() => {
     if (activeBoothId == null) return
     const booth = boothsById.get(activeBoothId)
     if (!booth) return
-
+    //TODO: Maybe booth.center should be booth-specific and zoom in more?
     mapRef.current?.flyTo({
       center: booth.center as [number, number],
-      zoom: 18.5,
+      zoom: 19.5,
       speed: 0.8
     })
   }, [activeBoothId, boothsById])
@@ -164,6 +151,15 @@ export function MapComponent({
         mapStyle="https://api.maptiler.com/maps/977e9770-60b4-4b8a-94e9-a9fa8db4c68d/style.json?key=57xj41WPFBbOEWiVSSwL">
         <Layer {...backgroundLayerStyle}></Layer>
 
+        {/** Order sensitive! */}
+        <Source
+          id="buildings"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonPlanData}>
+          <Layer {...buildingLayerStyle}></Layer>
+        </Source>
+
         <Source
           id="booths"
           type="geojson"
@@ -173,15 +169,30 @@ export function MapComponent({
         </Source>
 
         <Source
-          id="buildings"
+          id="nymble-plan-style"
           type="geojson"
           promoteId={"id"}
-          data={geoJsonBuildingData}>
-          <Layer {...buildingLayerStyle}></Layer>
+          data={geoJsonPlanData}>
+          <Layer {...lineLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="nymble-plan-routes"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonNymblePlanRoutesData}>
+          <Layer {...routeLayerStyle}></Layer>
+        </Source>
+
+        <Source
+          id="nymble-plan-points"
+          type="geojson"
+          promoteId={"id"}
+          data={geoJsonPlanData}>
+          <Layer {...symbolLayerStyle}></Layer>
         </Source>
 
         {markers}
-
         {activeBooth && <BoothPopup key={activeBooth.id} booth={activeBooth} />}
       </MapboxMap>
     </div>
