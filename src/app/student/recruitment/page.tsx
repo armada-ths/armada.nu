@@ -1,6 +1,7 @@
 import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { Page } from "@/components/shared/Page"
+import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import {
@@ -11,7 +12,9 @@ import {
 } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { FAQItem } from "@/components/ui/faqitem"
 import { env } from "@/env"
+import { formatDate } from "@/lib/utils"
 import { DateTime } from "luxon"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -40,6 +43,8 @@ export default async function RecruitmentPage() {
   const hrHead = group?.people.find(people =>
     people.role.includes("Project Group – Head of Human Resources")
   )
+
+  const dates = await fetchDates()
 
   const photoSrc: { source: string; altText: string }[] = [
     {
@@ -204,6 +209,37 @@ export default async function RecruitmentPage() {
                   ))}
                 </div>
               ))}
+            </Accordion>
+          </div>
+          <div className="mx-auto mt-10 w-full max-w-[600px]">
+            <h1 className="mb-2 ml-2 text-2xl">FAQ</h1>
+            <Accordion type="single" collapsible={true}>
+              <FAQItem title="How much time do I need to dedicate as a host for THS Armada?">
+                The actual workload varies depending on your role as a host, but
+                the rough estimates would be:
+                <ul>
+                  <li>
+                    <b>October:</b> 1-3 hours per week for team-building
+                    activities, meetings, and planning.
+                  </li>
+                  <li>
+                    <b>November:</b> 3-8 hours per week as the workload
+                    gradually increases to complete assigned tasks.
+                  </li>
+                  <li>
+                    <b>Construction Weekend (the weekend before the fair):</b>{" "}
+                    Full-day availability is required for construction
+                    activities.
+                  </li>
+                  <li>
+                    <b>
+                      Fair Days ({formatDate(dates.fair.days[0])}-
+                      {formatDate(dates.fair.days[1])}):
+                    </b>{" "}
+                    Full-day availability is required, depending on your role.
+                  </li>
+                </ul>
+              </FAQItem>
             </Accordion>
           </div>
         </div>
