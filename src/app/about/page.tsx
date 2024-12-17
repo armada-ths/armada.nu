@@ -58,14 +58,58 @@ export default async function RecruitmentPage() {
         <div className="flex w-full justify-center">
           <OrganisationMembersGraphic />
         </div>
-        <div className="my-10 block aspect-[0.75]">
-          <embed
-            src="/files/2024_paper.pdf"
-            type="application/pdf"
-            height="100%"
-            width="100%"
-            title="Armada Newsletter"
-          />
+
+        <div className="mt-8">
+          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+            PM
+          </h2>
+          <P>
+            The Project Manager (PM) is elected by the THS board in november.
+            The PM is working full time with Armada and is responsible for the
+            entire project. They usually have been part of Armada before taking
+            up this role.
+          </P>
+        </div>
+        <div className="mt-8">
+          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+            Project group
+          </h2>
+          <P>
+            The Project Group (PG) is chosen by the Project Manager in
+            December/January. They then work with Armada the whole calendar
+            year. These are students who dedicate around 10 hours per week to
+            making each Armada the best fair yet. The PG really gets close
+            learning to work together, get to try to shoulder big
+            responsibilities in a supportive and collaborative environment and
+            most of all, have really fun together. Everyone who’s been a PG
+            knows, there is a before and an after Armada.
+          </P>
+        </div>
+        <div className="mt-8">
+          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+            Operations team
+          </h2>
+          <P>
+            The operations team are volunteers recruited in the spring, around
+            April/May. They are Coordinators, responsible for a specific issue
+            or process, Team Leaders, responsible for a team of Hosts and
+            Developers, working with the Armada IT suite. Being an OT gives a
+            good understanding of how Armada works within, and is the perfect
+            first leadership experience. It is a lot of fun, and gives a lot of
+            learning opportunities, for a medium amount of work.
+          </P>
+        </div>
+        <div className="mt-8">
+          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+            Hosts
+          </h2>
+          <P>
+            The Hosts join Armada in the autumn, and being a Hosts is a special
+            experience. Most hosts are career fair hosts, helping a couple of
+            exhibitors to the fair and building the fair. You get to know your
+            team, attend team buildings together and be a part of the Armada
+            Grand Banquet - the most fancy party at KTH.{" "}
+          </P>
         </div>
       </Page.Boundary>
     </Page.Background>

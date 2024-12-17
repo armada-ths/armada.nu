@@ -118,7 +118,7 @@ export default async function RecruitmentPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary maxWidth={750}>
-        <Page.Header>Armada Recruitment</Page.Header>
+        <Page.Header>Project Group 2025 Recruitment</Page.Header>
         <div className="mb-32 flex flex-1 flex-col">
           <Page.Header tier="secondary">
             Available roles - Open{" "}
@@ -128,9 +128,7 @@ export default async function RecruitmentPage() {
           <PhotoSlideCarousel photoSrc={photoSrc} />
           <div className="m-8 flex justify-center">
             <Link href={`${env.NEXT_PUBLIC_API_URL}${data.link}`}>
-              <Button size={"lg"}>
-                Apply for Armada {DateTime.now().plus({ months: 2 }).year}
-              </Button>
+              <Button size={"lg"}>Apply to PG25</Button>
             </Link>
           </div>
           <Alert className="my-5">
