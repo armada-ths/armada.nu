@@ -42,10 +42,10 @@ export function Footer() {
         <p>
           <b>EXHIBITORS</b>
         </p>
-        <a href="https://register.armada.nu/register">Registration</a>
+        {/*<a href="https://register.armada.nu/register">Registration</a>
         <br />
         <a href="/exhibitor/packages">Packages</a>
-        <br />
+        <br />*/}
         <a href="/exhibitor">Why Armada</a>
         <br />
         <a href="/exhibitor/timeline">Timeline</a>

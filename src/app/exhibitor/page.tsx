@@ -54,14 +54,14 @@ export default function ForExhibitorsPage() {
 
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4 ">
-            <Link href="https://register.armada.nu/register">
+            {/*<Link href="https://register.armada.nu/register">
               <Button>Signup to Armada</Button>
             </Link>
             <Link href="/exhibitor/packages">
               <Button variant={"secondary"} className="dark:bg-liqorice-700">
                 Packages
               </Button>
-            </Link>
+            </Link>*/}
             <Link href="/exhibitor/timeline">
               <Button variant={"secondary"} className="dark:bg-liqorice-700">
                 Timeline
