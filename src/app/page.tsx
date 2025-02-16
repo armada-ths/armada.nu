@@ -73,14 +73,14 @@ export default async function HomePage() {
                   {today < fr_end ? (
                     <>
                       <CompanyRegistrationButton />
-                      <Link href="/exhibitor/packages">
+                      {/*<Link href="/exhibitor/packages">
                         <Button
                           variant={"secondary"}
                           className="dark:bg-liqorice-700">
                           This Year&apos;s Packages
                           <ArrowRightIcon className="ml-2 h-4 w-4" />
                         </Button>
-                      </Link>
+                      </Link>>*/}
                     </>
                   ) : (
                     <>

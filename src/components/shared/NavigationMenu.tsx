@@ -34,13 +34,13 @@ const companyLinks: NavigationLink[] = [
     title: "Registration",
     href: "https://register.armada.nu/register",
     description: `Signup as an exhibitor for the fair ${DateTime.now().year}`,
-    enabled: true
+    enabled: false
   },
   {
     title: "Packages",
     href: "/exhibitor/packages",
     description: "See what we have to offer",
-    enabled: true
+    enabled: false
   },
   {
     title: "Why Armada",
@@ -79,7 +79,7 @@ const studentLinks: NavigationLink[] = [
     title: "Map",
     href: "/student/map",
     description: "Find your way around the fair",
-    enabled: true
+    enabled: false
   },
   {
     title: "At the Fair",
