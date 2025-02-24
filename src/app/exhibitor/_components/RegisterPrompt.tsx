@@ -5,7 +5,7 @@ export function RegisterPrompt() {
   //maybe remove
   return (
     <div className="mt-2">
-      <Link href="https://register.armada.nu/register">
+      <Link href="https://app.eventro.se/organization/armada/home">
         <Button>Signup to armada</Button>
       </Link>
       <p className="text-xs">

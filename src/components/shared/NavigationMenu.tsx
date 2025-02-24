@@ -32,7 +32,7 @@ type NavigationLink = {
 const companyLinks: NavigationLink[] = [
   {
     title: "Registration",
-    href: "https://register.armada.nu/register",
+    href: "https://app.eventro.se/organization/armada/home",
     description: `Signup as an exhibitor for the fair ${DateTime.now().year}`,
     enabled: false
   },

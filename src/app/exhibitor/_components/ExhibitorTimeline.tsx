@@ -1,6 +1,5 @@
 import { P } from "@/app/_components/Paragraph"
 import { TimelineItem } from "@/app/exhibitor/_components/TimelineItem"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { Accordion } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
@@ -8,7 +7,24 @@ import { formatDate } from "@/lib/utils"
 import Link from "next/link"
 
 export async function ExhibitorTimeline() {
-  const dates = await fetchDates()
+  const dates = {
+    ir: {
+      start: "2025-03-03",
+      end: "2025-03-23",
+      acceptance: "2025-06-02"
+    },
+    fr: {
+      start: "2025-08-11",
+      end: "2025-09-26"
+    },
+    events: {
+      start: "2025-11-03",
+      end: ""
+    },
+    fair: {
+      days: ["2025-11-18", "2025-11-19"]
+    }
+  }
 
   //ASSUMPTION: the start date will be first for fair dates
   return (
@@ -63,7 +79,7 @@ export async function ExhibitorTimeline() {
           in the larger packages.
         </P>
         <div className="my-4">
-          <Link href="https://register.armada.nu/register">
+          <Link href="https://app.eventro.se/organization/armada/home">
             <Button>Signup to Armada</Button>
           </Link>
         </div>
@@ -104,7 +120,7 @@ export async function ExhibitorTimeline() {
           Initial Registration.
         </P>
         <div className="my-4">
-          <Link href="https://register.armada.nu/register">
+          <Link href="https://app.eventro.se/organization/armada/home">
             <Button>Signup to Armada</Button>
           </Link>
         </div>
