@@ -79,7 +79,7 @@ export async function ExhibitorTimeline() {
           in the larger packages.
         </P>
         <div className="my-4">
-          <Link href="https://app.eventro.se/register/armada">
+          <Link href="https://app.eventro.se/organization/armada/home">
             <Button>Signup to Armada</Button>
           </Link>
         </div>
@@ -120,7 +120,7 @@ export async function ExhibitorTimeline() {
           Initial Registration.
         </P>
         <div className="my-4">
-          <Link href="https://app.eventro.se/register/armada">
+          <Link href="https://app.eventro.se/organization/armada/home">
             <Button>Signup to Armada</Button>
           </Link>
         </div>
