@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { env } from "@/env"
+//import { env } from "@/env"
 import { DateTime } from "luxon"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -118,7 +118,7 @@ export default async function RecruitmentPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary maxWidth={750}>
-        <Page.Header>Project Group 2025 Recruitment</Page.Header>
+        <Page.Header>{data.name}</Page.Header>
         <div className="mb-32 flex flex-1 flex-col">
           <Page.Header tier="secondary">
             Available roles - Open{" "}
@@ -127,8 +127,8 @@ export default async function RecruitmentPage() {
           </Page.Header>
           <PhotoSlideCarousel photoSrc={photoSrc} />
           <div className="m-8 flex justify-center">
-            <Link href={`${env.NEXT_PUBLIC_API_URL}${data.link}`}>
-              <Button size={"lg"}>Apply to PG25</Button>
+            <Link href={`${data.link}`}>
+              <Button size={"lg"}>Apply to Armada</Button>
             </Link>
           </div>
           <Alert className="my-5">
