@@ -7,7 +7,7 @@ import { Page } from "@/components/shared/Page"
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, MapIcon } from "lucide-react"
 import { DateTime } from "luxon"
-import Image from "next/image"
+//import Image from "next/image"
 import Link from "next/link"
 import { Suspense } from "react"
 
@@ -61,7 +61,7 @@ export default async function HomePage() {
             <div className="mx-auto flex max-w-[500px] flex-1">
               <div className="z-10 mx-10 flex flex-col md:flex-1">
                 <h1 className="max-w-96 font-bebas-neue text-7xl text-melon-700">
-                  Shape your future
+                  Set Sail For Success
                 </h1>
                 <h2 className="my-5 text-stone-300">
                   The No. 1 career fair at KTH Royal Institute of Technology.
@@ -111,11 +111,16 @@ export default async function HomePage() {
 						<Countdown />
 					  </div> */}
             <h1 className="max-w-30 flex justify-center font-bebas-neue text-3xl text-stone-300">
-              Our Gold Exhibitors (2024)
+              Are you an exhibitor?
             </h1>
             <div className="mt-4 flex w-full flex-wrap justify-center gap-6">
               <div className="flex flex-wrap items-center justify-center gap-20 px-10 pt-10">
-                {goldExhibitorOne && (
+                <Link href="/exhibitor">
+                  <h1 className="cursor-pointer border-2 border-melon-700 px-6 py-6 font-bebas-neue text-8xl text-melon-700 transition-all duration-300 hover:scale-105 hover:bg-melon-700 hover:text-white hover:shadow-lg">
+                    Why Armada?
+                  </h1>
+                </Link>
+                {/*goldExhibitorOne && (
                   <Link href={`/student/exhibitors?id=${goldExhibitorOne.id}`}>
                     <Image
                       className="h-10 w-24 object-contain md:h-20 md:w-72"
@@ -125,8 +130,8 @@ export default async function HomePage() {
                       height={400}
                     />
                   </Link>
-                )}
-                {goldExhibitorTwo && (
+                )*/}
+                {/*goldExhibitorTwo && (
                   <Link href={`/student/exhibitors?id=${goldExhibitorTwo.id}`}>
                     <div className="rounded-lg bg-white/90">
                       <Image
@@ -138,7 +143,7 @@ export default async function HomePage() {
                       />
                     </div>
                   </Link>
-                )}
+                )*/}
               </div>
             </div>
           </div>
