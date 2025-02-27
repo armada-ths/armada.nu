@@ -40,7 +40,7 @@ const companyLinks: NavigationLink[] = [
     title: "Packages",
     href: "/exhibitor/packages",
     description: "See what we have to offer",
-    enabled: false
+    enabled: true
   },
   {
     title: "Why Armada",
