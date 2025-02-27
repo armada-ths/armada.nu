@@ -124,7 +124,9 @@ export default async function Packages() {
                 </li>
               </ul>
               <div className="absolute bottom-4">
-                <p className="text-sm">Priority Registration price:</p>
+                <p className="text-sm font-bold">
+                  Priority Registration price:
+                </p>
                 <p>107 500 SEK*</p>
                 <p className="text-sm">Standard registration price:</p>
                 <p>118 200 SEK*</p>
