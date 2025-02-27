@@ -1,4 +1,3 @@
-import { P } from "@/app/_components/Paragraph"
 import { StatusModuleItem } from "@/app/exhibitor/_components/StatusModuleItem"
 import { Page } from "@/components/shared/Page"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
@@ -41,8 +40,6 @@ function FAQItem({
 export default async function Packages() {
   const dates = await fetchDates()
 
-  return <P>Packages will be available soon</P>
-
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
@@ -67,62 +64,70 @@ export default async function Packages() {
             <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-orange-950 p-5 pb-32">
               <h3 className="font-lato text-2xl text-orange-500">Bronze</h3>
               <ul className="mt-2 font-lato text-orange-600">
-                <li className="my-2">Host</li>
-                <li className="my-2">Lunch for 4 people</li>
-                <li className="my-2">3x2 m booth</li>
-                <li className="my-2">Armada transport</li>
+                <li className="my-2">2x3 sqm. Carpeted Exhibitor Space</li>
+                <li className="my-2">700 W of Electricity</li>
+                <li className="my-2">Personal Host Service</li>
+                <li className="my-2">Lunch for 4 representatives</li>
+                <li className="my-2">Access to WiFi</li>
               </ul>
               <div className="absolute bottom-4">
-                <p className="text-sm">Early bird price:</p>
-                <p>46 000 SEK*</p>
-                <p className="text-sm">Final registration price:</p>
-                <p>48 000 SEK*</p>
+                <p className="text-sm font-bold">
+                  Priority registration price:
+                </p>
+                <p>43 300 SEK*</p>
+                <p className="text-sm">Standard registration price:</p>
+                <p>46 500 SEK*</p>
               </div>
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
             </div>
             <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-zinc-800 p-5 pb-32">
               <h3 className="font-lato text-2xl text-zinc-400">Silver</h3>
               <ul className="mt-2 font-lato text-zinc-500">
-                <li className="my-2">Everything from bronze package</li>
-                <li className="my-2">Second priority placement</li>
-                <li className="my-2">4x2 m booth</li>
-                <li className="my-2">Lunch for 6 people</li>
+                <li className="my-2 font-extrabold">BRONZE PACKAGE</li>
+                <li className="my-2">Silver priority placement</li>
+                <li className="my-2">2x4 sqm. Carpeted Exhibitor Space</li>
+                <li className="my-2">1200 W of Electricity</li>
                 <li className="my-2">2 banquet tickets</li>
+                <li className="my-2">2 Armada Run Tickets</li>
                 <li className="my-2">
-                  Silver Marketing, including a presentation post together on
-                  social media together with other exhibitors.
+                  Silver Partner Marketing on THS Armada Platforms
                 </li>
               </ul>
               <div className="absolute bottom-4">
-                <p className="text-sm">Early bird price:</p>
-                <p>71 500 SEK*</p>
-                <p className="text-sm">Final registration price:</p>
-                <p>75 000 SEK*</p>
+                <p className="text-sm font-bold">
+                  Priority Registration price:
+                </p>
+                <p>68 900 SEK*</p>
+                <p className="text-sm">Standard registration price:</p>
+                <p>75 800 SEK*</p>
               </div>
               {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
             </div>
             <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-yellow-800 p-5 pb-32">
               <h3 className="font-lato text-2xl text-yellow-400">Gold</h3>
               <ul className="mt-2 font-lato text-yellow-500">
-                <li className="my-2">Everything from silver package</li>
-                <li className="my-2">First priority placement</li>
-                <li className="my-2">5x2 m booth</li>
-                <li className="my-2">Lunch for 8 people</li>
-                <li className="my-2">4 banquet tickets</li>
+                <li className="my-2 font-extrabold">SILVER PACKAGE</li>
+                <li className="my-2">Gold priority placement</li>
                 <li className="my-2">
-                  Complimentary participation in a panel discussion
+                  2x5 sqm booth. Carpeted Exhibitor Space
                 </li>
-                <li className="my-2">Logo on Armada&apos;s website</li>
+                <li className="my-2">2300 W of Electricity</li>
                 <li className="my-2">
-                  Gold Marketing, including an exclusive presentation post on
-                  social media
+                  A spot in the Panel Discussion of your choice
+                </li>
+                <li className="my-2">Mass Email Campaign</li>
+                <li className="my-2">2 Hours of Contact Calls (1:1)</li>
+                <li className="my-2">4 Banquet Tickets</li>
+                <li className="my-2">2 Armada Run Tickets</li>
+                <li className="my-2">
+                  Gold Partner Marketing on THS Armada Platforms
                 </li>
               </ul>
               <div className="absolute bottom-4">
-                <p className="text-sm">Early bird price:</p>
-                <p>114 500 SEK*</p>
-                <p className="text-sm">Final registration price:</p>
-                <p>116 000 SEK*</p>
+                <p className="text-sm">Priority Registration price:</p>
+                <p>107 500 SEK*</p>
+                <p className="text-sm">Standard registration price:</p>
+                <p>118 200 SEK*</p>
               </div>
               {/* 							<p className="absolute bottom-4">108 500 SEK*</p> */}
             </div>
@@ -144,8 +149,8 @@ export default async function Packages() {
               for more information.
             </FAQItem>
 
-            <FAQItem title="When is the deadline for Initial Registration?">
-              The Initial Registration ends {formatDate(dates.ir.end)}. See our{" "}
+            <FAQItem title="When is the deadline for Priority Registration?">
+              The Priority Registration ends {formatDate("2025-03-23")}. See our{" "}
               <Link
                 className="text-white underline hover:no-underline"
                 href="/exhibitor/timeline">

@@ -25,11 +25,11 @@ export async function CurrentStatus() {
     today < new Date(dates.ir.end).getTime()
   ) {
     return (
-      <StatusModuleItem title="Initial Registration open">
+      <StatusModuleItem title="Priority Registration open">
         We are preparing the registration for next year&apos;s Armada. In the
         meanwhile, you are very welcome to report interest in this During the
-        Initial Registration you apply to be an exhibitor at Armada. When you do
-        so you commit to exhibit, but you don&apos;t have to specify your
+        Priority Registration you apply to be an exhibitor at Armada. When you
+        do so you commit to exhibit, but you don&apos;t have to specify your
         package yet. Read more about each stage{" "}
         <Link
           className="text-white underline hover:no-underline"
@@ -58,8 +58,8 @@ export async function CurrentStatus() {
     today < new Date(dates.fr.end).getTime()
   ) {
     return (
-      <StatusModuleItem title="Final registration is open">
-        In the final registration you choose your package and finalize your
+      <StatusModuleItem title="Standard registration is open">
+        In the Standard registration you choose your package and finalize your
         order. Once that is done it is time to prepare the practicalities of
         exhibiting. All of this is done on the Armada registration dashboard.
         Read more about how registration works{" "}

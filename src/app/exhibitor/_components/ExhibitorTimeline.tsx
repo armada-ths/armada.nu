@@ -34,12 +34,12 @@ export async function ExhibitorTimeline() {
         dateStringHuman={`Before ${formatDate(dates.ir.start)}`}
         title="Armada is setting up">
         <P className="mt-3 text-stone-400">
-          Before the Initial Registration can open, we need to make
+          Before the Priority Registration can open, we need to make
           preparations. We are right now choosing a new project group - 20
           something students who will work hard all year to make Armada happen.
         </P>
         <P className="mt-3 text-stone-400">
-          We will open Initial Registration where you apply to be an exhibitor
+          We will open Priority Registration where you apply to be an exhibitor
           soon. You can express your interest here, and we will contact you as
           soon as registration opens!
         </P>
@@ -47,9 +47,9 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.ir.start}
-        title="Initial Registration starts">
+        title="Priority Registration starts">
         <P className="mt-3 text-stone-400">
-          Initial Registration is where you apply to be an exhibitor. When you
+          Priority Registration is where you apply to be an exhibitor. When you
           register you commit to be a part of Armada and if given a spot you are
           expected to exhibit, so wait with registration until you are sure. If
           you have any questions, do not hesitate to contact{" "}
@@ -68,7 +68,7 @@ export async function ExhibitorTimeline() {
           employer!
         </P>
         <P className="mt-3 text-stone-400">
-          During the Initial Registration you don&apos;t need to choose a
+          During the Priority Registration you don&apos;t need to choose a
           package, and the packages are outlined{" "}
           <Link
             className="text-white underline hover:no-underline"
@@ -87,11 +87,11 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.ir.end}
-        title="Initial Registration ends"></TimelineItem>
+        title="Priority Registration ends"></TimelineItem>
 
       <TimelineItem dateStringISO={dates.ir.acceptance} title="Acceptance date">
         <P className="text-stone-400">
-          We will get back to everyone who made an Initial Registration by{" "}
+          We will get back to everyone who made an Priority Registration by{" "}
           {formatDate(dates.ir.end)}. This is when you will know 100% for sure
           that you are exhibiting at Armada. You will be informed by email to
           the person who made the Final Registration, and it will be visible on
@@ -111,13 +111,13 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fr.start}
-        title="Final Registration starts">
+        title="Standard Registration starts">
         <P className="mt-3 text-stone-400">
-          During the Final Registration you choose your package, if you want to
-          do any events, number of tickets for the banquet etc. All of this is
-          done on the registration dashboard - same as where you did Initial
-          Registration. Final Registration can be done by another person than
-          Initial Registration.
+          During the Standard Registration you choose your package, if you want
+          to do any events, number of tickets for the banquet etc. All of this
+          is done on the registration dashboard - same as where you did Priority
+          Registration. Standard Registration can be done by another person than
+          Priority Registration.
         </P>
         <div className="my-4">
           <Link href="https://app.eventro.se/organization/armada/home">
@@ -141,7 +141,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fr.end}
-        title="Final Registration ends"></TimelineItem>
+        title="Standard Registration ends"></TimelineItem>
 
       <TimelineItem
         dateStringISO={dates.fr.end}
@@ -170,7 +170,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.events.start}
-        title="Event period starts">
+        title="Event Week starts">
         <P className="mt-3 text-stone-400">
           Before the fair we have three weeks filled with events to build up the
           momentum before the fair, giving students and exhibitors the
@@ -181,10 +181,6 @@ export async function ExhibitorTimeline() {
           representatives, is also happening during the event weeks.
         </P>
       </TimelineItem>
-
-      <TimelineItem
-        dateStringISO={dates.events.end}
-        title="Event period ends"></TimelineItem>
 
       <TimelineItem
         dateStringISO={dates.fair.days[0]}
