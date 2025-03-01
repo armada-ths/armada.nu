@@ -118,7 +118,7 @@ export default async function Packages() {
                 <li className="my-2">Mass Email Campaign</li>
                 <li className="my-2">2 Hours of Contact Calls (1:1)</li>
                 <li className="my-2">4 Banquet Tickets</li>
-                <li className="my-2">2 Armada Run Tickets</li>
+                <li className="my-2">4 Armada Run Tickets</li>
                 <li className="my-2">
                   Gold Partner Marketing on THS Armada Platforms
                 </li>
@@ -152,7 +152,7 @@ export default async function Packages() {
             </FAQItem>
 
             <FAQItem title="When is the deadline for Priority Registration?">
-              The Priority Registration ends {formatDate("2025-03-23")}. See our{" "}
+              The Priority Registration ends {formatDate("2025-05-23")}. See our{" "}
               <Link
                 className="text-white underline hover:no-underline"
                 href="/exhibitor/timeline">
@@ -164,7 +164,7 @@ export default async function Packages() {
             <FAQItem title="How do I sign up for armada?">
               <p>You can sign up here:</p>
               <div className="my-4">
-                <Link href="https://register.armada.nu/register">
+                <Link href="https://app.eventro.se/register/armada">
                   <Button>Signup to Armada</Button>
                 </Link>
               </div>
