@@ -42,7 +42,7 @@ export function Footer() {
         <p>
           <b>EXHIBITORS</b>
         </p>
-        {/*<a href="https://app.eventro.se/organization/armada/home">Registration</a>
+        {/*<a href="https://app.eventro.se/register/armada">Registration</a>
         <br />*/}
         <a href="/exhibitor/packages">Packages</a>
         <br />

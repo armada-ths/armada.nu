@@ -10,7 +10,7 @@ export async function ExhibitorTimeline() {
   const dates = {
     ir: {
       start: "2025-03-03",
-      end: "2025-03-23",
+      end: "2025-05-23",
       acceptance: "2025-06-02"
     },
     fr: {
@@ -79,7 +79,7 @@ export async function ExhibitorTimeline() {
           in the larger packages.
         </P>
         <div className="my-4">
-          <Link href="https://app.eventro.se/organization/armada/home">
+          <Link href="https://app.eventro.se/register/armada">
             <Button>Signup to Armada</Button>
           </Link>
         </div>
@@ -120,7 +120,7 @@ export async function ExhibitorTimeline() {
           Priority Registration.
         </P>
         <div className="my-4">
-          <Link href="https://app.eventro.se/organization/armada/home">
+          <Link href="https://app.eventro.se/register/armada">
             <Button>Signup to Armada</Button>
           </Link>
         </div>
@@ -170,7 +170,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.events.start}
-        title="Event Week starts">
+        title="Events Weeks Start">
         <P className="mt-3 text-stone-400">
           Before the fair we have three weeks filled with events to build up the
           momentum before the fair, giving students and exhibitors the

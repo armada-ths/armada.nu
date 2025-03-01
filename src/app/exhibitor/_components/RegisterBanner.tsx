@@ -8,7 +8,7 @@ export function RegisterBanner() {
       tabIndex={-1}
       className="fixed bottom-0 start-0 z-50 flex w-full justify-between bg-melon-700">
       <div className="p-4">
-        <Link href="https://app.eventro.se/organization/armada/home">
+        <Link href="https://app.eventro.se/register/armada">
           <Button>Signup to armada</Button>
         </Link>
       </div>

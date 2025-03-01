@@ -37,9 +37,10 @@ export default async function RecruitmentPage() {
     group.name.includes("Marketing & Communications")
   )
 
-  const hrHead = group?.people.find(people =>
-    people.role.includes("Project Group – Head of Human Resources")
-  )
+  const hrHead = {
+    name: "Head of HR",
+    email: "agastheeswar.bommaraj@armada.nu"
+  }
 
   const photoSrc: { source: string; altText: string }[] = [
     {
@@ -165,10 +166,10 @@ export default async function RecruitmentPage() {
                 <Link
                   className="text-white underline hover:no-underline"
                   href={`mailto:${hrHead.email}`}>
-                  Head of HR
+                  Head of HRD
                 </Link>
               ) : (
-                "Head of HR"
+                "Head of HRD"
               )}
               .
             </P>
