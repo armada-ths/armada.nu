@@ -94,8 +94,9 @@ export async function ExhibitorTimeline() {
           We will get back to everyone who made an Priority Registration by{" "}
           {formatDate(dates.ir.end)}. This is when you will know 100% for sure
           that you are exhibiting at Armada. You will be informed by email to
-          the person who made the Final Registration, and it will be visible on
-          the dashboard for anyone with a login to your exhibitor&apos;s page.
+          the person who made the Standard Registration, and it will be visible
+          on the dashboard for anyone with a login to your exhibitor&apos;s
+          page.
         </P>
         <P className="text-stone-400">
           You can always check the status of your registration on the dashboard,
@@ -147,8 +148,8 @@ export async function ExhibitorTimeline() {
         dateStringISO={dates.fr.end}
         title="Fair preparations start">
         <P className="mt-3 text-stone-400">
-          Once Final Registration is complete, there are a few things that need
-          to be sorted before the fair. Some of those are:
+          Once Standard Registration is complete, there are a few things that
+          need to be sorted before the fair. Some of those are:
         </P>
         <ul className="mx-4 list-disc">
           <li className="mt-3 text-stone-400">
@@ -212,7 +213,7 @@ export async function ExhibitorTimeline() {
           On the eve of the first fair day, Armada organizes a Grand Banquet, a
           night of glamor, to celebrate together with you! Silver and Gold
           exhibitors have tickets included, and more tickets are available for
-          purchase in Final Registration.
+          purchase in Standard Registration.
         </P>
         <P className="mt-3 text-stone-400">
           It is the perfect opportunity to meet the talented and ambitious
