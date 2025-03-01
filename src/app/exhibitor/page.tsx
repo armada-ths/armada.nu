@@ -54,7 +54,7 @@ export default function ForExhibitorsPage() {
 
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4 ">
-            {/*<Link href="https://app.eventro.se/organization/armada/home">
+            {/*<Link href="https://app.eventro.se/register/armada">
               <Button>Signup to Armada</Button>
             </Link>*/}
             <Link href="/exhibitor/packages">

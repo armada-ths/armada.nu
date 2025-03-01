@@ -22,7 +22,7 @@ export async function CompanyRegistrationButton() {
   }
 
   return (
-    <Link href="https://app.eventro.se/organization/armada/home">
+    <Link href="https://app.eventro.se/register/armada">
       <Button>Exhibitor Signup</Button>
     </Link>
   )
