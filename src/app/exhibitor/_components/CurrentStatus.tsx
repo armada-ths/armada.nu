@@ -26,11 +26,11 @@ export async function CurrentStatus() {
   ) {
     return (
       <StatusModuleItem title="Priority Registration open">
-        We are preparing the registration for next year&apos;s Armada. In the
-        meanwhile, you are very welcome to report interest in this During the
-        Priority Registration you apply to be an exhibitor at Armada. When you
-        do so you commit to exhibit, but you don&apos;t have to specify your
-        package yet. Read more about each stage{" "}
+        We are currently preparing the registration for Armada 2025. In the
+        meantime, feel free to express your interest. During the Priority
+        Registration, you can apply to become an exhibitor at Armada. By doing
+        so, you do not commit to participating, yet you'll be eligible for a
+        priority discount. Learn more about each stage here.{" "}
         <Link
           className="text-white underline hover:no-underline"
           href="/exhibitor/timeline">
