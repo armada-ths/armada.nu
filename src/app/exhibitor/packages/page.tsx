@@ -73,7 +73,7 @@ export default async function Packages() {
                 </li>
                 <li className="my-2">Access to WiFi</li>
                 <li className="my-2">700 W of Electricity</li>
-                <li className="my-2">Access to wardrobe and company lounge</li>
+                <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
@@ -105,9 +105,7 @@ export default async function Packages() {
                 </li>
                 <li className="my-2">Access to WiFi</li>
                 <li className="my-2">1200 W of Electricity</li>
-                <li className="my-2">
-                  Wardrobe & font-extrabold access to lounge
-                </li>
+                <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
@@ -145,7 +143,7 @@ export default async function Packages() {
                 </li>
                 <li className="my-2">Access to WiFi</li>
                 <li className="my-2">2300 W of Electricity</li>
-                <li className="my-2">Wardrobe & access lounge</li>
+                <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
