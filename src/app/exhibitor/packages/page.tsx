@@ -63,12 +63,17 @@ export default async function Packages() {
           <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row">
             <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-orange-950 p-5 pb-32">
               <h3 className="font-lato text-2xl text-orange-500">Bronze</h3>
-              <ul className="mt-2 font-lato text-orange-600">
-                <li className="my-2">2x3 sqm. Carpeted Exhibitor Space</li>
-                <li className="my-2">700 W of Electricity</li>
-                <li className="my-2">Personal Host Service</li>
-                <li className="my-2">Lunch for 4 representatives</li>
+              <ul className="mt-2 font-lato text-orange-700">
+                <li className="my-2 font-extrabold">
+                  2x3 sqm, carpeted exhibitor space
+                </li>
+                <li className="my-2 font-extrabold">Host Service</li>
+                <li className="my-2 font-extrabold">
+                  Lunch for 4 representatives
+                </li>
                 <li className="my-2">Access to WiFi</li>
+                <li className="my-2">700 W of Electricity</li>
+                <li className="my-2">Access to wardrobe and company lounge</li>
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
@@ -83,14 +88,25 @@ export default async function Packages() {
             <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-zinc-800 p-5 pb-32">
               <h3 className="font-lato text-2xl text-zinc-400">Silver</h3>
               <ul className="mt-2 font-lato text-zinc-500">
-                <li className="my-2 font-extrabold">BRONZE PACKAGE</li>
-                <li className="my-2">Silver priority placement</li>
-                <li className="my-2">2x4 sqm. Carpeted Exhibitor Space</li>
-                <li className="my-2">1200 W of Electricity</li>
-                <li className="my-2">2 banquet tickets</li>
-                <li className="my-2">2 Armada Run Tickets</li>
-                <li className="my-2">
+                <li className="my-2 font-extrabold">
+                  2x4 sqm, carpeted exhibitor space
+                </li>
+                <li className="my-2 font-extrabold">
+                  Second priority placement
+                </li>
+                <li className="my-2 font-extrabold">Host service</li>
+                <li className="my-2 font-extrabold">
+                  Lunch for 6 representatives
+                </li>
+                <li className="my-2 font-extrabold">2 Armada Run Tickets</li>
+                <li className="my-2 font-extrabold">2 banquet tickets</li>
+                <li className="my-2 font-extrabold">
                   Silver Partner Marketing on THS Armada Platforms
+                </li>
+                <li className="my-2">Access to WiFi</li>
+                <li className="my-2">1200 W of Electricity</li>
+                <li className="my-2">
+                  Wardrobe & font-extrabold access to lounge
                 </li>
               </ul>
               <div className="absolute bottom-4">
@@ -106,22 +122,30 @@ export default async function Packages() {
             <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-yellow-800 p-5 pb-32">
               <h3 className="font-lato text-2xl text-yellow-400">Gold</h3>
               <ul className="mt-2 font-lato text-yellow-500">
-                <li className="my-2 font-extrabold">SILVER PACKAGE</li>
-                <li className="my-2">Gold priority placement</li>
-                <li className="my-2">
-                  2x5 sqm booth. Carpeted Exhibitor Space
+                <li className="my-2 font-extrabold">
+                  2x5 sqm booth, carpeted exhibitor space
                 </li>
-                <li className="my-2">2300 W of Electricity</li>
-                <li className="my-2">
-                  A spot in the Panel Discussion of your choice
+                <li className="my-2 font-extrabold">
+                  First priority placement
                 </li>
-                <li className="my-2">Mass Email Campaign</li>
-                <li className="my-2">2 Hours of Contact Calls (1:1)</li>
-                <li className="my-2">4 Banquet Tickets</li>
-                <li className="my-2">4 Armada Run Tickets</li>
-                <li className="my-2">
+                <li className="my-2 font-extrabold">Host Service</li>
+                <li className="my-2 font-extrabold">
+                  Lunch for 8 representatives
+                </li>
+                <li className="my-2 font-extrabold">4 Armada Run Tickets</li>
+                <li className="my-2 font-extrabold">4 Banquet Tickets</li>
+                <li className="my-2 font-extrabold">
+                  Speaker in the panel Discussion of your choice
+                </li>
+                <li className="my-2 font-extrabold">
+                  Customized email marketing to 17,000+ students
+                </li>
+                <li className="my-2 font-extrabold">
                   Gold Partner Marketing on THS Armada Platforms
                 </li>
+                <li className="my-2">Access to WiFi</li>
+                <li className="my-2">2300 W of Electricity</li>
+                <li className="my-2">Wardrobe & access lounge</li>
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
