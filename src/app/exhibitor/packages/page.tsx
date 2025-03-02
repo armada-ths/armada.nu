@@ -67,7 +67,7 @@ export default async function Packages() {
                 <li className="my-2 font-extrabold">
                   2x3 sqm, carpeted exhibitor space
                 </li>
-                <li className="my-2 font-extrabold">Host Service</li>
+                <li className="my-2 font-extrabold">Host service</li>
                 <li className="my-2 font-extrabold">
                   Lunch for 4 representatives
                 </li>
@@ -99,7 +99,7 @@ export default async function Packages() {
                   Lunch for 6 representatives
                 </li>
                 <li className="my-2 font-extrabold">2 Armada Run Tickets</li>
-                <li className="my-2 font-extrabold">2 banquet tickets</li>
+                <li className="my-2 font-extrabold">2 Banquet tickets</li>
                 <li className="my-2 font-extrabold">
                   Silver Partner Marketing on THS Armada Platforms
                 </li>
@@ -128,14 +128,14 @@ export default async function Packages() {
                 <li className="my-2 font-extrabold">
                   First priority placement
                 </li>
-                <li className="my-2 font-extrabold">Host Service</li>
+                <li className="my-2 font-extrabold">Host service</li>
                 <li className="my-2 font-extrabold">
                   Lunch for 8 representatives
                 </li>
                 <li className="my-2 font-extrabold">4 Armada Run Tickets</li>
                 <li className="my-2 font-extrabold">4 Banquet Tickets</li>
                 <li className="my-2 font-extrabold">
-                  Speaker in the panel Discussion of your choice
+                  Speaker in the panel discussion of your choice
                 </li>
                 <li className="my-2 font-extrabold">
                   Customized email marketing to 17,000+ students
