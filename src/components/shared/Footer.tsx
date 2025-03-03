@@ -42,13 +42,15 @@ export function Footer() {
         <p>
           <b>EXHIBITORS</b>
         </p>
-        {/*<a href="https://app.eventro.se/register/armada">Registration</a>
-        <br />*/}
+        <a href="https://app.eventro.se/register/armada">Registration</a>
+        <br />
         <a href="/exhibitor/packages">Packages</a>
         <br />
         <a href="/exhibitor">Why Armada</a>
         <br />
         <a href="/exhibitor/timeline">Timeline</a>
+        <br />
+        <a href="/exhibitor/events">Events</a>
       </div>
 
       <div className="m-5 mb-3 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-left">
