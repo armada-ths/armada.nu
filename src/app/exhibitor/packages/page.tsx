@@ -133,10 +133,13 @@ export default async function Packages() {
                 <li className="my-2 font-extrabold">4 Armada Run Tickets</li>
                 <li className="my-2 font-extrabold">4 Banquet Tickets</li>
                 <li className="my-2 font-extrabold">
-                  Speaker in the panel discussion of your choice
+                  A spot as a speaker in the panel discussion of your choice
                 </li>
                 <li className="my-2 font-extrabold">
-                  Customized email marketing to 17,000+ students
+                  Customized email marketing to students
+                </li>
+                <li className="my-2 font-extrabold">
+                  4 hours of contact calls (1:1)
                 </li>
                 <li className="my-2 font-extrabold">
                   Gold Partner Marketing on THS Armada Platforms
