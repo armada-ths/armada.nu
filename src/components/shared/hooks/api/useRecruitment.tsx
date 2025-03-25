@@ -27,6 +27,9 @@ export async function fetchRecruitment(options?: RequestInit) {
     return null
   return result[0] as Recruitment*/
 
+  //returning null when recruitment is not open
+  return null
+
   const staticRecruitment: Recruitment = {
     name: "Marketing & Communications - Operation Team Recruitment",
     link: "https://app.eventro.se/recruitments/b55c85c1-347b-4f54-bdb8-c4deb4b24806",
