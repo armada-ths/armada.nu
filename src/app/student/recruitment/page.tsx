@@ -61,7 +61,10 @@ export default async function RecruitmentPage() {
     }
   ]
 
-  if (data == null) {
+  if (
+    (data?.end_date && DateTime.fromISO(data.end_date) < DateTime.now()) ||
+    (data?.start_date && DateTime.fromISO(data.start_date) > DateTime.now())
+  ) {
     return (
       <Page.Background withIndents>
         <Page.Boundary>
