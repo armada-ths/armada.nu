@@ -24,7 +24,7 @@ export default async function ExhibitorLayout({
         aside={
           <Link
             /* 2 months to account for pg recruitment which usually starts the previous year in nov/dec */
-            href={`https://app.eventro.se/recruitments/b55c85c1-347b-4f54-bdb8-c4deb4b24806`}>
+            href={data.link}>
             <Button variant={"outline"}>Apply for Armada</Button>
           </Link>
         }
