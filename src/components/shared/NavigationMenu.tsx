@@ -256,7 +256,7 @@ export function NavigationMenu(
                 For Exhibitors
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   {companyLinks
                     .filter(link => link.enabled)
                     .map(component => (
@@ -277,7 +277,7 @@ export function NavigationMenu(
                 About us
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   {aboutLinks
                     .filter(link => link.enabled)
                     .map(component => (

@@ -71,7 +71,7 @@ export default function AtFairPage() {
           Armada to get the conversation started.
         </P>
         {/*INSERT QUESTION GENERATOR HERE*/}
-        <div className=" mt-2 min-h-48 min-w-48 place-items-center rounded-2xl bg-green-950 p-5">
+        <div className="mt-2 min-h-48 min-w-48 place-items-center rounded-2xl bg-green-950 p-5">
           <p className="absolute text-green-300 opacity-80">
             <i>Question</i>
           </p>

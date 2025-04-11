@@ -23,7 +23,7 @@ function InfoBoxItem({
     <div className="flex gap-8">
       <div className="flex gap-2 text-stone-200">
         <span className="mt-1 w-5">{icon}</span>
-        <span className="w-20 flex-none font-bold ">{label}:</span>
+        <span className="w-20 flex-none font-bold">{label}:</span>
       </div>
       <span className="text-stone-400">{value}</span>
     </div>
@@ -55,7 +55,7 @@ export default function EventDetails({
           <P className="mt-0">{event.description}</P>
         </div>
 
-        <div className=" mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-gradient-to-br from-emerald-950 to-neutral-900 to-50% p-5 lg:w-2/5 ">
+        <div className="mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-gradient-to-br from-emerald-950 to-neutral-900 to-50% p-5 lg:w-2/5">
           {/* Top row */}
           <InfoBoxItem
             label="Location"

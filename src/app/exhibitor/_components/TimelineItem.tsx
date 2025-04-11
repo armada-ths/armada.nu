@@ -31,7 +31,7 @@ export function TimelineItem({
       )}>
       <div
         className={cn(
-          "absolute -start-1.5  size-3.5 rounded-full border border-melon-700/50 bg-slate-600",
+          "absolute -start-1.5 size-3.5 rounded-full border border-melon-700/50 bg-slate-600",
           { "bg-melon-700": isPastDate }
         )}></div>
       <AccordionTrigger
@@ -42,7 +42,7 @@ export function TimelineItem({
         )}>
         <div>
           <P className="-mt-5 text-stone-400">{dateStringHuman}</P>
-          <div className="flex w-full justify-between ">
+          <div className="flex w-full justify-between">
             <h3 className="text-2xl md:text-3xl">{title}</h3>
           </div>
         </div>

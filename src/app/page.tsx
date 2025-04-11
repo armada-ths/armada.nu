@@ -49,7 +49,7 @@ export default async function HomePage() {
       )}
 
       <Page.Background className="">
-        <div className="mb-5 flex w-full flex-1 justify-center ">
+        <div className="mb-5 flex w-full flex-1 justify-center">
           <div className="mx-5 w-full max-w-[800px] pt-3 md:mx-10 md:pt-6">
             <Suspense>
               <RecruitmentBanner />

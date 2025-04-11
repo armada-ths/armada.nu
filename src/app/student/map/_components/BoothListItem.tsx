@@ -66,7 +66,7 @@ export function BoothListItem({
             </div>
           </div>
           <div
-            className="ml-auto "
+            className="ml-auto"
             onClick={event => {
               event.stopPropagation()
               event.preventDefault()
