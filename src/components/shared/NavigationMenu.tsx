@@ -216,8 +216,8 @@ export function NavigationMenu(
         <BaseNavigationMenu className="">
           <NavigationMenuList>
             <NavigationMenuItem className="dark:hover:text-melon-700">
-              <Link href="/" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink asChild>
+                <Link href="/" className={navigationMenuTriggerStyle()}>
                   <Image
                     className="hover:brightness-90"
                     src={"/armada_white.svg"}
@@ -225,15 +225,15 @@ export function NavigationMenu(
                     width={30}
                     height={30}
                   />
-                </NavigationMenuLink>
-              </Link>
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/student/recruitment">
-                <NavigationMenuTrigger className="dark:hover:text-melon-700">
-                  For Students
-                </NavigationMenuTrigger>
-              </Link>
+              <NavigationMenuTrigger
+                href="/student/recruitment"
+                className="dark:hover:text-melon-700">
+                For Students
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                   {studentLinks
@@ -250,11 +250,11 @@ export function NavigationMenu(
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/exhibitor">
-                <NavigationMenuTrigger className="dark:hover:text-melon-700">
-                  For Exhibitors
-                </NavigationMenuTrigger>
-              </Link>
+              <NavigationMenuTrigger
+                href="/exhibitor"
+                className="dark:hover:text-melon-700">
+                For Exhibitors
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {companyLinks
@@ -271,11 +271,11 @@ export function NavigationMenu(
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem className="hover:text-melon-700 dark:hover:text-melon-700">
-              <Link href="/about" legacyBehavior passHref>
-                <NavigationMenuTrigger className={navigationMenuTriggerStyle()}>
-                  About us
-                </NavigationMenuTrigger>
-              </Link>
+              <NavigationMenuTrigger
+                href="/about"
+                className={navigationMenuTriggerStyle()}>
+                About us
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {aboutLinks
@@ -300,7 +300,7 @@ export function NavigationMenu(
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
+  React.ComponentRef<"a">,
   React.ComponentPropsWithoutRef<"a">
 >(({ className, href, title, children, ...props }, ref) => {
   if (href == null) {
