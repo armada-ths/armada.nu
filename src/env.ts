@@ -1,14 +1,6 @@
 import { createEnv } from "@t3-oss/env-nextjs"
-import { z } from "zod"
 
 export const env = createEnv({
-  server: {
-    SLACK_SALES_HOOK_URL: z.string().min(1)
-  },
-  client: {
-    NEXT_PUBLIC_API_URL: z.string().min(1),
-    NEXT_PUBLIC_RECAPTCHA_KEY: z.string().min(1)
-  },
   runtimeEnv: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     SLACK_SALES_HOOK_URL: process.env.SLACK_SALES_HOOK_URL,
