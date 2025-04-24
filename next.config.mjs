@@ -7,7 +7,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "armada-ais-files.s3.amazonaws.com",
+        hostname: "armada-ais-files.s3.eu-north-1.amazonaws.com",
         port: "",
         pathname: "**"
       },

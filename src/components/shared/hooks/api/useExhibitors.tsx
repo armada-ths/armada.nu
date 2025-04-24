@@ -1,4 +1,3 @@
-import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query"
 import { DateTime } from "luxon"
 
@@ -56,46 +55,43 @@ const defaultYear = DateTime.now().minus({ months: 6 }).year
 export async function fetchExhibitors(
   options?: RequestInit & { year?: number }
 ) {
-  const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/exhibitors?year=${options?.year ?? defaultYear}`,
-    {
-      cache: options?.cache,
-      next: {
-        ...options?.next,
-        tags: options?.next?.tags ?? [
-          "exhibitors",
-          options?.year?.toString() ?? defaultYear.toString()
-        ]
-      }
-    }
-  )
-  const result = await res.json()
+  //const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/exhibitors`, {
+  //  cache: options?.cache,
+  //  next: {
+  //    ...options?.next,
+  //    tags: options?.next?.tags ?? [
+  //      "exhibitors",
+  //      options?.year?.toString() ?? defaultYear.toString()
+  //    ]
+  //  }
+  //})
 
-  return [
-    ...(result as Exhibitor[]),
-    {
-      id: -1,
-      average_age: null,
-      benefits: [],
-      booths: [],
-      cities: "",
-      climate_compensation: false,
-      company_website: "",
-      competences: [],
-      employments: [],
-      fair_location: "",
-      flyer: "",
-      founded: null,
-      groups: [],
-      industries: [],
-      location_special: "",
-      locations: [],
-      name: "Student Lounge",
-      type: "Student Lounge",
-      values: [],
-      vyer_position: ""
-    } as Exhibitor
-  ]
+  return null
+  // return [
+  //   ...(result as Exhibitor[]),
+  //   {
+  //     id: -1,
+  //     average_age: null,
+  //     benefits: [],
+  //     booths: [],
+  //     cities: "",
+  //     climate_compensation: false,
+  //     company_website: "",
+  //     competences: [],
+  //     employments: [],
+  //     fair_location: "",
+  //     flyer: "",
+  //     founded: null,
+  //     groups: [],
+  //     industries: [],
+  //     location_special: "",
+  //     locations: [],
+  //     name: "Student Lounge",
+  //     type: "Student Lounge",
+  //     values: [],
+  //     vyer_position: ""
+  //   } as Exhibitor
+  // ]
 }
 
 /**

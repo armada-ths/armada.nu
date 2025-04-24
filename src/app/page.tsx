@@ -1,7 +1,6 @@
 import { CompanyRegistrationButton } from "@/app/_components/CompanyRegistrationButton"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
-import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { Button } from "@/components/ui/button"
@@ -12,19 +11,9 @@ import Link from "next/link"
 import { Suspense } from "react"
 
 export default async function HomePage() {
-  const exhibitors = await fetchExhibitors()
   const dates = await fetchDates()
   const fr_end = new Date(dates.fr.end).getTime()
-  const fair_start = new Date(dates.fair.days[0]).getTime()
-  const fair_end = new Date(dates.fair.days[1]).getTime()
   const today = Date.now()
-
-  const goldExhibitorOne = exhibitors.find(
-    exhibitor => exhibitor.name === "Försvarsmakten"
-  )
-  const goldExhibitorTwo = exhibitors.find(
-    exhibitor => exhibitor.name === "Nordea"
-  )
 
   const isAfterFr = DateTime.now() > DateTime.fromISO(dates.fr.end)
 

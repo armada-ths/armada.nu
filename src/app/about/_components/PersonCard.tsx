@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 const PersonCard = ({ person }: { person: Person }) => {
+  console.log(person)
   return (
     <>
       <div key={person.id} className="w-52">

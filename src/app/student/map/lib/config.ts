@@ -1,11 +1,10 @@
 import { FeatureCollection, LineString, Point, Polygon } from "geojson"
 import { MutableRefObject } from "react"
 import {
-  BackgroundLayer,
-  FillLayer,
-  LineLayer,
+  FillLayerSpecification,
+  LineLayerSpecification,
   MapRef,
-  SymbolLayer
+  SymbolLayerSpecification
 } from "react-map-gl/maplibre"
 
 // Geojson data for floor structure, routes and exhibitor room
@@ -103,7 +102,7 @@ export async function addMapIconAssets(
 // features can be styled based on properties or feature state using a weird expression language, see:
 // https://docs.mapbox.com/style-spec/reference/expressions/#data-expressions for reference
 
-export const boothLayerStyle: FillLayer = {
+export const boothLayerStyle: FillLayerSpecification = {
   source: "booths",
   id: "booths",
   type: "fill",
@@ -125,7 +124,7 @@ export const boothLayerStyle: FillLayer = {
   }
 }
 
-export const boothOutlineStyle: LineLayer = {
+export const boothOutlineStyle: LineLayerSpecification = {
   source: "booths",
   id: "booths-outline",
   type: "line",
@@ -135,7 +134,7 @@ export const boothOutlineStyle: LineLayer = {
   }
 }
 
-export const buildingLayerStyle: FillLayer = {
+export const buildingLayerStyle: FillLayerSpecification = {
   source: "buildings",
   id: "buildings",
   type: "fill",
@@ -145,7 +144,7 @@ export const buildingLayerStyle: FillLayer = {
   }
 }
 
-export const roomLayerStyle: FillLayer = {
+export const roomLayerStyle: FillLayerSpecification = {
   source: "rooms",
   id: "rooms",
   type: "fill",
@@ -155,7 +154,7 @@ export const roomLayerStyle: FillLayer = {
   }
 }
 
-export const lineLayerStyle: LineLayer = {
+export const lineLayerStyle: LineLayerSpecification = {
   source: "lines",
   id: "lines",
   type: "line",
@@ -166,7 +165,7 @@ export const lineLayerStyle: LineLayer = {
   }
 }
 
-export const routeLayerStyle: LineLayer = {
+export const routeLayerStyle: LineLayerSpecification = {
   source: "routes",
   id: "routes",
   type: "line",
@@ -194,7 +193,7 @@ export const routeLayerStyle: LineLayer = {
   }
 }
 
-export const symbolLayerStyle: SymbolLayer = {
+export const symbolLayerStyle: SymbolLayerSpecification = {
   source: "points",
   id: "points",
   type: "symbol",
