@@ -12,16 +12,16 @@ export interface Person {
   email: null | string
   picture: string
   linkedin_url: null | string
-  programme: string
   role: string
 }
 
 export async function fetchOrganization(options?: RequestInit) {
   const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/organization/v2`,
+    `${env.NEXT_PUBLIC_API_URL}/api/v1/organization`,
     options ?? {}
   )
   const result = await res.json()
+
   return result as Organization[]
 }
 

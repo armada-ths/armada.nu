@@ -46,7 +46,7 @@ export default function ExhibitorDetails({
             {exhibitor.name}
           </Page.Header>
           {exhibitor.company_website && (
-            <div className="mt-2 flex items-center gap-1 text-base font-semibold text-stone-400 ">
+            <div className="mt-2 flex items-center gap-1 text-base font-semibold text-stone-400">
               <Globe size={16} />
               <Link
                 rel="noopener noreferrer"

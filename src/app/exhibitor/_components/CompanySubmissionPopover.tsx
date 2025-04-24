@@ -11,7 +11,7 @@ import ReCAPTCHA from "react-google-recaptcha"
 import { toast } from "sonner"
 
 export function CompanySubmissionPopover() {
-  const recaptcha = useRef<{ getValue: () => string }>()
+  const recaptcha = useRef<{ getValue: () => string } | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     email: "",

@@ -2,7 +2,7 @@
 
 import { BoothID } from "@/app/student/map/lib/booths"
 import { MutableRefObject, useEffect } from "react"
-import { MapRef } from "react-map-gl/dist/esm/exports-maplibre"
+import MapRef from "react-map-gl"
 
 // to allow for styling of the features
 export function useFeatureState(
@@ -11,7 +11,7 @@ export function useFeatureState(
   stateKey: "active" | "hover" | "filtered"
 ) {
   useEffect(() => {
-    const map = mapRef.current
+    const map = mapRef.current as unknown as mapboxgl.Map
     if (map == null || boothIds.length === 0 || !map.isStyleLoaded()) return
 
     for (const boothId of boothIds) {

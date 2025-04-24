@@ -35,7 +35,7 @@ export interface SignupQuestion {
 
 export async function fetchEvents(options?: RequestInit) {
   const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/events`,
+    `${env.NEXT_PUBLIC_API_URL}/api/v1/events`,
     options ?? {}
   )
   const result = await res.json()

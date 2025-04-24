@@ -3,7 +3,7 @@ import { decrypt, FlagOverridesType } from "@vercel/flags"
 import { cookies } from "next/headers"
 
 export async function features() {
-  const overrideCookie = cookies().get("vercel-flag-overrides")?.value
+  const overrideCookie = (await cookies()).get("vercel-flag-overrides")?.value
   const overrides = overrideCookie
     ? await decrypt<FlagOverridesType>(overrideCookie)
     : {}

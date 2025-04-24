@@ -7,12 +7,13 @@ export function Page() {
 Page.Boundary = function PageBoundary({
   children,
   className,
+  maxWidth,
   ...rest
 }: React.HTMLAttributes<HTMLDivElement> & { maxWidth?: number }) {
   return (
     <div
       className={cn("mx-auto mt-10 flex w-full flex-1 flex-col", className)}
-      style={{ maxWidth: rest.maxWidth ?? 1000 }}
+      style={{ maxWidth: maxWidth ?? 1000 }}
       {...rest}>
       {children}
     </div>

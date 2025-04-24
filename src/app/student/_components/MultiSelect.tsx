@@ -72,7 +72,7 @@ export default function MultiSelect({
               />
               <Button
                 title="Clear"
-                className="ml-auto aspect-square h-fit border-none p-1 xs:ml-3 "
+                className="ml-auto aspect-square h-fit border-none p-1 xs:ml-3"
                 variant="outline"
                 onClick={e => {
                   e.stopPropagation()

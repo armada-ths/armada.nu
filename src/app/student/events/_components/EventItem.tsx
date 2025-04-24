@@ -43,7 +43,7 @@ export function EventItem({ event }: { event: Event }) {
             <Image
               width={200}
               height={200}
-              className="h-full max-h-48 w-full rounded-t-lg object-contain sm:h-48 sm:w-48 sm:rounded-l-lg sm:rounded-tr-none "
+              className="h-full max-h-48 w-full rounded-t-lg object-contain sm:h-48 sm:w-48 sm:rounded-l-lg sm:rounded-tr-none"
               src={image_url}
               alt=""
             />

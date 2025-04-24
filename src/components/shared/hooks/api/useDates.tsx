@@ -25,7 +25,7 @@ interface FairDate {
 }
 
 export async function fetchDates() {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/dates`)
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`)
   const result = await res.json()
   return result as FairDate
 }

@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   }
 }
 
-export const revalidate = 60 * 60 * 12 // 12 hours
+export const revalidate = 43200 // 12 hours
 
 export default function RootLayout({
   children
@@ -63,6 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      className="dark"
       style={{
         colorScheme: "dark"
       }}>
