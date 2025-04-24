@@ -9,10 +9,13 @@ export const env = createEnv({
     NEXT_PUBLIC_API_URL: z.string().min(1),
     NEXT_PUBLIC_RECAPTCHA_KEY: z.string().min(1)
   },
-  runtimeEnv: {
+  experimental__runtimeEnv: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    SLACK_SALES_HOOK_URL: process.env.SLACK_SALES_HOOK_URL,
     NEXT_PUBLIC_RECAPTCHA_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_KEY
+  },
+  // The server variables should be in a separate object
+  experimental__serverEnv: {
+    SLACK_SALES_HOOK_URL: process.env.SLACK_SALES_HOOK_URL
   }
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // For Next.js >= 13.4.4, you only need to destructure client variables:
