@@ -25,6 +25,9 @@ export async function sendToSlack(
           .join("\n")}\n`
   }
   try {
+    if (typeof env.SLACK_SALES_HOOK_URL !== "string") {
+      throw new Error("SLACK_SALES_HOOK_URL must be a string")
+    }
     await fetch(env.SLACK_SALES_HOOK_URL, {
       method: "POST",
       body: JSON.stringify(msg),
