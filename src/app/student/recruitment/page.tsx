@@ -61,7 +61,7 @@ export default async function RecruitmentPage() {
   ]
 
   if (
-    (data?.end_date && DateTime.fromISO(data.end_date) < DateTime.now()) ||
+    (data?.end_date && DateTime.fromISO(data.end_date) <= DateTime.now()) ||
     (data?.start_date && DateTime.fromISO(data.start_date) > DateTime.now())
   ) {
     return (
