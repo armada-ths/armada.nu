@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-//import { env } from "@/env"
 import { DateTime } from "luxon"
 import { Metadata } from "next"
 import Link from "next/link"
