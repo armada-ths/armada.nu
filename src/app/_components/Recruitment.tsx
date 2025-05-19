@@ -11,7 +11,12 @@ export async function RecruitmentBanner() {
     }
   })
 
-  if (recruitment == null) return null
+  //changed so recruitment is set to null if end date already has happened
+  if (
+    recruitment == null ||
+    DateTime.fromISO(recruitment.end_date) < DateTime.now()
+  )
+    return null
 
   return (
     <Link href="/student/recruitment">
