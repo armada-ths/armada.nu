@@ -35,8 +35,8 @@ export function Footer() {
         <a href="/student/exhibitors">Exhibitors</a>
         <br />
         <a href="/student/recruitment">Recruitment</a>
-        <br />
-        <a href="/student/events">Events</a>
+        {/*<br />
+        <a href="/student/events">Events</a>*/}
       </div>
       <div className="m-5 mb-3 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-left">
         <p>
