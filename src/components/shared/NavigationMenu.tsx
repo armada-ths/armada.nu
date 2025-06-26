@@ -299,7 +299,9 @@ export function NavigationMenu(
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem className="hover:text-melon-700 dark:hover:text-melon-700">
-              <NavigationMenuLink href="/blog" className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                href="/blog"
+                className={navigationMenuTriggerStyle()}>
                 The Armada Blog
               </NavigationMenuLink>
             </NavigationMenuItem>

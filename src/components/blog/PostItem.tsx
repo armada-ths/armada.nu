@@ -5,13 +5,13 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card"
 import Image from "next/image"
 
 export function PostItem({ post }: { post: BlogPost }) {
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-300 mx-auto mt-4">
+    <Card className="mx-auto mt-4 transition-shadow duration-300 hover:shadow-lg">
       <CardHeader className="space-y-2">
         <CardTitle className="text-2xl font-semibold leading-tight">
           {post.title}
@@ -26,16 +26,16 @@ export function PostItem({ post }: { post: BlogPost }) {
           alt="Cover image"
           width="1000"
           height="400"
-          className="object-contain w-[1000px] h-[400px]"
+          className="h-[400px] w-[1000px] object-contain"
         />
         {post.text.split(/\n\s*\n/).map((paragraph, i) => (
-          <p key={i} className="mb-4 text-muted-foreground text-base">
+          <p key={i} className="text-muted-foreground mb-4 text-base">
             {paragraph}
           </p>
         ))}
       </CardContent>
-      <CardFooter className="flex justify-between items-center pt-4 border-t">
-        <div className="text-sm text-muted-foreground">By {post.author}</div>
+      <CardFooter className="flex items-center justify-between border-t pt-4">
+        <div className="text-muted-foreground text-sm">By {post.author}</div>
         {/* <Button variant="link" className="text-primary px-0">
           Read more
         </Button> */}
