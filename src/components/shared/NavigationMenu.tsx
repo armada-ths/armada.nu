@@ -209,6 +209,13 @@ export function NavigationMenu(
                 </Link>
               </div>
             ))}
+          <Separator className="my-4" />
+          <Link
+            onClick={() => setSheetOpen(false)}
+            className="font-bebas-neue text-2xl text-melon-700"
+            href="/blog">
+            The Armada Blog
+          </Link>
         </SheetContent>
       </Sheet>
       {/** BaseNavigationMenu is used for desktop navigation  */}
@@ -290,6 +297,11 @@ export function NavigationMenu(
                     ))}
                 </ul>
               </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem className="hover:text-melon-700 dark:hover:text-melon-700">
+              <NavigationMenuLink href="/blog" className={navigationMenuTriggerStyle()}>
+                The Armada Blog
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </BaseNavigationMenu>
