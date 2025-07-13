@@ -4,7 +4,7 @@ import Image from "next/image"
 export function Footer() {
   return (
     /* IF WIDTH < 768, SET TO VERTICAL, OTHERWISE KEEP HORIZONTAL */
-    <div className="w-100 flex flex-col items-center justify-center md:flex-row md:items-start">
+    <div className="w-100 flex flex-col items-center justify-center md:flex-row md:items-start md:px-36">
       <hr className="static mt-2 h-1 w-2/3 rounded border-0 bg-slate-500 bg-opacity-30 md:absolute" />
       <div className="m-5 mb-3 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-start">
         <p>
