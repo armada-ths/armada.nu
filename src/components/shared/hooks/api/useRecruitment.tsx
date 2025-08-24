@@ -30,97 +30,86 @@ export async function fetchRecruitment(options?: RequestInit) {
   //returning null when recruitment is not open
 
   const staticRecruitment: Recruitment = {
-    name: "Operation Team Recruitment",
-    link: "https://app.eventro.se/recruitments/edbf34d6-9bdc-4212-9a7e-b5e73e6eb009",
-    start_date: "2025-03-31",
-    end_date: "2025-04-28",
+    name: "Host Recruitment",
+    link: "https://app.eventro.se/recruitments/4a2402b0-364d-4a58-923e-c93d816ea2da",
+    start_date: "2025-08-25",
+    end_date: "2025-09-22",
     groups: {
-      "Operation Team": [
+      "Human Resources and Diversity": [
         {
-          name: "Team Leader: Task Force",
+          name: "University Relations Host",
           parent: null,
           description:
-            "As a Task force Team Leader, you are responsible for planning and maintaining the technical parts and logistic flow related to the Career Fair, for example planning the electrical supply to each company. You will work closely with the Head of Logistics, and Logistics Coordinator. Furthermore you will be leading Armadas “handyperson team,”  meaning you will oversee a small team that will help with the logistical flow and maintenance before, during and after the fair. You and your team will also collaborate with the Career Fair Team to keep the Career Fair site clean and free from tripping hazards. \n\n If a company or an Armada Team member is in need of any help, you and your team will come to the rescue. As a Task Force Team Leader, you should be organized, like planning,  be a practical problem solver, and be comfortable in the role as a leader."
+            "As a University Relations Host, you will be responsible for welcoming and guiding the representatives from universities visiting the fair across Sweden and Northern Europe. Your primary responsibilities include organizing a banquet for the visiting  universities and managing their details such as their accommodation, food, and entertainment. You will also be responsible for guiding the university representatives throughout the fair during the career fair days and answering the questions they might have. This roles requires strong teamwork, a sociable and service-oriented attitude and a passion for creating memorable experiences for the visitors."
         },
         {
-          name: "Logistics Coordinator",
+          name: "Banquet Decor Host",
           parent: null,
           description:
-            "Armada Transport is a service offered to companies where their equipment used during the fair is transported to the KTH campus and back after the end of the Career Fair. As a Logistics Coordinator you will work closely with the Task Force Team Leader and the Head of Logistics in the planning of the external and internal transportation and storage of deliveries. You will be seeing the plan through until after the Career Fair. \n\n Your ideas and planning skills will be valuable in making the Armada Transport work as smoothly as possible.  Furthermore you will compose informational texts regarding the Armada Transport and communicate with the exhibitors with questions concerning the transportation.  As a Logistics Coordinator you should be structured, adaptive and you embrace new encounters."
+            "As a Banquet Decor Host you will be part of the crew behind Armada’s yearly Banquet. From mapping out ideas to crafting decorations and preparing the venue, you’ll help bring the theme to life. Create an unforgettable atmosphere filled with adventure and wonder!\n\nThe work will consist of two main parts: \n\n - Preparation before the banquet: This includes a variety of creative projects, such as the making of banquet decorations. \n\n - Set-up during the day of the banquet: You will help with preparations before, during and after the banquet.This includes setting up and taking down the decorations, as well as taking care of the guests before the dinner."
         },
         {
-          name: "Team Leader: Career Fair",
+          name: "Banquet Operations Host",
           parent: null,
           description:
-            "As a Career Fair Team Leader, you will play a crucial role in ensuring the success of THS Armada. Your main responsibility will be to lead and coordinate a team of hosts, ensuring that both your team and the exhibitors assigned to you have a smooth and productive experience during the fair. Your key responsibilities will include acting as a primary point of contact for exhibitors, ensuring they receive the support they need before and during the fair. Additionally, you will assist in the planning phase by providing input on decorations, general layout, and contributing to the physical setup of the fair. \n\nTo thrive in this role, you should be well-organized, proactive, and an effective communicator. You will be working closely with other members of the Operations Team, as well as Armada’s Project Group. You will also need to make independent decisions, manage your team efficiently, and maintain a holistic understanding of the project. This position offers a unique opportunity to develop leadership skills, work in a dynamic international environment, and build strong connections with companies and students alike."
+            "As a Banquet Operation Host you will be a part of the team that organizes Armada’s yearly Banquet. You will help  with preparations before, during and after the banquet and on the day of the banquet to set up at the venue and make sure that everything is ready for when the banquet starts! \n\nThe work will consist of two main parts: \n\n - Preparation before the banquet. This includes a lot of different types of crafts, for example with the banquet decoration.\n\n - Set-up during the day of the banquet. This includes making sure that everything is in its place and that the things are ready for when the guests arrive and taking care of the guests before the dinner."
+        },
+      ],
+      "Business Relations and Events": [
+        {
+          name: "Event Host",
+          parent: null,
+          description:
+            "As an Event Host, you will be part of the team that organizes events from start to end. You will work closely with company representatives along with the rest of your team. The role requires responsibility and the ability to prioritize as well as being a good communicator, decision maker and executor. Furthermore, you should be a team player and problem solver, with the adaptability and flexibility to handle changes. \n\nEvent hosts tasks include:\n\n - Show up on time, responsible for 3 events(at least) \n\n - Secure and set up everything at the location of the event. \n\n - Arranging and distributing food, refreshments and other supplies  during the events."
+        },
+      ],
+      "Marketing and Communications": [
+        {
+          name: "Photographer",
+          parent: null,
+          description:
+            "As a Photographer Host you will be a part of the team that documents and markets the activities and the life of Armada. You will be assigned under the Photo Team Coordinator and together you will photograph Armada’s different events, the fair and the banquet. You will work closely with the rest of the marketing and communications department and aid with any photo-related tasks. This role is perfect for you that is positive, outgoing and has a creative eye. Previous experience of photography and work samples from events are a bonus."
         },
         {
-          name: "Team Leader: Lounge",
+          name: "Film Crew Host",
           parent: null,
           description:
-            "As a Lounge Team Leader, you’ll help create and run some of the most appreciated spaces at Armada – the lounges. These are places where people can relax, recharge and grab a coffee during the fair. You’ll be part of shaping how the lounges look and feel, keeping them stocked and welcoming, and making sure everything runs smoothly during the event. Together with your team of hosts, you’ll make sure the lounges stay fresh, functional and comfortable. We’re looking for someone who’s hands-on, enjoys taking initiative and wants to create a space people genuinely enjoy being in."
+            "As a Film Crew Host, you will be a part of the marketing team and help document the activities we do in Armada. Your responsibilities will include filming various events and supporting creative tasks, such as producing content for social media. This role is perfect for you if you consider yourself a creative and responsible person, and have an eye for the visual storytelling! No previous film experience is required, but it’s a bonus if you know how to work a camera or have knowledge on how to use other tools to create something visually pleasing."
         },
         {
-          name: "Team Leader: Service",
+          name: "Graphic Designer",
           parent: null,
           description:
-            "THS Armada's goal is to make exhibitors and visitors feel welcomed, and bring them amazing service. You will be responsible for delivering high-quality services in the lead-up to and during the fair. The team leaders will coordinate a group of hosts throughout the event. You’ll be running our service stations, answering questions, and leading your team to ensure everything runs smoothly. We're looking for someone who’s communicative, proactive and enjoys solving problems together with others – someone who leads with confidence and isn’t afraid to think outside the box when challenges pop up."
+            "As a Graphic Designer, you will work closely with the Head of Creative and the rest of the Project Team. You will get the chance to design digital and physical marketing material with your own creative ideas for students and companies to see. You will get to be part of a close-knit team who will together work towards making this the most visually striking edition of Armada to date. It is your opportunity to learn new skills and let your creative imaginations come to life for your peers and several professionals to see and appreciate."
+        },
+      ],
+      "Logistics and Fair": [
+        {
+          name: "Task Force or Logistics Host",
+          parent: null,
+          description:
+            "As a Task Force or Logistics Host, you will be a part of the team which will keep the fair going smoothly; you will be responsible for maintaining the technical parts and logistic flow related to the Career Fair. As a member of this team you will be communicating with several other teams as well as your team lead. As a Task Force or Logistics host you should be organized, good at communication, and a practical problem solver.\n\nTask Force or Logistics hosts tasks include:\n\n - Help out with transportation of tools and equipments to the fair area\n\n - Remove all furniture in Nymble and make space for our fantastic fair\n\n - Get the exhibitors’ goods from the loading dock to their assigned spots\n\n - Help with technical and non technical issues that can arise before and during the fair\n\n - Keeping track of inventory"
         },
         {
-          name: "Sustainability Coordinator",
+          name: "Career Fair Host",
           parent: null,
           description:
-            "As a Sustainability Coordinator, you will play a crucial role in integrating sustainability into Armada’s career fair and events. Working closely with the Head of Sustainability, you will take the lead in planning the Green Room, evaluating companies based on sustainability criteria, and curating interactive activities for the visitors. A key part of your role will be organizing Sustainability Day, where you will coordinate panel discussions and lectures on the environmental impact of industrial initiatives. Beyond event planning, you will also collaborate with other teams to develop an effective waste management strategy, ensuring compliance with relevant regulations. Additionally, you will contribute to reviewing and updating the Armada sustainability policy to drive continuous improvement. We are looking for creative individuals with strong organizational skills, strategic thinking, and a genuine passion for sustainability - qualities that will help make a lasting impact on the career fair."
+            "You will be responsible for being the primary contact with several companies! The main task is to provide the best possible service before, during and after the career fair days. As a host, you need to be responsible, punctual and attentive. You will be in the middle of the fair and be the face forward for Armada.\n\nCareer Fair hosts tasks include:\n\n - Ensuring that companies have a smooth participation in the fair\n\n - Build and decorate company rooms at Nymble."
         },
         {
-          name: "Team Leader: Event",
+          name: "Lounge Host",
           parent: null,
           description:
-            "The Team Leader of Events will form a team to design, plan, and execute the corporate events of THS Armada, like lunch lectures, field visit, panel discussion, after works and a few other exciting events. The team will work together towards common goals, although each team leader will be individually responsible for their events with the company, commonly other leader will support you too. Working on one's own initiative is, therefore, a key factor, along with being organized and communicative. You and the other Event Team Leaders will be responsible for a group of hosts. You will coordinate and lead your group, focusing on effective communication and strong teamwork. This will assist you in enhancing your management and leadership skills. Further, you will be able to network with company professionals on an individual level and with your mates working in the group."
+            "Are you social, service-minded, and enjoy creating a great atmosphere? As a Lounge Host, you’ll make our Student and Exhibitor Lounges welcoming, stocked, and running smoothly. You’ll help guests with questions, keep snacks and drinks flowing, and ensure everyone feels comfortable. The role offers close contact with exhibitors and a chance to build valuable connections, perfect if you enjoy teamwork, problem-solving, and delivering a warm experience. A positive attitude, quick thinking, and willingness to roll up your sleeves are key."
         },
         {
-          name: "Talent Coordinator",
+          name: "Service Host",
           parent: null,
           description:
-            "As a Talent Coordinator, you will lead the host recruitment drive in the fall, working with the Head of  Human Resources & Diversity and collaborating with the Events and Marketing teams to find and match candidates to suitable roles. You will also organize the Armada Party, the grand celebration at the end of the fair. Strong communication and interpersonal skills are essential, as this role involves coordinating across teams to ensure a smooth recruitment process and a successful event."
+            "As a Service Host, you’ll be the face of Armada at info desks and wardrobes, ensuring a smooth and enjoyable fair for exhibitors, visitors, and teammates. You’ll answer questions, solve problems, and keep things moving — even under pressure. The role calls for initiative, clear communication, and practical problem-solving. It’s ideal for someone proactive, organized, and eager to help wherever needed.\n\nKey attributes of a Service Team host:\n\n - Excellent communication and interpersonal skills\n\n - Ability to stay calm and organized under pressure\n\n - Proactive, solution-focused approach with an eye for detail\n\n - Flexibility and readiness to take on different responsibilities"
         },
-        {
-          name: "Diversity Coordinator",
-          parent: null,
-          description:
-            "As the Diversity Coordinator, you will drive Armada’s commitment to inclusivity, equality, and diversity in collaboration with the Head of Sustainability and  Head of  Human Resources & Diversity. Your role will span recruitment, team-building, media engagements, and more, ensuring diversity is embedded across all initiatives. Additionally, you will lead the organization of Diversity Day & Room, Armada’s key events. An open-minded approach, willingness to challenge norms, and a strong passion for diversity are essential to making a meaningful impact in this role."
-        },
-        {
-          name: "Team Leader: University Relations",
-          parent: null,
-          description:
-            "This role requires you to work closely with the Talent coordinators to support the host recruitment drive during fall for Armada. Therefore, you will also co-manage the coffee campaigns and assist in team-building activities during the recruitment drive. During the fair, you will be responsible for hosting the other universities taking part in the fair and organizing the alternative Banquet with the help of your hosts. Creativity is crucial and you need to be good at organizing and delegating tasks for this role."
-        },
-        {
-          name: "Banquet Team Leader: Operations",
-          parent: null,
-          description:
-            "As the Team Leader of Logistics  within the Banquet team, your main responsibilities are to ensure that the event, the  preparations and the post-event breakdown of the banquet will be as smooth as possible. This includes transportation of goods, decorations and personnel to and from the venue. You’ll be responsible for a small team of banquet hosts during the event. Structure, independence, and communication is key for this role, as well as being able to adapt to unexpected situations."
-        },
-        {
-          name: "Banquet Team Leader: Creative",
-          parent: null,
-          description:
-            "As the Team Leader of Creative within the Banquet team, your main responsibility will be to shape the banquet to fit the chosen theme. You will be expected to stay within a given budget. During the day of the event, you will be responsible over a small team of banquet hosts and will be responsible for the set up and breakdown of the venue, aided by the banquet operations team. Structure, independence, and communication is key for this role, but creativity will also be merited."
-        },
-        {
-          name: "Banquet Team Leader: Entertainment",
-          parent: null,
-          description:
-            "As the Team Leader of Entertainment within the Banquet team, your main responsibility will be to find and book a master of ceremonies, entertainment and performers for the event. You will also be expected to plan and structure the banquet schedule in detail while staying within budget. Structure, independence, communication and drive is crucial for success in this role."
-        },
-        {
-          name: "Banquet Coordinator",
-          parent: null,
-          description:
-            "As the Coordinator in the Banquet team, your main responsibility will be managing everything related to the guests. With support from the rest of the team you will be in charge of planning the seating arrangement, putting together a guest list for both the banquet and the after party, and seeing to the guest's dietary needs. Structure, independence and communication is key for this role."
-        }
-      ]
+      ],
+
     }
   }
 

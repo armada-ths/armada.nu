@@ -182,7 +182,7 @@ export default async function RecruitmentPage() {
               {Object.entries(data.groups).map(([name, group], index) => (
                 <div key={index} className="mt-10">
                   <Page.Header tier="secondary">
-                    {name.split("-")[1]}
+                    {name}
                   </Page.Header>
                   {group.map(role => (
                     <AccordionItem key={role.name} value={role.name}>
