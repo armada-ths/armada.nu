@@ -58,7 +58,7 @@ export default async function RecruitmentPage() {
       altText: "Group of students posing for a photo in formal clothes"
     }
   ]
-  console.log(DateTime.fromISO(data.start_date))
+
   //added +1 days to make end date available as a signup date
   if (
     (data?.end_date &&
