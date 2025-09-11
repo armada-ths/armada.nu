@@ -50,6 +50,8 @@ export function CompanySubmissionPopover() {
     }
   }
 
+  console.log("RECAPTCHA KEY", env.NEXT_PUBLIC_RECAPTCHA_KEY)
+
   async function sendMessage() {
     const captchaValue = recaptcha.current?.getValue()
     if (!captchaValue) {
@@ -166,7 +168,7 @@ export function CompanySubmissionPopover() {
 
               <ReCAPTCHA
                 ref={recaptcha}
-                sitekey={env.NEXT_PUBLIC_RECAPTCHA_KEY}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
                 onChange={handleVerify}
               />
 
