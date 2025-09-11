@@ -41,3 +41,50 @@ export async function sendToSlack(
     return { success: false }
   }
 }
+
+type OrderForm = {
+  name: string
+  company: string
+  message: string
+}
+
+export async function sendOrderToSlack(
+  form: OrderForm
+): Promise<{ success: boolean; error?: string }> {
+  const url = process.env.SLACK_ORDER_HOOK_URL
+  if (!url) {
+    return { success: false, error: "Missing SLACK_ORDER_HOOK_URL" }
+  }
+
+  // Basic URL validation avoids "Failed to parse URL from ''"
+  try {
+    new URL(url)
+  } catch {
+    return { success: false, error: "Invalid SLACK_ORDER_HOOK_URL" }
+  }
+
+  const payload = {
+    text: `New order request:
+    • Name: ${form.name}
+    • Company: ${form.company}
+    • Message: ${form.message}`
+  }
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store"
+    })
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "")
+      return { success: false, error: `Slack error ${res.status}: ${body}` }
+    }
+
+    return { success: true }
+  } catch (e: unknown) {
+    return { success: false, error: (e as Error)?.message || "Network error" }
+  }
+}

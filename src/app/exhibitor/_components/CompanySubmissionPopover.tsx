@@ -3,7 +3,6 @@ import { sendToSlack } from "@/app/exhibitor/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { env } from "@/env"
 import * as Popover from "@radix-ui/react-popover"
 import { Headset, X } from "lucide-react"
 import { useMemo, useRef, useState } from "react"
@@ -49,8 +48,6 @@ export function CompanySubmissionPopover() {
       setIsVerified(false)
     }
   }
-
-  console.log("RECAPTCHA KEY", env.NEXT_PUBLIC_RECAPTCHA_KEY)
 
   async function sendMessage() {
     const captchaValue = recaptcha.current?.getValue()
@@ -170,6 +167,7 @@ export function CompanySubmissionPopover() {
                 ref={recaptcha}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
                 onChange={handleVerify}
+                theme="dark"
               />
 
               <div className="flex justify-end">
