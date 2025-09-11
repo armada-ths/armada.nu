@@ -244,7 +244,7 @@ export function OrganisationMembersGraphic() {
   })
 
   return (
-    <figure className="relative mt-5 w-9/12 object-scale-down">
+    <figure className="relative mb-4 mt-8 w-9/12 object-scale-down">
       <svg viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg">
         <circle fill="orange" cx="85" cy="85" r={memberRadius} opacity={1} />
         {pgCircles}
@@ -254,7 +254,8 @@ export function OrganisationMembersGraphic() {
       <figcaption className="bottom-0 opacity-90 md:absolute">
         <OrganisationMembersInfo title="Infographics guide">
           Each year, more than 200 students join Armada to make the fair happen!
-          Every circle in the graphic represents one of our members.
+          Every circle in the graphic represents one of our members, and the
+          color their ranks.
           <ul>
             <li>
               <CircleDashed
