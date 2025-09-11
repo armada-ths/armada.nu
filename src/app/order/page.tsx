@@ -80,7 +80,8 @@ export default function OrderPage() {
       }
     }
 
-    const result = await sendOrderToSlack(formData)
+    // Send the form data to Slack
+    const result = await sendOrderToSlack(formData, token)
 
     if (result.success) {
       setFormData({

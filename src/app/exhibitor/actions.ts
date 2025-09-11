@@ -49,9 +49,51 @@ type OrderForm = {
 }
 
 export async function sendOrderToSlack(
-  form: OrderForm
+  form: OrderForm,
+  recaptchaToken?: string | null
 ): Promise<{ success: boolean; error?: string }> {
-  const url = process.env.SLACK_ORDER_HOOK_URL
+  // If client uses captcha, validate token server-side
+  if (env.NEXT_PUBLIC_RECAPTCHA_KEY || env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+    if (!recaptchaToken) {
+      return { success: false, error: "Missing reCAPTCHA token" }
+    }
+    if (!env.RECAPTCHA_SECRET_KEY) {
+      return { success: false, error: "Missing RECAPTCHA_SECRET_KEY" }
+    }
+
+    try {
+      const verifyRes = await fetch(
+        "https://www.google.com/recaptcha/api/siteverify",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams({
+            secret: env.RECAPTCHA_SECRET_KEY,
+            response: recaptchaToken
+          }).toString()
+        }
+      )
+
+      const verifyJson = (await verifyRes.json()) as {
+        success: boolean
+        score?: number
+        action?: string
+        "error-codes"?: string[]
+      }
+
+      if (!verifyJson.success) {
+        const reason =
+          verifyJson["error-codes"]?.join(", ") || "verification failed"
+        return { success: false, error: `reCAPTCHA ${reason}` }
+      }
+    } catch {
+      return { success: false, error: "Failed to verify reCAPTCHA" }
+    }
+  }
+
+  const url = env.SLACK_ORDER_HOOK_URL
   if (!url) {
     return { success: false, error: "Missing SLACK_ORDER_HOOK_URL" }
   }
