@@ -21,26 +21,26 @@ export default function AtFairPage() {
             <Page.Header>Companies at the Fair</Page.Header>
 
             {/* ✅ Step 2: Render list of companies */}
-            <div className="mt-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
-                    {companies.map((company) => (
-                    <div
-                        key={company.name}
-                        className="cursor-pointer rounded-xl bg-black p-4 shadow-md hover:scale-105 transition"
-                        onClick={() => setSelected(company)}
-                    >
-                        <Image
-                        src={company.image}
-                        alt={company.name}
-                        width={120}
-                        height={120}
-                        className="mx-auto rounded-lg"
-                        />
-                        <p className="mt-3 text-center text-green-100">{company.name}</p>
-                    </div>
-                    ))}
+            <div className="flex flex-wrap justify-center gap-6 mt-8">
+            {companies.map((company) => (
+                <div
+                key={company.name}
+                className="cursor-pointer rounded-xl bg-black p-2 shadow-md hover:scale-105 transition inline-block"
+                onClick={() => setSelected(company)}
+                style={{ width: 'max-content' }} // ensures box wraps content
+                >
+                <Image
+                    src={company.image}
+                    alt={company.name}
+                    width={120}
+                    height={120}
+                    className="mx-auto rounded-lg"
+                />
+                <p className="mt-2 text-center text-green-100">{company.name}</p>
                 </div>
+            ))}
             </div>
+
 
             {/* ✅ Step 3: Popup (modal) */}
             {selected && (
