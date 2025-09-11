@@ -1,7 +1,7 @@
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { CurrentStatus } from "@/app/exhibitor/_components/CurrentStatus"
-import { NumberCountUp } from "@/app/exhibitor/_components/NumberCountUp"
 import { Page } from "@/components/shared/Page"
+import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -35,22 +35,7 @@ export default function ForExhibitorsPage() {
         <Page.Header tier="primary">Why Armada</Page.Header>
         <div className="h-4" />
 
-        <div className="flex w-full flex-col space-y-4">
-          <div className="mt-2 flex w-full flex-row flex-wrap justify-between gap-4 rounded bg-melon-700 p-6 text-center md:text-2xl">
-            <div className="w-3/12 font-bebas-neue font-medium text-stone-900">
-              <NumberCountUp start={0} end={20000} duration={1.2} isVisit />
-              <p>visits</p>
-            </div>
-            <div className="w-3/12 font-bebas-neue font-medium text-stone-900">
-              <NumberCountUp start={0} end={15000} duration={1.2} />
-              <p>Students</p>
-            </div>
-            <div className="w-3/12 font-bebas-neue font-medium text-stone-900">
-              <NumberCountUp start={0} end={2} duration={1.2} isDays />
-              <p>of networking</p>
-            </div>
-          </div>
-        </div>
+        <VisitorNumberBar />
 
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4">
