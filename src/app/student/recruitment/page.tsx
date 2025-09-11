@@ -62,8 +62,8 @@ export default async function RecruitmentPage() {
   //added +1 days to make end date available as a signup date
   if (
     (data?.end_date &&
-      DateTime.fromISO(data.end_date).plus({ days: 1 }) < DateTime.now()) ||
-    (data?.start_date && DateTime.fromISO(data.start_date) > DateTime.now())
+      DateTime.fromISO(data.end_date, { zone: "Europe/Stockholm" }).plus({ days: 1 }) < DateTime.now()) ||
+    (data?.start_date && DateTime.fromISO(data.start_date, { zone: "Europe/Stockholm" }) > DateTime.now())
   ) {
     return (
       <Page.Background withIndents>
@@ -182,7 +182,7 @@ export default async function RecruitmentPage() {
               {Object.entries(data.groups).map(([name, group], index) => (
                 <div key={index} className="mt-10">
                   <Page.Header tier="secondary">
-                    {name.split("-")[1]}
+                    {name}
                   </Page.Header>
                   {group.map(role => (
                     <AccordionItem key={role.name} value={role.name}>

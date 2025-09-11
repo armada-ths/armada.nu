@@ -13,6 +13,12 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "armada-cms-files-e48105192c52.s3.eu-north-1.amazonaws.com",
+        port: "",
+        pathname: "**"
+      },
+      {
+        protocol: "https",
         hostname: "s3.amazonaws.com",
         port: "",
         pathname: "**"
