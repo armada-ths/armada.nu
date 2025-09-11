@@ -94,11 +94,58 @@ export default async function HomePage() {
                 */}
           </div>
         </Page.Boundary>
-        <Page.Boundary className="p-6">
+        <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
-          <div className="flex flex-1 flex-col items-center">
-            <Clock />
-            <p>November 18-19</p>
+          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4">
+            <div>
+              <div className="absolute flex w-full flex-row md:w-1/4">
+                <Clock
+                  size={100}
+                  strokeWidth={1.5}
+                  style={{
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, black 40%, transparent 100%)",
+                    WebkitMaskRepeat: "no-repeat",
+                    WebkitMaskSize: "100% 100%"
+                  }}
+                  className="ml-2 text-melon-700"
+                />
+
+                <p className="-ml-1 mt-1 italic opacity-80">
+                  Which
+                  <br />
+                  &nbsp; Dates?
+                </p>
+              </div>
+              <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
+                November 18-19
+              </p>
+            </div>
+            <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
+              <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
+              <div className="flex">
+                <p className="flex-1">
+                  57
+                  <br />
+                  Days
+                </p>
+                <p className="flex-1">
+                  21
+                  <br />
+                  Hours
+                </p>
+                <p className="flex-1">
+                  40
+                  <br />
+                  minutes
+                </p>
+                <p className="flex-1">
+                  25
+                  <br />
+                  Seconds
+                </p>
+              </div>
+            </div>
           </div>
           <VisitorNumberBar />
           {/* About section */}
@@ -140,8 +187,8 @@ export default async function HomePage() {
           </p>
 
           {/* Links */}
-          <div className="flex items-center text-center">
-            <div className="flex flex-1 flex-col items-center">
+          <div className="my-4 flex flex-col items-center gap-4 text-center md:flex-row">
+            <div className="flex w-full max-w-sm flex-1 flex-col items-center rounded-md bg-green-950 bg-opacity-90 pb-8 pt-2 sm:max-w-md">
               <h2 className="mb-2 mt-4 flex-1 font-bebas-neue text-3xl font-medium text-melon-700">
                 For Exhibitors
               </h2>
@@ -158,8 +205,8 @@ export default async function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="flex flex-1 flex-col items-center">
-              <h2 className="mt-4 flex-1 font-bebas-neue text-3xl font-medium text-melon-700">
+            <div className="flex w-full max-w-sm flex-1 flex-col items-center rounded-md bg-green-950 bg-opacity-90 pb-8 pt-2 sm:max-w-md">
+              <h2 className="mb-2 mt-4 flex-1 font-bebas-neue text-3xl font-medium text-melon-700">
                 For Students
               </h2>
               <div className="flex flex-1 gap-x-3">
