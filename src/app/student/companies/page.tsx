@@ -44,18 +44,19 @@ export default function AtFairPage() {
 
             {/* ✅ Step 3: Popup (modal) */}
             {selected && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
-                <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full text-center">
-                    <h2 className="text-xl font-semibold mb-4">{selected.name}</h2>
-                    <p className="mb-4 text-gray-700">{selected.description}</p>
+                <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50" onClick={() => setSelected(null)}>
+                  
+                  <div className="bg-black/90 p-6 rounded-2xl shadow-lg max-w-md w-full text-center border-2" onClick={(e) => e.stopPropagation()}>
+                      <h2 className="text-xl font-semibold mb-4">{selected.name}</h2>
+                      <p className="mb-4 text-white-700">{selected.description}</p>
 
-                    <button
-                    onClick={() => setSelected(null)}
-                    className="rounded-xl bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-                    >
-                    Close
-                    </button>
-                </div>
+                      <button
+                      onClick={() => setSelected(null)}
+                      className="rounded-xl bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                      >
+                      Close
+                      </button>
+                  </div>
                 </div>
             )}
         </Page.Boundary>
