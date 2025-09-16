@@ -1,13 +1,15 @@
 "use client"
-import { Page } from "@/components/shared/Page"
-import Image from "next/image"
-import { useState } from "react"
+import { Page } from "@/components/shared/Page";
+import Image from "next/image";
+import { useState } from "react";
+import afryImage from "./img/afry.png";
+
 
 // ✅ Step 1: Define your data
 const companies = [
   {
     name: "Afry",
-    image: require("./img/afry.png"),
+    image: afryImage,
     description: "Afry is an international engineering, design and advisory company.",
   },
 ]
