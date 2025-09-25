@@ -32,19 +32,25 @@ export default function ExhibitorDetails({
   return (
     <div className="pb-5 @container">
       <div className="flex flex-col-reverse items-center gap-6 @sm:h-[100px] @sm:flex-row">
+
         {(exhibitor.logo_squared || exhibitor.logo_freesize) && (
-          <Image
-            className="h-20 w-auto object-contain @sm:h-full @sm:min-w-28 @sm:max-w-[25%]"
-            src={exhibitor.logo_squared ?? exhibitor.logo_freesize ?? ""}
-            alt={exhibitor.name}
-            width={300}
-            height={300}
-          />
+          <div className="relative mt-2 flex h-[80px] w-[260px] flex-initial justify-center px-4 overflow-hidden">
+            <Image
+              className="h-full w-full object-cover rounded-lg"
+              src={exhibitor.logo_squared ?? exhibitor.logo_freesize ?? ""}
+              alt="Failed to load image"
+              width={300}
+              height={300}
+            />
+          </div>
         )}
+
         <div className="flex flex-col items-center @sm:ml-2 @sm:block">
+
           <Page.Header className="text-center @sm:text-start">
             {exhibitor.name}
           </Page.Header>
+
           {exhibitor.company_website && (
             <div className="mt-2 flex items-center gap-1 text-base font-semibold text-stone-400">
               <Globe size={16} />
@@ -57,11 +63,31 @@ export default function ExhibitorDetails({
               </Link>
             </div>
           )}
+
         </div>
+
       </div>
-      {exhibitor.about && (
-        <P className="mt-8 border-t border-stone-500 pt-4">{exhibitor.about}</P>
-      )}
+      
+      <div className="flex flex-col md:flex-row gap-20 mt-8">
+        {exhibitor.about && (
+          <div className="flex-1">
+            <P className="border-t border-stone-500 pt-4">{exhibitor.about}</P>
+          </div>
+        )}
+
+        {exhibitor.map_img && (
+          <div className="flex-shrink-0 flex justify-center">
+            <Image
+              className="h-80 w-auto object-contain rounded-lg"
+              src={exhibitor.map_img ?? ""}
+              alt="Failed to load image"
+              width={300}
+              height={300}
+            />
+          </div>
+        )}
+      </div>
+     
       <div
         className={cn("mt-10 grid grid-cols-1", {
           "gap-5 md:grid-cols-2": hasIndustries && hasEmployments
@@ -78,6 +104,7 @@ export default function ExhibitorDetails({
             />
           </div>
         )}
+
         {hasEmployments && (
           <div>
             <Page.Header tier="secondary" className="mt-2 pl-1">

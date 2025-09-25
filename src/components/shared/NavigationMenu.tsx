@@ -95,7 +95,7 @@ const studentLinks: NavigationLink[] = [
   },
   {
     title: "Companies at the Fair",
-    href: "/student/companies",
+    href: "/student/exhibitors",
     description: "Companies that are exhibiting at the fair",
     enabled: true
   }

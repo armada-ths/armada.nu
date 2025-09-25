@@ -1,11 +1,11 @@
 import MultiSelect from "@/app/student/_components/MultiSelect"
 import {
-  FilterKey,
   Filter,
-  makeFilter,
   FilterItem,
+  FilterKey,
   applyFilters,
-  filterBySearch
+  filterBySearch,
+  makeFilter
 } from "@/app/student/lib/filters"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { Input } from "@/components/ui/input"

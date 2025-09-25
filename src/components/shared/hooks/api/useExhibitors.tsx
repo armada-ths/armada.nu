@@ -11,22 +11,23 @@ export interface Exhibitor {
   purpose?: string
   logo_squared?: string
   logo_freesize?: string
+  map_img?: string
   industries: Industry[]
-  values: unknown[] // TODO Define this
+  values?: unknown[] // TODO Define this
   employments: Employment[]
   locations: Location[]
-  competences: unknown[] // TODO Define this
-  cities: string
-  benefits: unknown[] // TODO Define this
-  average_age: unknown // TODO Define this
-  founded: unknown // TODO Define this
+  competences?: unknown[] // TODO Define this
+  cities?: string
+  benefits?: unknown[] // TODO Define this
+  average_age?: unknown // TODO Define this
+  founded?: unknown // TODO Define this
   groups: Group[]
   fair_location: string
-  vyer_position: string
-  location_special: string
+  vyer_position?: string
+  location_special?: string
   climate_compensation: boolean
   flyer: string
-  booths: unknown[] // TODO Define this
+  booths?: unknown[] // TODO Define this
   map_coordinates?: number[][]
 }
 
