@@ -28,7 +28,7 @@ export function EventItem({ event }: { event: Event }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => {
-          router.push("/student/events") // clear url when the modal is closed
+          router.push("/student/events", { scroll: false }) // clear url when the modal is closed
         }}
         className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
         <EventDetails event={event} className="p-6 md:p-10" />
@@ -38,6 +38,7 @@ export function EventItem({ event }: { event: Event }) {
       <div className="mb-6 ml-6 w-11/12 rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95 sm:w-3/5 sm:min-w-[500px]">
         <Link
           href={`/student/events?id=${id}`}
+          scroll={false}
           className="flex flex-auto flex-col sm:h-48 sm:flex-row sm:items-center">
           {image_url && (
             <Image

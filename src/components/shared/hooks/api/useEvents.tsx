@@ -38,8 +38,16 @@ export async function fetchEvents(options?: RequestInit) {
     `${env.NEXT_PUBLIC_API_URL}/api/v1/events`,
     options ?? {}
   )
-  const result = await res.json()
-  return result as Event[]
+  try {
+    const result = await res.json()
+    console.log(result)
+    return result as Event[]
+  } catch (error) {
+    console.error(
+      `Unable to fetch events. Error: ${(error as Error)?.message || error}`
+    )
+  }
+  return []
 }
 
 export function useEvents(options?: RequestInit) {
