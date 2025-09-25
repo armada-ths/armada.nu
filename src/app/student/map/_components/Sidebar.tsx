@@ -1,11 +1,11 @@
 "use client"
 
-import ExhibitorDetails from "@/app/student/_components/ExhibitorDetails"
+import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails"
 import {
-  applyFilters,
-  filterBySearch,
-  FilterMap,
-  makeFilter
+    applyFilters,
+    filterBySearch,
+    FilterMap,
+    makeFilter
 } from "@/app/student/lib/filters"
 import { BoothListItem } from "@/app/student/map/_components/BoothListItem"
 import MapFilters from "@/app/student/map/_components/MapFilters"
@@ -17,29 +17,29 @@ import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import { useFilterData } from "@/components/shared/hooks/useSurveyData"
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogTrigger
 } from "@/components/ui/dialog"
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTrigger
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTrigger
 } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import {
-  ArrowLeft,
-  EraserIcon,
-  FilterIcon,
-  MapIcon,
-  MapPinIcon,
-  SearchIcon,
-  X,
-  XIcon
+    ArrowLeft,
+    EraserIcon,
+    FilterIcon,
+    MapIcon,
+    MapPinIcon,
+    SearchIcon,
+    X,
+    XIcon
 } from "lucide-react"
 import { useRef, useState } from "react"
 import { createPortal } from "react-dom"
