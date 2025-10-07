@@ -1,13 +1,15 @@
 import { P } from "@/app/_components/Paragraph"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { Button } from "@/components/ui/button"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
 export async function CompanyRegistrationButton() {
-  const { fr } = await fetchDates()
+  //TODO: fix useDates to get correct dates
+  //const { fr } = await fetchDates()
+  const fr_end_data = "2025-11-19T17:00:00+01:00"
   const signUpDate = DateTime.local(2025, 3, 3, { zone: "Europe/Stockholm" })
-  const isAfterFr = DateTime.now() > DateTime.fromISO(fr.end)
+  //const isAfterFr = DateTime.now() > DateTime.fromISO(fr.end)
+  const isAfterFr = DateTime.now() > DateTime.fromISO(fr_end_data)
   const isBeforeSignUpDate = DateTime.now() < signUpDate
 
   if (isAfterFr) {

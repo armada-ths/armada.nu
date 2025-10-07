@@ -2,7 +2,7 @@ import { CompanyRegistrationButton } from "@/app/_components/CompanyRegistration
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { OrganisationMembersGraphic } from "@/app/about/_components/OrganisationMembersGraphic"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { FairCountdown } from "@/components/landing/FairCountdown"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
@@ -14,20 +14,22 @@ import Link from "next/link"
 import { Suspense } from "react"
 
 export default async function HomePage() {
-  const dates = await fetchDates()
-  const fr_end = new Date(dates.fr.end).getTime()
-  const today = Date.now()
-
-  const isAfterFr = DateTime.now() > DateTime.fromISO(dates.fr.end)
+  //TODO: fetch dates from aws, update useDates accordingly
+  //const dates = await fetchDates()
+  //const fr_end = new Date(dates.fr.end).getTime()
+  const fr_end_data = "2025-11-19T17:00:00+01:00"
+  const fr_start_data = "2025-11-18T12:00:00+01:00"
+  //const isAfterFr = DateTime.now() > DateTime.fromISO(dates.fr.end)
+  const isDuringFr =
+    DateTime.now() > DateTime.fromISO(fr_start_data) &&
+    DateTime.now() < DateTime.fromISO(fr_end_data)
 
   return (
     <>
-      {today < fr_end ? (
-        <NavigationMenu />
-      ) : (
+      {
         <NavigationMenu
           aside={
-            isAfterFr ? (
+            isDuringFr ? (
               <Link href={"/student/map"}>
                 <Button className="flex gap-2">
                   <MapIcon size={15} /> Visit the map
@@ -38,7 +40,7 @@ export default async function HomePage() {
             )
           }
         />
-      )}
+      }
 
       <Page.Background>
         <Page.Boundary className="px-6">
@@ -59,19 +61,7 @@ export default async function HomePage() {
               shape their future. November the 18th and 19th.
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
-              {today < fr_end ? (
-                <>
-                  <CompanyRegistrationButton />
-                  <Link href="/exhibitor/packages">
-                    <Button
-                      variant={"secondary"}
-                      className="dark:bg-liqorice-700">
-                      This Year&apos;s Packages
-                      <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </>
-              ) : (
+              {isDuringFr ? (
                 <>
                   <Link href="/student/map">
                     <Button className="flex gap-2">
@@ -82,6 +72,18 @@ export default async function HomePage() {
                     <Button variant={"secondary"} className="flex gap-2">
                       Signup for events
                       <ArrowRightIcon size={15} />
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <CompanyRegistrationButton />
+                  <Link href="/exhibitor/packages">
+                    <Button
+                      variant={"secondary"}
+                      className="dark:bg-liqorice-700">
+                      This Year&apos;s Packages
+                      <ArrowRightIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                 </>
@@ -122,29 +124,13 @@ export default async function HomePage() {
               </p>
             </div>
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
-              <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
-              <div className="flex">
-                <p className="flex-1">
-                  57
-                  <br />
-                  Days
-                </p>
-                <p className="flex-1">
-                  21
-                  <br />
-                  Hours
-                </p>
-                <p className="flex-1">
-                  40
-                  <br />
-                  minutes
-                </p>
-                <p className="flex-1">
-                  25
-                  <br />
-                  Seconds
-                </p>
-              </div>
+              {DateTime.now() < DateTime.fromISO(fr_start_data) ? (
+                <FairCountdown timeData={fr_start_data} />
+              ) : isDuringFr ? (
+                <FairCountdown timeData={fr_end_data} />
+              ) : (
+                "See you next year!"
+              )}
             </div>
           </div>
           <VisitorNumberBar />
