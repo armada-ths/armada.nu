@@ -2,7 +2,12 @@ import { P } from "@/app/_components/Paragraph"
 import { Page } from "@/components/shared/Page"
 import { Event } from "@/components/shared/hooks/api/useEvents"
 import { Button } from "@/components/ui/button"
-import { cn, formatTimestampAsDate, formatTimestampAsTime } from "@/lib/utils"
+import {
+  cn,
+  eventDateTimeToEpochSeconds,
+  formatTimestampAsDate,
+  formatTimestampAsTime
+} from "@/lib/utils"
 
 import { Calendar, Clock, Coins, MapPin, User, Utensils } from "lucide-react"
 import Image from "next/image"
@@ -37,16 +42,19 @@ export default function EventDetails({
   event: Event
   className?: string
 }) {
-  const today = Date.now() / 1000
+  const today = Math.floor(Date.now() / 1000)
+  const eventStart = eventDateTimeToEpochSeconds(event.eventStart)
+  const registrationClose = eventDateTimeToEpochSeconds(event.registrationEnd)
+  const registrationCutoff = registrationClose ?? eventStart ?? today
   return (
     <div className={cn("mx-auto max-w-[600px] lg:max-w-[1000px]", className)}>
       <Page.Header>{event.name}</Page.Header>
       <div className="mt-4 flex flex-col-reverse gap-8 lg:flex-row">
         <div className="lg:w-3/5">
-          {event.image_url && (
+          {event.imageUrl && (
             <Image
               className="float-left mb-2 mr-5 mt-2 rounded-md"
-              src={event.image_url}
+              src={event.imageUrl}
               alt="" // TODO
               width={200}
               height={200}
@@ -63,21 +71,21 @@ export default function EventDetails({
             icon={<MapPin size={16} />}></InfoBoxItem>
           <InfoBoxItem
             label="Date"
-            value={formatTimestampAsDate(event.event_start)}
+            value={formatTimestampAsDate(event.eventStart)}
             icon={<Calendar size={16} />}></InfoBoxItem>
           <InfoBoxItem
             label="Time"
-            value={`${formatTimestampAsTime(event.event_start)} - ${formatTimestampAsTime(event.event_end)}`}
+            value={`${formatTimestampAsTime(event.eventStart)} - ${formatTimestampAsTime(event.eventEnd)}`}
             icon={<Clock size={16} />}></InfoBoxItem>
           {/* Separator */}
-          {(event.food || event.fee || event.event_max_capacity) && (
+          {(event.food || event.fee || event.eventMaxCapacity) && (
             <div className="h-[1px] w-full bg-stone-400"></div>
           )}
           {/* Bottom row */}
-          {event.event_max_capacity && (
+          {event.eventMaxCapacity && (
             <InfoBoxItem
-              label="Registered"
-              value={`${event.participant_count} / ${event.event_max_capacity}`}
+              label="Capacity"
+              value={`${event.eventMaxCapacity} participants`}
               icon={<User size={16} />}></InfoBoxItem>
           )}
           <InfoBoxItem
@@ -88,31 +96,30 @@ export default function EventDetails({
             label="Fee"
             value={`${event.fee} kr`}
             icon={<Coins size={16} />}></InfoBoxItem>
-          {event.open_for_signup_student && event.registration_end && (
+          {event.openForSignupStudent && registrationClose && (
             <p className="-mb-1 mt-3 text-xs text-stone-400">
-              Registration closes{" "}
-              {formatTimestampAsDate(event.registration_end)}
+              Registration closes {formatTimestampAsDate(event.registrationEnd)}
             </p>
           )}
           {/* Signup */}
-          {event.open_for_signup_student &&
-          today < (event.registration_end ?? event.event_start) ? (
-            <Link href={event.signup_link ?? ""}>
+          {event.openForSignupStudent && today < registrationCutoff ? (
+            <Link href={event.signupLink ?? ""}>
               <Button className="w-full">
-                {event.participant_count < event.event_max_capacity
+                {event.eventMaxCapacity == null ||
+                event.participantCount < event.eventMaxCapacity
                   ? "Signup"
                   : "Join waiting List"}
               </Button>
             </Link>
           ) : (
             <Button disabled>
-              {today < (event.registration_end ?? event.event_start) ? (
+              {today < registrationCutoff ? (
                 <> Signup opening soon ! </>
               ) : (
                 <>
                   Registration closed{" "}
-                  {event.registration_end
-                    ? formatTimestampAsDate(event.registration_end)
+                  {registrationClose
+                    ? formatTimestampAsDate(event.registrationEnd)
                     : ""}
                 </>
               )}

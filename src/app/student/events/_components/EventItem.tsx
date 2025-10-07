@@ -10,7 +10,13 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export function EventItem({ event }: { event: Event }) {
-  const { id, name, event_start, registration_end, image_url } = event
+  const {
+    id,
+    name,
+    eventStart: event_start,
+    registrationEnd: registration_end,
+    imageUrl: image_url
+  } = event
 
   const router = useRouter()
   const searchParams = useSearchParams()

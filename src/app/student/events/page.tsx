@@ -2,6 +2,7 @@ import { P } from "@/app/_components/Paragraph"
 import { EventsTimeline } from "@/app/student/events/_components/EventsTimeLine"
 import { Page } from "@/components/shared/Page"
 import { Event, fetchEvents } from "@/components/shared/hooks/api/useEvents"
+import { eventDateTimeToEpochSeconds } from "@/lib/utils"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -9,17 +10,32 @@ export const metadata: Metadata = {
   description: "All of our events leading up to the career fair."
 }
 
+function toSeconds(date: Event["eventStart"]) {
+  return eventDateTimeToEpochSeconds(date) ?? Number.MAX_SAFE_INTEGER
+}
+
 function orderEvents(events: Event[], nowInSeconds: number) {
-  const sorted = events.slice().sort((a, b) => a.event_start - b.event_start)
+  for (const event of events) {
+    console.log(event.eventStart)
+  }
+  const sorted = events
+    .slice()
+    .sort((a, b) => toSeconds(a.eventStart) - toSeconds(b.eventStart))
 
   const upcoming: Event[] = []
   const past: Event[] = []
 
   for (const event of sorted) {
+    const startSeconds =
+      eventDateTimeToEpochSeconds(event.eventStart) ?? nowInSeconds
+    const endSeconds =
+      eventDateTimeToEpochSeconds(event.eventEnd) ?? startSeconds
+    const registrationSeconds =
+      eventDateTimeToEpochSeconds(event.registrationEnd) ?? startSeconds
     const relevanceTimestamp = Math.max(
-      event.event_end,
-      event.registration_end ?? event.event_start,
-      event.event_start
+      endSeconds,
+      registrationSeconds,
+      startSeconds
     )
     if (relevanceTimestamp >= nowInSeconds) {
       upcoming.push(event)

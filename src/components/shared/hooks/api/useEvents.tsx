@@ -7,22 +7,22 @@ export interface Event {
   description: string
   location: string
   food: string
-  event_start: number
-  event_end: number
-  event_start_string: string
-  registration_end: number
-  image_url: string
+  eventStart: number | string
+  eventEnd: number | string
+  eventStartString?: string
+  registrationEnd?: number | string
+  imageUrl: string
   fee: number
-  registration_required: boolean
-  external_event_link: string
-  signup_questions: SignupQuestion[]
-  signup_link: string
-  can_create_teams: boolean
-  can_join_teams: boolean
-  open_for_signup_student: boolean
-  open_for_signup_company: boolean
-  event_max_capacity: number
-  participant_count: number
+  registrationRequired: boolean
+  externalEventLink: string
+  signupQuestions: SignupQuestion[]
+  signupLink: string
+  canCreateTeams: boolean
+  canJoinTeams: boolean
+  openForSignupStudent: boolean
+  openForSignupCompany: boolean
+  eventMaxCapacity: number
+  participantCount: number
 }
 
 export interface SignupQuestion {
@@ -40,7 +40,6 @@ export async function fetchEvents(options?: RequestInit) {
   )
   try {
     const result = await res.json()
-    console.log(result)
     return result as Event[]
   } catch (error) {
     console.error(
