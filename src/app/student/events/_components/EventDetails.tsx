@@ -55,7 +55,7 @@ export default function EventDetails({
             <Image
               className="float-left mb-2 mr-5 mt-2 rounded-md"
               src={event.imageUrl}
-              alt="" // TODO
+              alt={event.name}
               width={200}
               height={200}
             />
@@ -114,7 +114,7 @@ export default function EventDetails({
           ) : (
             <Button disabled>
               {today < registrationCutoff ? (
-                <> Signup opening soon ! </>
+                <> Signup opening soon! </>
               ) : (
                 <>
                   Registration closed{" "}

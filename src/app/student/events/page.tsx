@@ -15,9 +15,6 @@ function toSeconds(date: Event["eventStart"]) {
 }
 
 function orderEvents(events: Event[], nowInSeconds: number) {
-  for (const event of events) {
-    console.log(event.eventStart)
-  }
   const sorted = events
     .slice()
     .sort((a, b) => toSeconds(a.eventStart) - toSeconds(b.eventStart))
