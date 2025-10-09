@@ -1,4 +1,5 @@
 import { CompanyRegistrationButton } from "@/app/_components/CompanyRegistrationButton"
+import { CountdownTimer } from "@/app/_components/CountdownTimer"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { OrganisationMembersGraphic } from "@/app/about/_components/OrganisationMembersGraphic"
@@ -7,8 +8,7 @@ import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, Clock, MapIcon } from "lucide-react"
-import { DateTime } from "luxon"
+import { ArrowRightIcon, Clock } from "lucide-react"
 //import Image from "next/image"
 import Link from "next/link"
 import { Suspense } from "react"
@@ -18,28 +18,9 @@ export default async function HomePage() {
   const fr_end = new Date(dates.fr.end).getTime()
   const today = Date.now()
 
-  const isAfterFr = DateTime.now() > DateTime.fromISO(dates.fr.end)
-
   return (
     <>
-      {today < fr_end ? (
-        <NavigationMenu />
-      ) : (
-        <NavigationMenu
-          aside={
-            isAfterFr ? (
-              <Link href={"/student/map"}>
-                <Button className="flex gap-2">
-                  <MapIcon size={15} /> Visit the map
-                </Button>
-              </Link>
-            ) : (
-              <CompanyRegistrationButton />
-            )
-          }
-        />
-      )}
-
+      <NavigationMenu />
       <Page.Background>
         <Page.Boundary className="px-6">
           <div className="mb-5 flex w-full flex-1 justify-center">
@@ -59,7 +40,7 @@ export default async function HomePage() {
               shape their future. November the 18th and 19th.
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
-              {today < fr_end ? (
+              {today < fr_end && (
                 <>
                   <CompanyRegistrationButton />
                   <Link href="/exhibitor/packages">
@@ -68,20 +49,6 @@ export default async function HomePage() {
                       className="dark:bg-liqorice-700">
                       This Year&apos;s Packages
                       <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link href="/student/map">
-                    <Button className="flex gap-2">
-                      <MapIcon size={15} /> Visit the map
-                    </Button>
-                  </Link>
-                  <Link href="/student/events">
-                    <Button variant={"secondary"} className="flex gap-2">
-                      Signup for events
-                      <ArrowRightIcon size={15} />
                     </Button>
                   </Link>
                 </>
@@ -122,29 +89,7 @@ export default async function HomePage() {
               </p>
             </div>
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
-              <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
-              <div className="flex">
-                <p className="flex-1">
-                  57
-                  <br />
-                  Days
-                </p>
-                <p className="flex-1">
-                  21
-                  <br />
-                  Hours
-                </p>
-                <p className="flex-1">
-                  40
-                  <br />
-                  minutes
-                </p>
-                <p className="flex-1">
-                  25
-                  <br />
-                  Seconds
-                </p>
-              </div>
+              <CountdownTimer targetDate={new Date(dates.fair.days[0])} />
             </div>
           </div>
           <VisitorNumberBar />
