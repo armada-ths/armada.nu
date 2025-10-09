@@ -7,7 +7,7 @@ import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, Clock, MapIcon } from "lucide-react"
+import { ArrowRightIcon, Clock } from "lucide-react"
 import { DateTime } from "luxon"
 //import Image from "next/image"
 import Link from "next/link"
@@ -22,23 +22,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {today < fr_end ? (
-        <NavigationMenu />
-      ) : (
-        <NavigationMenu
-          aside={
-            isAfterFr ? (
-              <Link href={"/student/map"}>
-                <Button className="flex gap-2">
-                  <MapIcon size={15} /> Visit the map
-                </Button>
-              </Link>
-            ) : (
-              <CompanyRegistrationButton />
-            )
-          }
-        />
-      )}
+      <NavigationMenu />
 
       <Page.Background>
         <Page.Boundary className="px-6">
@@ -59,7 +43,7 @@ export default async function HomePage() {
               shape their future. November the 18th and 19th.
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
-              {today < fr_end ? (
+              {today < fr_end && (
                 <>
                   <CompanyRegistrationButton />
                   <Link href="/exhibitor/packages">
@@ -68,20 +52,6 @@ export default async function HomePage() {
                       className="dark:bg-liqorice-700">
                       This Year&apos;s Packages
                       <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link href="/student/map">
-                    <Button className="flex gap-2">
-                      <MapIcon size={15} /> Visit the map
-                    </Button>
-                  </Link>
-                  <Link href="/student/events">
-                    <Button variant={"secondary"} className="flex gap-2">
-                      Signup for events
-                      <ArrowRightIcon size={15} />
                     </Button>
                   </Link>
                 </>
