@@ -1,4 +1,3 @@
-import { P } from "@/app/_components/Paragraph"
 import { Page } from "@/components/shared/Page"
 import { Event } from "@/components/shared/hooks/api/useEvents"
 import { Button } from "@/components/ui/button"
@@ -60,7 +59,12 @@ export default function EventDetails({
               height={200}
             />
           )}
-          <P className="mt-0">{event.description}</P>
+          {/* <P className="mt-0">{event.description}</P> */}
+          <div
+            dangerouslySetInnerHTML={{ __html: event.description }}
+            className="prose"
+          ></div>
+
         </div>
 
         <div className="mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-gradient-to-br from-emerald-950 to-neutral-900 to-50% p-5 lg:w-2/5">
@@ -106,7 +110,7 @@ export default function EventDetails({
             <Link href={event.signupLink ?? ""}>
               <Button className="w-full">
                 {event.eventMaxCapacity == null ||
-                event.participantCount < event.eventMaxCapacity
+                  event.participantCount < event.eventMaxCapacity
                   ? "Signup"
                   : "Join waiting List"}
               </Button>
