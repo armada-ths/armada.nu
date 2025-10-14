@@ -73,7 +73,7 @@ const studentLinks: NavigationLink[] = [
     title: "Events",
     href: "/student/events",
     description: "See the events leading up to the fair",
-    enabled: false
+    enabled: true
   },
   {
     title: "Recruitment",
