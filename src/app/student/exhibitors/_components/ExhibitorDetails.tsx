@@ -16,8 +16,8 @@ export default function ExhibitorDetails({
 }: {
   exhibitor: Exhibitor
 }) {
-  const hasIndustries = exhibitor.industries?.length > 0
-  const hasEmployments = exhibitor.employments?.length > 0
+  const hasIndustries = (exhibitor.industries ?? []).length > 0
+  const hasEmployments = (exhibitor.employments?? []).length > 0
 
   const [show, setShow] = useState(false)
 
@@ -33,11 +33,11 @@ export default function ExhibitorDetails({
     <div className="pb-5 @container">
       <div className="flex flex-col-reverse items-center gap-6 @sm:h-[100px] @sm:flex-row">
 
-        {(exhibitor.logo_squared || exhibitor.logo_freesize) && (
+        {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
           <div className="relative mt-2 flex h-[80px] w-[260px] flex-initial justify-center px-4 overflow-hidden">
             <Image
               className="h-full w-full object-cover rounded-lg"
-              src={exhibitor.logo_squared ?? exhibitor.logo_freesize ?? ""}
+              src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
               alt="Failed to load image"
               width={300}
               height={300}
@@ -51,15 +51,15 @@ export default function ExhibitorDetails({
             {exhibitor.name}
           </Page.Header>
 
-          {exhibitor.company_website && (
+          {exhibitor.companyWebsite && (
             <div className="mt-2 flex items-center gap-1 text-base font-semibold text-stone-400">
               <Globe size={16} />
               <Link
                 rel="noopener noreferrer"
                 target="_blank"
-                href={exhibitor.company_website}
+                href={exhibitor.companyWebsite}
                 className="line-clamp-1 transition-colors hover:text-emerald-100/90 hover:underline">
-                {exhibitor.company_website}
+                {exhibitor.companyWebsite}
               </Link>
             </div>
           )}
@@ -75,11 +75,11 @@ export default function ExhibitorDetails({
           </div>
         )}
 
-        {exhibitor.map_img && (
+        {exhibitor.mapImg && (
           <div className="flex-shrink-0 flex justify-center">
             <Image
               className="h-80 w-auto object-contain rounded-lg"
-              src={exhibitor.map_img ?? ""}
+              src={exhibitor.mapImg ?? ""}
               alt="Failed to load image"
               width={300}
               height={300}
@@ -99,7 +99,7 @@ export default function ExhibitorDetails({
             </Page.Header>
             <BadgeCollection
               className="mt-2 flex-wrap gap-2"
-              items={exhibitor.industries}
+              items={exhibitor.industries ?? []}
               maxDisplayed={20}
             />
           </div>
@@ -112,7 +112,7 @@ export default function ExhibitorDetails({
             </Page.Header>
             <BadgeCollection
               className="mt-2 gap-2"
-              items={exhibitor.employments}
+              items={exhibitor.employments ?? []}
               maxDisplayed={20}
             />
           </div>

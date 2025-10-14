@@ -93,11 +93,11 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
             {exhibitor.name}
           </h3>
 
-          {(exhibitor.logo_squared || exhibitor.logo_freesize) && (
+          {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
             <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center px-4 overflow-hidden">
               <Image
                 className="h-full w-full object-cover rounded-lg"
-                src={exhibitor.logo_squared ?? exhibitor.logo_freesize ?? ""}
+                src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
                 alt={exhibitor.name}
                 width={300}
                 height={300}
@@ -106,7 +106,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
           )}
           <BadgeCollection
-            items={exhibitor.industries}
+            items={exhibitor.industries ?? []}
             maxDisplayed={maxDisplayedBadges}
             className="mt-auto flex-nowrap justify-center overflow-hidden p-2.5 pt-0"
             badgeClassName="text-[0.65em] flex-initial truncate inline-block"

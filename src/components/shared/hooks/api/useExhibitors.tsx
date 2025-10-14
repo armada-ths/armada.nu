@@ -1,32 +1,31 @@
-import { useQuery } from "@tanstack/react-query"
-import { DateTime } from "luxon"
+import { useEffect, useState } from "react";
 
 export interface Exhibitor {
   id: number
   name: string
   type: string
   tier?: string
-  company_website?: string
+  companyWebsite?: string
   about?: string
   purpose?: string
-  logo_squared?: string
-  logo_freesize?: string
-  map_img?: string
-  industries: Industry[]
+  logoSquared?: string
+  logoFreesize?: string
+  mapImg?: string
+  industries?: Industry[]
   values?: unknown[] // TODO Define this
-  employments: Employment[]
-  locations: Location[]
+  employments?: Employment[]
+  locations?: Location[]
   competences?: unknown[] // TODO Define this
   cities?: string
   benefits?: unknown[] // TODO Define this
   average_age?: unknown // TODO Define this
   founded?: unknown // TODO Define this
-  groups: Group[]
-  fair_location: string
-  vyer_position?: string
-  location_special?: string
-  climate_compensation: boolean
-  flyer: string
+  groups?: Group[]
+  fairLocation: string
+  vyerPosition?: string
+  locationSpecial?: string
+  climateCompensation: boolean
+  flyer?: string
   booths?: unknown[] // TODO Define this
   map_coordinates?: number[][]
 }
@@ -51,82 +50,102 @@ export interface Group {
   name: string
 }
 
-const defaultYear = DateTime.now().minus({ months: 6 }).year
+const CACHE_KEY = "exhibitors_cache";
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 
-export async function fetchExhibitors(
-  options?: RequestInit & { year?: number }
-) {
-  //const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/exhibitors`, {
-  //  cache: options?.cache,
-  //  next: {
-  //    ...options?.next,
-  //    tags: options?.next?.tags ?? [
-  //      "exhibitors",
-  //      options?.year?.toString() ?? defaultYear.toString()
-  //    ]
-  //  }
-  //})
+// in-memory cache
+let inMemoryCache: { data: Exhibitor[]; timestamp: number } | null = null;
 
-  return null
-  // return [
-  //   ...(result as Exhibitor[]),
-  //   {
-  //     id: -1,
-  //     average_age: null,
-  //     benefits: [],
-  //     booths: [],
-  //     cities: "",
-  //     climate_compensation: false,
-  //     company_website: "",
-  //     competences: [],
-  //     employments: [],
-  //     fair_location: "",
-  //     flyer: "",
-  //     founded: null,
-  //     groups: [],
-  //     industries: [],
-  //     location_special: "",
-  //     locations: [],
-  //     name: "Student Lounge",
-  //     type: "Student Lounge",
-  //     values: [],
-  //     vyer_position: ""
-  //   } as Exhibitor
-  // ]
+async function fetchExhibitors(): Promise<Exhibitor[]> {
+  const url = new URL("api/v1/exhibitors", process.env.NEXT_PUBLIC_API_URL);
+  const res = await fetch(url.toString());
+  if (!res.ok) throw new Error(`Failed to fetch exhibitors: ${res.status}`);
+
+  const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid response format: expected an array");
+  }
+
+  return data as Exhibitor[];
 }
 
-/**
- * Fetch all exhibitors up until the year 2022,
- * this is ok since this is statically compiled in
- * next. This should NOT be called in a client component
- */
-export async function fetchAllYearExhibitors(options?: RequestInit) {
-  const exhibitorYears = await Promise.allSettled(
-    new Array(DateTime.now().year - 2021).fill(0).map(async (_, i) => {
-      const year = DateTime.now().year - i
-      return {
-        year: year.toString(),
-        exhibitors: await fetchExhibitors({
-          ...options,
-          year
+
+function getCachedData(): Exhibitor[] | null {
+  const now = Date.now();
+
+  // Check in-memory cache
+  if (inMemoryCache && now - inMemoryCache.timestamp < CACHE_TTL) {
+    return inMemoryCache.data;
+  }
+
+  // Check localStorage
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (!cached) return null;
+
+    const parsed = JSON.parse(cached) as {
+      data: Exhibitor[];
+      timestamp: number;
+    };
+
+    if (now - parsed.timestamp < CACHE_TTL) {
+      inMemoryCache = parsed;
+      return parsed.data;
+    }
+  } catch {
+    // ignore parse errors
+  }
+
+  return null;
+}
+
+
+function setCachedData(data: Exhibitor[]) {
+  const cacheEntry = { data, timestamp: Date.now() };
+  inMemoryCache = cacheEntry;
+  localStorage.setItem(CACHE_KEY, JSON.stringify(cacheEntry));
+}
+
+export function useExhibitors() {
+  const [exhibitors, setExhibitors] = useState<Exhibitor[] | null>(() => getCachedData());
+  const [loading, setLoading] = useState(!exhibitors);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!exhibitors) {
+      setLoading(true);
+      fetchExhibitors()
+        .then((data) => {
+          setCachedData(data);
+          setExhibitors(data);
         })
+        .catch((err: unknown) => {
+          // handle unknown errors
+          if (err instanceof Error) setError(err.message);
+          else setError(String(err));
+        })
+        .finally(() => setLoading(false));
+    }
+  }, []);
+
+  return {
+    exhibitors,
+    loading,
+    error,
+    refetch: async () => {
+      try {
+        setLoading(true);
+        const data = await fetchExhibitors();
+        setCachedData(data);
+        setExhibitors(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) setError(err.message);
+        else setError(String(err));
+      } finally {
+        setLoading(false);
       }
-    })
-  )
+    },
+  };
 
-  return exhibitorYears
-    .filter(x => x.status === "fulfilled")
-    .map(x => (x.status == "fulfilled" ? x.value : null))
-    .filter(Boolean)
-}
-
-export function useExhibitors(options?: { year?: number }) {
-  const year = options?.year ?? defaultYear
-  return useQuery({
-    queryKey: ["exhibitors", { year }],
-    queryFn: async () =>
-      fetchExhibitors({
-        year
-      })
-  })
 }
