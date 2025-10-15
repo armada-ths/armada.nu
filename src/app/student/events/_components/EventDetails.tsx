@@ -91,11 +91,9 @@ export default function EventDetails({
             value={`${formatTimestampAsTime(event.eventStart)} - ${formatTimestampAsTime(event.eventEnd)}`}
             icon={<Clock size={16} />}></InfoBoxItem>
           {/* Separator */}
-          {(event.food || event.fee || event.eventMaxCapacity) && (
-            <div className="h-[1px] w-full bg-stone-400"></div>
-          )}
+          <div className="h-[1px] w-full bg-stone-400"></div>
           {/* Bottom row */}
-          {event.eventMaxCapacity && (
+          {event.eventMaxCapacity > 0 && (
             <InfoBoxItem
               label="Capacity"
               value={`${event.eventMaxCapacity} participants`}
