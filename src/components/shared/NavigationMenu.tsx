@@ -150,7 +150,7 @@ export function NavigationMenu(
       {/** Sheet is used for mobile navigation */}
       <Sheet open={sheetOpen}>
         <div className="flex w-full justify-between md:hidden">
-          {props.aside != null && <>{props.aside}</>}
+          <div className="min-w-[30px]">{props.aside ?? <span />}</div>
           <SheetTrigger
             className="md:hidden"
             onClick={() => setSheetOpen(true)}>
