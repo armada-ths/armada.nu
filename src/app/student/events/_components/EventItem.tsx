@@ -3,7 +3,7 @@
 import EventDetails from "@/app/student/events/_components/EventDetails"
 import Modal from "@/components/shared/Modal"
 import { Event } from "@/components/shared/hooks/api/useEvents"
-import { formatTimestampAsDate } from "@/lib/utils"
+import { cn, formatTimestampAsDate } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -34,36 +34,51 @@ export function EventItem({ event }: { event: Event }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => {
-          router.push("/student/events", { scroll: false }) // clear url when the modal is closed
+          router.push("/student/events", { scroll: false })
         }}
-        className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
+        className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
+      >
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
 
       <div className="absolute -start-1.5 mt-3.5 h-3 w-3 rounded-full border border-white bg-melon-700"></div>
-      <div className="mb-6 ml-6 w-11/12 rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95 sm:w-3/5 sm:min-w-[500px]">
+      <div className="mb-6 ml-6 w-11/12 overflow-hidden rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95 sm:w-3/5 sm:min-w-[500px]">
         <Link
           href={`/student/events?id=${id}`}
           scroll={false}
-          className="flex flex-auto flex-col sm:h-48 sm:flex-row sm:items-center">
+          className={cn(
+            "group grid min-h-[12rem] w-full overflow-hidden transition hover:scale-[1.02] hover:brightness-95",
+            image_url
+              ? "grid-cols-[auto_1fr]" // With image
+              : "place-items-center" // No image → fully centered
+          )}
+        >
+          {/* Image (optional) */}
           {image_url && (
             <Image
-              width={200}
-              height={200}
-              className="h-full max-h-48 w-full rounded-t-lg object-contain sm:h-48 sm:w-48 sm:rounded-l-lg sm:rounded-tr-none"
               src={image_url}
               alt=""
+              width={192}
+              height={192}
+              className="h-full w-48 object-cover"
             />
           )}
-          <div className="flex flex-col justify-between pl-5">
-            <h5 className="mb-2 mt-5 text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
-              {name}
-            </h5>
-            <p className="mb-3 text-gray-700 dark:text-neutral-400">
+
+          {/* Text content */}
+          <div
+            className={cn(
+              "flex flex-col gap-1 px-6 py-8 transition-transform duration-200",
+              image_url
+                ? "justify-center items-start text-left"
+                : "items-center justify-center text-center"
+            )}
+          >
+            <h5 className="text-2xl font-semibold text-white">{name}</h5>
+            <p className="text-sm text-stone-300">
               {formatTimestampAsDate(event_start)}
             </p>
             {registration_end && (
-              <p className="mb-4 text-xs text-gray-700 dark:text-neutral-400">
+              <p className="text-xs text-stone-500">
                 Registration closes {formatTimestampAsDate(registration_end)}
               </p>
             )}

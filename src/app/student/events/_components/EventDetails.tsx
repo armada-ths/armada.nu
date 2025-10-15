@@ -34,6 +34,14 @@ function InfoBoxItem({
   )
 }
 
+function cleanHtmlDescription(html: string): string {
+  return html
+    .replace(/ style="[^"]*"/g, "") // remove inline styles
+    .replace(/ class="[^"]*"/g, "") // remove editor classes
+    .replace(/<i><em>/g, "<em>")    // flatten double italic
+    .replace(/<\/em><\/i>/g, "</em>");
+}
+
 export default function EventDetails({
   event,
   className
@@ -48,23 +56,24 @@ export default function EventDetails({
   return (
     <div className={cn("mx-auto max-w-[600px] lg:max-w-[1000px]", className)}>
       <Page.Header>{event.name}</Page.Header>
-      <div className="mt-4 flex flex-col-reverse gap-8 lg:flex-row">
-        <div className="lg:w-3/5">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-10">
+        {/* Left: Image + Description */}
+        <div className="flex-1 space-y-6">
           {event.imageUrl && (
-            <Image
-              className="float-left mb-2 mr-5 mt-2 rounded-md"
-              src={event.imageUrl}
-              alt={event.name}
-              width={200}
-              height={200}
-            />
+            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
+              <Image
+                src={event.imageUrl}
+                alt={event.name}
+                fill
+                className="object-cover object-center"
+              />
+            </div>
           )}
-          {/* <P className="mt-0">{event.description}</P> */}
-          <div
-            dangerouslySetInnerHTML={{ __html: event.description }}
-            className="prose"
-          ></div>
 
+          <div
+            className="prose prose-invert text-stone-300 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: cleanHtmlDescription(event.description) }}
+          />
         </div>
 
         <div className="mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-gradient-to-br from-emerald-950 to-neutral-900 to-50% p-5 lg:w-2/5">
@@ -98,7 +107,7 @@ export default function EventDetails({
             icon={<Utensils size={16} />}></InfoBoxItem>
           <InfoBoxItem
             label="Fee"
-            value={`${event.fee} kr`}
+            value={`${event.fee ?? 'TBA'} kr`}
             icon={<Coins size={16} />}></InfoBoxItem>
           {event.openForSignupStudent && registrationClose && (
             <p className="-mb-1 mt-3 text-xs text-stone-400">
