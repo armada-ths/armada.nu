@@ -34,14 +34,6 @@ function InfoBoxItem({
   )
 }
 
-function cleanHtmlDescription(html: string): string {
-  return html
-    .replace(/ style="[^"]*"/g, "") // remove inline styles
-    .replace(/ class="[^"]*"/g, "") // remove editor classes
-    .replace(/<i><em>/g, "<em>")    // flatten double italic
-    .replace(/<\/em><\/i>/g, "</em>");
-}
-
 export default function EventDetails({
   event,
   className
@@ -72,7 +64,7 @@ export default function EventDetails({
 
           <div
             className="prose prose-invert text-stone-300 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: cleanHtmlDescription(event.description) }}
+            dangerouslySetInnerHTML={{ __html: event.description }}
           />
         </div>
 
@@ -113,25 +105,19 @@ export default function EventDetails({
             </p>
           )}
           {/* Signup */}
-          {event.openForSignupStudent && today < registrationCutoff ? (
+          {event.signupLink ? (
             <Link href={event.signupLink ?? ""}>
               <Button className="w-full">
-                {event.eventMaxCapacity == null ||
-                  event.participantCount < event.eventMaxCapacity
-                  ? "Signup"
-                  : "Join waiting List"}
+                Signup
               </Button>
             </Link>
           ) : (
             <Button disabled>
               {today < registrationCutoff ? (
-                <> Signup opening soon! </>
+                <> Signup coming soon! </>
               ) : (
                 <>
-                  Registration closed{" "}
-                  {registrationClose
-                    ? formatTimestampAsDate(event.registrationEnd)
-                    : ""}
+                  Registration closed
                 </>
               )}
             </Button>
