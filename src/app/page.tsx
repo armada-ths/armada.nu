@@ -74,31 +74,28 @@ export default async function HomePage() {
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
-          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4">
-            <div>
-              <div className="absolute flex w-full flex-row md:w-1/4">
-                <Clock
-                  size={100}
-                  strokeWidth={1.5}
-                  style={{
-                    WebkitMaskImage:
-                      "linear-gradient(to bottom, black 40%, transparent 100%)",
-                    WebkitMaskRepeat: "no-repeat",
-                    WebkitMaskSize: "100% 100%"
-                  }}
-                  className="ml-2 text-melon-700"
-                />
-
-                <p className="-ml-1 mt-1 italic opacity-80">
-                  Which
-                  <br />
-                  &nbsp; Dates?
-                </p>
-              </div>
-              <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
-                November 18-19
+          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-hidden">
+            <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
+              <Clock
+                size={100}
+                strokeWidth={1.5}
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, black 40%, transparent 100%)",
+                  WebkitMaskRepeat: "no-repeat",
+                  WebkitMaskSize: "100% 100%",
+                }}
+                className="ml-2 text-melon-700"
+              />
+              <p className="-ml-1 mt-1 italic opacity-80">
+                Which
+                <br />
+                &nbsp;Dates?
               </p>
             </div>
+            <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
+              November 18-19
+            </p>
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
               <CountdownTimer targetDate={new Date(dates.fair.days[0])} />
             </div>
