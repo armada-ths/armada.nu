@@ -12,7 +12,7 @@ export interface Event {
   eventStartString?: string
   registrationEnd?: number | string
   imageUrl: string
-  fee: number
+  fee: string
   registrationRequired: boolean
   externalEventLink: string
   signupQuestions: SignupQuestion[]
@@ -35,7 +35,7 @@ export interface SignupQuestion {
 
 export async function fetchEvents(options?: RequestInit) {
   const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/v1/events`,
+    `${env.NEXT_PUBLIC_API_URL}/api/v1/events?public=true`,
     options ?? {}
   )
   try {

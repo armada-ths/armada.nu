@@ -48,7 +48,7 @@ export default function EventDetails({
   return (
     <div className={cn("mx-auto max-w-[600px] lg:max-w-[1000px]", className)}>
       <Page.Header>{event.name}</Page.Header>
-      <div className="flex flex-col lg:flex-row lg:items-center gap-10">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-10 pt-2">
         {/* Left: Image + Description */}
         <div className="flex-1 space-y-6">
           {event.imageUrl && (
@@ -97,7 +97,7 @@ export default function EventDetails({
             icon={<Utensils size={16} />}></InfoBoxItem>
           <InfoBoxItem
             label="Fee"
-            value={`${event.fee ?? 'TBA'} kr`}
+            value={event.fee}
             icon={<Coins size={16} />}></InfoBoxItem>
           {event.openForSignupStudent && registrationClose && (
             <p className="-mb-1 mt-3 text-xs text-stone-400">
@@ -105,22 +105,20 @@ export default function EventDetails({
             </p>
           )}
           {/* Signup */}
-          {event.signupLink ? (
-            <Link href={event.signupLink ?? ""}>
-              <Button className="w-full">
-                Signup
+          {event.registrationRequired ? (
+            event.signupLink ? (
+              <Link href={event.signupLink} target="_blank">
+                <Button className="w-full">Sign up</Button>
+              </Link>
+            ) : (
+              <Button disabled>
+                {today < registrationCutoff ? "Signup coming soon!" : "Registration closed"}
               </Button>
-            </Link>
+            )
           ) : (
-            <Button disabled>
-              {today < registrationCutoff ? (
-                <> Signup coming soon! </>
-              ) : (
-                <>
-                  Registration closed
-                </>
-              )}
-            </Button>
+            <p className="text-sm text-stone-400 text-center mt-2">
+              No registration required
+            </p>
           )}
         </div>
       </div>
