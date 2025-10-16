@@ -52,7 +52,7 @@ export function Footer() {
         <a href="/exhibitor/events">Events</a>
       </div>
 
-      <div className="m-5 mb-3 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-left">
+      <div className="m-5 mb-5 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-left">
         <p className="pb-4">
           <b>In Partnership With:</b>
         </p>
