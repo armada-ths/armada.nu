@@ -15,29 +15,48 @@ export function formatDate(isoString: string) {
   return date.toFormat(getDateFormatString(date))
 }
 
-export function formatTimestampAsDate(epochSeconds: number) {
-  const date = adjustTimezone(
-    DateTime.fromMillis(epochSeconds * 1000, {
-      zone: "Europe/London"
-    })
-  )
+const EVENT_TIME_ZONE = "Europe/Stockholm"
+
+type EventDateInput = number | string | null | undefined
+
+function parseEventDate(input: EventDateInput) {
+  if (input == null) return null
+
+  if (typeof input === "number") {
+    const date = DateTime.fromSeconds(input, { zone: "UTC" }).setZone(
+      EVENT_TIME_ZONE
+    )
+    return date.isValid ? date : null
+  }
+
+  const iso = DateTime.fromISO(input, { zone: EVENT_TIME_ZONE })
+  if (iso.isValid) return iso
+
+  const fallback = DateTime.fromFormat(input, "yyyy-MM-dd'T'HH:mm", {
+    zone: EVENT_TIME_ZONE
+  })
+  return fallback.isValid ? fallback : null
+}
+
+export function formatTimestampAsDate(
+  input: EventDateInput,
+  fallback = "Date TBA"
+) {
+  const date = parseEventDate(input)
+  if (!date) return fallback
   return date.toFormat(getDateFormatString(date))
 }
 
-export function formatTimestampAsTime(epochSeconds: number) {
-  const date = adjustTimezone(
-    DateTime.fromMillis(epochSeconds * 1000, {
-      zone: "Europe/London"
-    })
-  )
+export function formatTimestampAsTime(
+  input: EventDateInput,
+  fallback = "--:--"
+) {
+  const date = parseEventDate(input)
+  if (!date) return fallback
   return date.toFormat("HH:mm")
 }
 
-/**
- * The AIS API gives us dates in Epoch timestamp for GMT-0 without timezone info
- * If someone sets a time for a event as 17, it will be stored as 19 in the AIS
- * This functions adds the context of the timezone back
- */
-function adjustTimezone(date: DateTime) {
-  return date.setZone("UTC-0")
+export function eventDateTimeToEpochSeconds(input: EventDateInput) {
+  const date = parseEventDate(input)
+  return date ? Math.floor(date.toSeconds()) : null
 }
