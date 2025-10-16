@@ -40,7 +40,7 @@ export default async function HomePage() {
               shape their future. November the 18th and 19th.
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
-              {today < fr_end && (
+              {today < fr_end ? (
                 <>
                   <CompanyRegistrationButton />
                   <Link href="/exhibitor/packages">
@@ -48,6 +48,17 @@ export default async function HomePage() {
                       variant={"secondary"}
                       className="dark:bg-liqorice-700">
                       This Year&apos;s Packages
+                      <ArrowRightIcon className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/student/events">
+                    <Button
+                      variant={"secondary"}
+                      className="dark:bg-liqorice-700">
+                      Sign up for events!
                       <ArrowRightIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
