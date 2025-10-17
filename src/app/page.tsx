@@ -17,6 +17,14 @@ export default async function HomePage() {
   const dates = await fetchDates()
   const fr_end = new Date(dates.fr.end).getTime()
   const today = Date.now()
+  /* temporary golden exhibitor list, can be improved on */
+  const golden_exhibitors = [
+    ["Exhibitor 1", "picture1"],
+    ["Exhibitor 2", "picture2"],
+    ["Exhibitor 3", "picture3"]
+    /*["exhibitor4", "picture4"],
+    ["exhibitor5", "picture5"]*/
+  ]
 
   return (
     <>
@@ -74,8 +82,8 @@ export default async function HomePage() {
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
-          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-hidden">
-            <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
+          <div className="relative flex flex-col items-center gap-4 overflow-hidden text-center md:flex-row md:items-end md:pl-4">
+            <div className="absolute left-0 top-0 flex w-full max-w-full flex-row overflow-hidden md:w-1/4">
               <Clock
                 size={100}
                 strokeWidth={1.5}
@@ -83,7 +91,7 @@ export default async function HomePage() {
                   WebkitMaskImage:
                     "linear-gradient(to bottom, black 40%, transparent 100%)",
                   WebkitMaskRepeat: "no-repeat",
-                  WebkitMaskSize: "100% 100%",
+                  WebkitMaskSize: "100% 100%"
                 }}
                 className="ml-2 text-melon-700"
               />
@@ -101,6 +109,29 @@ export default async function HomePage() {
             </div>
           </div>
           <VisitorNumberBar />
+          <p className="py-2 text-2xl font-bold text-melon-700">
+            GOLD EXHIBITORS
+          </p>
+          <div className="flex flex-wrap justify-evenly gap-4">
+            {golden_exhibitors.map(exhibitor => {
+              return (
+                <div
+                  key={exhibitor[0]}
+                  className="w-fit rounded-md bg-green-900 p-3 pb-12">
+                  <div
+                    className={
+                      "max-w-64" /* + "h-32 w-40 rounded-md border-2 border-yellow-400 bg-black"*/
+                    }>
+                    {/*exhibitor[1]*/}
+                    <img src="/armada_white.svg" alt="Armada Logo White" />
+                  </div>
+                  <p className="p-2 text-2xl font-medium text-black">
+                    {exhibitor[0]}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
           {/* About section */}
           <Page.Header className="mt-8">About Armada</Page.Header>
           <P className="mt-4">
@@ -122,11 +153,9 @@ export default async function HomePage() {
             , the student union at KTH, any profit Armada makes goes back to the
             students, funding THS initiatives for a better student life.
           </P>
-
           <div className="flex w-full justify-center">
             <OrganisationMembersGraphic />
           </div>
-
           {/* Why Armada */}
           <h2 className="mt-4 font-bebas-neue text-3xl font-medium text-melon-700">
             New students, every year!
@@ -138,7 +167,6 @@ export default async function HomePage() {
             awareness among younger students and be top of mind when the older
             students start looking for a job. Welcome!
           </p>
-
           {/* Links */}
           <div className="my-4 flex flex-col items-center gap-4 text-center md:flex-row">
             <div className="flex w-full max-w-sm flex-1 flex-col items-center rounded-md bg-green-950 bg-opacity-90 pb-8 pt-2 sm:max-w-md">
