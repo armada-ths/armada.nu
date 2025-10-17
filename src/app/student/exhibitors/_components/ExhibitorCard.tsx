@@ -1,10 +1,10 @@
 "use client"
 
 import BadgeCollection from "@/app/student/exhibitors/_components/BadgeCollection"
-import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails"
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { Exhibitor } from "@/components/shared/hooks/api/fetchExhibitors"
 import Modal from "@/components/ui/Modal"
 
+import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails"
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import Image from "next/image"
 import Link from "next/link"
@@ -78,33 +78,29 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
         <div className="p-4 sm:p-10">
           <ExhibitorDetails exhibitor={exhibitor} />
-          
         </div>
       </Modal>
 
       <Link href={`/student/exhibitors?id=${exhibitor.id}`} scroll={false}>
-        <div 
-          className="to-liqorice-950 group relative flex h-full flex-col border-2 border-solid border-emerald-900 bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition hover:scale-[1.05] hover:brightness-95"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-        >
-          
+        <div className="to-liqorice-950 group relative flex h-full flex-col rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition hover:scale-[1.05] hover:brightness-95">
           <h3 className="my-2 text-center font-bebas-neue text-2xl text-emerald-100 antialiased transition group-hover:text-melon-700 xs:text-xl">
             {exhibitor.name}
           </h3>
 
-          {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
+          {(exhibitor.logoSquared || exhibitor.logoFreesize) ? (
             <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center px-4 overflow-hidden">
               <Image
-                className="h-full w-full object-cover rounded-lg"
+                className="h-full w-full object-contain"
                 src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
                 alt={exhibitor.name}
                 width={300}
                 height={300}
               />
             </div>
-
-          )}
+          ) : (
+            <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center px-4 overflow-hidden" />
+          )
+          }
           <BadgeCollection
             items={exhibitor.industries ?? []}
             maxDisplayed={maxDisplayedBadges}

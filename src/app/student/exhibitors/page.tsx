@@ -2,7 +2,7 @@
 
 import { ExhibitorCard } from "@/app/student/exhibitors/_components/ExhibitorCard";
 import { useFilteredExhibitors } from "@/app/student/exhibitors/_components/ExhibitorFilter";
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
+import { Exhibitor } from "@/components/shared/hooks/api/fetchExhibitors";
 import { Page } from "@/components/shared/Page";
 
 export default function ExhibitorsPage() {
@@ -15,7 +15,7 @@ export default function ExhibitorsPage() {
     selectedIndustryIds,
     setSelectedIndustryIds,
   } = useFilteredExhibitors();
-  
+
 
   // 🧩 Dynamically collect all industries from the data
   // går att hämta direkt från api, ändra i framtiden 
@@ -42,37 +42,36 @@ export default function ExhibitorsPage() {
       <Page.Boundary>
         <Page.Header>Companies at the Fair</Page.Header>
 
-        <div className="p-6 space-y-6">
-        {/* Filters */}
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search by company name..."
-          className="border rounded p-2 w-full"
-        />
+        <div className="py-6 space-y-4">
+          {/* Filters */}
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by company name..."
+            className="border rounded p-2 w-full"
+          />
 
-        <div className="flex gap-2 flex-wrap">
-          {allIndustries.map((industry) => (
-            <button
-              key={industry.id}
-              onClick={() => toggleIndustry(industry.id)}
-              className={`px-3 py-1 rounded-full border ${
-                selectedIndustryIds.includes(industry.id)
+          <div className="flex gap-2 flex-wrap">
+            {allIndustries.map((industry) => (
+              <button
+                key={industry.id}
+                onClick={() => toggleIndustry(industry.id)}
+                className={`px-3 py-1 rounded-full border ${selectedIndustryIds.includes(industry.id)
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200"
-              }`}
-            >
-              {industry.name}
-            </button>
-          ))}
-        </div>
+                  }`}
+              >
+                {industry.name}
+              </button>
+            ))}
+          </div>
 
           {/* Exhibitor Cards */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {exhibitors.map((exhibitor: Exhibitor) => (
+            {exhibitors.map((exhibitor: Exhibitor) => (
               <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
-              ))}
+            ))}
 
           </div>
         </div>

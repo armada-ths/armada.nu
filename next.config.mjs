@@ -4,6 +4,8 @@ import toolbar from "@vercel/toolbar/plugins/next"
 const withVercelToolbar = toolbar()
 const nextConfig = {
   images: {
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",
