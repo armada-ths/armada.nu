@@ -1,9 +1,12 @@
 import { CompanyRegistrationButton } from "@/app/_components/CompanyRegistrationButton"
 import { CountdownTimer } from "@/app/_components/CountdownTimer"
+import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
+import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { OrganisationMembersGraphic } from "@/app/about/_components/OrganisationMembersGraphic"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
@@ -15,6 +18,12 @@ import { Suspense } from "react"
 
 export default async function HomePage() {
   const dates = await fetchDates()
+  const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" });
+  const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" });
+  const silverLogos = silverExhibitors
+    .map((g) => g.logoFreesize || g.logoSquared)
+    .filter((url): url is string => Boolean(url));
+
   const fr_end = new Date(dates.fr.end).getTime()
   const today = Date.now()
 
@@ -54,6 +63,11 @@ export default async function HomePage() {
                 </>
               ) : (
                 <>
+                  <Link href="/student/exhibitors">
+                    <Button>
+                      Exhibitors at the fair
+                    </Button>
+                  </Link>
                   <Link href="/student/events">
                     <Button
                       variant={"secondary"}
@@ -97,10 +111,14 @@ export default async function HomePage() {
               November 18-19
             </p>
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
-              <CountdownTimer targetDate={new Date(dates.fair.days[0])} />
+              <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
             </div>
           </div>
-          <VisitorNumberBar />
+          <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-x-hidden overflow-y-visible mt-5">
+            <VisitorNumberBar />
+          </section>
+          {/* Gold Exhibitors */}
+          <GoldExhibitors exhibitors={goldExhibitors} />
           {/* About section */}
           <Page.Header className="mt-8">About Armada</Page.Header>
           <P className="mt-4">
@@ -139,40 +157,35 @@ export default async function HomePage() {
             students start looking for a job. Welcome!
           </p>
 
+          <RollingBanner logos={silverLogos} />
           {/* Links */}
-          <div className="my-4 flex flex-col items-center gap-4 text-center md:flex-row">
-            <div className="flex w-full max-w-sm flex-1 flex-col items-center rounded-md bg-green-950 bg-opacity-90 pb-8 pt-2 sm:max-w-md">
-              <h2 className="mb-2 mt-4 flex-1 font-bebas-neue text-3xl font-medium text-melon-700">
+          <div className="my-6 flex flex-col items-center gap-6 text-center md:flex-row md:justify-center md:gap-8">
+            {/* Card 1 */}
+            <div className="flex w-11/12 max-w-sm flex-col items-center rounded-md bg-green-950 bg-opacity-90 p-6 md:flex-1 md:max-w-md md:p-8">
+              <h2 className="mb-4 font-bebas-neue text-2xl md:text-3xl font-medium text-melon-700">
                 For Exhibitors
               </h2>
-              <div className="flex flex-1 gap-x-3">
+              <div className="flex flex-wrap justify-center gap-3">
                 <Link href="https://app.eventro.se/register/armada">
                   <Button>Exhibitor Signup</Button>
                 </Link>
                 <Link href="/exhibitor/packages">
-                  <Button
-                    variant={"secondary"}
-                    className="dark:bg-liqorice-700">
+                  <Button variant="secondary" className="dark:bg-liqorice-700">
                     Packages
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="flex w-full max-w-sm flex-1 flex-col items-center rounded-md bg-green-950 bg-opacity-90 pb-8 pt-2 sm:max-w-md">
-              <h2 className="mb-2 mt-4 flex-1 font-bebas-neue text-3xl font-medium text-melon-700">
+
+            {/* Card 2 */}
+            <div className="flex w-11/12 max-w-sm flex-col items-center rounded-md bg-green-950 bg-opacity-90 p-6 md:flex-1 md:max-w-md md:p-8">
+              <h2 className="mb-4 font-bebas-neue text-2xl md:text-3xl font-medium text-melon-700">
                 For Students
               </h2>
-              <div className="flex flex-1 gap-x-3">
+              <div className="flex flex-wrap justify-center gap-3">
                 <Link href="/student/recruitment">
                   <Button>Join Us!</Button>
                 </Link>
-                {/* <Link href="/exhibitor/packages">
-                  <Button
-                    variant={"secondary"}
-                    className="dark:bg-liqorice-700">
-
-                  </Button>
-                </Link> */}
               </div>
             </div>
           </div>
