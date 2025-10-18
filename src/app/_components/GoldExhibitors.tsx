@@ -63,15 +63,19 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
       "
     >
       {/* Logo */}
-      <div className="flex justify-center flex-shrink-0 mb-6 md:mb-0">
-        <Image
-          src={exhibitor.logoFreesize ?? ""}
-          alt={`${exhibitor.name} logo`}
-          width={180}
-          height={80}
-          className="h-full w-full object-contain drop-shadow-[0_0_25px_rgba(255,215,0,0.6)]"
-        />
-      </div>
+      {exhibitor.logoFreesize ? (
+        <div className="flex justify-center flex-shrink-0 mb-6 md:mb-0">
+          <Image
+            src={exhibitor.logoFreesize ?? ""}
+            alt={`${exhibitor.name} logo`}
+            width={180}
+            height={80}
+            className="h-full w-full object-contain drop-shadow-[0_0_25px_rgba(255,215,0,0.6)]"
+          />
+        </div>
+      ) : (
+        <div className="flex justify-center flex-shrink-0 mb-6 md:mb-0" />
+      )}
 
       {/* Text */}
       <div className="text-center md:text-left">
