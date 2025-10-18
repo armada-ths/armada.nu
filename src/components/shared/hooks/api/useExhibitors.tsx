@@ -57,7 +57,7 @@ export interface ExhibitorFilters {
   search?: string
 }
 
-export async function fetchExhibitors(filters?: ExhibitorFilters): Promise<Exhibitor[]> {
+export async function fetchExhibitors(options?: RequestInit, filters?: ExhibitorFilters): Promise<Exhibitor[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
 
@@ -69,7 +69,15 @@ export async function fetchExhibitors(filters?: ExhibitorFilters): Promise<Exhib
     url.searchParams.set("filter", jsonFilter)
   }
 
-  const res = await fetch(url.toString(), { cache: "no-store" })
+  const res = await fetch(url.toString(), {
+    cache: options?.cache,
+    next: {
+      ...options?.next,
+      tags: options?.next?.tags ?? [
+        "exhibitors",
+      ]
+    }
+  })
   if (!res.ok) {
     throw new Error(`Failed to fetch exhibitors: ${res.status} ${res.statusText}`)
   }
@@ -85,6 +93,6 @@ export async function fetchExhibitors(filters?: ExhibitorFilters): Promise<Exhib
 export function useExhibitors(filters?: ExhibitorFilters) {
   return useQuery({
     queryKey: ["exhibitors", filters],
-    queryFn: () => fetchExhibitors(filters),
+    queryFn: () => fetchExhibitors(),
   })
 }

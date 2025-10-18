@@ -18,8 +18,8 @@ import { Suspense } from "react"
 
 export default async function HomePage() {
   const dates = await fetchDates()
-  const goldExhibitors = await fetchExhibitors({ tier: "Gold" });
-  const silverExhibitors = await fetchExhibitors({ tier: "Silver" });
+  const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" });
+  const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" });
   const silverLogos = silverExhibitors
     .map((g) => g.logoFreesize || g.logoSquared)
     .filter((url): url is string => Boolean(url));
