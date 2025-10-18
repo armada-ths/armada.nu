@@ -119,6 +119,7 @@ export default async function HomePage() {
           </section>
           {/* Gold Exhibitors */}
           <GoldExhibitors exhibitors={goldExhibitors} />
+          <RollingBanner logos={silverLogos} />
           {/* About section */}
           <Page.Header className="mt-8">About Armada</Page.Header>
           <P className="mt-4">
@@ -126,12 +127,7 @@ export default async function HomePage() {
             fair that has grown to become one of the largest in scandinavia. We
             exist to connect students to their dream employer and have since
             come up with different events and happenings to create personal
-            connections between students and employers.
-          </P>
-          <P className="mt-4">
-            Each year, Armada goes from 1 student, the Project Manager, to over
-            200 student volunteers managing a fair over two days, in several
-            locations and 20 000 visitors. As Armada is fully owned by{" "}
+            connections between students and employers. As Armada is fully owned by{" "}
             <Link
               className="text-white underline hover:no-underline"
               href="https://thskth.se/en/">
@@ -157,7 +153,6 @@ export default async function HomePage() {
             students start looking for a job. Welcome!
           </p>
 
-          <RollingBanner logos={silverLogos} />
           {/* Links */}
           <div className="my-6 flex flex-col items-center gap-6 text-center md:flex-row md:justify-center md:gap-8">
             {/* Card 1 */}
