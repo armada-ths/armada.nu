@@ -1,86 +1,90 @@
-import { Exhibitor, fetchExhibitors } from "@/components/shared/hooks/api/fetchExhibitors";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query"
 
-const CACHE_KEY = "exhibitors_cache";
-const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
-
-// in-memory cache
-let inMemoryCache: { data: Exhibitor[]; timestamp: number } | null = null;
-
-function getCachedData(): Exhibitor[] | null {
-  const now = Date.now();
-
-  // Check in-memory cache
-  if (inMemoryCache && now - inMemoryCache.timestamp < CACHE_TTL) {
-    return inMemoryCache.data;
-  }
-
-  // Check localStorage
-  try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (!cached) return null;
-
-    const parsed = JSON.parse(cached) as {
-      data: Exhibitor[];
-      timestamp: number;
-    };
-
-    if (now - parsed.timestamp < CACHE_TTL) {
-      inMemoryCache = parsed;
-      return parsed.data;
-    }
-  } catch {
-    // ignore parse errors
-  }
-
-  return null;
+export interface Exhibitor {
+  id: number
+  name: string
+  type: string
+  tier?: string
+  companyWebsite?: string
+  about?: string
+  purpose?: string
+  logoSquared?: string
+  logoFreesize?: string
+  mapImg?: string
+  industries?: Industry[]
+  values?: unknown[] // TODO Define this
+  employments?: Employment[]
+  locations?: Location[]
+  competences?: unknown[] // TODO Define this
+  cities?: string
+  benefits?: unknown[] // TODO Define this
+  average_age?: unknown // TODO Define this
+  founded?: unknown // TODO Define this
+  groups?: Group[]
+  fairLocation: string
+  vyerPosition?: string
+  locationSpecial?: string
+  climateCompensation: boolean
+  flyer?: string
+  booths?: unknown[] // TODO Define this
+  map_coordinates?: number[][]
 }
 
-
-function setCachedData(data: Exhibitor[]) {
-  const cacheEntry = { data, timestamp: Date.now() };
-  inMemoryCache = cacheEntry;
-  localStorage.setItem(CACHE_KEY, JSON.stringify(cacheEntry));
+export interface Industry {
+  id: number
+  name: string
 }
 
-export function useExhibitors() {
-  const [exhibitors, setExhibitors] = useState<Exhibitor[] | null>(() => getCachedData());
-  const [loading, setLoading] = useState(!exhibitors);
-  const [error, setError] = useState<string | null>(null);
+export interface Employment {
+  id: number
+  name: string
+}
 
-  useEffect(() => {
-    if (!exhibitors) {
-      setLoading(true);
-      fetchExhibitors()
-        .then((data) => {
-          setCachedData(data);
-          setExhibitors(data);
-        })
-        .catch((err: unknown) => {
-          // handle unknown errors
-          if (err instanceof Error) setError(err.message);
-          else setError(String(err));
-        })
-        .finally(() => setLoading(false));
-    }
-  }, []);
+export interface Location {
+  id: number
+  name: string
+}
 
-  return {
-    exhibitors,
-    loading,
-    error,
-    refetch: async () => {
-      try {
-        setLoading(true);
-        const data = await fetchExhibitors();
-        setCachedData(data);
-        setExhibitors(data);
-      } catch (err: unknown) {
-        if (err instanceof Error) setError(err.message);
-        else setError(String(err));
-      } finally {
-        setLoading(false);
-      }
-    },
-  };
+export interface Group {
+  id: number
+  name: string
+}
+
+export interface ExhibitorFilters {
+  tier?: string
+  type?: string
+  industryId?: number
+  search?: string
+}
+
+export async function fetchExhibitors(filters?: ExhibitorFilters): Promise<Exhibitor[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
+  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+
+  const url = new URL("api/v1/exhibitors", baseUrl)
+  url.searchParams.set("all", "true")
+
+  if (filters) {
+    const jsonFilter = JSON.stringify(filters)
+    url.searchParams.set("filter", jsonFilter)
+  }
+
+  const res = await fetch(url.toString(), { cache: "no-store" })
+  if (!res.ok) {
+    throw new Error(`Failed to fetch exhibitors: ${res.status} ${res.statusText}`)
+  }
+
+  const data = await res.json()
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid response format: expected an array")
+  }
+
+  return data as Exhibitor[]
+}
+
+export function useExhibitors(filters?: ExhibitorFilters) {
+  return useQuery({
+    queryKey: ["exhibitors", filters],
+    queryFn: () => fetchExhibitors(filters),
+  })
 }

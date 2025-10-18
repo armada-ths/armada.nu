@@ -1,7 +1,7 @@
 "use client"
 
 import BadgeCollection from "@/app/student/exhibitors/_components/BadgeCollection"
-import { Exhibitor } from "@/components/shared/hooks/api/fetchExhibitors"
+import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import Modal from "@/components/ui/Modal"
 
 import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails"

@@ -5,8 +5,8 @@ import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { OrganisationMembersGraphic } from "@/app/about/_components/OrganisationMembersGraphic"
-import { fetchExhibitors } from "@/components/shared/hooks/api/fetchExhibitors"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
@@ -20,9 +20,6 @@ export default async function HomePage() {
   const dates = await fetchDates()
   const goldExhibitors = await fetchExhibitors({ tier: "Gold" });
   const silverExhibitors = await fetchExhibitors({ tier: "Silver" });
-  const goldLogos = goldExhibitors
-    .map((g) => g.logoFreesize || g.logoSquared)
-    .filter((url): url is string => Boolean(url));
   const silverLogos = silverExhibitors
     .map((g) => g.logoFreesize || g.logoSquared)
     .filter((url): url is string => Boolean(url));

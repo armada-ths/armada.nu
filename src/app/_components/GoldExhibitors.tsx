@@ -1,6 +1,6 @@
 "use client";
 
-import { Exhibitor } from "@/components/shared/hooks/api/fetchExhibitors";
+import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 

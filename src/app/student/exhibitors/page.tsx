@@ -2,13 +2,14 @@
 
 import { ExhibitorCard } from "@/app/student/exhibitors/_components/ExhibitorCard";
 import { useFilteredExhibitors } from "@/app/student/exhibitors/_components/ExhibitorFilter";
-import { Exhibitor } from "@/components/shared/hooks/api/fetchExhibitors";
+import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
 import { Page } from "@/components/shared/Page";
 
 export default function ExhibitorsPage() {
   const {
     exhibitors,
-    loading,
+    isLoading,
+    isError,
     error,
     searchQuery,
     setSearchQuery,
@@ -33,8 +34,8 @@ export default function ExhibitorsPage() {
     );
   };
 
-  if (loading) return <p>Loading exhibitors...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (isLoading) return <p>Loading exhibitors...</p>;
+  if (isError) return <p>Error: {error?.message}</p>;
   if (!exhibitors) return <p>No exhibitors available.</p>; // <- ensures non-null below
 
   return (
