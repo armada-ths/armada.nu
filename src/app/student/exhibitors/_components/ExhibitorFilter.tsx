@@ -1,4 +1,5 @@
-import { Exhibitor, useExhibitors } from "@/components/shared/hooks/api/useExhibitors";
+import { Exhibitor } from "@/components/shared/hooks/api/fetchExhibitors";
+import { useExhibitors } from "@/components/shared/hooks/api/useExhibitors";
 import { useMemo, useState } from "react";
 
 export interface Industry {
