@@ -1,3 +1,5 @@
+"use client"
+
 import { Exhibitor, useExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { useMemo, useState } from "react"
 
