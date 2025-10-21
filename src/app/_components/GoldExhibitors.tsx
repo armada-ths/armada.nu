@@ -5,6 +5,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
@@ -71,6 +73,8 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
               </CarouselItem>
             ))}
           </CarouselContent>
+          <CarouselPrevious variant={"ghost"} />
+          <CarouselNext variant={"ghost"} />
         </Carousel>
 
         {/* dot navigation */}
