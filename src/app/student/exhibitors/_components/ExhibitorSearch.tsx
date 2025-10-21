@@ -5,6 +5,7 @@ import FilterOverlay from "@/app/student/exhibitors/_components/FilterOverlay";
 import { Employment, Exhibitor, Industry, Program } from "@/components/shared/hooks/api/useExhibitors";
 import { useState } from "react";
 import { ExhibitorCard } from "./ExhibitorCard";
+// Import the MultiSelect component and the Option interface
 
 interface Props {
   exhibitors: Exhibitor[];
@@ -70,7 +71,6 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
           ))}
         </div>
       </div>
-
     </div >
   );
 }
