@@ -57,6 +57,13 @@ export interface ExhibitorFilters {
   search?: string
 }
 
+export interface EmploymentFilters {
+  tier?: string
+  type?: string
+  industryId?: number
+  search?: string
+}
+
 export async function fetchExhibitors(options?: RequestInit, filters?: ExhibitorFilters): Promise<Exhibitor[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
@@ -94,5 +101,44 @@ export function useExhibitors(filters?: ExhibitorFilters) {
   return useQuery({
     queryKey: ["exhibitors", filters],
     queryFn: () => fetchExhibitors(),
+  })
+}
+
+export async function fetchEmployments(options?: RequestInit, filters?: EmploymentFilters): Promise<Employment[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
+  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+
+  const url = new URL("api/v1/employments", baseUrl)
+
+  if (filters) {
+    const jsonFilter = JSON.stringify(filters)
+    url.searchParams.set("filter", jsonFilter)
+  }
+
+  const res = await fetch(url.toString(), {
+    cache: options?.cache,
+    next: {
+      ...options?.next,
+      tags: options?.next?.tags ?? [
+        "employments",
+      ]
+    }
+  })
+  if (!res.ok) {
+    throw new Error(`Failed to fetch employments: ${res.status} ${res.statusText}`)
+  }
+
+  const data = await res.json()
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid response format: expected an array")
+  }
+
+  return data as Employment[]
+}
+
+export function useEmployments(filters?: ExhibitorFilters) {
+  return useQuery({
+    queryKey: ["employments", filters],
+    queryFn: () => fetchEmployments(),
   })
 }
