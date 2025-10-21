@@ -17,7 +17,7 @@ export default function ExhibitorDetails({
   exhibitor: Exhibitor
 }) {
   const hasIndustries = (exhibitor.industries ?? []).length > 0
-  const hasEmployments = (exhibitor.employments?? []).length > 0
+  const hasEmployments = (exhibitor.employments ?? []).length > 0
 
   const [show, setShow] = useState(false)
 
@@ -32,17 +32,14 @@ export default function ExhibitorDetails({
   return (
     <div className="pb-5 @container">
       <div className="flex flex-col-reverse items-center gap-6 @sm:h-[100px] @sm:flex-row">
-
         {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
-          <div className="relative mt-2 flex h-[80px] w-[260px] flex-initial justify-center px-4 overflow-hidden">
-            <Image
-              className="h-full w-full object-cover rounded-lg"
-              src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
-              alt="Failed to load image"
-              width={300}
-              height={300}
-            />
-          </div>
+          <Image
+            className="h-20 w-auto object-contain @sm:h-full @sm:min-w-28 @sm:max-w-[25%]"
+            src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
+            alt={exhibitor.name}
+            width={300}
+            height={300}
+          />
         )}
 
         <div className="flex flex-col items-center @sm:ml-2 @sm:block">
@@ -67,7 +64,7 @@ export default function ExhibitorDetails({
         </div>
 
       </div>
-      
+
       <div className="flex flex-col md:flex-row gap-20 mt-8">
         {exhibitor.about && (
           <div className="flex-1">
@@ -87,7 +84,7 @@ export default function ExhibitorDetails({
           </div>
         )}
       </div>
-     
+
       <div
         className={cn("mt-10 grid grid-cols-1", {
           "gap-5 md:grid-cols-2": hasIndustries && hasEmployments

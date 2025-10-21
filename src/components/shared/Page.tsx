@@ -9,7 +9,7 @@ Page.Boundary = function PageBoundary({
   className,
   maxWidth,
   ...rest
-}: React.HTMLAttributes<HTMLDivElement> & { maxWidth?: number }) {
+}: React.HTMLAttributes<HTMLDivElement> & { maxWidth?: string | number }) {
   return (
     <div
       className={cn("mx-auto mt-10 flex w-full flex-1 flex-col", className)}

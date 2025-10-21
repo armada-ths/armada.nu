@@ -3,14 +3,20 @@
 import EventDetails from "@/app/student/events/_components/EventDetails"
 import Modal from "@/components/shared/Modal"
 import { Event } from "@/components/shared/hooks/api/useEvents"
-import { formatTimestampAsDate } from "@/lib/utils"
+import { cn, formatTimestampAsDate } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export function EventItem({ event }: { event: Event }) {
-  const { id, name, event_start, registration_end, image_url } = event
+  const {
+    id,
+    name,
+    eventStart: event_start,
+    registrationEnd: registration_end,
+    imageUrl: image_url,
+  } = event
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -18,8 +24,7 @@ export function EventItem({ event }: { event: Event }) {
 
   useEffect(() => {
     const queryId = searchParams.get("id")
-    if (queryId === id.toString()) setModalOpen(true)
-    else setModalOpen(false)
+    setModalOpen(queryId === id.toString())
   }, [id, searchParams])
 
   return (
@@ -27,36 +32,53 @@ export function EventItem({ event }: { event: Event }) {
       <Modal
         open={modalOpen}
         setOpen={setModalOpen}
-        onClose={() => {
-          router.push("/student/events") // clear url when the modal is closed
-        }}
-        className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
+        onClose={() => router.push("/student/events", { scroll: false })}
+        className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
+      >
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
 
-      <div className="absolute -start-1.5 mt-3.5 h-3 w-3 rounded-full border border-white bg-melon-700"></div>
-      <div className="mb-6 ml-6 w-11/12 rounded-lg border-2 border-solid border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95 sm:w-3/5 sm:min-w-[500px]">
+      {/* Timeline dot (hidden on mobile) */}
+      <div className="absolute -start-1.5 mt-[5.5rem] hidden h-3 w-3 rounded-full border border-white bg-melon-700 sm:block" />
+
+      {/* Card container */}
+      <div className="mb-6 w-full sm:ml-6 sm:w-3/5 sm:min-w-[500px]">
         <Link
           href={`/student/events?id=${id}`}
-          className="flex flex-auto flex-col sm:h-48 sm:flex-row sm:items-center">
-          {image_url && (
-            <Image
-              width={200}
-              height={200}
-              className="h-full max-h-48 w-full rounded-t-lg object-contain sm:h-48 sm:w-48 sm:rounded-l-lg sm:rounded-tr-none"
-              src={image_url}
-              alt=""
-            />
+          scroll={false}
+          className={cn(
+            "group flex h-[14rem] overflow-hidden rounded-lg border-2 border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95 sm:h-[13rem]",
+            image_url ? "sm:flex-row flex-col" : "flex-col"
           )}
-          <div className="flex flex-col justify-between pl-5">
-            <h5 className="mb-2 mt-5 text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
+        >
+          {/* Image section */}
+          {image_url && (
+            <div className="relative h-1/2 w-full flex-shrink-0 sm:h-auto sm:w-48">
+              <Image
+                src={image_url}
+                alt={name}
+                fill
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent sm:hidden" />
+            </div>
+          )}
+
+          {/* Text section */}
+          <div
+            className={cn(
+              "flex flex-1 flex-col justify-center gap-1 p-5 text-center sm:text-left",
+              !image_url && "items-center text-center"
+            )}
+          >
+            <h5 className="text-xl font-semibold text-white sm:text-2xl">
               {name}
             </h5>
-            <p className="mb-3 text-gray-700 dark:text-neutral-400">
+            <p className="text-sm text-stone-300">
               {formatTimestampAsDate(event_start)}
             </p>
             {registration_end && (
-              <p className="mb-4 text-xs text-gray-700 dark:text-neutral-400">
+              <p className="text-xs text-stone-500">
                 Registration closes {formatTimestampAsDate(registration_end)}
               </p>
             )}

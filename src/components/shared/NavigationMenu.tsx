@@ -66,14 +66,14 @@ const studentLinks: NavigationLink[] = [
   {
     title: "Exhibitors",
     href: "/student/exhibitors",
-    description: `Get an in depth look at the companies attending the fair`,
-    enabled: false
+    description: `Look at the companies attending the fair`,
+    enabled: true
   },
   {
     title: "Events",
     href: "/student/events",
     description: "See the events leading up to the fair",
-    enabled: false
+    enabled: true
   },
   {
     title: "Recruitment",
@@ -156,7 +156,16 @@ export function NavigationMenu(
       {/** Sheet is used for mobile navigation */}
       <Sheet open={sheetOpen}>
         <div className="flex w-full justify-between md:hidden">
-          {props.aside != null && <>{props.aside}</>}
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/armada_white.svg"
+              alt="Armada Logo"
+              width={28}
+              height={28}
+              className="brightness-110 hover:opacity-90 transition"
+            />
+          </Link>
+          <div className="min-w-[30px]">{props.aside}</div>
           <SheetTrigger
             className="md:hidden"
             onClick={() => setSheetOpen(true)}>

@@ -11,7 +11,7 @@ export async function CompanyRegistrationButton() {
   const isBeforeSignUpDate = DateTime.now() < signUpDate
 
   if (isAfterFr) {
-    return <P>{DateTime.now().year} signup is closed</P>
+    return
   } else if (isBeforeSignUpDate) {
     return (
       <P>
