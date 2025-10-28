@@ -42,14 +42,8 @@ export async function sendToSlack(
   }
 }
 
-type OrderForm = {
-  name: string
-  company: string
-  message: string
-}
-
 export async function sendOrderToSlack(
-  form: OrderForm,
+  message: string,
   recaptchaToken?: string | null
 ): Promise<{ success: boolean; error?: string }> {
   // If client uses captcha, validate token server-side
@@ -106,10 +100,7 @@ export async function sendOrderToSlack(
   }
 
   const payload = {
-    text: `New order request:
-    • Name: ${form.name}
-    • Company: ${form.company}
-    • Message: ${form.message}`
+    text: message
   }
 
   try {
