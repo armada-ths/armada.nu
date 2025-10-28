@@ -4,6 +4,8 @@ import toolbar from "@vercel/toolbar/plugins/next"
 const withVercelToolbar = toolbar()
 const nextConfig = {
   images: {
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",
@@ -14,6 +16,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "armada-cms-files-e48105192c52.s3.eu-north-1.amazonaws.com",
+        port: "",
+        pathname: "**"
+      },
+      {
+        protocol: "https",
+        hostname: "app.eventro.se",
         port: "",
         pathname: "**"
       },

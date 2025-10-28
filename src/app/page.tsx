@@ -1,45 +1,35 @@
 import { CompanyRegistrationButton } from "@/app/_components/CompanyRegistrationButton"
+import { CountdownTimer } from "@/app/_components/CountdownTimer"
+import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
+import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { OrganisationMembersGraphic } from "@/app/about/_components/OrganisationMembersGraphic"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, Clock, MapIcon } from "lucide-react"
-import { DateTime } from "luxon"
+import { ArrowRightIcon, Clock } from "lucide-react"
 //import Image from "next/image"
 import Link from "next/link"
 import { Suspense } from "react"
 
 export default async function HomePage() {
   const dates = await fetchDates()
+  const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" });
+  const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" });
+  const silverLogos = silverExhibitors
+    .map((g) => g.logoFreesize || g.logoSquared)
+    .filter((url): url is string => Boolean(url));
+
   const fr_end = new Date(dates.fr.end).getTime()
   const today = Date.now()
 
-  const isAfterFr = DateTime.now() > DateTime.fromISO(dates.fr.end)
-
   return (
     <>
-      {today < fr_end ? (
-        <NavigationMenu />
-      ) : (
-        <NavigationMenu
-          aside={
-            isAfterFr ? (
-              <Link href={"/student/map"}>
-                <Button className="flex gap-2">
-                  <MapIcon size={15} /> Visit the map
-                </Button>
-              </Link>
-            ) : (
-              <CompanyRegistrationButton />
-            )
-          }
-        />
-      )}
-
+      <NavigationMenu />
       <Page.Background>
         <Page.Boundary className="px-6">
           <div className="mb-5 flex w-full flex-1 justify-center">
@@ -73,15 +63,17 @@ export default async function HomePage() {
                 </>
               ) : (
                 <>
-                  <Link href="/student/map">
-                    <Button className="flex gap-2">
-                      <MapIcon size={15} /> Visit the map
+                  <Link href="/student/exhibitors">
+                    <Button>
+                      Exhibitors at the fair
                     </Button>
                   </Link>
                   <Link href="/student/events">
-                    <Button variant={"secondary"} className="flex gap-2">
-                      Signup for events
-                      <ArrowRightIcon size={15} />
+                    <Button
+                      variant={"secondary"}
+                      className="dark:bg-liqorice-700">
+                      Sign up for events!
+                      <ArrowRightIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                 </>
@@ -96,58 +88,38 @@ export default async function HomePage() {
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
-          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4">
-            <div>
-              <div className="absolute flex w-full flex-row md:w-1/4">
-                <Clock
-                  size={100}
-                  strokeWidth={1.5}
-                  style={{
-                    WebkitMaskImage:
-                      "linear-gradient(to bottom, black 40%, transparent 100%)",
-                    WebkitMaskRepeat: "no-repeat",
-                    WebkitMaskSize: "100% 100%"
-                  }}
-                  className="ml-2 text-melon-700"
-                />
-
-                <p className="-ml-1 mt-1 italic opacity-80">
-                  Which
-                  <br />
-                  &nbsp; Dates?
-                </p>
-              </div>
-              <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
-                November 18-19
+          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-hidden">
+            <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
+              <Clock
+                size={100}
+                strokeWidth={1.5}
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, black 40%, transparent 100%)",
+                  WebkitMaskRepeat: "no-repeat",
+                  WebkitMaskSize: "100% 100%",
+                }}
+                className="ml-2 text-melon-700"
+              />
+              <p className="-ml-1 mt-1 italic opacity-80">
+                Which
+                <br />
+                &nbsp;Dates?
               </p>
             </div>
+            <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
+              November 18-19
+            </p>
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
-              <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
-              <div className="flex">
-                <p className="flex-1">
-                  57
-                  <br />
-                  Days
-                </p>
-                <p className="flex-1">
-                  21
-                  <br />
-                  Hours
-                </p>
-                <p className="flex-1">
-                  40
-                  <br />
-                  minutes
-                </p>
-                <p className="flex-1">
-                  25
-                  <br />
-                  Seconds
-                </p>
-              </div>
+              <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
             </div>
           </div>
-          <VisitorNumberBar />
+          <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-x-hidden overflow-y-visible mt-5">
+            <VisitorNumberBar />
+          </section>
+          {/* Gold Exhibitors */}
+          <GoldExhibitors exhibitors={goldExhibitors} />
+          <RollingBanner logos={silverLogos} />
           {/* About section */}
           <Page.Header className="mt-8">About Armada</Page.Header>
           <P className="mt-4">
@@ -155,12 +127,7 @@ export default async function HomePage() {
             fair that has grown to become one of the largest in scandinavia. We
             exist to connect students to their dream employer and have since
             come up with different events and happenings to create personal
-            connections between students and employers.
-          </P>
-          <P className="mt-4">
-            Each year, Armada goes from 1 student, the Project Manager, to over
-            200 student volunteers managing a fair over two days, in several
-            locations and 20 000 visitors. As Armada is fully owned by{" "}
+            connections between students and employers. As Armada is fully owned by{" "}
             <Link
               className="text-white underline hover:no-underline"
               href="https://thskth.se/en/">
@@ -187,39 +154,33 @@ export default async function HomePage() {
           </p>
 
           {/* Links */}
-          <div className="my-4 flex flex-col items-center gap-4 text-center md:flex-row">
-            <div className="flex w-full max-w-sm flex-1 flex-col items-center rounded-md bg-green-950 bg-opacity-90 pb-8 pt-2 sm:max-w-md">
-              <h2 className="mb-2 mt-4 flex-1 font-bebas-neue text-3xl font-medium text-melon-700">
+          <div className="my-6 flex flex-col items-center gap-6 text-center md:flex-row md:justify-center md:gap-8">
+            {/* Card 1 */}
+            <div className="flex w-11/12 max-w-sm flex-col items-center rounded-md bg-green-950 bg-opacity-90 p-6 md:flex-1 md:max-w-md md:p-8">
+              <h2 className="mb-4 font-bebas-neue text-2xl md:text-3xl font-medium text-melon-700">
                 For Exhibitors
               </h2>
-              <div className="flex flex-1 gap-x-3">
+              <div className="flex flex-wrap justify-center gap-3">
                 <Link href="https://app.eventro.se/register/armada">
                   <Button>Exhibitor Signup</Button>
                 </Link>
                 <Link href="/exhibitor/packages">
-                  <Button
-                    variant={"secondary"}
-                    className="dark:bg-liqorice-700">
+                  <Button variant="secondary" className="dark:bg-liqorice-700">
                     Packages
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="flex w-full max-w-sm flex-1 flex-col items-center rounded-md bg-green-950 bg-opacity-90 pb-8 pt-2 sm:max-w-md">
-              <h2 className="mb-2 mt-4 flex-1 font-bebas-neue text-3xl font-medium text-melon-700">
+
+            {/* Card 2 */}
+            <div className="flex w-11/12 max-w-sm flex-col items-center rounded-md bg-green-950 bg-opacity-90 p-6 md:flex-1 md:max-w-md md:p-8">
+              <h2 className="mb-4 font-bebas-neue text-2xl md:text-3xl font-medium text-melon-700">
                 For Students
               </h2>
-              <div className="flex flex-1 gap-x-3">
+              <div className="flex flex-wrap justify-center gap-3">
                 <Link href="/student/recruitment">
                   <Button>Join Us!</Button>
                 </Link>
-                {/* <Link href="/exhibitor/packages">
-                  <Button
-                    variant={"secondary"}
-                    className="dark:bg-liqorice-700">
-
-                  </Button>
-                </Link> */}
               </div>
             </div>
           </div>

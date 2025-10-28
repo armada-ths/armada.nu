@@ -1,6 +1,7 @@
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { Button } from "@/components/ui/button"
+import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function ExhibitorLayout({
@@ -13,7 +14,12 @@ export default async function ExhibitorLayout({
       revalidate: 10800 // 3 hours
     }
   })
-  return data == null ? (
+
+  const isPastDate = (data?.end_date &&
+    DateTime.fromISO(data.end_date, { zone: "Europe/Stockholm" }).plus({ days: 1 }) < DateTime.now()) ||
+    (data?.start_date && DateTime.fromISO(data.start_date, { zone: "Europe/Stockholm" }) > DateTime.now())
+
+  return isPastDate ? (
     <>
       <NavigationMenu />
       {children}

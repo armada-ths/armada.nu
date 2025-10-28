@@ -1,10 +1,10 @@
 "use client"
 
+import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
-import { ReactNode } from "react"
 import { cn } from "@/lib/utils"
+import { ReactNode } from "react"
 
 export default function Modal({
   children,
@@ -45,7 +45,7 @@ export default function Modal({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent
         className={cn(
-          "max-h-[75%] border border-stone-500 pt-0 focus-visible:outline-none",
+          "max-h-[85%] border border-stone-500 pt-0 focus-visible:outline-none",
           className
         )}>
         {children}

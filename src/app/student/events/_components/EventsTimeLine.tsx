@@ -21,14 +21,14 @@ export function EventsTimeline({ events }: { events: Event[] }) {
           </AlertDescription>
         </Alert>
       )}
-      <div className="relative mt-10 border-s border-melon-700">
+      <div className="relative mt-10 w-full sm:w-4/5 sm:border-s sm:border-melon-700 px-2 sm:px-0">
         {events.map(event => (
           // EventItem uses useSearchParams, so needs to have a Suspense boundary
           <Suspense key={event.id}>
             <EventItem event={event}></EventItem>
           </Suspense>
         ))}
-      </div>
+      </div >
     </>
   )
 }

@@ -7,22 +7,22 @@ export interface Event {
   description: string
   location: string
   food: string
-  event_start: number
-  event_end: number
-  event_start_string: string
-  registration_end: number
-  image_url: string
-  fee: number
-  registration_required: boolean
-  external_event_link: string
-  signup_questions: SignupQuestion[]
-  signup_link: string
-  can_create_teams: boolean
-  can_join_teams: boolean
-  open_for_signup_student: boolean
-  open_for_signup_company: boolean
-  event_max_capacity: number
-  participant_count: number
+  eventStart: number | string
+  eventEnd: number | string
+  eventStartString?: string
+  registrationEnd?: number | string
+  imageUrl: string
+  fee: string
+  registrationRequired: boolean
+  externalEventLink: string
+  signupQuestions: SignupQuestion[]
+  signupLink: string
+  canCreateTeams: boolean
+  canJoinTeams: boolean
+  openForSignupStudent: boolean
+  openForSignupCompany: boolean
+  eventMaxCapacity: number
+  participantCount: number
 }
 
 export interface SignupQuestion {
@@ -35,11 +35,18 @@ export interface SignupQuestion {
 
 export async function fetchEvents(options?: RequestInit) {
   const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/v1/events`,
+    `${env.NEXT_PUBLIC_API_URL}/api/v1/events?public=true`,
     options ?? {}
   )
-  const result = await res.json()
-  return result as Event[]
+  try {
+    const result = await res.json()
+    return result as Event[]
+  } catch (error) {
+    console.error(
+      `Unable to fetch events. Error: ${(error as Error)?.message || error}`
+    )
+  }
+  return []
 }
 
 export function useEvents(options?: RequestInit) {
