@@ -14,6 +14,7 @@ export interface Exhibitor {
   industries?: Industry[]
   //values?: unknown[] // TODO Define this
   employments?: Employment[]
+  programs?: Program[]
   //locations?: Location[]
   //competences?: unknown[] // TODO Define this
   cities?: string
@@ -36,6 +37,11 @@ export interface Industry {
 }
 
 export interface Employment {
+  id: number
+  name: string
+}
+
+export interface Program {
   id: number
   name: string
 }
@@ -71,6 +77,12 @@ export interface IndustryFilters {
   search?: string
 }
 
+export interface ProgramFilters {
+  tier?: string
+  type?: string
+  industryId?: number
+  search?: string
+}
 
 export async function fetchExhibitors(options?: RequestInit, filters?: ExhibitorFilters): Promise<Exhibitor[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
@@ -192,11 +204,11 @@ export function useIndustries(filters?: IndustryFilters) {
   })
 }
 
-export async function fetchPrograms(options?: RequestInit, filters?: IndustryFilters): Promise<Industry[]> {
+export async function fetchPrograms(options?: RequestInit, filters?: ProgramFilters): Promise<Program[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
 
-  const url = new URL("api/v1/industries", baseUrl)
+  const url = new URL("api/v1/programs", baseUrl)
 
   if (filters) {
     const jsonFilter = JSON.stringify(filters)
@@ -208,12 +220,12 @@ export async function fetchPrograms(options?: RequestInit, filters?: IndustryFil
     next: {
       ...options?.next,
       tags: options?.next?.tags ?? [
-        "industries",
+        "programs",
       ]
     }
   })
   if (!res.ok) {
-    throw new Error(`Failed to fetch industries: ${res.status} ${res.statusText}`)
+    throw new Error(`Failed to fetch programs: ${res.status} ${res.statusText}`)
   }
 
   const data = await res.json()
@@ -221,10 +233,10 @@ export async function fetchPrograms(options?: RequestInit, filters?: IndustryFil
     throw new Error("Invalid response format: expected an array")
   }
 
-  return data as Industry[]
+  return data as Program[]
 }
 
-export function usePrograms(filters?: ExhibitorFilters) {
+export function usePrograms(filters?: ProgramFilters) {
   return useQuery({
     queryKey: ["industries", filters],
     queryFn: () => fetchEmployments(),

@@ -1,6 +1,6 @@
 "use client";
 
-import { Employment, Exhibitor, Industry } from "@/components/shared/hooks/api/useExhibitors";
+import { Employment, Exhibitor, Industry, Program } from "@/components/shared/hooks/api/useExhibitors";
 import { useMemo, useState } from "react";
 import { ExhibitorCard } from "./ExhibitorCard";
 // Import the MultiSelect component and the Option interface
@@ -10,13 +10,16 @@ interface Props {
   exhibitors: Exhibitor[];
   employments: Employment[];
   industries: Industry[];
+  programs: Program[];
 }
 
-export default function ExhibitorSearch({ exhibitors, employments, industries }: Props) {
+export default function ExhibitorSearch({ exhibitors, employments, industries, programs }: Props) {
   const [searchQueryName, setSearchQueryName] = useState("");
 
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
   const [selectedEmploymentIds, setSelectedEmploymentIds] = useState<string[]>([]);
+  const [selectedIndustriesIds, setSelectedIndustriesIds] = useState<string[]>([]);
+  const [selectedProgramsIds, setSelectedProgramsIds] = useState<string[]>([]);
 
   // 2. DATA TRANSFORMATION: Prepare the employments data for the MultiSelect component
   const employmentOptions: MultiSelectOption[] = useMemo(() => {
@@ -27,11 +30,17 @@ export default function ExhibitorSearch({ exhibitors, employments, industries }:
     }));
   }, [employments]);
 
-  const [selectedIndustriesIds, setSelectedIndustriesIds] = useState<string[]>([]);
   const industriesOptions: MultiSelectOption[] = useMemo(() => {
     return industries.map(industry => ({
       value: String(industry.id),
       label: industry.name,
+    }));
+  }, [industries]);
+
+  const programOptions: MultiSelectOption[] = useMemo(() => {
+    return programs.map(program => ({
+      value: String(program.id),
+      label: program.name,
     }));
   }, [industries]);
 
@@ -41,6 +50,7 @@ export default function ExhibitorSearch({ exhibitors, employments, industries }:
     // Convert the selected string IDs back to numbers for filtering
     const selectedEmploymentsNumericIds = selectedEmploymentIds.map(id => parseInt(id)).filter(id => !isNaN(id));
     const selectedIndustriesNumericIds = selectedIndustriesIds.map(id => parseInt(id)).filter(id => !isNaN(id));
+    const selectedProgramsNumericIds = selectedProgramsIds.map(id => parseInt(id)).filter(id => !isNaN(id));
 
     // --- Name Filter ---
     if (searchQueryName) {
@@ -78,8 +88,21 @@ export default function ExhibitorSearch({ exhibitors, employments, industries }:
       });
     }
 
+    // --- Program Filter ---
+    if (selectedProgramsNumericIds.length > 0) {
+      currentFilteredList = currentFilteredList.filter((ex) => {
+        if (!ex.programs || ex.programs.length === 0) {
+          return false;
+        }
+
+        // 3. FILTER LOGIC: Check exhibitor employments against the numeric array
+        return ex.programs.some(exProgram =>
+          selectedProgramsNumericIds.includes(exProgram.id)
+        );
+      });
+    }
     return currentFilteredList
-  }, [searchQueryName, selectedEmploymentIds, selectedIndustriesIds, exhibitors]);
+  }, [searchQueryName, selectedEmploymentIds, selectedIndustriesIds, selectedProgramsIds, exhibitors]);
 
   return (
     <div className="py-6 space-y-4">
@@ -108,6 +131,14 @@ export default function ExhibitorSearch({ exhibitors, employments, industries }:
             options={industriesOptions}
             onValueChange={setSelectedIndustriesIds} // Pass the state setter
             placeholder="Filter by Industry Type"
+          />
+        </div>
+        {/* Multi-Select Program Filter */}
+        <div className="w-full sm:w-1/2">
+          <MultiSelect
+            options={programOptions}
+            onValueChange={setSelectedProgramsIds} // Pass the state setter
+            placeholder="Filter by Program"
           />
         </div>
       </div>
