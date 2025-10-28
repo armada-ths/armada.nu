@@ -55,18 +55,26 @@ const defaultYear = DateTime.now().minus({ months: 6 }).year
 export async function fetchExhibitors(
   options?: RequestInit & { year?: number }
 ) {
-  //const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/exhibitors`, {
-  //  cache: options?.cache,
-  //  next: {
-  //    ...options?.next,
-  //    tags: options?.next?.tags ?? [
-  //      "exhibitors",
-  //      options?.year?.toString() ?? defaultYear.toString()
-  //    ]
-  //  }
-  //})
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || ""
+  const res = await fetch(`${apiUrl}/api/v1/exhibitors`, {
+    cache: options?.cache,
+    next: {
+      ...options?.next,
+      tags: options?.next?.tags ?? [
+        "exhibitors",
+        options?.year?.toString() ?? defaultYear.toString()
+      ]
+    }
+  })
 
-  return null
+  if (!res.ok) {
+    throw new Error("Failed to fetch exhibitors")
+  }
+
+  const result = await res.json()
+
+  return result as Exhibitor[]
+
   // return [
   //   ...(result as Exhibitor[]),
   //   {
