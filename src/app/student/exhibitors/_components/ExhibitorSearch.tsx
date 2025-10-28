@@ -107,18 +107,17 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
   return (
     <div className="py-6 space-y-4">
 
-      <div className="flex flex-col sm:flex-row sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
-        {/* Search Input for Name */}
+      <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
         <input
           type="text"
           value={searchQueryName}
           onChange={(e) => setSearchQueryName(e.target.value)}
           placeholder="Search by company name..."
-          className="border rounded p-2 w-full sm:w-1/2"
+          className="border rounded p-2 flex-grow"
         />
 
         {/* Multi-Select Employment Filter */}
-        <div className="w-full sm:w-1/2">
+        <div className="sm:w-64 truncate">
           <MultiSelect
             options={employmentOptions}
             onValueChange={setSelectedEmploymentIds} // Pass the state setter
@@ -126,7 +125,7 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
           />
         </div>
         {/* Multi-Select Industries Filter */}
-        <div className="w-full sm:w-1/2">
+        <div className="sm:w-64 truncate">
           <MultiSelect
             options={industriesOptions}
             onValueChange={setSelectedIndustriesIds} // Pass the state setter
@@ -134,7 +133,7 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
           />
         </div>
         {/* Multi-Select Program Filter */}
-        <div className="w-full sm:w-1/2">
+        <div className="sm:w-64 truncate">
           <MultiSelect
             options={programOptions}
             onValueChange={setSelectedProgramsIds} // Pass the state setter
