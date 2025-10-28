@@ -28,25 +28,27 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="m-5 mb-3 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-left">
-          <p>
-            <b>STUDENTS</b>
-          </p>
-          <a href="/student/recruitment">Recruitment</a>
+        {/* Students */}
+        <div className="space-y-1">
+          <p className="font-semibold">STUDENTS</p>
+          <div className="flex flex-col gap-1">
+            <a href="/student/recruitment">Recruitment</a>
+            <a href="/student/events">Events</a>
+            <a href="/student/exhibitors">Exhibitors</a>
+          </div>
         </div>
-        <div className="m-5 mb-3 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-left">
-          <p>
-            <b>EXHIBITORS</b>
-          </p>
-          <a href="https://app.eventro.se/register/armada">Registration</a>
-          <br />
-          <a href="/exhibitor/packages">Packages</a>
-          <br />
-          <a href="/exhibitor">Why Armada</a>
-          <br />
-          <a href="/exhibitor/timeline">Timeline</a>
-          <br />
-          <a href="/exhibitor/events">Events</a>
+
+        {/* Exhibitors */}
+        <div className="space-y-1">
+          <p className="font-semibold">EXHIBITORS</p>
+          <div className="flex flex-col gap-1">
+            <a href="https://app.eventro.se/register/armada">Registration</a>
+            <a href="/exhibitor/packages">Packages</a>
+            <a href="/exhibitor">Why Armada</a>
+            <a href="/exhibitor/timeline">Timeline</a>
+            <a href="/exhibitor/events">Events</a>
+            <a href="/exhibitor/order">Order</a>
+          </div>
         </div>
 
         {/* Partner */}
