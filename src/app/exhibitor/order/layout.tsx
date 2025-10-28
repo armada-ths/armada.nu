@@ -2,8 +2,8 @@ import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Toaster } from "@/components/ui/sonner"
 
 export const metadata = {
-  title: "Order",
-  description: "Order candy or something else nice from Armada"
+  title: "Order Form - Exhibitor Lounge",
+  description: "Order drinks and snacks from the lounge."
 }
 export default function OrderLayout({
   children
