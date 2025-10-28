@@ -1,6 +1,6 @@
 "use client";
 
-import { Employment, Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
+import { Employment, Exhibitor, Industry } from "@/components/shared/hooks/api/useExhibitors";
 import { useMemo, useState } from "react";
 import { ExhibitorCard } from "./ExhibitorCard";
 // Import the MultiSelect component and the Option interface
@@ -9,9 +9,10 @@ import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"; /
 interface Props {
   exhibitors: Exhibitor[];
   employments: Employment[];
+  industries: Industry[];
 }
 
-export default function ExhibitorSearch({ exhibitors, employments }: Props) {
+export default function ExhibitorSearch({ exhibitors, employments, industries }: Props) {
   const [searchQueryName, setSearchQueryName] = useState("");
 
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
@@ -26,12 +27,20 @@ export default function ExhibitorSearch({ exhibitors, employments }: Props) {
     }));
   }, [employments]);
 
+  const [selectedIndustriesIds, setSelectedIndustriesIds] = useState<string[]>([]);
+  const industriesOptions: MultiSelectOption[] = useMemo(() => {
+    return industries.map(industry => ({
+      value: String(industry.id),
+      label: industry.name,
+    }));
+  }, [industries]);
 
   const filtered = useMemo(() => {
     let currentFilteredList = exhibitors;
 
     // Convert the selected string IDs back to numbers for filtering
-    const selectedNumericIds = selectedEmploymentIds.map(id => parseInt(id)).filter(id => !isNaN(id));
+    const selectedEmploymentsNumericIds = selectedEmploymentIds.map(id => parseInt(id)).filter(id => !isNaN(id));
+    const selectedIndustriesNumericIds = selectedIndustriesIds.map(id => parseInt(id)).filter(id => !isNaN(id));
 
     // --- Name Filter ---
     if (searchQueryName) {
@@ -42,7 +51,7 @@ export default function ExhibitorSearch({ exhibitors, employments }: Props) {
     }
 
     // --- Employment Filter ---
-    if (selectedNumericIds.length > 0) {
+    if (selectedEmploymentsNumericIds.length > 0) {
       currentFilteredList = currentFilteredList.filter((ex) => {
         if (!ex.employments || ex.employments.length === 0) {
           return false;
@@ -50,13 +59,27 @@ export default function ExhibitorSearch({ exhibitors, employments }: Props) {
 
         // 3. FILTER LOGIC: Check exhibitor employments against the numeric array
         return ex.employments.some(exEmployment =>
-          selectedNumericIds.includes(exEmployment.id)
+          selectedEmploymentsNumericIds.includes(exEmployment.id)
+        );
+      });
+    }
+
+    // --- Industry Filter ---
+    if (selectedIndustriesNumericIds.length > 0) {
+      currentFilteredList = currentFilteredList.filter((ex) => {
+        if (!ex.industries || ex.industries.length === 0) {
+          return false;
+        }
+
+        // 3. FILTER LOGIC: Check exhibitor employments against the numeric array
+        return ex.industries.some(exIndustry =>
+          selectedIndustriesNumericIds.includes(exIndustry.id)
         );
       });
     }
 
     return currentFilteredList
-  }, [searchQueryName, selectedEmploymentIds, exhibitors]);
+  }, [searchQueryName, selectedEmploymentIds, selectedIndustriesIds, exhibitors]);
 
   return (
     <div className="py-6 space-y-4">
@@ -71,12 +94,20 @@ export default function ExhibitorSearch({ exhibitors, employments }: Props) {
           className="border rounded p-2 w-full sm:w-1/2"
         />
 
-        {/* Multi-Select Component Integration */}
+        {/* Multi-Select Employment Filter */}
         <div className="w-full sm:w-1/2">
           <MultiSelect
             options={employmentOptions}
             onValueChange={setSelectedEmploymentIds} // Pass the state setter
             placeholder="Filter by Employment Type"
+          />
+        </div>
+        {/* Multi-Select Industries Filter */}
+        <div className="w-full sm:w-1/2">
+          <MultiSelect
+            options={industriesOptions}
+            onValueChange={setSelectedIndustriesIds} // Pass the state setter
+            placeholder="Filter by Industry Type"
           />
         </div>
       </div>

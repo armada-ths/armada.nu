@@ -64,6 +64,14 @@ export interface EmploymentFilters {
   search?: string
 }
 
+export interface IndustryFilters {
+  tier?: string
+  type?: string
+  industryId?: number
+  search?: string
+}
+
+
 export async function fetchExhibitors(options?: RequestInit, filters?: ExhibitorFilters): Promise<Exhibitor[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
@@ -104,7 +112,7 @@ export function useExhibitors(filters?: ExhibitorFilters) {
   })
 }
 
-export async function fetchEmployments(options?: RequestInit, filters?: EmploymentFilters): Promise<Employment[]> {
+export async function fetchEmployments(options?: RequestInit, filters?: IndustryFilters): Promise<Employment[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
 
@@ -139,6 +147,46 @@ export async function fetchEmployments(options?: RequestInit, filters?: Employme
 export function useEmployments(filters?: ExhibitorFilters) {
   return useQuery({
     queryKey: ["employments", filters],
+    queryFn: () => fetchEmployments(),
+  })
+}
+
+
+export async function fetchIndustries(options?: RequestInit, filters?: IndustryFilters): Promise<Industry[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
+  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+
+  const url = new URL("api/v1/industries", baseUrl)
+
+  if (filters) {
+    const jsonFilter = JSON.stringify(filters)
+    url.searchParams.set("filter", jsonFilter)
+  }
+
+  const res = await fetch(url.toString(), {
+    cache: options?.cache,
+    next: {
+      ...options?.next,
+      tags: options?.next?.tags ?? [
+        "industries",
+      ]
+    }
+  })
+  if (!res.ok) {
+    throw new Error(`Failed to fetch industries: ${res.status} ${res.statusText}`)
+  }
+
+  const data = await res.json()
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid response format: expected an array")
+  }
+
+  return data as Industry[]
+}
+
+export function useIndustries(filters?: ExhibitorFilters) {
+  return useQuery({
+    queryKey: ["industries", filters],
     queryFn: () => fetchEmployments(),
   })
 }
