@@ -47,6 +47,8 @@ export function Footer() {
         <a href="/exhibitor/timeline">Timeline</a>
         <br />
         <a href="/exhibitor/events">Events</a>
+        <br />
+        <a href="/exhibitor/order">Order form</a>
       </div>
 
       <div className="m-5 mb-3 mt-7 w-1/4 place-items-center text-center md:place-items-start md:text-left">
