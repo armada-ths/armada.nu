@@ -12,21 +12,21 @@ export interface Exhibitor {
   logoFreesize?: string
   mapImg?: string
   industries?: Industry[]
-  values?: unknown[] // TODO Define this
+  //values?: unknown[] // TODO Define this
   employments?: Employment[]
-  locations?: Location[]
-  competences?: unknown[] // TODO Define this
+  //locations?: Location[]
+  //competences?: unknown[] // TODO Define this
   cities?: string
-  benefits?: unknown[] // TODO Define this
-  average_age?: unknown // TODO Define this
-  founded?: unknown // TODO Define this
-  groups?: Group[]
+  //benefits?: unknown[] // TODO Define this
+  //average_age?: unknown // TODO Define this
+  //founded?: unknown // TODO Define this
+  //groups?: Group[]
   fairLocation: string
   vyerPosition?: string
   locationSpecial?: string
   climateCompensation: boolean
   flyer?: string
-  booths?: unknown[] // TODO Define this
+  //booths?: unknown[] // TODO Define this
   map_coordinates?: number[][]
 }
 
@@ -102,6 +102,8 @@ export async function fetchExhibitors(options?: RequestInit, filters?: Exhibitor
     throw new Error("Invalid response format: expected an array")
   }
 
+  console.log(data);
+
   return data as Exhibitor[]
 }
 
@@ -151,7 +153,6 @@ export function useEmployments(filters?: ExhibitorFilters) {
   })
 }
 
-
 export async function fetchIndustries(options?: RequestInit, filters?: IndustryFilters): Promise<Industry[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
@@ -184,7 +185,46 @@ export async function fetchIndustries(options?: RequestInit, filters?: IndustryF
   return data as Industry[]
 }
 
-export function useIndustries(filters?: ExhibitorFilters) {
+export function useIndustries(filters?: IndustryFilters) {
+  return useQuery({
+    queryKey: ["industries", filters],
+    queryFn: () => fetchEmployments(),
+  })
+}
+
+export async function fetchPrograms(options?: RequestInit, filters?: IndustryFilters): Promise<Industry[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
+  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+
+  const url = new URL("api/v1/industries", baseUrl)
+
+  if (filters) {
+    const jsonFilter = JSON.stringify(filters)
+    url.searchParams.set("filter", jsonFilter)
+  }
+
+  const res = await fetch(url.toString(), {
+    cache: options?.cache,
+    next: {
+      ...options?.next,
+      tags: options?.next?.tags ?? [
+        "industries",
+      ]
+    }
+  })
+  if (!res.ok) {
+    throw new Error(`Failed to fetch industries: ${res.status} ${res.statusText}`)
+  }
+
+  const data = await res.json()
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid response format: expected an array")
+  }
+
+  return data as Industry[]
+}
+
+export function usePrograms(filters?: ExhibitorFilters) {
   return useQuery({
     queryKey: ["industries", filters],
     queryFn: () => fetchEmployments(),
