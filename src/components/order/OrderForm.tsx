@@ -45,11 +45,6 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
 
-  const siteKey =
-    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ??
-    process.env.NEXT_PUBLIC_RECAPTCHA_KEY ??
-    ""
-
   const filteredCompanies = company
     ? exhibitors.filter(c => c.toLowerCase().includes(company.toLowerCase()))
     : []
@@ -91,22 +86,9 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
 
     setIsSubmitting(true)
 
-    let token: string | null | undefined
-    if (siteKey) {
-      try {
-        token = await recaptcha.current?.executeAsync()
-      } catch {
-        toast.error("Failed to run reCAPTCHA.")
-        setIsSubmitting(false)
-        return
-      } finally {
-        recaptcha.current?.reset()
-      }
-    }
-
     const message = `Order for ${company}:\n${cartLines.map(l => `- ${l}`).join("\n")}`
     try {
-      const result = await sendOrderToSlack(message, token)
+      const result = await sendOrderToSlack(message)
       console.log("Result:", result)
       setIsSubmitting(false)
 
@@ -219,9 +201,6 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
       </div>
 
       <div className="mt-4 flex items-end gap-4">
-        {siteKey && (
-          <ReCAPTCHA ref={recaptcha} sitekey={siteKey} theme="dark" size="invisible" />
-        )}
         <div className="ml-auto">
           <Button onClick={sendMessage} disabled={isSubmitting}>
             Send
