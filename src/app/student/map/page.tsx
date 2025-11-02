@@ -1,4 +1,4 @@
-import FairMap from "@/components/map/FairMap";
+import InteractiveMapClient from "@/components/map/InteractiveMapClient";
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
 
 const mockExhibitors: Exhibitor[] = [
@@ -19,6 +19,6 @@ const mockExhibitors: Exhibitor[] = [
 
 export default function StudentMap() {
   return (
-    <FairMap exhibitors={mockExhibitors} />
+    <InteractiveMapClient exhibitors={mockExhibitors} />
   )
 }

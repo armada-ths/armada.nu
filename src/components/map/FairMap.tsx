@@ -1,7 +1,6 @@
 "use client";
 
 import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails";
-import InnovationFloorMap from "@/assets/Innovation_floor_map-01.svg";
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
 import Modal from "@/components/ui/Modal";
 import { useEffect, useRef, useState } from "react";
@@ -9,14 +8,14 @@ import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
 interface FairMapProps {
   exhibitors: Exhibitor[];
+  MapComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 }
 
-export default function FairMap({ exhibitors }: FairMapProps) {
+export default function FairMap({ exhibitors, MapComponent }: FairMapProps) {
   const [selectedBoothId, setSelectedBoothId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
-  // Inject logos + highlight booths
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
@@ -71,7 +70,6 @@ export default function FairMap({ exhibitors }: FairMapProps) {
     }
   }, [selectedBoothId, exhibitors]);
 
-  // Handle booth clicks
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     const rawId = (event.target as SVGElement).id;
     if (!rawId) return;
@@ -86,19 +84,14 @@ export default function FairMap({ exhibitors }: FairMapProps) {
     }
   };
 
-  const selectedExhibitor = exhibitors.find(
-    e => e.fairLocation === selectedBoothId
-  );
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const selectedExhibitor = exhibitors.find(e => e.fairLocation === selectedBoothId);
 
   return (
-    <div className="relative w-screen h-screen bg-black overflow-hidden">
-      <TransformWrapper minScale={1} maxScale={3} limitToBounds smooth>
+    <div className="h-screen w-screen bg-black overflow-hidden">
+      <TransformWrapper initialScale={isMobile ? 1.8 : 1} centerOnInit minScale={1} maxScale={3} limitToBounds smooth>
         <TransformComponent>
-          <InnovationFloorMap
-            ref={svgRef}
-            className="w-screen h-screen select-none"
-            onClick={handleClick}
-          />
+          <MapComponent ref={svgRef} className="w-screen h-screen" onClick={handleClick} />
         </TransformComponent>
       </TransformWrapper>
 
