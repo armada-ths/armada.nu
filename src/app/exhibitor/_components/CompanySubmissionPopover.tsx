@@ -3,14 +3,20 @@ import { sendToSlack } from "@/app/exhibitor/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { env } from "@/env"
 import * as Popover from "@radix-ui/react-popover"
 import { Headset, X } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { useMemo, useRef, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { toast } from "sonner"
 
 export function CompanySubmissionPopover() {
+  const pathname = usePathname()
+
+  // Don't show on the order page
+  if (pathname === "/exhibitor/order") {
+    return null
+  }
   const recaptcha = useRef<{ getValue: () => string } | null>(null)
   const [formData, setFormData] = useState({
     name: "",
@@ -49,8 +55,6 @@ export function CompanySubmissionPopover() {
       setIsVerified(false)
     }
   }
-
-  console.log("RECAPTCHA KEY", env.NEXT_PUBLIC_RECAPTCHA_KEY)
 
   async function sendMessage() {
     const captchaValue = recaptcha.current?.getValue()
@@ -170,6 +174,7 @@ export function CompanySubmissionPopover() {
                 ref={recaptcha}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
                 onChange={handleVerify}
+                theme="dark"
               />
 
               <div className="flex justify-end">
