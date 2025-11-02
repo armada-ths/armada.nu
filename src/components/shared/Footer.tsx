@@ -47,7 +47,6 @@ export function Footer() {
             <a href="/exhibitor">Why Armada</a>
             <a href="/exhibitor/timeline">Timeline</a>
             <a href="/exhibitor/events">Events</a>
-            <a href="/exhibitor/order">Order</a>
           </div>
         </div>
 
