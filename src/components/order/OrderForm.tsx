@@ -105,17 +105,23 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
     }
 
     const message = `Order for ${company}:\n${cartLines.map(l => `- ${l}`).join("\n")}`
-    const result = await sendOrderToSlack(message, token)
-    setIsSubmitting(false)
+    try {
+      const result = await sendOrderToSlack(message, token)
+      console.log("Result:", result)
+      setIsSubmitting(false)
 
-    if (result.success) {
-      toast.success("Submitted!")
-      setSubmitted(true)
-      setCompany("")
-      setCart({})
-    } else {
-      toast.error(result.error ?? "Submit failed!")
+      if (result.success) {
+        toast.success("Submitted!")
+        setSubmitted(true)
+        setCompany("")
+        setCart({})
+      } else {
+        toast.error(result.error ?? "Submit failed!")
+      }
+    } catch (err) {
+      console.error(err)
     }
+
   }
 
   if (submitted) {
