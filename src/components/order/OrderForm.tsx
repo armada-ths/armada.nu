@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Check } from "lucide-react"
-import { useRef, useState } from "react"
-import ReCAPTCHA from "react-google-recaptcha"
+import { useState } from "react"
 import { toast } from "sonner"
 
 type StoreItem = {
@@ -38,7 +37,6 @@ const ITEMS: StoreItem[] = [
 
 
 export function OrderForm({ exhibitors }: OrderFormProps) {
-  const recaptcha = useRef<InstanceType<typeof ReCAPTCHA> | null>(null)
   const [company, setCompany] = useState("")
   const [cart, setCart] = useState<Record<string, number>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)

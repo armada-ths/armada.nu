@@ -5,7 +5,9 @@ import { cookies } from "next/headers"
 
 export default async function OrderPage() {
   const cookieStore = await cookies()
-  const hasAccess = cookieStore.get("expo-access")?.value === "true"
+  const accessCookie = cookieStore.get("_ea")?.value
+  const secret = process.env.EXPO_ACCESS_TOKEN
+  const hasAccess = accessCookie === secret
 
   const data = await fetchExhibitors()
   const exhibitors = data
