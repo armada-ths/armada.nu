@@ -1,5 +1,4 @@
 import { CompanyRegistrationButton } from "@/app/_components/CompanyRegistrationButton"
-import { CountdownTimer } from "@/app/_components/CountdownTimer"
 import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
@@ -13,6 +12,7 @@ import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, Clock } from "lucide-react"
 //import Image from "next/image"
+import { CountdownTimer } from "@/app/_components/CountdownTimer"
 import DateCarousel from "@/app/_components/DatesCarousel"
 import Link from "next/link"
 import { Suspense } from "react"
@@ -27,6 +27,7 @@ export default async function HomePage() {
 
   const fr_end = new Date(dates.fr.end).getTime()
   const today = Date.now()
+  const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
 
   return (
     <>
@@ -47,7 +48,7 @@ export default async function HomePage() {
             <h2 className="my-5 text-stone-300">
               The No. 1 career fair at KTH Royal Institute of Technology. Where
               future engineers come in contact with career opportunities and
-              shape their future. November the 18th and 19th.
+              shape their future. November 18th and 19th.
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
               {today < fr_end ? (
@@ -89,30 +90,41 @@ export default async function HomePage() {
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
-          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-hidden">
-            <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
-              <Clock
-                size={100}
-                strokeWidth={1.5}
-                style={{
-                  WebkitMaskImage:
-                    "linear-gradient(to bottom, black 40%, transparent 100%)",
-                  WebkitMaskRepeat: "no-repeat",
-                  WebkitMaskSize: "100% 100%",
-                }}
-                className="ml-2 text-melon-700"
-              />
-              <p className="-ml-1 mt-1 italic opacity-80">
-                Which
-                <br />
-                &nbsp;Dates?
-              </p>
-            </div>
-            <DateCarousel />
-            <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
-              <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
-            </div>
-          </div>
+          {today < fair_end ? (
+            <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-hidden">
+              <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
+                <Clock
+                  size={100}
+                  strokeWidth={1.5}
+                  style={{
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, black 40%, transparent 100%)",
+                    WebkitMaskRepeat: "no-repeat",
+                    WebkitMaskSize: "100% 100%",
+                  }}
+                  className="ml-2 text-melon-700"
+                />
+                <p className="-ml-1 mt-1 italic opacity-80">
+                  Which
+                  <br />
+                  &nbsp;Dates?
+                </p>
+              </div>
+              <DateCarousel />
+              <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
+                <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
+              </div>
+            </div>) : (<><h1 className="text-4xl font-bold text-center italic text-stone-300 border rounded-md py-6 border-dotted">ARMADA 2025 HAS ENDED</h1>
+              {/* Thanks for another year */}
+              <Page.Header className="mt-8">
+                Thank You to All Our Partners and Participants!
+              </Page.Header>
+              <P className="mt-4">
+                Armada 2025 was a huge success because of your energy, innovation, and commitment.
+                We’re grateful to every company and student who made this fair possible and memorable.
+                Together, we’re shaping the future of talent and industry!
+                See you next year - let’s keep building!
+              </P></>)}
           <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-x-hidden overflow-y-visible mt-5">
             <VisitorNumberBar />
           </section>
