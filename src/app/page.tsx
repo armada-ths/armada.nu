@@ -13,6 +13,7 @@ import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, Clock } from "lucide-react"
 //import Image from "next/image"
+import DateCarousel from "@/app/_components/DatesCarousel"
 import Link from "next/link"
 import { Suspense } from "react"
 
@@ -107,9 +108,7 @@ export default async function HomePage() {
                 &nbsp;Dates?
               </p>
             </div>
-            <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
-              November 18-19
-            </p>
+            <DateCarousel />
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
               <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
             </div>
