@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 1961.2 1300.89"
+   style="enable-background: new 0 0 1961.2 1643.89"
+   xml:space="preserve"
+   sodipodi:docname="clean-Nymble_f3-01.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+   id="defs137" />
+  <sodipodi:namedview
+   id="namedview137"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="0.85164986"
+   inkscape:cx="967.53377"
+   inkscape:cy="870.07588"
+   inkscape:window-width="1920"
+   inkscape:window-height="1021"
+   inkscape:window-x="0"
+   inkscape:window-y="31"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g49" />
+  <style
+   type="text/css"
+   id="style1">
+    .st0 {
+      fill: none;
+      stroke: #42ba8d;
+      stroke-width: 2.8346;
+      stroke-miterlimit: 10;
+    }
+    .st1 {
+      fill: none;
+    }
+    .st2 {
+      fill: #b3e3d1;
+    }
+    .st3 {
+      font-family: &quot;PixelOperator8&quot;;
+    }
+    .st4 {
+      font-size: 25.5118px;
+    }
+    .st5 {
+      font-size: 25.5108px;
+    }
+    .st6 {
+      fill: #ec2024;
+    }
+    .st7 {
+      fill: #ffffff;
+    }
+    .st8 {
+      fill: #9e6026;
+    }
+    .st9 {
+      fill: #ed475c;
+    }
+    .st10 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+    }
+    .st11 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 58.8208;
+    }
+    .st12 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 68.8206;
+    }
+    .st13 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 68.2681;
+    }
+    .st14 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 70.1454;
+    }
+    .st15 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 72.674;
+    }
+    .st16 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 68.2675;
+    }
+    .st17 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 60.3214;
+    }
+    .st18 {
+      fill: none;
+      stroke: #f4b41a;
+      stroke-width: 8.5039;
+      stroke-linecap: round;
+      stroke-miterlimit: 10;
+      stroke-dasharray: 0, 70.8661;
+    }
+    .st19 {
+      fill: #67c6be;
+    }
+    .st20 {
+      fill: #2f55a5;
+    }
+    .st21 {
+      font-size: 17.0079px;
+    }
+    .st22 {
+      fill: #f4b41a;
+    }
+    .st23 {
+      font-family: &quot;CrackMan-Regular&quot;;
+    }
+    .st24 {
+      font-size: 99.2126px;
+    }
+    .st25 {
+      font-size: 28.3465px;
+    }
+    .st26 {
+      font-family: &quot;Lato-Regular&quot;;
+    }
+  </style>
+  <g
+   id="BG_1_"
+   transform="scale(1,0.79776388)">
+    <g
+   id="BG">
+      <rect
+   y="0"
+   width="1961.2"
+   height="1643.89"
+   id="rect1"
+   x="0" />
+    </g>
+  </g>
+  <g
+   id="Layout">
+    <g
+   id="g3">
+      <path
+   class="st0"
+   d="M533.89,462.81l-113.23-22.94c-28.96,72.35-57.93,144.71-86.89,217.06c13.68,5.47,27.36,10.94,41.04,16.42    c-22.03,57.59-44.06,115.17-66.09,172.76l136.38,54.55l16.11-79.44l9.8,1.99l-18.49,91.19l-156.66-62.66l66.09-172.76    l-41.19-16.48l93.71-234.08l121.67,24.65l177.24,35.91l13.23-64.62h670.3L1377.07,327l101.87-20.84l8.63,41.68l-9.79,2.03l0,0    c-2.2-10.64-4.41-21.27-6.61-31.91l-82.31,16.84c6.76,33.19,13.52,66.38,20.29,99.57c-207.51,0-415.03,0-622.54,0    c-17.28,0-34.56,0-51.84,0l-13.59,66.4L533.89,462.81z"
+   id="path1" />
+      <path
+   class="st0"
+   d="M1024.14,560.33v9.94c-38.99-0.11-77.98-0.22-116.97-0.34c0,0,0-9.05,0-9.95    C946.16,560.1,985.15,560.21,1024.14,560.33z"
+   id="path2" />
+      <path
+   class="st0"
+   d="M528.44,850.22c0,0,1.95-9.62,1.99-9.8c34.47,6.99,111.49,22.6,111.49,22.6s20.66-101.88,20.77-102.42    c-0.91-0.17-5.97-1.12-12.18-2.28c-11.59-2.17-27.18-5.09-27.18-5.09c18.75-93.48,33.19-161.6,36.55-173.9    c0.73-2.67,2.57-7.86,7.06-12.35c0,0,5.31-5.31,15.61-6.44c3.59-0.39,45.52-0.61,114.54-0.64v10    c-70.44,0.03-109.47,0.26-113.54,0.59c-6.03,0.66-9.3,3.36-9.68,3.69l-0.15,0.14c-1.87,1.73-3.25,4.19-4.11,7.34    c-11.55,54.6-23.1,109.21-34.65,163.81l29.72,5.33H888.7c-11-63.63-22.01-127.26-33.01-190.89c0,0,10.12,0.02,10.16,0.02    c11,63.62,22,127.24,33,190.87c0,0,56.77,0,132.22,0c11.1-63.47,22.19-126.94,33.29-190.4c3.38,0.01,6.77,0.02,10.15,0.02    c-11.09,63.46-22.19,126.92-33.28,190.38c135.62,0,271.23,0,330.66,0c19.86,0,31.21,0,31.21,0c0.14,0,0.21,0,0.21,0v-30.47    c-9.68-35.01-19.36-70.03-29.03-105.04c-2.07-8.42-5.31-16.49-9.64-23.99c-4.54-7.88-10.34-15.19-16.75-21.14    c-10.87-10.08-21.45-14.75-26.54-17c-10.14-4.48-18.08-6.09-29.07-8.31c-12.2-2.47-21.27-3.18-32.75-4.09    c-9.48-0.75-23.8-1.88-42.75-1.1c-10.93,0.45-20.36,0.84-32.96,3.25c-12.08,2.31-23.49,4.49-35.92,12.06    c-5.69,3.47-10.97,7.68-15.69,12.53l-2.96,3.04l-4.21-10.01c3.82-3.93,9.65-9.23,17.66-14.11c13.7-8.34,26.25-10.86,39.25-13.34    c13.34-2.55,23.28-2.96,34.43-3.42c19.16-0.79,33.72,0.31,43.95,1.12c11.7,0.93,21.14,1.67,33.94,4.26    c11.13,2.25,20,4.04,31.13,8.96c5.95,2.63,17.44,7.83,29.29,18.82c3.59,3.33,11.54,11.2,18.62,23.48    c5.9,10.23,8.99,19.7,10.68,26.59c9.9,35.81,19.8,71.62,29.7,107.43h140.84c-22.15-106.91-44.29-213.81-66.44-320.72l9.79-2.03    c0,0,13.28,64.11,28.19,136.06c19.05,91.95,40.75,196.69,40.75,196.69c-51.04,0-102.08,0-153.12,0c0,10.16,0,20.31,0,30.47    c0,0-178.47,0-360.21,0c-188.55,0-380.62,0-380.62,0L649.73,874.8L528.44,850.22L528.44,850.22z"
+   id="path3" />
+    </g>
+  </g>
+  <g
+   id="Companies">
+    <g
+   id="g49">
+      <rect
+   x="944.655"
+   y="572.5150000000001"
+   width="50"
+   height="50"
+   id="booth86"
+   data-booth="86"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="945.695"
+   y="694.365"
+   width="50"
+   height="50"
+   id="booth85"
+   data-booth="85"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1189.6000000000001"
+   y="545.2650000000001"
+   width="50"
+   height="50"
+   id="booth80"
+   data-booth="80"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1279.1699999999998"
+   y="561.635"
+   width="50"
+   height="50"
+   id="booth81"
+   data-booth="81"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1320.4299999999998"
+   y="637.605"
+   width="50"
+   height="50"
+   id="booth82"
+   data-booth="82"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1097.1599999999999"
+   y="694.365"
+   width="50"
+   height="50"
+   id="booth84"
+   data-booth="84"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1177.3899999999999"
+   y="694.365"
+   width="50"
+   height="50"
+   id="booth83"
+   data-booth="83"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="363.34499999999997"
+   y="809.25"
+   transform="matrix(0.3741 -0.9274 0.9274 0.3741 -530.6086 882.3141)"
+   width="50"
+   height="50"
+   id="booth91"
+   data-booth="91"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="574.805"
+   y="684.6350000000001"
+   transform="matrix(0.2025 -0.9793 0.9793 0.2025 -216.5838 1153.3209)"
+   width="50"
+   height="50"
+   id="booth95"
+   data-booth="95"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="593.875"
+   y="591.5550000000001"
+   transform="matrix(0.2025 -0.9793 0.9793 0.2025 -110.2251 1097.7594)"
+   width="50"
+   height="50"
+   id="booth94"
+   data-booth="94"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="368.125"
+   y="606.5300000000001"
+   transform="matrix(0.3741 -0.9274 0.9274 0.3741 -339.6121 759.8553)"
+   width="50"
+   height="50"
+   id="booth90"
+   data-booth="90"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="402.445"
+   y="523.45"
+   transform="matrix(0.3741 -0.9274 0.9274 0.3741 -241.0869 739.6916)"
+   width="50"
+   height="50"
+   id="booth89"
+   data-booth="89"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="505.11"
+   y="484.44"
+   transform="matrix(0.1989 -0.98 0.98 0.1989 -74.5973 927.6245)"
+   width="50"
+   height="50"
+   id="booth88"
+   data-booth="88"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="485.09999999999997"
+   y="598.6"
+   transform="matrix(0.1989 -0.98 0.98 0.1989 -202.5041 999.4705)"
+   width="50"
+   height="50"
+   id="booth93"
+   data-booth="93"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="464.24"
+   y="673.48"
+   transform="matrix(0.1989 -0.98 0.98 0.1989 -292.6006 1039.0111)"
+   width="50"
+   height="50"
+   id="booth92"
+   data-booth="92"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1455.56"
+   y="661.005"
+   width="50"
+   height="50"
+   id="booth72"
+   data-booth="72"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1345.76"
+   y="443.265"
+   width="50"
+   height="50"
+   id="booth73"
+   data-booth="73"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1272.4299999999998"
+   y="443.265"
+   width="50"
+   height="50"
+   id="booth74"
+   data-booth="74"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1189.6"
+   y="443.265"
+   width="50"
+   height="50"
+   id="booth75"
+   data-booth="75"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1103.8999999999999"
+   y="443.265"
+   width="50"
+   height="50"
+   id="booth76"
+   data-booth="76"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="1014.45"
+   y="443.265"
+   width="50"
+   height="50"
+   id="booth77"
+   data-booth="77"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="931.71"
+   y="443.265"
+   width="50"
+   height="50"
+   id="booth78"
+   data-booth="78"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="846.51"
+   y="443.265"
+   width="50"
+   height="50"
+   id="booth79"
+   data-booth="79"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <rect
+   x="794.985"
+   y="694.365"
+   width="50"
+   height="50"
+   id="booth87"
+   data-booth="87"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      
+      
+
+      <rect
+   x="556.685"
+   y="771.9150000000001"
+   transform="matrix(0.2025 -0.9793 0.9793 0.2025 -316.513 1205.1798)"
+   width="50"
+   height="50"
+   id="booth96"
+   data-booth="96"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+
+      <g
+   id="g48">
+        <rect
+   x="1430.02"
+   y="500.605"
+   width="50"
+   height="50"
+   id="booth71"
+   data-booth="71"
+   fill="#ffffff"
+   stroke="#000000"
+   stroke-width="0.5"
+   cursor="pointer" />
+      </g>
+    </g>
+  </g>
+  <g
+   id="Path">
+    <g
+   id="g61">
+      <g
+   id="g57">
+        <g
+   id="g56">
+          <line
+   class="st10"
+   x1="585.17"
+   y1="577.72"
+   x2="585.17"
+   y2="577.72"
+   id="line49" />
+          <path
+   class="st11"
+   d="M527.7,565.18c-9.58-2.09-19.16-4.18-28.73-6.27"
+   id="path49" />
+          <line
+   class="st10"
+   x1="470.23"
+   y1="552.65"
+   x2="470.23"
+   y2="552.65"
+   id="line50" />
+          <path
+   class="st12"
+   d="M448.3,617.88c-10.96,32.62-21.92,65.24-32.88,97.85"
+   id="path50" />
+          <line
+   class="st10"
+   x1="404.46"
+   y1="748.35"
+   x2="404.46"
+   y2="748.35"
+   id="line51" />
+          <path
+   class="st13"
+   d="M470.57,765.4c11.02,2.84,22.04,5.68,33.05,8.52"
+   id="path51" />
+          <line
+   class="st10"
+   x1="536.67"
+   y1="782.44"
+   x2="536.67"
+   y2="782.44"
+   id="line52" />
+          <path
+   class="st14"
+   d="M552.84,714.19c13.47-56.88,26.95-113.76,40.42-170.64"
+   id="path52" />
+          <line
+   class="st10"
+   x1="601.35"
+   y1="509.42"
+   x2="601.35"
+   y2="509.42"
+   id="line53" />
+          <path
+   class="st15"
+   d="M672.65,523.43c13.5,2.65,27.01,5.31,40.51,7.96c119.46-1.45,238.93-2.89,358.39-4.34"
+   id="path53" />
+          <line
+   class="st10"
+   x1="1107.89"
+   y1="526.62"
+   x2="1107.89"
+   y2="526.62"
+   id="line54" />
+          <path
+   class="st16"
+   d="M1107.41,594.89c-0.08,11.38-0.16,22.76-0.24,34.13"
+   id="path54" />
+          <line
+   class="st10"
+   x1="1106.93"
+   y1="663.15"
+   x2="1106.93"
+   y2="663.15"
+   id="line55" />
+          <path
+   class="st17"
+   d="M1167.25,662.77c30.16-0.19,60.32-0.38,90.48-0.57"
+   id="path55" />
+          <line
+   class="st10"
+   x1="1287.89"
+   y1="662.02"
+   x2="1287.89"
+   y2="662.02"
+   id="line56" />
+        </g>
+      </g>
+      <line
+   class="st18"
+   x1="913.79"
+   y1="669.3"
+   x2="889.58"
+   y2="529.26"
+   id="line57" />
+      <line
+   class="st18"
+   x1="1035.68"
+   y1="527.49"
+   x2="1011.17"
+   y2="667.74"
+   id="line58" />
+      <path
+   class="st18"
+   d="M1167.93,509.42c24.09-6.81,61.48-13.72,105.98-7.33c22.84,3.28,58.13,8.77,93.88,34.41    c24.91,17.87,40.22,38.48,48.85,52.25"
+   id="path58" />
+      <line
+   class="st18"
+   x1="1466.15"
+   y1="638.95"
+   x2="1371.1"
+   y2="538.94"
+   id="line59" />
+      <line
+   class="st18"
+   x1="1407.38"
+   y1="490.63"
+   x2="1470.94"
+   y2="395.22"
+   id="line60" />
+      <line
+   class="st18"
+   x1="816.86"
+   y1="530.14"
+   x2="816.86"
+   y2="676.35"
+   id="line61" />
+    </g>
+  </g>
+  <g
+   id="Legend">
+    <g
+   id="g78">
+      
+      <g
+   id="g75">
+        <polygon
+   class="st19"
+   points="902.16,807.37 902.15,807.27 902.15,794.48 900.36,794.51 900.32,789.16 898.76,789.16      898.73,787.44 897.1,787.44 897.1,785.78 893.81,785.75 893.75,784.94 887.11,784.94 887.08,785.72 883.95,785.75 883.95,787.4      882.23,787.37 882.23,789.06 880.44,789.06 880.41,794.25 879.17,794.22 879.2,807.34 880.44,807.34 880.45,805.97 882.2,805.97      882.2,804.12 883.96,804.11 883.96,805.84 885.62,805.87 885.64,807.4 888.73,807.42 888.73,804.11 891.96,804.09 891.94,807.4      895.66,807.42 895.69,805.76 897.2,805.76 897.18,804.09 898.71,804.09 898.73,805.75 900.32,805.71 900.32,807.39    "
+   id="polygon72" />
+        <g
+   id="g73">
+          <polygon
+   class="st7"
+   points="897.29,790.78 895.44,790.78 895.44,789.18 892.06,789.18 892.06,790.78 890.59,790.78       890.59,795.66 892.06,795.66 892.06,797.38 895.44,797.38 895.44,795.66 897.29,795.66     "
+   id="polygon73" />
+        </g>
+        <g
+   id="g74">
+          <polygon
+   class="st7"
+   points="887.34,790.89 885.48,790.89 885.48,789.31 882.1,789.31 882.1,790.89 880.63,790.89       880.63,795.72 882.1,795.72 882.1,797.42 885.48,797.42 885.48,795.72 887.34,795.72     "
+   id="polygon74" />
+        </g>
+        <rect
+   x="890.59"
+   y="792.62"
+   class="st20"
+   width="3.19"
+   height="3.03"
+   id="rect74" />
+        <rect
+   x="880.63"
+   y="792.71"
+   class="st20"
+   width="3.19"
+   height="3"
+   id="rect75" />
+      </g>
+      <rect
+   x="910.8"
+   y="788.06"
+   class="st1"
+   width="207.27"
+   height="16.24"
+   id="rect76" />
+      <text
+   transform="matrix(1 0 0 1 910.8003 802.9434)"
+   class="st7 st3 st21"
+   id="text76">
+        student lounge
+      </text>
+      <g
+   id="g76">
+        <polygon
+   class="st22"
+   points="698.29,801.4 700.59,801.4 700.59,804.74 702.26,804.74 702.26,806.83 706.23,806.83 706.23,808.5      715.41,808.5 715.41,806.83 719.17,806.83 719.17,804.74 721.26,804.74 721.26,801.4 717.66,801.4 717.67,799.6 711.54,799.67      711.5,797.79 707.62,797.75 707.58,795.08 711.5,795.04 711.5,793.11 717.59,793.07 717.59,791.19 721.28,791.15 721.26,788.24      719.17,788.24 719.17,785.53 715.41,785.53 715.41,783.86 706.23,783.86 706.23,785.53 702.26,785.53 702.26,788.24      700.59,788.24 700.59,791.38 698.29,791.38    "
+   id="polygon76" />
+      </g>
+      <rect
+   x="729.99"
+   y="788.06"
+   class="st1"
+   width="123.98"
+   height="16.24"
+   id="rect77" />
+      <text
+   transform="matrix(1 0 0 1 729.9868 802.9434)"
+   class="st7 st3 st21"
+   id="text77">
+        entrance
+      </text>
+      <rect
+   x="1172.29"
+   y="788.06"
+   class="st1"
+   width="237.76"
+   height="16.24"
+   id="rect78" />
+      
+    </g>
+  </g>
+  <g
+   id="Icons">
+    <g
+   id="g84">
+      <g
+   id="g81">
+        <polygon
+   class="st19"
+   points="760.02,669.54 760.01,669.33 760.01,641.58 756.11,641.65 756.04,630.03 752.64,630.03      752.58,626.3 749.04,626.3 749.04,622.71 741.91,622.64 741.78,620.88 727.38,620.88 727.31,622.57 720.52,622.64 720.52,626.23      716.78,626.16 716.78,629.82 712.91,629.82 712.84,641.09 710.14,641.02 710.21,669.47 712.91,669.47 712.92,666.52      716.71,666.52 716.71,662.5 720.55,662.48 720.55,666.23 724.15,666.28 724.19,669.61 730.88,669.66 730.88,662.48 737.9,662.43      737.85,669.61 745.93,669.66 745.98,666.05 749.25,666.05 749.22,662.43 752.54,662.43 752.58,666.02 756.04,665.95      756.04,669.58    "
+   id="polygon78" />
+        <g
+   id="g79">
+          <polygon
+   class="st7"
+   points="749.46,633.55 745.44,633.55 745.44,630.09 738.11,630.09 738.11,633.55 734.92,633.55       734.92,644.14 738.11,644.14 738.11,647.88 745.44,647.88 745.44,644.14 749.46,644.14     "
+   id="polygon79" />
+        </g>
+        <g
+   id="g80">
+          <polygon
+   class="st7"
+   points="727.86,633.79 723.85,633.79 723.85,630.36 716.51,630.36 716.51,633.79 713.32,633.79       713.32,644.27 716.51,644.27 716.51,647.97 723.85,647.97 723.85,644.27 727.86,644.27     "
+   id="polygon80" />
+        </g>
+        <rect
+   x="734.92"
+   y="637.54"
+   class="st20"
+   width="6.92"
+   height="6.58"
+   id="rect80" />
+        <rect
+   x="713.32"
+   y="637.74"
+   class="st20"
+   width="6.92"
+   height="6.51"
+   id="rect81" />
+      </g>
+      <g
+   id="g82">
+        <polygon
+   class="st22"
+   points="488.4,843.95 490.65,844.39 490.02,847.67 491.66,847.99 491.26,850.04 495.15,850.8      494.84,852.44 503.86,854.19 504.18,852.55 507.87,853.26 508.26,851.21 510.31,851.61 510.95,848.33 507.42,847.64      507.76,845.87 501.74,844.78 502.06,842.92 498.25,842.14 498.72,839.51 502.58,840.22 502.95,838.33 508.93,839.45      509.29,837.6 512.92,838.27 513.46,835.41 511.41,835.01 511.92,832.35 508.23,831.63 508.55,829.99 499.53,828.24      499.21,829.88 495.32,829.13 494.8,831.79 493.16,831.47 492.56,834.55 490.31,834.11    "
+   id="polygon81" />
+      </g>
+      <g
+   id="g83">
+        <polygon
+   class="st22"
+   points="1476.69,381.87 1478.94,381.39 1479.64,384.66 1481.27,384.31 1481.71,386.35 1485.59,385.52      1485.94,387.15 1494.92,385.24 1494.57,383.6 1498.25,382.82 1497.82,380.77 1499.86,380.34 1499.16,377.07 1495.64,377.82      1495.27,376.05 1489.29,377.41 1488.86,375.57 1485.05,376.35 1484.45,373.74 1488.29,372.88 1487.88,371 1493.83,369.69      1493.44,367.85 1497.04,367.04 1496.41,364.2 1494.37,364.64 1493.8,361.98 1490.13,362.77 1489.78,361.14 1480.79,363.05      1481.14,364.69 1477.26,365.52 1477.83,368.17 1476.19,368.52 1476.85,371.58 1474.6,372.06    "
+   id="polygon82" />
+      </g>
+    </g>
+  </g>
+</svg>

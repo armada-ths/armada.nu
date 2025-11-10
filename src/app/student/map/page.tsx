@@ -1,24 +1,10 @@
 import InteractiveMapClient from "@/components/map/InteractiveMapClient";
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
+import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors";
 
-const mockExhibitors: Exhibitor[] = [
-  {
-    id: 1,
-    name: "Armada",
-    type: "Fair",
-    fairLocation: "booth1",
-    logoSquared: "/vercel.svg",
-    about: "Scandinavia's biggest career fair",
-    climateCompensation: true,
-    groups: [],
-    industries: [],
-    employments: [],
-    locations: [],
-  },
-];
+export default async function StudentMap() {
+  const exhibitors = await fetchExhibitors();
 
-export default function StudentMap() {
   return (
-    <InteractiveMapClient exhibitors={mockExhibitors} />
+    <InteractiveMapClient exhibitors={exhibitors} />
   )
 }

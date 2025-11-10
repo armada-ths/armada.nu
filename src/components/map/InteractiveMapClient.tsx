@@ -25,7 +25,17 @@ export default function InteractiveMapClient({ exhibitors }: InteractiveMapClien
         }}
       />
 
-      <FairMap exhibitors={exhibitors} MapComponent={selectedMap.component} />
+      <div className="relative w-full h-full">
+        {MAPS.map((m, i) => (
+          <div
+            key={m.name}
+            className={`absolute inset-0 transition-opacity duration-300 ${i === selectedMapIndex ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+          >
+            <FairMap exhibitors={exhibitors} MapComponent={m.component} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

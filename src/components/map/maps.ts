@@ -1,7 +1,8 @@
 
-import { default as InnovationFloor, default as NymbleFloor1 } from "@/assets/Innovation_floor_map-01.svg";
-// import NymbleFloor2 from "@/assets/Nymble_floor_2.svg";
-// import KTHInnovation from "@/assets/KTH_innovation_floor.svg";
+// import InnovationFloor from "@/assets/KTH_Innovation.svg";
+import InnovationFloor from "@/assets/clean-KTH_Innovation.svg";
+import NymbleFloor1And2 from "@/assets/clean-Nymble_f2-01.svg";
+import NymbleFloor3 from "@/assets/clean-Nymble_f3-01.svg";
 
 export interface MapDefinition {
     name: string;
@@ -9,8 +10,7 @@ export interface MapDefinition {
 }
 
 export const MAPS: MapDefinition[] = [
+    { name: "Nymble Floor 1 & 2", component: NymbleFloor1And2 },
+    { name: "Nymble Floor 3", component: NymbleFloor3 },
     { name: "KTH Innovation", component: InnovationFloor },
-    { name: "Nymble Floor 1", component: NymbleFloor1 },
-    // { name: "Nymble Floor 2", component: NymbleFloor2 },
-    // { name: "KTH Innovation", component: KTHInnovation },
 ];
