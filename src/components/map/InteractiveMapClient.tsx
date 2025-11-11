@@ -28,7 +28,7 @@ export default function InteractiveMapClient({ exhibitors }: InteractiveMapClien
 
   return (
     <div className="relative w-full h-full">
-      <CompanySearch exhibitors={exhibitors} onSelect={handleCompanySelect} />
+      <CompanySearch exhibitors={exhibitors.filter(e => e.fairLocation)} onSelect={handleCompanySelect} />
 
       <FloorSelector
         floors={MAPS.map(m => m.name)}

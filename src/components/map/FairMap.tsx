@@ -174,7 +174,6 @@ export default function FairMap({
   }, [exhibitors]);
 
 
-  // 🖱 Click handler
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     const rawId = (event.target as SVGElement).id;
     if (!rawId) return;
@@ -188,7 +187,7 @@ export default function FairMap({
     setModalOpen(true);
 
     const api = transformRef.current;
-    if (api) api.zoomToElement(event.target as HTMLElement, isMobile ? 5 : 3, 200);
+    if (api) api.zoomToElement(event.target as HTMLElement, 3, 200);
   };
 
   return (
