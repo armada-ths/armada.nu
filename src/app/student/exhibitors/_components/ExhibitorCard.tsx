@@ -84,7 +84,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
       <Link href={`/student/exhibitors?id=${exhibitor.id}`} scroll={false}>
         <div
-          className="to-liqorice-950 group relative flex h-full flex-col border-2 border-solid border-emerald-900 bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition hover:scale-[1.05] hover:brightness-95"
+          className=" zto-liqorice-950 group relative flex h-full flex-col border-2 border-solid border-emerald-900 bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition hover:scale-[1.05] hover:brightness-95"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
@@ -94,7 +94,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
           </h3>
 
           {(exhibitor.logoSquared || exhibitor.logoFreesize) ? (
-            <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center px-4 overflow-hidden">
+            <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center overflow-hidden">
               <Image
                 className="h-full w-full object-contain"
                 src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
@@ -104,7 +104,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
               />
             </div>
           ) : (
-            <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center px-4 overflow-hidden" />
+            <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center overflow-hidden" />
           )
           }
           <BadgeCollection

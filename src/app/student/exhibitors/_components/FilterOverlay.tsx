@@ -1,6 +1,9 @@
 // FilterOverlay.tsx (Final Mobile-Optimized Revision)
 
+import ExhibitorFilterItem from "@/app/student/exhibitors/_components/ExhibitorFilterItem";
+import { Employment, Exhibitor, Industry, Program } from "@/components/shared/hooks/api/useExhibitors";
 import React from 'react';
+
 
 // (Interfaces and prop definitions remain the same)
 interface FilterOverlayProps {
@@ -8,6 +11,12 @@ interface FilterOverlayProps {
     onClose: () => void;
     filterCount?: number;
     headerHeight?: string;
+    exhibitors: Exhibitor[];
+    employments: Employment[];
+    industries: Industry[];
+    programs: Program[];
+    searchQueryName: string;
+    onFilterChange?: (filtered: Exhibitor[]) => void;
 }
 
 export const FilterOverlay: React.FC<FilterOverlayProps> = ({
@@ -15,6 +24,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
     onClose,
     filterCount = 54,
     headerHeight = '4rem',
+    exhibitors, employments, industries, programs, searchQueryName, onFilterChange
 }) => {
     // Translate classes for the slide-in/slide-out effect
     const overlayClasses = isOpen
@@ -31,9 +41,9 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
 
             {/* 2. Modal Content (The white panel) */}
             <div
-                className={`absolute right-19 w-screen md:w-96 max-w-full bg-white shadow-xl flex flex-col`}
+                className="absolute right-0 w-full h-full md:w-96 md:h-auto max-w-full bg-white shadow-xl flex flex-col"
                 style={{
-                    bottom: 80, // <-- Set the bottom position to 0
+                    bottom: 0, // <-- Set the bottom position to 0
                     top: headerHeight,
                 }}
             >
@@ -57,29 +67,32 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
 
                 {/* ... (Filter Categories - The main scrollable content area) ... */}
                 <div className="flex-grow overflow-y-auto pb-24">
-                    {/* ... FilterCategory components ... */}
-                    <FilterCategory name="CATEGORY" />
-                    <FilterCategory name="SIZE" />
-                    <FilterCategory name="COLOR" />
-                    <FilterCategory name="BRAND" />
+                    <ExhibitorFilterItem
+                        exhibitors={exhibitors}
+                        employments={employments}
+                        industries={industries}
+                        programs={programs}
+                        searchQueryName={searchQueryName}
+                        onFilterChange={onFilterChange}
+                    />
                 </div>
 
                 {/* ... (Footer Action Buttons - Anchored to the bottom of the screen) ... */}
                 <div
-                    className="p-4 border-t border-gray-200 bg-white absolute bottom-0 w-full"
+                    className="p-4 border-t border-gray-200 bg-white absolute bottom-4rem w-full"
                 >
                     <button
                         className="w-full bg-black text-white py-3 font-medium tracking-widest hover:bg-gray-800 transition duration-150"
                         onClick={onClose}
                     >
-                        APPLY FILTERS
+                        CLOSE
                     </button>
-                    <button
+                    {/* <button
                         className="mt-3 text-sm font-medium tracking-widest text-gray-700 hover:text-black"
                         onClick={() => console.log('Clear All Filters')}
                     >
                         CLEAR ALL
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>

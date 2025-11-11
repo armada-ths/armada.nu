@@ -1,14 +1,10 @@
 "use client";
 
-import ExhibitorFilterItem from "@/app/student/exhibitors/_components/ExhibitorFilterItem";
+import FilterOverlay from "@/app/student/exhibitors/_components/FilterOverlay";
+
 import { Employment, Exhibitor, Industry, Program } from "@/components/shared/hooks/api/useExhibitors";
-import Modal from "@/components/ui/Modal";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ExhibitorCard } from "./ExhibitorCard";
-import { FilterOverlay } from './FilterOverlay';
-import { ProductListHeader } from './ProductListHeader';
 
 interface Props {
   exhibitors: Exhibitor[];
@@ -18,11 +14,7 @@ interface Props {
 }
 
 export default function ExhibitorSearch({ exhibitors, employments, industries, programs }: Props) {
-  const [modalOpen, setModalOpen] = useState(false)
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const handleFilterOpen = () => setIsFilterOpen(true);
-  const handleFilterClose = () => setIsFilterOpen(false);
-  const router = useRouter()
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [searchQueryName, setSearchQueryName] = useState("");
   const [filteredExhibitors, setFilteredExhibitors] = useState<Exhibitor[]>(exhibitors);
@@ -41,23 +33,40 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
           className="border rounded p-2 flex-grow"
         />
 
-        <ProductListHeader onFilterClick={handleFilterOpen} />
-
-        <FilterOverlay
-          isOpen={isFilterOpen}
-          onClose={handleFilterClose}
-          headerHeight={"100"}
-        />
-
         <button onClick={() => setModalOpen(true)} className="py-1">
-          <HamburgerMenuIcon width={30} height={30} />
+
+          <div className="flex justify-between items-center py-2 border-b border-gray-200">
+            <div className="flex items-center space-x-2 cursor-pointer">
+              {/* Icon for filter (e.g., a hamburger or three horizontal lines) */}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h18M3 10h18M3 16h18" />
+              </svg>
+              <span className="text-sm font-semibold tracking-widest">FILTER</span>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+              {/* You'd add the layout view toggle buttons here (the two squares) */}
+            </div>
+          </div>
         </button>
 
-        <Modal
+        <FilterOverlay isOpen={modalOpen} onClose={() => setModalOpen(false)}
+          exhibitors={exhibitors}
+          employments={employments}
+          industries={industries}
+          programs={programs}
+          searchQueryName={searchQueryName}
+          onFilterChange={setFilteredExhibitors}
+        />
+
+        {/* <Modal
           open={modalOpen}
           setOpen={setModalOpen}
           className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
-          onClose={() => router.push("/student/exhibitors", { scroll: false })}>
+          onClose={() => setModalOpen(false)}>
           <ExhibitorFilterItem
             exhibitors={exhibitors}
             employments={employments}
@@ -66,14 +75,16 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
             searchQueryName={searchQueryName}
             onFilterChange={setFilteredExhibitors}
           />
-        </Modal>
+        </Modal> */}
       </div >
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredExhibitors.map((exhibitor) => (
-          <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
-        ))}
-      </div>
+      <div className="w-full overflow-hidden">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredExhibitors.map((exhibitor) => (
+            <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
+          ))}
+        </div>
+      </div >
     </div >
   );
 }

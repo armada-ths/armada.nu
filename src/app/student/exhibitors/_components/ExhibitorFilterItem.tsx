@@ -7,7 +7,7 @@ interface Props {
     employments: Employment[];
     industries: Industry[];
     programs: Program[];
-    searchQueryName: String;
+    searchQueryName: string;
     onFilterChange?: (filtered: Exhibitor[]) => void;
 }
 
