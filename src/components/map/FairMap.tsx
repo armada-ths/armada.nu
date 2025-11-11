@@ -4,11 +4,14 @@ import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDeta
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
 import Modal from "@/components/ui/Modal";
 import { useEffect, useRef, useState } from "react";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
 interface FairMapProps {
   exhibitors: Exhibitor[];
   MapComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  currentFloorIndex: number;
+  selectedExhibitor?: Exhibitor | null;
+  onRequestFloorChange?: (floorIndex: number) => void;
 }
 
 const tierColors: Record<string, { fill: string; stroke: string }> = {
@@ -18,10 +21,40 @@ const tierColors: Record<string, { fill: string; stroke: string }> = {
   default: { fill: "#f5f5f5", stroke: "#737373" },
 };
 
-export default function FairMap({ exhibitors, MapComponent }: FairMapProps) {
-  const [selectedBoothId, setSelectedBoothId] = useState<string | null>(null);
+export default function FairMap({
+  exhibitors,
+  MapComponent,
+  currentFloorIndex,
+  selectedExhibitor
+}: FairMapProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeExhibitor, setActiveExhibitor] = useState<Exhibitor | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  const transformRef = useRef<ReactZoomPanPinchRef>(null);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  useEffect(() => {
+    if (!selectedExhibitor?.fairLocation) return;
+
+    const boothNumber = parseInt(selectedExhibitor.fairLocation.replace("booth", ""), 10);
+
+    // To future devs I understand
+    const belongsHere =
+      (currentFloorIndex === 0 && boothNumber >= 1 && boothNumber <= 70) ||
+      (currentFloorIndex === 1 && boothNumber >= 71 && boothNumber <= 96) ||
+      (currentFloorIndex === 2 && boothNumber >= 97 && boothNumber <= 111);
+
+    if (!belongsHere) return;
+
+    const svg = svgRef.current;
+    const api = transformRef.current;
+    if (!svg || !api) return;
+
+    const booth = svg.querySelector(`[id$="__${selectedExhibitor.fairLocation}"]`);
+    if (booth) {
+      api.zoomToElement(booth as HTMLElement, 3, 300);
+    }
+  }, [selectedExhibitor, currentFloorIndex]);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -126,10 +159,8 @@ export default function FairMap({ exhibitors, MapComponent }: FairMapProps) {
           const absRotation = Math.abs(boothRotation % 360);
 
           if (absRotation < 20 || absRotation > 340) {
-            // Slight tilt booths (like -11°, etc.) → follow booth directly
             logo.setAttribute("transform", boothTransform);
           } else {
-            // All others → apply your +90° logo correction
             const logoRotation = boothRotation + 90;
             logo.setAttribute("transform", `rotate(${logoRotation} ${cx} ${cy})`);
           }
@@ -140,39 +171,37 @@ export default function FairMap({ exhibitors, MapComponent }: FairMapProps) {
 
       svg.appendChild(logo);
     });
+  }, [exhibitors]);
 
 
-    // Highlight selected booth
-    if (selectedBoothId) {
-      const selected = svg.querySelector(`[id$="__${selectedBoothId}"]`);
-      if (selected) {
-        selected.setAttribute("fill", "#fde68a");
-        selected.setAttribute("stroke", "#f59e0b");
-      }
-    }
-
-  }, [selectedBoothId, exhibitors, svgRef.current]);
-
+  // 🖱 Click handler
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     const rawId = (event.target as SVGElement).id;
     if (!rawId) return;
-
     const boothId = rawId.replace(/^.*__/, "");
     if (!boothId.startsWith("booth")) return;
 
     const exhibitor = exhibitors.find(e => e.fairLocation === boothId);
-    if (exhibitor) {
-      setSelectedBoothId(boothId);
-      setModalOpen(true);
-    }
-  };
+    if (!exhibitor) return;
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-  const selectedExhibitor = exhibitors.find(e => e.fairLocation === selectedBoothId);
+    setActiveExhibitor(exhibitor);
+    setModalOpen(true);
+
+    const api = transformRef.current;
+    if (api) api.zoomToElement(event.target as HTMLElement, isMobile ? 5 : 3, 200);
+  };
 
   return (
     <div className="h-screen w-screen bg-black overflow-hidden">
-      <TransformWrapper initialScale={isMobile ? 1.8 : 1} centerOnInit minScale={1} maxScale={5} limitToBounds smooth>
+      <TransformWrapper
+        ref={transformRef}
+        initialScale={isMobile ? 1.8 : 1}
+        centerOnInit
+        minScale={1}
+        maxScale={5}
+        limitToBounds
+        smooth
+      >
         <TransformComponent>
           <MapComponent ref={svgRef} className="w-screen h-screen" onClick={handleClick} />
         </TransformComponent>
@@ -183,13 +212,13 @@ export default function FairMap({ exhibitors, MapComponent }: FairMapProps) {
         setOpen={setModalOpen}
         onClose={() => {
           setModalOpen(false);
-          setSelectedBoothId(null);
+          setActiveExhibitor(null);
         }}
         className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
       >
-        {selectedExhibitor && (
+        {activeExhibitor && (
           <div className="p-4 sm:p-10">
-            <ExhibitorDetails exhibitor={selectedExhibitor} />
+            <ExhibitorDetails exhibitor={activeExhibitor} />
           </div>
         )}
       </Modal>

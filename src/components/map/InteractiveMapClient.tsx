@@ -1,5 +1,6 @@
 "use client";
 
+import CompanySearch from "@/components/map/CompanySearch";
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
 import { useState } from "react";
 import FairMap from "./FairMap";
@@ -13,9 +14,22 @@ interface InteractiveMapClientProps {
 export default function InteractiveMapClient({ exhibitors }: InteractiveMapClientProps) {
   const [selectedMapIndex, setSelectedMapIndex] = useState(0);
   const selectedMap = MAPS[selectedMapIndex];
+  const [selectedExhibitor, setSelectedExhibitor] = useState<Exhibitor | null>(null);
+
+  const handleCompanySelect = (ex: Exhibitor) => {
+    const boothNumber = parseInt(ex.fairLocation.replace("booth", ""), 10);
+    let targetFloorIndex = 0;
+    if (boothNumber >= 71 && boothNumber <= 96) targetFloorIndex = 1;
+    else if (boothNumber >= 97 && boothNumber <= 111) targetFloorIndex = 2;
+
+    setSelectedMapIndex(targetFloorIndex);
+    setSelectedExhibitor(ex);
+  };
 
   return (
     <div className="relative w-full h-full">
+      <CompanySearch exhibitors={exhibitors} onSelect={handleCompanySelect} />
+
       <FloorSelector
         floors={MAPS.map(m => m.name)}
         selectedFloor={selectedMap.name}
@@ -32,7 +46,12 @@ export default function InteractiveMapClient({ exhibitors }: InteractiveMapClien
             className={`absolute inset-0 transition-opacity duration-300 ${i === selectedMapIndex ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
           >
-            <FairMap exhibitors={exhibitors} MapComponent={m.component} />
+            <FairMap
+              exhibitors={exhibitors}
+              MapComponent={m.component}
+              currentFloorIndex={i}
+              selectedExhibitor={selectedExhibitor}
+            />
           </div>
         ))}
       </div>
