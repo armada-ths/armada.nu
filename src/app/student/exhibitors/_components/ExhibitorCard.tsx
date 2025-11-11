@@ -29,9 +29,6 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
   // VERY IMPORTANT: makes the card tilt and adds cool shadow 🤠🤠
 
-
-  const [selected, setSelected] = useState<null | typeof exhibitor>(null);
-
   // Function to handle the "lean" effect
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const card = e.currentTarget;
@@ -87,7 +84,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
           className="zto-liqorice-950 group relative flex h-full flex-col border-2 border-solid border-emerald-900 
              bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition 
              hover:scale-[1.05] hover:brightness-95
-             max-w-xs w-full px-3"
+             max-w-[380px] w-full px-3"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
@@ -97,7 +94,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
           </h3>
 
           {(exhibitor.logoSquared || exhibitor.logoFreesize) ? (
-            <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center overflow-hidden">
+            <div className="relative my-2 flex h-[80px] w-full flex-initial justify-center overflow-hidden">
               <Image
                 className="h-full w-full object-contain"
                 src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}

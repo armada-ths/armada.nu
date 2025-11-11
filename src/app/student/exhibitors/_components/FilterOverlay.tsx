@@ -1,87 +1,97 @@
-// FilterOverlay.tsx (Final Mobile-Optimized Revision)
+"use client";
 
 import ExhibitorFilterItem from "@/app/student/exhibitors/_components/ExhibitorFilterItem";
-import { Employment, Exhibitor, Industry, Program } from "@/components/shared/hooks/api/useExhibitors";
-import React from 'react';
+import {
+  Employment,
+  Exhibitor,
+  Industry,
+  Program,
+} from "@/components/shared/hooks/api/useExhibitors";
+import { cn } from "@/lib/utils";
+import React from "react";
 
-
-// (Interfaces and prop definitions remain the same)
 interface FilterOverlayProps {
-    isOpen: boolean;
-    onClose: () => void;
-    filterCount?: number;
-    headerHeight?: string;
-    exhibitors: Exhibitor[];
-    employments: Employment[];
-    industries: Industry[];
-    programs: Program[];
-    searchQueryName: string;
-    onFilterChange?: (filtered: Exhibitor[]) => void;
+  isOpen: boolean;
+  onClose: () => void;
+  headerHeight?: string;
+  exhibitors: Exhibitor[];
+  employments: Employment[];
+  industries: Industry[];
+  programs: Program[];
+  searchQueryName: string;
+  onFilterChange?: (filtered: Exhibitor[]) => void;
 }
 
 export const FilterOverlay: React.FC<FilterOverlayProps> = ({
-    isOpen,
-    onClose,
-    filterCount = 54,
-    headerHeight = '4rem',
-    exhibitors, employments, industries, programs, searchQueryName, onFilterChange
+  isOpen,
+  onClose,
+  headerHeight = "4rem",
+  exhibitors,
+  employments,
+  industries,
+  programs,
+  searchQueryName,
+  onFilterChange,
 }) => {
-    // Translate classes for the slide-in/slide-out effect
-    const overlayClasses = isOpen
-        ? 'fixed inset-0 z-50 transform translate-x-0 transition-transform duration-300 ease-out'
-        : 'fixed inset-0 z-50 transform translate-x-full transition-transform duration-300 ease-out pointer-events-none';
-    return (
-        <div className={overlayClasses}>
-            {/* 1. Backdrop */}
-            <div
-                className="absolute inset-0 bg-black bg-opacity-50"
-                onClick={onClose}
-                aria-hidden={!isOpen}
-            ></div>
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
-            {/* 2. Modal Content (The white panel) */}
-            <div
-                className="absolute right-0 w-full h-full md:w-96 md:h-auto max-w-full bg-gradient-to-br shadow-xl flex flex-col"
-                style={{
-                    bottom: 0, // <-- Set the bottom position to 0
-                    top: headerHeight,
-                }}
+  return (
+    <div className="fixed inset-0 z-50 pointer-events-none">
+      {/* ✅ BACKDROP — fades in/out, only clickable when open */}
+      <div
+        className={cn(
+          "fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ease-out",
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        )}
+        onClick={onClose}
+        aria-hidden={!isOpen}
+      />
+
+
+      {/* ✅ PANEL — slides independently and clickable only when open */}
+      <div
+        className={cn(
+          "absolute right-0 w-full h-full md:w-[420px] md:h-auto",
+          "bg-background/95 backdrop-blur-lg sm:border-l flex flex-col shadow-xl",
+          "transition-transform duration-300 ease-out pointer-events-auto",
+          isOpen ? "translate-x-0" : "translate-x-full"
+        )}
+        style={{ top: headerHeight, bottom: 0 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex-grow overflow-y-auto pb-24">
+          <div className="flex justify-center py-2 mt-2">
+            <button
+              className="w-[92%] bg-black text-white py-3 font-medium tracking-widest hover:bg-gray-800 rounded-md transition duration-150"
+              onClick={onClose}
             >
+              CLOSE
+            </button>
+          </div>
 
-
-                {/* ... (Filter Categories - The main scrollable content area) ... */}
-                <div className="flex-grow overflow-y-auto pb-24 ">
-
-                    <div className="flex justify-center py-2">
-                        <button
-                            className="w-[92%] bg-black text-white py-3 font-medium tracking-widest hover:bg-gray-800 rounded-md transition duration-150"
-                            onClick={onClose}
-                        >
-                            CLOSE FILTER
-                        </button>
-                    </div>
-
-
-                    <ExhibitorFilterItem
-                        exhibitors={exhibitors}
-                        employments={employments}
-                        industries={industries}
-                        programs={programs}
-                        searchQueryName={searchQueryName}
-                        onFilterChange={onFilterChange}
-                    />
-                </div>
-            </div>
+          <ExhibitorFilterItem
+            exhibitors={exhibitors}
+            employments={employments}
+            industries={industries}
+            programs={programs}
+            searchQueryName={searchQueryName}
+            onFilterChange={onFilterChange}
+          />
         </div>
-    );
-};
-
-// ... (FilterCategory helper component) ...
-const FilterCategory: React.FC<{ name: string }> = ({ name }) => (
-    <div className="p-5 border-b border-gray-200 flex justify-between items-center cursor-pointer">
-        <span className="text-sm font-medium tracking-wider text-gray-700">{name}</span>
-        <span className="text-gray-400">|</span>
+      </div>
     </div>
-);
+  );
+};
 
 export default FilterOverlay;

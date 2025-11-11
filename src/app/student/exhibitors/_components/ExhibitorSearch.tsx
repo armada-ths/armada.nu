@@ -42,13 +42,6 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
               </svg>
               <span className="text-sm font-semibold tracking-widest">FILTER</span>
             </div>
-
-            <div className="flex items-center space-x-4">
-              <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-              {/* You'd add the layout view toggle buttons here (the two squares) */}
-            </div>
           </div>
         </button>
 
