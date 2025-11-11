@@ -22,17 +22,18 @@ type OrderFormProps = {
 }
 
 const ITEMS: StoreItem[] = [
-  { id: "sandwich-turkey", name: "Sandwich (Turkey)", description: "Freshly made" },
-  { id: "sandwich-vegetarian", name: "Sandwich (Vegetarian)", description: "Freshly made" },
-  { id: "pain-au-chocolat", name: "Pain Au Chocolat", description: "Butter pastry with chocolate" },
-  { id: "cinnamon-bun", name: "Cinnamon Bun", description: "Swedish kanelbulle" },
-  { id: "muffin-chocolate", name: "Muffin (Chocolate)", description: "Soft & rich" },
-  { id: "muffin-blueberry", name: "Muffin (Blueberry)", description: "Sweet & fruity" },
-  { id: "apple-cake-vegan", name: "Apple Cake (Vegan)", description: "Plant-based dessert" },
-  { id: "chocolate-balls-vegan", name: "Chocolate Balls (Vegan)", description: "Oat-based Swedish treat" },
-  { id: "coffee", name: "Coffee", description: "Thermos (~10 cups)" },
-  { id: "tea", name: "Tea", description: "Thermos (~10 cups)" },
-  { id: "hot-chocolate", name: "Hot Chocolate", description: "Warm cocoa drink" },
+  { id: "sandwich-turkey", name: "Sandwich (Turkey)", description: "Freshly made with turkey and vegetables" },
+  { id: "sandwich-vegetarian", name: "Sandwich (Vegetarian)", description: "Freshly made with cheese and vegetables" },
+  { id: "pain-au-chocolat", name: "Pain au Chocolat", description: "Butter pastry with chocolate" },
+  { id: "cinnamon-bun", name: "Cinnamon bun", description: "Classic Swedish Kanelbulle" },
+  { id: "muffin-chocolate", name: "Muffin (Chocolate)", description: "Soft and rich" },
+  { id: "muffin-blueberry", name: "Muffin (Blueberry)", description: "Sweet and fruity" },
+  { id: "apple-cake-vegan", name: "Apple Cake (Vegan)", description: "Plant-based apple cake" },
+  { id: "chocolate-balls-vegan", name: "Chocolate ball (Vegan)", description: "Classic Swedish Chokladboll" },
+  { id: "coffee", name: "Black Coffee", description: "Sugar on the side" },
+  { id: "coffee-with-milk", name: "Coffee with Oat milk", description: "Sugar on the side" },
+  { id: "tea", name: "Tea", description: "Sugar on the side" },
+  { id: "hot-chocolate", name: "Oboy", description: "Warm and Sweet Cocoa drink" },
 ]
 
 
@@ -53,6 +54,7 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
     const n = Math.max(0, Math.floor(qty))
     setCart(prev => {
       if (n === 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [itemId]: _, ...rest } = prev
         return rest
       }
