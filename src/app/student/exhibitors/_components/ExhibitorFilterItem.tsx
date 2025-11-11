@@ -108,9 +108,9 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
     }, [filtered, onFilterChange]);
 
     return (
-        <div className="p-4 sm:p-10 space-y-2 **max-h-[80vh] overflow-y-auto**">
+        <div className="p-4 space-y-2 **max-h-[80vh] overflow-y-auto**">
             {/* Employment Filter */}
-            <div className="w-full md:w-64">
+            <div className="w-full">
                 <MultiSelect
                     options={employmentOptions}
                     onValueChange={setSelectedEmploymentIds}
@@ -119,7 +119,7 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
             </div>
 
             {/* Industries Filter */}
-            <div className="w-full sm:w-64">
+            <div className="w-full">
                 <MultiSelect
                     options={industriesOptions}
                     onValueChange={setSelectedIndustriesIds}
@@ -128,7 +128,7 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
             </div>
 
             {/* Program Filter */}
-            <div className="w-full sm:w-64">
+            <div className="w-full">
                 <MultiSelect
                     options={programOptions}
                     onValueChange={setSelectedProgramsIds}
