@@ -20,14 +20,6 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
   const [searchQueryName, setSearchQueryName] = useState("");
   const [filteredExhibitors, setFilteredExhibitors] = useState<Exhibitor[]>(exhibitors);
 
-  const industriesOptions: MultiSelectOption[] = useMemo(() => {
-    return industries.map(industry => ({
-      value: String(industry.id),
-      label: industry.name,
-    }));
-  }, [industries]);
-
-
   return (
     <div className="py-6 space-y-4">
 
