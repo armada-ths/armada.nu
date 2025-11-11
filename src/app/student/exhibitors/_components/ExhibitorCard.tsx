@@ -84,7 +84,10 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
       <Link href={`/student/exhibitors?id=${exhibitor.id}`} scroll={false}>
         <div
-          className=" zto-liqorice-950 group relative flex h-full flex-col border-2 border-solid border-emerald-900 bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition hover:scale-[1.05] hover:brightness-95"
+          className="zto-liqorice-950 group relative flex h-full flex-col border-2 border-solid border-emerald-900 
+             bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition 
+             hover:scale-[1.05] hover:brightness-95
+             max-w-xs w-full"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >

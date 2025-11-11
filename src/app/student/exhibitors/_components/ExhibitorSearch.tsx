@@ -61,30 +61,16 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
           searchQueryName={searchQueryName}
           onFilterChange={setFilteredExhibitors}
         />
-
-        {/* <Modal
-          open={modalOpen}
-          setOpen={setModalOpen}
-          className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
-          onClose={() => setModalOpen(false)}>
-          <ExhibitorFilterItem
-            exhibitors={exhibitors}
-            employments={employments}
-            industries={industries}
-            programs={programs}
-            searchQueryName={searchQueryName}
-            onFilterChange={setFilteredExhibitors}
-          />
-        </Modal> */}
       </div >
 
-      <div className="w-full overflow-hidden">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="w-full">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-[1200px] mx-auto justify-center">
           {filteredExhibitors.map((exhibitor) => (
             <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
           ))}
         </div>
-      </div >
+      </div>
+
     </div >
   );
 }
