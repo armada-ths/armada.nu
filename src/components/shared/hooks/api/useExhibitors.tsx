@@ -114,8 +114,6 @@ export async function fetchExhibitors(options?: RequestInit, filters?: Exhibitor
     throw new Error("Invalid response format: expected an array")
   }
 
-  console.log(data);
-
   return data as Exhibitor[]
 }
 

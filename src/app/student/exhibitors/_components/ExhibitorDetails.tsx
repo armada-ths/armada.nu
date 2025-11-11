@@ -18,6 +18,7 @@ export default function ExhibitorDetails({
 }) {
   const hasIndustries = (exhibitor.industries ?? []).length > 0
   const hasEmployments = (exhibitor.employments ?? []).length > 0
+  const hasPrograms = (exhibitor.programs ?? []).length > 0
 
   const [show, setShow] = useState(false)
 
@@ -110,6 +111,19 @@ export default function ExhibitorDetails({
             <BadgeCollection
               className="mt-2 gap-2"
               items={exhibitor.employments ?? []}
+              maxDisplayed={20}
+            />
+          </div>
+        )}
+
+        {hasPrograms && (
+          <div>
+            <Page.Header tier="secondary" className="mt-2 pl-1">
+              Programs
+            </Page.Header>
+            <BadgeCollection
+              className="mt-2 gap-2"
+              items={exhibitor.programs ?? []}
               maxDisplayed={20}
             />
           </div>
