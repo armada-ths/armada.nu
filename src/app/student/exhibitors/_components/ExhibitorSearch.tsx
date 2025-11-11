@@ -1,10 +1,14 @@
 "use client";
 
 import { Employment, Exhibitor, Industry, Program } from "@/components/shared/hooks/api/useExhibitors";
+import Modal from "@/components/ui/Modal";
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"; // Adjust path as needed
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { ExhibitorCard } from "./ExhibitorCard";
-// Import the MultiSelect component and the Option interface
-import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"; // Adjust path as needed
+import { FilterOverlay } from './FilterOverlay';
+import { ProductListHeader } from './ProductListHeader';
 
 interface Props {
   exhibitors: Exhibitor[];
@@ -14,6 +18,12 @@ interface Props {
 }
 
 export default function ExhibitorSearch({ exhibitors, employments, industries, programs }: Props) {
+  const [modalOpen, setModalOpen] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const handleFilterOpen = () => setIsFilterOpen(true);
+  const handleFilterClose = () => setIsFilterOpen(false);
+  const router = useRouter()
+
   const [searchQueryName, setSearchQueryName] = useState("");
 
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
@@ -107,40 +117,62 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
   return (
     <div className="py-6 space-y-4">
 
-      <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
+      <div className="py-2 flex flex-col sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
         <input
           type="text"
           value={searchQueryName}
           onChange={(e) => setSearchQueryName(e.target.value)}
-          placeholder="Search by company name..."
+          placeholder="Search by company name"
           className="border rounded p-2 flex-grow"
         />
 
-        {/* Multi-Select Employment Filter */}
-        <div className="sm:w-64 truncate">
-          <MultiSelect
-            options={employmentOptions}
-            onValueChange={setSelectedEmploymentIds} // Pass the state setter
-            placeholder="Filter by Employment Type"
-          />
-        </div>
-        {/* Multi-Select Industries Filter */}
-        <div className="sm:w-64 truncate">
-          <MultiSelect
-            options={industriesOptions}
-            onValueChange={setSelectedIndustriesIds} // Pass the state setter
-            placeholder="Filter by Industry Type"
-          />
-        </div>
-        {/* Multi-Select Program Filter */}
-        <div className="sm:w-64 truncate">
-          <MultiSelect
-            options={programOptions}
-            onValueChange={setSelectedProgramsIds} // Pass the state setter
-            placeholder="Filter by Program"
-          />
-        </div>
-      </div>
+        <ProductListHeader onFilterClick={handleFilterOpen} />
+
+        <FilterOverlay
+          isOpen={isFilterOpen}
+          onClose={handleFilterClose}
+          headerHeight={"100"}
+        />
+
+        <button onClick={() => setModalOpen(true)} className="py-1">
+          <HamburgerMenuIcon width={30} height={30} />
+        </button>
+
+        <Modal
+          open={modalOpen}
+          setOpen={setModalOpen}
+          className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
+          onClose={() => router.push("/student/exhibitors", { scroll: false })}>
+          <div className="p-4 sm:p-10 space-y-2 **max-h-[80vh] overflow-y-auto**">
+            {/* Employment Filter */}
+            <div className="w-full md:w-64">
+              <MultiSelect
+                options={employmentOptions}
+                onValueChange={setSelectedEmploymentIds}
+                placeholder="Filter by Employment"
+              />
+            </div>
+
+            {/* Industries Filter */}
+            <div className="w-full sm:w-64">
+              <MultiSelect
+                options={industriesOptions}
+                onValueChange={setSelectedIndustriesIds}
+                placeholder="Filter by Industry"
+              />
+            </div>
+
+            {/* Program Filter */}
+            <div className="w-full sm:w-64">
+              <MultiSelect
+                options={programOptions}
+                onValueChange={setSelectedProgramsIds}
+                placeholder="Filter by Program"
+              />
+            </div>
+          </div>
+        </Modal>
+      </div >
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((exhibitor) => (
