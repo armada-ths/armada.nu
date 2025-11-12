@@ -68,29 +68,34 @@ export default function FairMap({
     const api = transformRef.current;
     if (!svg || !api) return;
 
-    const booth = svg.querySelector<SVGGraphicsElement>(
-      `[id$="__${selectedExhibitor.fairLocation}"]`
-    );
-    if (!booth) return;
+    const timeout = setTimeout(() => {
+      const booth = svg.querySelector<SVGGraphicsElement>(
+        `[id$="__${selectedExhibitor.fairLocation}"]`
+      );
+      if (!booth) return;
 
-    api.zoomToElement(booth as unknown as HTMLElement, 3, 500);
+      api.zoomToElement(booth as unknown as HTMLElement, isMobile ? 5 : 3, 300);
 
-    const tier = (selectedExhibitor.tier || "").toLowerCase();
-    const colors = tierColors[tier] || tierColors.default;
-    const highlightColor = colors.stroke;
+      // Highlight glow
+      const tier = (selectedExhibitor.tier || "").toLowerCase();
+      const colors = tierColors[tier] || tierColors.default;
+      const highlightColor = colors.stroke;
 
-    const glow = booth.cloneNode(true) as SVGGraphicsElement;
-    glow.setAttribute("stroke", highlightColor);
-    glow.setAttribute("opacity", "1");
-    glow.style.pointerEvents = "none";
-    glow.style.filter = `drop-shadow(0 0 4px ${highlightColor}) drop-shadow(0 0 8px ${highlightColor})`;
-    glow.classList.add("animate-pulse");
-    glow.style.animationDuration = "1.5s";
+      const glow = booth.cloneNode(true) as SVGGraphicsElement;
+      glow.setAttribute("stroke", highlightColor);
+      glow.setAttribute("opacity", "1");
+      glow.style.pointerEvents = "none";
+      glow.style.filter = `drop-shadow(0 0 4px ${highlightColor}) drop-shadow(0 0 8px ${highlightColor})`;
+      glow.classList.add("animate-pulse");
+      glow.style.animationDuration = "1.5s";
 
-    booth.parentNode?.appendChild(glow);
+      booth.parentNode?.appendChild(glow);
+      setTimeout(() => glow.remove(), 3000);
+    }, 350);
 
-    setTimeout(() => glow.remove(), 3000);
-  }, [selectedExhibitor, currentFloorIndex]);
+    return () => clearTimeout(timeout);
+  }, [selectedExhibitor]);
+
 
   // Draw map + exhibitors
   useEffect(() => {
@@ -200,7 +205,9 @@ export default function FairMap({
     setModalOpen(true);
     const api = transformRef.current;
     if (api) {
-      api.zoomToElement(target as unknown as HTMLElement, 3, 200);
+      setTimeout(() => {
+        api.zoomToElement(target as unknown as HTMLElement, isMobile ? 5 : 3, 200);
+      }, 100); // small delay for mobile gesture processing
     }
   };
 
