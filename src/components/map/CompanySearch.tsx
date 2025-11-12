@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Search } from "lucide-react";
+import { useState } from "react";
 
 interface CompanySearchProps {
   exhibitors: Exhibitor[];
@@ -18,9 +19,16 @@ interface CompanySearchProps {
 }
 
 export default function CompanySearch({ exhibitors, onSelect }: CompanySearchProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleSelect = (exhibitor: Exhibitor) => {
+    onSelect(exhibitor);
+    setOpen(false);
+  };
+
   return (
     <div className="absolute top-40 left-6 z-50 w-80">
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button className="flex items-center justify-center p-2 rounded-lg bg-white border border-stone-800 hover:bg-stone-300">
             <Search className="h-4 w-4 text-stone-800" />
@@ -37,7 +45,7 @@ export default function CompanySearch({ exhibitors, onSelect }: CompanySearchPro
               <CommandEmpty>No companies found.</CommandEmpty>
               <CommandGroup heading="Exhibitors">
                 {exhibitors.map(ex => (
-                  <CommandItem key={ex.id} onSelect={() => onSelect(ex)}>
+                  <CommandItem key={ex.id} onSelect={() => handleSelect(ex)}>
                     {ex.name}
                   </CommandItem>
                 ))}

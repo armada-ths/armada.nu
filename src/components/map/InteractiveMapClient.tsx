@@ -24,6 +24,8 @@ export default function InteractiveMapClient({ exhibitors }: InteractiveMapClien
 
     setSelectedMapIndex(targetFloorIndex);
     setSelectedExhibitor(ex);
+
+    setTimeout(() => setSelectedExhibitor(null), 3000);
   };
 
   return (
