@@ -84,7 +84,8 @@ export default function FairMap({
     glow.setAttribute("opacity", "1");
     glow.style.pointerEvents = "none";
     glow.style.filter = `drop-shadow(0 0 4px ${highlightColor}) drop-shadow(0 0 8px ${highlightColor})`;
-    glow.classList.add("animate-[pulse_1.2s_ease-in-out_1]");
+    glow.classList.add("animate-pulse");
+    glow.style.animationDuration = "1.5s";
 
     booth.parentNode?.appendChild(glow);
 
