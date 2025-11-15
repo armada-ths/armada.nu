@@ -81,15 +81,19 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
       <Link href={`/student/exhibitors?id=${exhibitor.id}`} scroll={false}>
         <div
-          className="zto-liqorice-950 group relative flex h-full flex-col border-2 border-solid border-emerald-900 
-             bg-gradient-to-b from-emerald-900 via-emerald-950 filter transition 
-             hover:scale-[1.05] hover:brightness-95
-             max-w-[380px] w-full px-3"
+          className={`
+            ${exhibitor.tier === "Gold" ? "border-yellow-500 bg-gradient-to-b from-yellow-400 via-yellow-500" : ""}
+            ${exhibitor.tier === "Silver" ? "border-gray-400 bg-gradient-to-b from-gray-300 via-gray-400" : ""}
+            ${exhibitor.tier === "Bronze" ? "border-emerald-900 bg-gradient-to-b from-emerald-900 via-emerald-950 zto-liqorice-950" : ""}
+            group relative flex h-full flex-col border-2 border-solid filter transition 
+            hover:scale-[1.05] hover:brightness-95
+            max-w-[380px] w-full px-3
+          `}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
 
-          <h3 className="my-2 text-center font-bebas-neue text-2xl text-emerald-100 antialiased transition group-hover:text-melon-700 xs:text-xl">
+          <h3 className="my-2 text-center font-bold font-bebas-neue text-2xl text-emerald-100 antialiased transition group-hover:text-melon-700 xs:text-xl">
             {exhibitor.name}
           </h3>
 
