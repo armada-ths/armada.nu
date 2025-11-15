@@ -11,7 +11,7 @@ import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, Clock } from "lucide-react"
+import { ArrowRightIcon, Clock, MapPin } from "lucide-react"
 //import Image from "next/image"
 import DateCarousel from "@/app/_components/DatesCarousel"
 import MapWrapper from "@/app/_components/MapWrapper"
@@ -110,8 +110,7 @@ export default async function HomePage() {
                     &nbsp;Dates?
                   </p>
                   <p className=" mt-1 italic opacity-80">
-                    What
-                    &nbsp;Locations?
+                    Where?
                   </p>
                 </div>
               </div>
@@ -136,15 +135,18 @@ export default async function HomePage() {
 
           <div className="flex flex-col md:flex-row py-2">
             <div className="justify-center">
-              <p className="md:mt-10 text-5xl font-bebas-neue text-melon-700 justify-center">
-                VENUES
-              </p>
+              <div className="md:mt-10 flex gap-2 text-melon-700">
+                <p className="text-5xl font-bebas-neue justify-center">
+                  VENUES
+                </p>
+                <MapPin className="mt-2 size-7" />
+              </div>
               <p className="mt-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
-                Nymble <br />
+                <h2 className="text-3xl font-bebas-neue">Nymble</h2>
                 Drottning Kristinas väg 15-19, 114 28 Stockholm
               </p>
               <p className="mt-4 mb-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
-                KTH Innovation <br />
+                <h2 className="text-3xl font-bebas-neue">KTH Innovation</h2>
                 Teknikringen 1, 114 28 Stockholm
               </p>
             </div>
