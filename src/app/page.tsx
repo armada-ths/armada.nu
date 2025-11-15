@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, Clock } from "lucide-react"
 //import Image from "next/image"
 import DateCarousel from "@/app/_components/DatesCarousel"
-import MapWithMarker from "@/app/_components/LandingPageMap"
+import MapWrapper from "@/app/_components/MapWrapper"
 import Link from "next/link"
 import { Suspense } from "react"
 
@@ -149,7 +149,7 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <MapWithMarker />
+            <MapWrapper />
           </div>
           {/* About section */}
           <Page.Header className="mt-8">About Armada</Page.Header>
