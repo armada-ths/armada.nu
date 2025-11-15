@@ -93,7 +93,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
           onMouseLeave={handleMouseLeave}
         >
 
-          <h3 className="my-2 text-center font-bebas-neue text-2xl text-emerald-100 antialiased transition group-hover:text-melon-700 xs:text-xl">
+          <h3 className="my-2 text-center font-bold font-bebas-neue text-2xl text-emerald-100 antialiased transition group-hover:text-melon-700 xs:text-xl">
             {exhibitor.name}
           </h3>
 
