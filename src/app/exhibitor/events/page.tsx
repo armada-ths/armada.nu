@@ -32,11 +32,14 @@ function FAQItem({
         <h3 className="text-xl">{title}</h3>
       </AccordionTrigger>
       <AccordionContent className="mt-0 p-2 pt-0 text-base text-stone-400">
-        {/*<img
-          src={imageSrc}
-          alt={title}
-          className="mb-4 h-auto w-full rounded"
-        />*/}
+        <div className="flex justify-center">
+          <img
+            src={imageSrc}
+            alt={title}
+            className="mb-4 h-auto w-full rounded " //max-w-md max-h-80"
+          />
+        </div>
+
         <p>
           <strong>Location:</strong> {location}
         </p>
@@ -71,7 +74,7 @@ export default async function Packages() {
           <Accordion type="multiple">
             <FAQItem
               title="Lunch Lecture"
-              imageSrc=""
+              imageSrc="/event_pictures/lunchlecture.jpg"
               location="TBD"
               price="24,000/31,000 SEK">
               <p>
@@ -84,7 +87,7 @@ export default async function Packages() {
             </FAQItem>
             <FAQItem
               title="Panel Discussion"
-              imageSrc=""
+              imageSrc="/event_pictures/panel.jpg"
               location="At the fair"
               price="9000 SEK">
               <p>
@@ -98,7 +101,7 @@ export default async function Packages() {
             </FAQItem>
             <FAQItem
               title="Field Visit"
-              imageSrc=""
+              imageSrc="/event_pictures/field.jpg"
               location="Your office"
               price="9000 SEK">
               <p>
@@ -110,7 +113,7 @@ export default async function Packages() {
             </FAQItem>
             <FAQItem
               title="After Work"
-              imageSrc=""
+              imageSrc="/event_pictures/AW.jpg"
               location="Your Office or Nymble"
               price="9000/12,000 SEK">
               <p>
