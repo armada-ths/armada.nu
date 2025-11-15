@@ -74,7 +74,7 @@ export default async function HomePage() {
 
                   {/* Secondary CTA */}
                   <Link href="/student/exhibitors">
-                    <Button variant="secondary" className="w-44 dark:bg-liqorice-700 flex items-center">
+                    <Button size="lg" variant="secondary" className="w-44 dark:bg-liqorice-700 flex items-center">
                       Exhibitors at the fair
                     </Button>
                   </Link>
