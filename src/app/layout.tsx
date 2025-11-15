@@ -3,7 +3,7 @@ import { Footer } from "@/components/shared/Footer"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DateTime } from "luxon"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Bebas_Neue, Inter, Lato } from "next/font/google"
 
 import { FooterGuard } from "@/components/shared/FooterGuard"
@@ -21,6 +21,13 @@ const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato"
 })
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
 
 export const metadata: Metadata = {
   title: "THS Armada",
