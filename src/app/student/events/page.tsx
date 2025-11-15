@@ -20,7 +20,6 @@ function orderEvents(events: Event[], nowInSeconds: number) {
     .sort((a, b) => toSeconds(a.eventStart) - toSeconds(b.eventStart))
 
   const upcoming: Event[] = []
-  const past: Event[] = []
 
   for (const event of sorted) {
     const startSeconds =
@@ -36,12 +35,10 @@ function orderEvents(events: Event[], nowInSeconds: number) {
     )
     if (relevanceTimestamp >= nowInSeconds) {
       upcoming.push(event)
-    } else {
-      past.push(event)
     }
   }
 
-  return [...upcoming, ...past.reverse()]
+  return [...upcoming]
 }
 
 export default async function EventPage() {
@@ -73,8 +70,7 @@ export default async function EventPage() {
           <Page.Header>Events</Page.Header>
           <P className="mt-4 max-w-2xl">
             Besides the career fair, Armada hosts a variety of events to help
-            you prepare, network, and learn. Browse through our upcoming and
-            past events below.
+            you prepare, network, and learn. Browse through our upcoming events below.
           </P>
           <div className="mx-auto flex w-full flex-col items-center pl-1 text-center">
             <EventsTimeline events={orderedEvents} />
