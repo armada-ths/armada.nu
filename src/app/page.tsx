@@ -11,9 +11,10 @@ import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, Clock } from "lucide-react"
+import { ArrowRightIcon, Clock, MapPin } from "lucide-react"
 //import Image from "next/image"
 import DateCarousel from "@/app/_components/DatesCarousel"
+import MapWrapper from "@/app/_components/MapWrapper"
 import Link from "next/link"
 import { Suspense } from "react"
 
@@ -90,25 +91,37 @@ export default async function HomePage() {
         <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
           <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-hidden">
-            <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
-              <Clock
-                size={100}
-                strokeWidth={1.5}
-                style={{
-                  WebkitMaskImage:
-                    "linear-gradient(to bottom, black 40%, transparent 100%)",
-                  WebkitMaskRepeat: "no-repeat",
-                  WebkitMaskSize: "100% 100%",
-                }}
-                className="ml-2 text-melon-700"
-              />
-              <p className="-ml-1 mt-1 italic opacity-80">
-                Which
-                <br />
-                &nbsp;Dates?
+            <div className="flex-row">
+              <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
+                <Clock
+                  size={100}
+                  strokeWidth={1.5}
+                  style={{
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, black 40%, transparent 100%)",
+                    WebkitMaskRepeat: "no-repeat",
+                    WebkitMaskSize: "100% 100%",
+                  }}
+                  className="ml-2 text-melon-700"
+                />
+                <div>
+                  <p className=" mt-1 italic opacity-80">
+                    Which
+                    &nbsp;Dates?
+                  </p>
+                  <p className=" mt-1 italic opacity-80">
+                    Where?
+                  </p>
+                </div>
+              </div>
+              <div className="md:mt-4">
+                <DateCarousel />
+              </div>
+
+              <p className="text-2xl text-melon-700 text-left mix-blend-normal">
+                Nymble & KTH Innovation
               </p>
             </div>
-            <DateCarousel />
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
               <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
             </div>
@@ -119,6 +132,27 @@ export default async function HomePage() {
           {/* Gold Exhibitors */}
           <GoldExhibitors exhibitors={goldExhibitors} />
           <RollingBanner logos={silverLogos} />
+
+          <div className="flex flex-col md:flex-row py-2">
+            <div className="justify-center">
+              <div className="md:mt-10 flex gap-2 text-melon-700">
+                <p className="text-5xl font-bebas-neue justify-center">
+                  VENUES
+                </p>
+                <MapPin className="mt-2 size-7" />
+              </div>
+              <p className="mt-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
+                <h2 className="text-3xl font-bebas-neue">Nymble</h2>
+                Drottning Kristinas väg 15-19, 114 28 Stockholm
+              </p>
+              <p className="mt-4 mb-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
+                <h2 className="text-3xl font-bebas-neue">KTH Innovation</h2>
+                Teknikringen 1, 114 28 Stockholm
+              </p>
+            </div>
+
+            <MapWrapper />
+          </div>
           {/* About section */}
           <Page.Header className="mt-8">About Armada</Page.Header>
           <P className="mt-4">
