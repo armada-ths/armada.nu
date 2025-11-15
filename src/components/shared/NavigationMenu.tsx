@@ -246,7 +246,7 @@ export function NavigationMenu(
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger
-                href="/student/recruitment"
+                href="/student/exhibitors"
                 className="dark:hover:text-melon-700">
                 For Students
               </NavigationMenuTrigger>
