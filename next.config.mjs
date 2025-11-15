@@ -3,6 +3,37 @@ import toolbar from "@vercel/toolbar/plugins/next"
 
 const withVercelToolbar = toolbar()
 const nextConfig = {
+  webpack(config) {
+    // Find the existing rule handling SVGs
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.(".svg")
+    );
+
+    // If found, modify it safely
+    if (fileLoaderRule) {
+      // Exclude svg from the default file loader
+      fileLoaderRule.exclude = /\.svg$/i;
+
+      // Add your custom SVG handling rules
+      config.module.rules.push(
+        {
+          test: /\.svg$/i,
+          issuer: /\.[jt]sx?$/,
+          resourceQuery: /url/, // *.svg?url
+          type: "asset/resource",
+        },
+        {
+          test: /\.svg$/i,
+          issuer: /\.[jt]sx?$/,
+          resourceQuery: { not: [/url/] }, // *.svg but not ?url
+          use: ["@svgr/webpack"],
+        }
+      );
+    }
+
+    // Important: don't spread/clone rules or overwrite config entirely
+    return config;
+  },
   images: {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

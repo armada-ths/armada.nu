@@ -11,7 +11,7 @@ import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, Clock, MapPin } from "lucide-react"
+import { ArrowRightIcon, Clock, MapIcon, MapPin } from "lucide-react"
 //import Image from "next/image"
 import DateCarousel from "@/app/_components/DatesCarousel"
 import MapWrapper from "@/app/_components/MapWrapper"
@@ -64,21 +64,30 @@ export default async function HomePage() {
                   </Link>
                 </>
               ) : (
-                <>
+                <div className="grid grid-cols-2 gap-3 mt-6 sm:flex sm:flex-row sm:items-center sm:gap-2">                  {/* Primary CTA */}
+                  <Link href="/student/map">
+                    <Button size="lg" className="w-44 flex items-center gap-2">
+                      <MapIcon size={16} />
+                      Visit the map
+                    </Button>
+                  </Link>
+
+                  {/* Secondary CTA */}
                   <Link href="/student/exhibitors">
-                    <Button>
+                    <Button size="lg" variant="secondary" className="w-44 dark:bg-liqorice-700 flex items-center">
                       Exhibitors at the fair
                     </Button>
                   </Link>
-                  <Link href="/student/events">
-                    <Button
-                      variant={"secondary"}
-                      className="dark:bg-liqorice-700">
-                      Sign up for events!
-                      <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Button>
+
+                  {/* Text link */}
+                  <Link
+                    href="/student/events"
+                    className="mt-2 text-sm text-muted-foreground underline-offset-4 hover:underline hover:text-foreground"
+                  >
+                    Sign up for events
                   </Link>
-                </>
+                </div>
+
               )}
             </div>
             {/*

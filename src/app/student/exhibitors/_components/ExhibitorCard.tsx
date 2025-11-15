@@ -70,7 +70,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => {
-          router.push("/student/exhibitors", { scroll: false })
+          setModalOpen(false);
         }}
         className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
         <div className="p-4 sm:p-10">
