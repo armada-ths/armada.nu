@@ -42,7 +42,6 @@ function parseRotation(transform?: string | null) {
 export default function FairMap({
   exhibitors,
   MapComponent,
-  currentFloorIndex,
   selectedExhibitor = null,
 }: FairMapProps) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -145,17 +144,8 @@ export default function FairMap({
           logo.setAttribute("preserveAspectRatio", "xMidYMid meet");
           logo.style.pointerEvents = "none";
 
-          if (rotation) {
-            const absRotation = Math.abs(rotation.angle % 360);
-            if (absRotation < 20 || absRotation > 340) {
-              logo.setAttribute("transform", boothTransform || "");
-            } else {
-              logo.setAttribute(
-                "transform",
-                `rotate(${rotation.angle + 90} ${rotation.cx ?? cx} ${rotation.cy ?? cy})`
-              );
-            }
-          }
+          logo.setAttribute("transform", boothTransform || "");
+
           svg.appendChild(logo);
         } else {
           const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -172,17 +162,8 @@ export default function FairMap({
           text.setAttribute("data-initial", "true");
           text.style.pointerEvents = "none";
 
-          if (rotation) {
-            const absRotation = Math.abs(rotation.angle % 360);
-            if (absRotation < 20 || absRotation > 340) {
-              text.setAttribute("transform", boothTransform || "");
-            } else {
-              text.setAttribute(
-                "transform",
-                `rotate(${rotation.angle + 90} ${rotation.cx ?? cx} ${rotation.cy ?? cy})`
-              );
-            }
-          }
+          text.setAttribute("transform", boothTransform || "");
+
           svg.appendChild(text);
         }
       });
