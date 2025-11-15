@@ -41,6 +41,7 @@ export function Footer() {
             <a href="/student/recruitment" className="hover:text-melon-700">Recruitment</a>
             <a href="/student/events" className="hover:text-melon-700">Events</a>
             <a href="/student/exhibitors" className="hover:text-melon-700">Exhibitors</a>
+            <a href="/student/map" className="hover:text-melon-700">Map</a>
           </div>
         </div>
 
@@ -95,6 +96,7 @@ export function Footer() {
                 <a href="/student/recruitment">Recruitment</a>
                 <a href="/student/events">Events</a>
                 <a href="/student/exhibitors">Exhibitors</a>
+                <a href="/student/map">Map</a>
               </div>
             </AccordionContent>
           </AccordionItem>
