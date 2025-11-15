@@ -82,7 +82,7 @@ export default async function HomePage() {
                   {/* Text link */}
                   <Link
                     href="/student/events"
-                    className="mt-2 text-sm text-muted-foreground underline-offset-4 hover:underline hover:text-foreground"
+                    className="text-sm text-muted-foreground underline-offset-4 hover:underline hover:text-foreground"
                   >
                     Sign up for events
                   </Link>
