@@ -126,6 +126,9 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
       <Page.Header>Order</Page.Header>
       <p className="mt-2 text-stone-400">
         Here you can order drinks and snacks for your booth during Armada.
+        <br /><br />
+        Use this form for delivery straight to your booth – or feel free to drop by the lounge for a friendly chat and a fresh cup of coffee.
+        (If you have any questions about ingredients or allergies, please come by the lounge and we’ll be happy to help.)
       </p>
 
       {/* Company combobox */}
