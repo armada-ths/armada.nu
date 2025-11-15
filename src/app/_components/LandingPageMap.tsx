@@ -13,8 +13,8 @@ const markerIcon = new L.Icon({
 
 const MapWithMarker = () => {
   const markers: [number, number, string][] = [
-    [59.347358613537246, 18.07072872673351, "NYMBLE"],
-    [59.34951101902282, 18.071636049206543, "KTHINNOVATION"],
+    [59.347358613537246, 18.07072872673351, "Nymble"],
+    [59.34951101902282, 18.071636049206543, "KTH Innovation"],
   ];
 
   return (

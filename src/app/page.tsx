@@ -120,7 +120,7 @@ export default async function HomePage() {
               </div>
 
               <p className="text-2xl text-melon-700 text-left mix-blend-normal">
-                NYMBLE & KTH INNOVATION
+                Nymble & KTH Innovation
               </p>
             </div>
             <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
@@ -140,11 +140,11 @@ export default async function HomePage() {
                 VENUES
               </p>
               <p className="mt-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
-                NYMBLE <br />
+                Nymble <br />
                 Drottning Kristinas väg 15-19, 114 28 Stockholm
               </p>
               <p className="mt-4 mb-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
-                KTH INNOVATION <br />
+                KTH Innovation <br />
                 Teknikringen 1, 114 28 Stockholm
               </p>
             </div>
