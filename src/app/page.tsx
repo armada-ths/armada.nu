@@ -139,11 +139,11 @@ export default async function HomePage() {
               <p className="md:mt-10 text-5xl font-bebas-neue text-melon-700 justify-center">
                 VENUES
               </p>
-              <p className="md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
+              <p className="mt-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
                 NYMBLE <br />
                 Drottning Kristinas väg 15-19, 114 28 Stockholm
               </p>
-              <p className="md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
+              <p className="mt-4 mb-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
                 KTH INNOVATION <br />
                 Teknikringen 1, 114 28 Stockholm
               </p>
