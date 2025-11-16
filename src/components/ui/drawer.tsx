@@ -11,6 +11,7 @@ const Drawer = ({
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
   <DrawerPrimitive.Root
     shouldScaleBackground={shouldScaleBackground}
+    preventScrollRestoration={false}
     {...props}
   />
 )
@@ -34,22 +35,30 @@ const DrawerOverlay = React.forwardRef<
 ))
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 
+type DrawerProps = React.ComponentPropsWithoutRef<
+  typeof DrawerPrimitive.Content
+> & {
+  withHandle?: boolean
+  container?: HTMLElement | null
+}
+
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DrawerPortal>
+  DrawerProps
+>(({ className, children, withHandle = true, container, ...props }, ref) => (
+  <DrawerPortal container={container}>
     <DrawerOverlay />
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-950",
+        "fixed inset-x-0 bottom-0 z-50 flex h-auto flex-col rounded-t-[10px] border border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-950",
         className
       )}
-      {...props}
-    >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-stone-100 dark:bg-stone-800" />
-      {children}
+      {...props}>
+      {withHandle && (
+        <div className="mx-auto my-3 min-h-1 w-[80px] rounded-full bg-stone-400" />
+      )}
+      <div className="overflow-y-auto">{children}</div>
     </DrawerPrimitive.Content>
   </DrawerPortal>
 ))
@@ -106,13 +115,13 @@ DrawerDescription.displayName = DrawerPrimitive.Description.displayName
 
 export {
   Drawer,
-  DrawerPortal,
-  DrawerOverlay,
-  DrawerTrigger,
   DrawerClose,
   DrawerContent,
-  DrawerHeader,
-  DrawerFooter,
-  DrawerTitle,
   DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerPortal,
+  DrawerTitle,
+  DrawerTrigger
 }
