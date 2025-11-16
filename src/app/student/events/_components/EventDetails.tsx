@@ -52,7 +52,7 @@ export default function EventDetails({
         {/* Left: Image + Description */}
         <div className="flex-1 space-y-6">
           {event.imageUrl && (
-            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
+            <div className="relative aspect-video overflow-hidden rounded-2xl shadow-lg">
               <Image
                 src={event.imageUrl}
                 alt={event.name}
@@ -68,7 +68,7 @@ export default function EventDetails({
           />
         </div>
 
-        <div className="mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-gradient-to-br from-emerald-950 to-neutral-900 to-50% p-5 lg:w-2/5">
+        <div className="mt-1 flex h-fit flex-col gap-4 rounded-md border border-emerald-900 bg-linear-to-br from-emerald-950 to-neutral-900 to-50% p-5 lg:w-2/5">
           {/* Top row */}
           <InfoBoxItem
             label="Location"
@@ -83,7 +83,7 @@ export default function EventDetails({
             value={`${formatTimestampAsTime(event.eventStart)} - ${formatTimestampAsTime(event.eventEnd)}`}
             icon={<Clock size={16} />}></InfoBoxItem>
           {/* Separator */}
-          <div className="h-[1px] w-full bg-stone-400"></div>
+          <div className="h-px w-full bg-stone-400"></div>
           {/* Bottom row */}
           {event.eventMaxCapacity > 0 && (
             <InfoBoxItem

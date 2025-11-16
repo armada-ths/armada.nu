@@ -11,7 +11,7 @@ export function Footer() {
   return (
     <footer className="w-full bg-black text-white py-8 flex flex-col items-center">
       {/* Divider */}
-      <hr className="w-2/3 h-[1px] bg-slate-600 opacity-40 mb-6" />
+      <hr className="w-2/3 h-px bg-slate-600 opacity-40 mb-6" />
 
       {/* Desktop footer */}
       <div className="hidden md:flex md:flex-row md:items-start md:justify-between md:text-left md:gap-12 md:px-24 w-full max-w-6xl">

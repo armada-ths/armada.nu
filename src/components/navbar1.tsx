@@ -251,7 +251,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
-      className="hover:bg-stone-100 hover:text-stone-900 flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors dark:hover:bg-stone-800 dark:hover:text-stone-50"
+      className="hover:bg-stone-100 hover:text-stone-900 flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-hidden transition-colors dark:hover:bg-stone-800 dark:hover:text-stone-50"
       href={item.url}
     >
       <div className="text-stone-50">{item.icon}</div>

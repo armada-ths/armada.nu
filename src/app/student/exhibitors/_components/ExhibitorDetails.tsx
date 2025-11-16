@@ -78,7 +78,7 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
         )}
 
         {exhibitor.mapImg && (
-          <div className="flex-shrink-0 flex justify-center">
+          <div className="shrink-0 flex justify-center">
             <Image
               className="h-80 w-auto object-contain rounded-lg"
               src={exhibitor.mapImg ?? ""}

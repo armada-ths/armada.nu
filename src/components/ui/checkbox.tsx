@@ -13,12 +13,14 @@ const Checkbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "peer h-4 w-4 shrink-0 rounded-sm border border-stone-500 font-bold text-stone-950 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-none data-[state=checked]:bg-melon-700",
+      "grid place-content-center peer h-4 w-4 shrink-0 rounded-xs border border-stone-200 border-stone-900 ring-offset-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-stone-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-stone-900 data-[state=checked]:text-stone-50 dark:border-stone-800 dark:border-stone-50 dark:ring-offset-stone-950 dark:focus-visible:ring-stone-300 dark:data-[state=checked]:bg-stone-50 dark:data-[state=checked]:text-stone-900",
       className
     )}
-    {...props}>
+    {...props}
+  >
     <CheckboxPrimitive.Indicator
-      className={cn("flex items-center justify-center text-current")}>
+      className={cn("grid place-content-center text-current")}
+    >
       <Check className="h-4 w-4" />
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>

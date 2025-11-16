@@ -37,7 +37,7 @@ export function TimelineItem({
       <AccordionTrigger
         disabled={!expandable}
         className={cn(
-          "ml-4 w-full rounded px-2 pb-1.5 text-left font-normal hover:no-underline",
+          "ml-4 w-full rounded-sm px-2 pb-1.5 text-left font-normal hover:no-underline",
           { "transition hover:text-melon-700": expandable }
         )}>
         <div>
