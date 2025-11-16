@@ -8,13 +8,12 @@ import Modal from "@/components/ui/Modal"
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const searchParams = useSearchParams()
   const [modalOpen, setModalOpen] = useState(false)
-  const router = useRouter()
 
   const { width } = useScreenSize()
   const maxDisplayedBadges = width && width < 470 ? 2 : 1
@@ -82,18 +81,26 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
       <Link href={`/student/exhibitors?id=${exhibitor.id}`} scroll={false}>
         <div
           className={`
-            ${exhibitor.tier === "Gold" ? "border-yellow-500 bg-gradient-to-b from-yellow-400 via-yellow-500" : ""}
-            ${exhibitor.tier === "Silver" ? "border-gray-400 bg-gradient-to-b from-gray-300 via-gray-400" : ""}
-            ${exhibitor.tier === "Bronze" ? "border-emerald-900 bg-gradient-to-b from-emerald-900 via-emerald-950 zto-liqorice-950" : ""}
+            ${exhibitor.tier === "Gold" ? "border-yellow-500 bg-yellow-500" : ""}
+            ${exhibitor.tier === "Silver" ? "border-gray-400 bg-gray-400" : ""}
+            ${exhibitor.tier === "Bronze" ? "border-emerald-900 bg-emerald-900" : ""}
             group relative flex h-full flex-col border-2 border-solid filter transition 
             hover:scale-[1.05] hover:brightness-95
-            max-w-[380px] w-full px-3
+            max-w-[380px] w-full px-3 rounded-lg
           `}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
 
-          <h3 className="my-2 text-center font-bold font-bebas-neue text-2xl text-emerald-100 antialiased transition group-hover:text-melon-700 xs:text-xl">
+          <h3
+            className={`
+              my-2 text-center font-bold font-bebas-neue text-2xl antialiased transition xs:text-xl
+
+              ${exhibitor.tier === "Gold" ? "text-yellow-100 group-hover:text-yellow-300" : ""}
+              ${exhibitor.tier === "Silver" ? "text-gray-200 group-hover:text-gray-100" : ""}
+              ${exhibitor.tier === "Bronze" ? "text-emerald-200 group-hover:text-emerald-400" : ""}
+            `}
+          >
             {exhibitor.name}
           </h3>
 
