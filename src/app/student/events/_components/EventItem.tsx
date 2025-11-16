@@ -38,6 +38,9 @@ export function EventItem({ event }: { event: Event }) {
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
 
+      {/* Timeline dot (hidden on mobile) */}
+      <div className="absolute -start-1.5 mt-22 hidden h-3 w-3 rounded-full border border-white bg-melon-700 sm:block" />
+
       {/* Card container */}
       <div className="mb-6 w-full sm:ml-6 sm:w-3/5 sm:min-w-[500px]">
         <Link

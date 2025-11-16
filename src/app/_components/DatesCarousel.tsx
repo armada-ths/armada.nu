@@ -12,7 +12,7 @@ export default function DateCarousel() {
     return (
         <Carousel
             plugins={[autoplay.current]}
-            className="w-full max-w-xs [mask-image:linear-gradient(to_right,transparent,black_1%,black_90%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1%,black_90%,transparent)]"
+            className="w-full max-w-xs mask-[linear-gradient(to_right,transparent,black_1%,black_90%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1%,black_90%,transparent)]"
             opts={{
                 loop: true,
                 align: "start",

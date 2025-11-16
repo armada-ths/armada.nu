@@ -54,8 +54,8 @@ export const AuroraBackground = ({
           className={cn(
             `absolute -inset-[20px]
             [background-image:var(--highlight),var(--aurora)]
-            [background-size:260%,_200%]
-            [background-position:50%_50%,50%_50%]
+            bg-size-[260%,200%]
+            bg-position-[50%_50%,50%_50%]
             opacity-[0.85]
             blur-[20px]
             mix-blend-screen
@@ -63,7 +63,7 @@ export const AuroraBackground = ({
             animate-[aurora_18s_ease-in-out_infinite]`,
 
             showRadialGradient &&
-            "[mask-image:radial-gradient(ellipse_at_70%_0%,black_25%,transparent_80%)]"
+            "mask-[radial-gradient(ellipse_at_70%_0%,black_25%,transparent_80%)]"
           )}
         />
       </div>

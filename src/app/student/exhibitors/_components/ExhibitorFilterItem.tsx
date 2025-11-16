@@ -115,12 +115,12 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
         onValueChange={setSelectedEmploymentIds}
         placeholder="Filter by Employment"
         popoverClassName="
-      w-[--radix-popover-trigger-width]
+      w-(--radix-popover-trigger-width)
       min-w-full
-      sm:w-[--radix-popover-trigger-width]
+      sm:w-(--radix-popover-trigger-width)
       max-w-[95vw]
       "
-        className="w-full !bg-black !text-white  hover:!bg-gray-800"
+        className="w-full bg-black! text-white!  hover:bg-gray-800!"
       />
 
       <MultiSelect
@@ -128,12 +128,12 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
         onValueChange={setSelectedIndustriesIds}
         placeholder="Filter by Industry"
         popoverClassName="
-            w-[--radix-popover-trigger-width] 
+            w-(--radix-popover-trigger-width) 
             min-w-full 
-            sm:w-[--radix-popover-trigger-width]
+            sm:w-(--radix-popover-trigger-width)
             max-w-[95vw]
           "
-        className="w-full !bg-black !text-white  hover:!bg-gray-800"
+        className="w-full bg-black! text-white!  hover:bg-gray-800!"
       />
 
 
@@ -143,10 +143,10 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
         onValueChange={setSelectedProgramsIds}
         placeholder="Filter by Program"
         popoverClassName="
-            w-[--radix-popover-trigger-width] 
+            w-(--radix-popover-trigger-width) 
             min-w-full
           "
-        className="w-full !bg-black !text-white  hover:!bg-gray-800"
+        className="w-full bg-black! text-white!  hover:bg-gray-800!"
       />
     </div>)
 }

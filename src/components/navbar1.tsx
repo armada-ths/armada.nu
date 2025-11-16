@@ -136,9 +136,6 @@ const Navbar1 = ({
                 className="max-h-8"
                 alt={logo.alt}
               />
-              <span className="text-lg font-semibold tracking-tighter">
-                {logo.title}
-              </span>
             </a>
             <div className="flex items-center">
               <NavigationMenu>
@@ -173,7 +170,7 @@ const Navbar1 = ({
                     <a href={logo.url} className="flex items-center gap-2">
                       <img
                         src={logo.src}
-                        className="max-h-8 dark:invert"
+                        className="max-h-8"
                         alt={logo.alt}
                       />
                     </a>
@@ -251,7 +248,11 @@ const renderMobileMenuItem = (item: MenuItem) => {
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
-      className="hover:bg-stone-100 hover:text-stone-900 flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors dark:hover:bg-stone-800 dark:hover:text-stone-50"
+      className="
+        hover:bg-stone-100 hover:text-stone-900
+        flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-hidden
+        transition-colors dark:hover:bg-stone-800 dark:hover:text-stone-50
+        max-w-80 sm:min-w-80"
       href={item.url}
     >
       <div className="text-stone-50">{item.icon}</div>
