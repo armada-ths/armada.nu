@@ -4,31 +4,71 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import Link from "next/link"
 import { Suspense } from "react"
 
+import { formatTimestampAsDate } from "@/lib/utils"
+import Timeline from '@mui/lab/Timeline'
+import TimelineConnector from '@mui/lab/TimelineConnector'
+import TimelineContent from '@mui/lab/TimelineContent'
+import TimelineDot from '@mui/lab/TimelineDot'
+import TimelineItem from '@mui/lab/TimelineItem'
+import TimelineOppositeContent, {
+  timelineOppositeContentClasses,
+} from '@mui/lab/TimelineOppositeContent'
+import TimelineSeparator from '@mui/lab/TimelineSeparator'
+
 export function EventsTimeline({ events }: { events: Event[] }) {
+  if (events.length === 0) {
+    return (
+      <Alert className="my-5">
+        <AlertTitle>No events available at the moment</AlertTitle>
+        <AlertDescription>
+          Follow us on{" "}
+          <Link
+            className="text-white underline hover:no-underline"
+            href={"https://www.instagram.com/thsarmada/"}>
+            instagram
+          </Link>{" "}
+          for latest news!
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
   return (
-    <>
-      {events.length === 0 && (
-        <Alert className="my-5">
-          <AlertTitle>No events available at the moment</AlertTitle>
-          <AlertDescription>
-            Follow us on{" "}
-            <Link
-              className="text-white underline hover:no-underline"
-              href={"https://www.instagram.com/thsarmada/"}>
-              instagram
-            </Link>{" "}
-            for latest news!
-          </AlertDescription>
-        </Alert>
-      )}
-      <div className="relative mt-10 w-full sm:w-4/5 sm:border-s sm:border-melon-700 px-2 sm:px-0">
-        {events.map(event => (
-          // EventItem uses useSearchParams, so needs to have a Suspense boundary
-          <Suspense key={event.id}>
-            <EventItem event={event}></EventItem>
-          </Suspense>
-        ))}
-      </div >
-    </>
-  )
+    <Timeline
+      position="right"
+      className="mt-10 w-full px-2 sm:px-0"
+      sx={{
+        [`& .${timelineOppositeContentClasses.root}`]: {
+          flex: { xs: 0, sm: 0.2 },
+        },
+        '& .MuiTimelineItem-root:before': {
+          padding: 0,
+          flex: { xs: 0, sm: 'auto' },
+        },
+      }}
+    >
+      {events.map((event, idx) => (
+        <TimelineItem key={event.id}>
+          <TimelineOppositeContent
+            className="text-stone-300 hidden sm:block"
+            sx={{
+              display: { xs: 'none', sm: 'block' }
+            }}
+          >
+            {formatTimestampAsDate(event.eventStart)}
+          </TimelineOppositeContent>
+          <TimelineSeparator>
+            <TimelineDot sx={{ bgcolor: '#00d790' }} />
+            {idx < events.length - 1 && <TimelineConnector />}
+          </TimelineSeparator>
+          <TimelineContent>
+            {/* EventItem uses useSearchParams, so needs to have a Suspense boundary */}
+            <Suspense>
+              <EventItem event={event} />
+            </Suspense>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </Timeline>
+  );
 }

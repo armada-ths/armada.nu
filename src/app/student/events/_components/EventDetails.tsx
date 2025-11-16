@@ -52,7 +52,7 @@ export default function EventDetails({
         {/* Left: Image + Description */}
         <div className="flex-1 space-y-6">
           {event.imageUrl && (
-            <div className="relative aspect-video overflow-hidden rounded-2xl shadow-lg">
+            <div className="relative aspect-16/9 overflow-hidden rounded-2xl shadow-lg">
               <Image
                 src={event.imageUrl}
                 alt={event.name}

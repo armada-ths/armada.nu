@@ -72,7 +72,7 @@ export default async function EventPage() {
             Besides the career fair, Armada hosts a variety of events to help
             you prepare, network, and learn. Browse through our upcoming events below.
           </P>
-          <div className="mx-auto flex w-full flex-col items-center pl-1 text-center">
+          <div className="mx-auto md:-ml-24 flex w-full flex-col items-center pl-1 text-center">
             <EventsTimeline events={orderedEvents} />
           </div>
         </div>
