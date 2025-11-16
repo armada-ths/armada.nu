@@ -21,12 +21,12 @@ export default function DateCarousel() {
         >
             <CarouselContent>
                 <CarouselItem>
-                    <p className="mt-16 text-2xl text-melon-700 text-left mix-blend-normal">
+                    <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
                         November 18 10:00–16:00
                     </p>
                 </CarouselItem>
                 <CarouselItem>
-                    <p className="mt-16 text-2xl text-melon-700 text-left mix-blend-normal">
+                    <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
                         November 19 10:00–15:00
                     </p>
                 </CarouselItem>

@@ -1,22 +1,22 @@
-import { CompanyRegistrationButton } from "@/app/_components/CompanyRegistrationButton"
 import { CountdownTimer } from "@/app/_components/CountdownTimer"
 import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
-import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { OrganisationMembersGraphic } from "@/app/about/_components/OrganisationMembersGraphic"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
-import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, Clock, MapIcon, MapPin } from "lucide-react"
+import { Clock, MapPin } from "lucide-react"
 //import Image from "next/image"
 import DateCarousel from "@/app/_components/DatesCarousel"
 import MapWrapper from "@/app/_components/MapWrapper"
+// import { NavigationMenu } from "@/components/shared/NavigationMenu"
+import { RecruitmentBanner } from "@/app/_components/Recruitment"
+import { Hero7 } from "@/components/hero7"
+import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import Link from "next/link"
-import { Suspense } from "react"
 
 export default async function HomePage() {
   const dates = await fetchDates()
@@ -26,84 +26,32 @@ export default async function HomePage() {
     .map((g) => g.logoFreesize || g.logoSquared)
     .filter((url): url is string => Boolean(url));
 
-  const fr_end = new Date(dates.fr.end).getTime()
-  const today = Date.now()
-
-  // Check if fair has started to disable number animations
-  const fairStarted = new Date(`${dates.fair.days[0]}T10:00:00+01:00`).getTime() <= today
-
   return (
     <>
       <NavigationMenu />
-      <Page.Background className="overflow-x-hidden">
+      <Page.Background>
+        <RecruitmentBanner />
         <Page.Boundary className="px-6">
-          <div className="mb-5 flex w-full flex-1 justify-center">
-            <div className="mx-5 w-full max-w-[800px] pt-3 md:mx-10 md:pt-6">
-              <Suspense>
-                <RecruitmentBanner />
-              </Suspense>
-            </div>
-          </div>
-          <div className="z-10 flex flex-col">
-            <h1 className="max-w-96 font-bebas-neue text-7xl text-melon-700">
-              Set Sail For Success
-            </h1>
-            <h2 className="my-5 text-stone-300">
-              The No. 1 career fair at KTH Royal Institute of Technology. Where
-              future engineers come in contact with career opportunities and
-              shape their future. November the 18th and 19th.
-            </h2>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {today < fr_end ? (
-                <>
-                  <CompanyRegistrationButton />
-                  <Link href="/exhibitor/packages">
-                    <Button
-                      variant={"secondary"}
-                      className="dark:bg-liqorice-700">
-                      This Year&apos;s Packages
-                      <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <div className="grid grid-cols-2 gap-3 mt-6 sm:flex sm:flex-row sm:items-center sm:gap-2">                  {/* Primary CTA */}
-                  <Link href="/student/map">
-                    <Button size="lg" className="w-44 flex items-center gap-2">
-                      <MapIcon size={16} />
-                      Visit the map
-                    </Button>
-                  </Link>
+          <Hero7
+            heading={"Set Sail For Success"}
+            description={"The No. 1 career fair at KTH Royal Institute of Technology"}
+            buttons={{
+              primary: {
+                text: "View the map",
+                url: "/student/map"
+              },
+              secondary: {
+                text: "Exhibitors at the fair",
+                url: "/student/exhibitors"
+              }
+            }} />
 
-                  {/* Secondary CTA */}
-                  <Link href="/student/exhibitors">
-                    <Button size="lg" variant="secondary" className="w-44 dark:bg-liqorice-700 flex items-center">
-                      Exhibitors at the fair
-                    </Button>
-                  </Link>
-
-                  {/* Text link */}
-                  <Link
-                    href="/student/events"
-                  >
-                    <Button size="lg" variant="ghost" className="w-44 flex items-center">Sign up for events</Button>
-                  </Link>
-                </div>
-
-              )}
-            </div>
-            {/*
-                <Suspense>
-                  <FairDates />
-                </Suspense>
-                */}
-          </div>
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
           <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-visible">
             <div className="flex-row">
-              <div className="absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
+              <div className="justify-center absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
                 <Clock
                   size={100}
                   strokeWidth={1.5}
@@ -128,7 +76,7 @@ export default async function HomePage() {
                 <DateCarousel />
               </div>
 
-              <p className="text-2xl text-melon-700 text-left mix-blend-normal">
+              <p className="text-2xl text-melon-700 mix-blend-normal">
                 Nymble & KTH Innovation
               </p>
             </div>
@@ -137,7 +85,7 @@ export default async function HomePage() {
             </div>
           </div>
           <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-x-hidden overflow-y-visible mt-5">
-            <VisitorNumberBar disableAnimation={fairStarted} />
+            <VisitorNumberBar />
           </section>
           {/* Gold Exhibitors */}
           <GoldExhibitors exhibitors={goldExhibitors} />
@@ -151,14 +99,18 @@ export default async function HomePage() {
                 </p>
                 <MapPin className="mt-2 size-7" />
               </div>
-              <p className="mt-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
+              <div className="text-melon-700 mt-4 md:mt-10 text-left mix-blend-normal">
                 <h2 className="text-3xl font-bebas-neue">Nymble</h2>
-                Drottning Kristinas väg 15-19, 114 28 Stockholm
-              </p>
-              <p className="mt-4 mb-4 md:mt-10 text-2xl text-melon-700 text-left mix-blend-normal">
+                <p className="text-2xl">
+                  Drottning Kristinas väg 15-19, 114 28 Stockholm
+                </p>
+              </div>
+              <div className="mb-4 text-melon-700 mt-4 md:mt-10 text-left mix-blend-normal">
                 <h2 className="text-3xl font-bebas-neue">KTH Innovation</h2>
-                Teknikringen 1, 114 28 Stockholm
-              </p>
+                <p className="text-2xl">
+                  Teknikringen 1, 114 28 Stockholm
+                </p>
+              </div>
             </div>
 
             <MapWrapper />
