@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import useEmblaCarousel, {
-  type UseEmblaCarouselType
+  type UseEmblaCarouselType,
 } from "embla-carousel-react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
@@ -61,7 +61,7 @@ const Carousel = React.forwardRef<
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
-        axis: orientation === "horizontal" ? "x" : "y"
+        axis: orientation === "horizontal" ? "x" : "y",
       },
       plugins
     )
@@ -131,15 +131,17 @@ const Carousel = React.forwardRef<
           scrollPrev,
           scrollNext,
           canScrollPrev,
-          canScrollNext
-        }}>
+          canScrollNext,
+        }}
+      >
         <div
           ref={ref}
           onKeyDownCapture={handleKeyDown}
           className={cn("relative", className)}
           role="region"
           aria-roledescription="carousel"
-          {...props}>
+          {...props}
+        >
           {children}
         </div>
       </CarouselContext.Provider>
@@ -204,7 +206,7 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full",
+        "absolute  h-8 w-8 rounded-full",
         orientation === "horizontal"
           ? "-left-12 top-1/2 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -212,7 +214,8 @@ const CarouselPrevious = React.forwardRef<
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
-      {...props}>
+      {...props}
+    >
       <ArrowLeft className="h-4 w-4" />
       <span className="sr-only">Previous slide</span>
     </Button>
@@ -240,7 +243,8 @@ const CarouselNext = React.forwardRef<
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
-      {...props}>
+      {...props}
+    >
       <ArrowRight className="h-4 w-4" />
       <span className="sr-only">Next slide</span>
     </Button>
@@ -254,5 +258,5 @@ export {
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
-  CarouselNext
+  CarouselNext,
 }

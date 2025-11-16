@@ -209,7 +209,7 @@ export default function FairMap({
       </TransformWrapper>
 
       {isLoading && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm text-white transition-opacity duration-500">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-xs text-white transition-opacity duration-500">
           <div className="flex flex-col items-center space-y-6">
             {/* Spinner with logo inside */}
             <div className="relative w-20 h-20 flex items-center justify-center">
@@ -256,7 +256,7 @@ export default function FairMap({
           setModalOpen(false);
           setActiveExhibitor(null);
         }}
-        className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
+        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
       >
         {activeExhibitor && (
           <div className="p-4 sm:p-10">

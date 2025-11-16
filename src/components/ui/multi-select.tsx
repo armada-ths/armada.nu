@@ -862,7 +862,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               screenSize === "mobile" && "max-w-[120px] truncate",
                               screenSize === "tablet" && "max-w-[160px] truncate",
                               screenSize === "desktop" && "max-w-[200px] truncate",
-                              singleLine && "flex-shrink-0 whitespace-nowrap",
+                              singleLine && "shrink-0 whitespace-nowrap",
                               "[&>svg]:pointer-events-auto"
                             )}
                             style={{
@@ -912,7 +912,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 }
                               }}
                               aria-label={`Remove ${option.label} from selection`}
-                              className="ml-2 h-4 w-4 cursor-pointer hover:bg-white/20 rounded-sm p-0.5 -m-0.5 focus:outline-none focus:ring-1 focus:ring-white/50">
+                              className="ml-2 h-4 w-4 cursor-pointer hover:bg-white/20 rounded-xs p-0.5 -m-0.5 focus:outline-hidden focus:ring-1 focus:ring-white/50">
                               <XCircle
                                 className={cn(
                                   "h-3 w-3",
@@ -933,7 +933,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           multiSelectVariants({ variant }),
                           responsiveSettings.compactMode &&
                           "text-xs px-1.5 py-0.5",
-                          singleLine && "flex-shrink-0 whitespace-nowrap",
+                          singleLine && "shrink-0 whitespace-nowrap",
                           "[&>svg]:pointer-events-auto"
                         )}
                         style={{
@@ -972,7 +972,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         }
                       }}
                       aria-label={`Clear all ${selectedValues.length} selected options`}
-                      className="flex items-center justify-center h-4 w-4 mx-2 cursor-pointer text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 rounded-sm">
+                      className="flex items-center justify-center h-4 w-4 mx-2 cursor-pointer text-muted-foreground hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-1 rounded-xs">
                       <XIcon className="h-4 w-4" />
                     </div>
                     <Separator
@@ -1057,7 +1057,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       className="cursor-pointer">
                       <div
                         className={cn(
-                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                          "mr-2 flex h-4 w-4 items-center justify-center rounded-xs border border-primary",
                           selectedValues.length ===
                             getAllOptions().filter((opt) => !opt.disabled)
                               .length
@@ -1100,7 +1100,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             disabled={option.disabled}>
                             <div
                               className={cn(
-                                "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                                "mr-2 flex h-4 w-4 items-center justify-center rounded-xs border border-primary",
                                 isSelected
                                   ? "bg-primary text-primary-foreground"
                                   : "opacity-50 [&_svg]:invisible"
@@ -1140,7 +1140,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           disabled={option.disabled}>
                           <div
                             className={cn(
-                              "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                              "mr-2 flex h-4 w-4 items-center justify-center rounded-xs border border-primary",
                               isSelected
                                 ? "bg-primary text-primary-foreground"
                                 : "opacity-50 [&_svg]:invisible"

@@ -48,7 +48,7 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
   const visibleExhibitors = exhibitors.slice(0, 8);
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen py-20 bg-gradient-to-b from-black via-[#00210e] to-black overflow-hidden">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen py-20 bg-linear-to-b from-black via-[#00210e] to-black overflow-hidden">
       {/* gold glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,215,0,0.2)_0%,transparent_70%)]" />
 

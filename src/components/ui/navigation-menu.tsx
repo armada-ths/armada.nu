@@ -1,7 +1,7 @@
+import * as React from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
 import { ChevronDown } from "lucide-react"
-import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -15,7 +15,8 @@ const NavigationMenu = React.forwardRef<
       "relative z-10 flex max-w-max flex-1 items-center justify-center",
       className
     )}
-    {...props}>
+    {...props}
+  >
     {children}
     <NavigationMenuViewport />
   </NavigationMenuPrimitive.Root>
@@ -40,39 +41,25 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName
 const NavigationMenuItem = NavigationMenuPrimitive.Item
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+  "group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-stone-100 hover:text-stone-900 focus:bg-stone-100 focus:text-stone-900 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-stone-900 data-[state=open]:bg-stone-100/50 data-[state=open]:hover:bg-stone-100 data-[state=open]:focus:bg-stone-100 dark:bg-stone-950 dark:hover:bg-stone-800 dark:hover:text-stone-50 dark:focus:bg-stone-800 dark:focus:text-stone-50 dark:data-[state=open]:text-stone-50 dark:data-[state=open]:bg-stone-800/50 dark:data-[state=open]:hover:bg-stone-800 dark:data-[state=open]:focus:bg-stone-800"
 )
 
 const NavigationMenuTrigger = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Trigger> & {
-    href?: string
-  }
->(({ className, children, href, onClick, ...props }, ref) => {
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (href) {
-      e.preventDefault()
-      window.location.href = href
-    }
-    // Call the original onClick if it exists
-    onClick?.(e)
-  }
-
-  return (
-    <NavigationMenuPrimitive.Trigger
-      ref={ref}
-      className={cn(navigationMenuTriggerStyle(), "group", className)}
-      onClick={handleClick}
-      {...props}>
-      {children}
-      {""}
-      <ChevronDown
-        className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-        aria-hidden="true"
-      />
-    </NavigationMenuPrimitive.Trigger>
-  )
-})
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <NavigationMenuPrimitive.Trigger
+    ref={ref}
+    className={cn(navigationMenuTriggerStyle(), "group", className)}
+    {...props}
+  >
+    {children}{""}
+    <ChevronDown
+      className="relative top-px ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
+      aria-hidden="true"
+    />
+  </NavigationMenuPrimitive.Trigger>
+))
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName
 
 const NavigationMenuContent = React.forwardRef<
@@ -99,7 +86,7 @@ const NavigationMenuViewport = React.forwardRef<
   <div className={cn("absolute left-0 top-full flex justify-center")}>
     <NavigationMenuPrimitive.Viewport
       className={cn(
-        "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-stone-200 bg-white text-stone-950 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 dark:border-stone-800 dark:bg-stone-950 dark:text-stone-50 md:w-[var(--radix-navigation-menu-viewport-width)]",
+        "origin-top-center relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-md border border-stone-200 bg-white text-stone-950 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-(--radix-navigation-menu-viewport-width) dark:border-stone-800 dark:bg-stone-950 dark:text-stone-50",
         className
       )}
       ref={ref}
@@ -117,10 +104,11 @@ const NavigationMenuIndicator = React.forwardRef<
   <NavigationMenuPrimitive.Indicator
     ref={ref}
     className={cn(
-      "top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in",
+      "top-full z-1 flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in",
       className
     )}
-    {...props}>
+    {...props}
+  >
     <div className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-stone-200 shadow-md dark:bg-stone-800" />
   </NavigationMenuPrimitive.Indicator>
 ))
@@ -128,13 +116,13 @@ NavigationMenuIndicator.displayName =
   NavigationMenuPrimitive.Indicator.displayName
 
 export {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-  NavigationMenuViewport
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
 }

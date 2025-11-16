@@ -107,7 +107,6 @@ export function CompanySubmissionPopover() {
                   id="name"
                   name="name"
                   value={formData.name}
-                  searchIcon={false}
                   onChange={handleFieldChange}
                   placeholder="Your name"
                 />
@@ -122,7 +121,6 @@ export function CompanySubmissionPopover() {
                   name="email"
                   type="email"
                   value={formData.email}
-                  searchIcon={false}
                   onChange={handleFieldChange}
                   placeholder="Your email"
                 />
@@ -137,7 +135,6 @@ export function CompanySubmissionPopover() {
                   name="phone"
                   type="phone"
                   value={formData.phone}
-                  searchIcon={false}
                   onChange={handleFieldChange}
                   placeholder="+46"
                 />
@@ -151,7 +148,6 @@ export function CompanySubmissionPopover() {
                   id="company"
                   name="company"
                   value={formData.company}
-                  searchIcon={false}
                   onChange={handleFieldChange}
                   placeholder="Your company"
                 />

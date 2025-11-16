@@ -29,7 +29,7 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
           value={searchQueryName}
           onChange={(e) => setSearchQueryName(e.target.value)}
           placeholder="Search by company name"
-          className="border rounded p-2 flex-grow"
+          className="border rounded-sm p-2 grow"
         />
 
         <button onClick={() => setModalOpen(true)} className="py-1">

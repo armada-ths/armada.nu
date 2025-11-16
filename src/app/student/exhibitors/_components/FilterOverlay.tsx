@@ -70,7 +70,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
         style={{ top: headerHeight, bottom: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex-grow overflow-y-auto pb-24">
+        <div className="grow overflow-y-auto pb-24">
           <div className="flex justify-center py-2 mt-2">
             <button
               className="w-[92%] bg-black text-white py-3 font-medium tracking-widest hover:bg-gray-800 rounded-md transition duration-150 border border-white"

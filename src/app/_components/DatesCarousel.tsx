@@ -12,7 +12,7 @@ export default function DateCarousel() {
     return (
         <Carousel
             plugins={[autoplay.current]}
-            className="w-full max-w-xs [mask-image:linear-gradient(to_right,transparent,black_1%,black_90%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1%,black_90%,transparent)]"
+            className="w-full max-w-xs mask-[linear-gradient(to_right,transparent,black_1%,black_90%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1%,black_90%,transparent)]"
             opts={{
                 loop: true,
                 align: "start",
@@ -21,12 +21,12 @@ export default function DateCarousel() {
         >
             <CarouselContent>
                 <CarouselItem>
-                    <p className="mt-16 text-2xl text-melon-700 text-left mix-blend-normal">
+                    <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
                         November 18 10:00–16:00
                     </p>
                 </CarouselItem>
                 <CarouselItem>
-                    <p className="mt-16 text-2xl text-melon-700 text-left mix-blend-normal">
+                    <p className="mt-16 text-2xl text-melon-700 mix-blend-normal">
                         November 19 10:00–15:00
                     </p>
                 </CarouselItem>
