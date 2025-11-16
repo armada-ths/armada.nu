@@ -49,7 +49,7 @@ export default async function HomePage() {
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-0">
           {/* Time and place */}
-          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-hidden">
+          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-visible">
             <div className="flex-row">
               <div className="justify-center absolute left-0 top-0 flex w-full max-w-full flex-row md:w-1/4 overflow-hidden">
                 <Clock
@@ -63,11 +63,11 @@ export default async function HomePage() {
                   }}
                   className="ml-2 text-melon-700"
                 />
-                <div>
-                  <p className="mt-1 italic opacity-80">
-                    Which Dates?
+                <div className="-ml-3">
+                  <p className=" mt-1 italic opacity-80">
+                    When?
                   </p>
-                  <p className="mt-1 italic opacity-80">
+                  <p className="mt-1 ml-4 italic opacity-80">
                     Where?
                   </p>
                 </div>
@@ -80,12 +80,12 @@ export default async function HomePage() {
                 Nymble & KTH Innovation
               </p>
             </div>
-            <div className="w-full flex-1 rounded pb-2 text-2xl font-medium">
+            <div className="w-full flex-1 rounded pb-2 text-2xl font-medium mt-2 md:mt-0 overflow-visible">
               <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
             </div>
           </div>
           <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-x-hidden overflow-y-visible mt-5">
-            <VisitorNumberBar />
+            <VisitorNumberBar disableAnimation={fairStarted} />
           </section>
           {/* Gold Exhibitors */}
           <GoldExhibitors exhibitors={goldExhibitors} />
