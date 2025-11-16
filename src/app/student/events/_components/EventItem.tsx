@@ -33,7 +33,7 @@ export function EventItem({ event }: { event: Event }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => router.push("/student/events", { scroll: false })}
-        className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
+        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
       >
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
@@ -44,20 +44,20 @@ export function EventItem({ event }: { event: Event }) {
           href={`/student/events?id=${id}`}
           scroll={false}
           className={cn(
-            "group flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-gradient-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95",
+            "group flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95",
             image_url ? "sm:flex-row flex-col" : "flex-col"
           )}
         >
           {/* Image section */}
           {image_url && (
-            <div className="relative h-32 w-full flex-shrink-0 sm:h-auto sm:w-48 sm:min-h-[11rem]">
+            <div className="relative h-32 w-full shrink-0 sm:h-auto sm:w-48 sm:min-h-[11rem]">
               <Image
                 src={image_url}
                 alt={name}
                 fill
                 className="object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent sm:hidden" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent sm:hidden" />
             </div>
           )}
 
