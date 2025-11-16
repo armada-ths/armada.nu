@@ -33,7 +33,7 @@ export function EventItem({ event }: { event: Event }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => router.push("/student/events", { scroll: false })}
-        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
+        className="overflow-y-auto max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
       >
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
@@ -50,7 +50,7 @@ export function EventItem({ event }: { event: Event }) {
         >
           {/* Image section */}
           {image_url && (
-            <div className="relative h-32 w-full shrink-0 sm:h-auto sm:w-48 sm:min-h-[11rem]">
+            <div className="relative h-32 w-full shrink-0 sm:h-auto sm:w-48 sm:min-h-44">
               <Image
                 src={image_url}
                 alt={name}
