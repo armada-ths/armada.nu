@@ -28,7 +28,7 @@ function RollingRow({
         }}
       >
         {duplicated.map((logo, index) => (
-          <div key={index} className="mx-12 flex-shrink-0">
+          <div key={index} className="mx-12 shrink-0">
             <Image
               src={logo}
               alt={`Logo ${index + 1}`}

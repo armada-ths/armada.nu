@@ -71,7 +71,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         onClose={() => {
           setModalOpen(false);
         }}
-        className="max-w-[1000px] bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
+        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
         <div className="p-4 sm:p-10">
           <ExhibitorDetails exhibitor={exhibitor} />
 

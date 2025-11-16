@@ -76,7 +76,7 @@ export default function AtFairPage() {
             <i>Question</i>
           </p>
           <div className="flex">
-            <div className="flex-grow place-content-center justify-center">
+            <div className="grow place-content-center justify-center">
               <p className="py-7 text-center text-3xl text-green-50 opacity-90">
                 <i>
                   {randomNumber >= 0

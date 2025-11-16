@@ -68,7 +68,7 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
   }, [animationStage])
 
   return (
-    <div className="w-full flex-1 rounded pb-2 text-2xl font-medium text-center overflow-visible relative">
+    <div className="w-full flex-1 rounded-sm pb-2 text-2xl font-medium text-center overflow-visible relative">
       {animationStage === 'celebration' && <ConfettiBurst />}
       {animationStage === 'final-countdown' ? (
         <FinalCountdown count={finalCountdown} />
@@ -162,7 +162,7 @@ const CONFETTI_COUNT = 30
 function ConfettiBurst() {
 
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] h-[300px] pointer-events-none z-[9999] overflow-visible">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] h-[300px] pointer-events-none z-9999 overflow-visible">
       {Array.from({ length: CONFETTI_COUNT }).map((_, i) => {
         const angle = (i / CONFETTI_COUNT) * 360
         const horizontalDistance = 240 + Math.random() * 60
