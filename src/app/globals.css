@@ -11,3 +11,54 @@
     display: none !important;
   }
 }
+
+
+/* CODE FOR SPINNING BORDER - START */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.spinning-border {
+  position: relative;
+}
+
+/* The border itself */
+.spinning-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  padding: 2px;
+
+  background: conic-gradient(from var(--angle),
+        transparent 0deg 300deg,
+        #00d79099 300deg 360deg);
+
+  /* content-box is the inside of the button, second line is the entire button. xor excludes the content-box */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  /* firefox compatibility */
+  mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+
+  animation: spin-colors 5s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.spinning-border:hover::before {
+  opacity: 0;
+}
+
+@keyframes spin-colors {
+  to {
+    --angle: 360deg;
+  }
+}
+/* CODE FOR SPINNING BORDER - END */
