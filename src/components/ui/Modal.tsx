@@ -33,7 +33,7 @@ export default function Modal({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent
           className={cn(
-            "max-h-[80%] w-[80%] border border-stone-500",
+            "overflow-y-auto max-h-[80%] w-[80%] border border-stone-500",
             className
           )}>
           {children}
