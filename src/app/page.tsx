@@ -85,7 +85,7 @@ export default async function HomePage() {
             </div>
           </div>
           <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-x-hidden overflow-y-visible mt-5">
-            <VisitorNumberBar disableAnimation={fairStarted} />
+            <VisitorNumberBar />
           </section>
           {/* Gold Exhibitors */}
           <GoldExhibitors exhibitors={goldExhibitors} />
