@@ -69,7 +69,7 @@ const Hero7 = ({
     <section className="pt-20">
       <div className="container text-center">
         <div className="mx-auto flex max-w-5xl flex-col gap-6">
-          <h1 className="text-5xl font-semibold lg:text-7xl font-bebas-neue text-melon-700">{heading}</h1>
+          <h1 className="text-5xl lg:text-8xl font-bebas-neue text-melon-700">{heading}</h1>
           <p className="text-stone-500 text-balance lg:text-lg dark:text-stone-400">
             {description}
           </p>
