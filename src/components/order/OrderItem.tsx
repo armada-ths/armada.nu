@@ -39,20 +39,21 @@ export default function OrderItem({
         )}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <Button
           type="button"
           size="icon"
           variant="outline"
           onClick={onDecrease}
           disabled={!canDecrease}
+          className="w-16"
           aria-label="Decrease">
           <Minus className="h-4 w-4" />
         </Button>
         <Input
           inputMode="numeric"
           pattern="[0-9]*"
-          className="w-20 text-center"
+          className="text-center w-full"
           value={quantity}
           onChange={e => handleInput(e.target.value)}
           aria-label="Quantity"
@@ -61,6 +62,7 @@ export default function OrderItem({
           type="button"
           size="icon"
           variant="outline"
+          className="w-16"
           onClick={onIncrease}
           disabled={!canIncrease}
           aria-label="Increase">
