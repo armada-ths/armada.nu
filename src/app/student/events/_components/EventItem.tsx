@@ -33,7 +33,7 @@ export function EventItem({ event }: { event: Event }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => router.push("/student/events", { scroll: false })}
-        className="overflow-y-auto max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
+        className="overflow-y-auto max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-800 to-stone-900 p-0"
       >
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
@@ -44,7 +44,7 @@ export function EventItem({ event }: { event: Event }) {
           href={`/student/events?id=${id}`}
           scroll={false}
           className={cn(
-            "group flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95",
+            "group flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 via-80% to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95",
             image_url ? "sm:flex-row flex-col" : "flex-col"
           )}
         >

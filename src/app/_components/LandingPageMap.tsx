@@ -1,12 +1,11 @@
 "use client";
 
 import L from 'leaflet';
-import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 const markerIcon = new L.Icon({
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconUrl: "/leaflet/marker-icon.png",
+  shadowUrl: "/leaflet/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41]
 });
