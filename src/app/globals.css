@@ -1,3 +1,16 @@
+@font-face {
+  font-family: "Bebas Neue Book";
+  src: url("/fonts/BebasNeue-Book.otf") format("opentype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Bebas Neue Bold";
+  src: url("/fonts/BebasNeue-Bold.otf") format("opentype");
+  font-weight: 700;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
 @import 'tailwindcss';
 @import "tw-animate-css";
 
@@ -31,9 +44,19 @@
 
   --color-liqorice-700: #2d2d2c;
 
+  --color-grapefruit: #E73953;
+  --color-licorice: #2D2D2C;
+  --color-coconut: #FFF0D9;
+  --color-snow: #FFFFFF;
+  --color-pineapple: #F7B519;
+
   --font-bebas-neue: var(--font-bebas-neue);
-  --font-lato: var(--font-lato);
+  --font-lato: "Lato", sans-serif;
   --font-inter: var(--font-inter);
+  --font-bebas-book: "Bebas Neue Book", sans-serif;
+  --font-bebas-bold: "Bebas Neue Bold", sans-serif;
+
+  --font-sans: "Lato", sans-serif;
 
   --animate-aurora: aurora 60s linear infinite;
   --animate-accordion-down: accordion-down 0.2s ease-out;
@@ -120,8 +143,8 @@
   padding: 2px;
 
   background: conic-gradient(from var(--angle),
-        transparent 0deg 300deg,
-        #00d79099 300deg 360deg);
+      transparent 0deg 300deg,
+      #00d79099 300deg 360deg);
 
   /* content-box is the inside of the button, second line is the entire button. xor excludes the content-box */
   -webkit-mask:
@@ -130,9 +153,9 @@
   -webkit-mask-composite: xor;
   /* firefox compatibility */
   mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
 
   animation: spin-colors 5s linear infinite;
   transition: opacity 0.3s ease-in-out;
@@ -147,6 +170,7 @@
     --angle: 360deg;
   }
 }
+
 /* CODE FOR SPINNING BORDER - END */
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
@@ -164,5 +188,9 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
+  }
+
+  body {
+    font-family: var(--font-sans);
   }
 }
