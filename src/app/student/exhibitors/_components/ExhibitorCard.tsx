@@ -51,7 +51,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
             ${exhibitor.tier === "Bronze" ? "border-emerald-900 bg-emerald-900" : ""}
             group flex h-full flex-col border-2 border-solid filter transition 
             hover:scale-[1.05] hover:brightness-95
-            max-w-[340px] w-full px-3 rounded-lg
+            max-w-[90vw] sm:max-w-[380px] w-full px-3 rounded-lg
           `}
         >
 
