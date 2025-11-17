@@ -996,6 +996,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             </Button>
           </PopoverTrigger>
           <PopoverContent
+            avoidCollisions={false}
             id={listboxId}
             role="listbox"
             aria-multiselectable="true"

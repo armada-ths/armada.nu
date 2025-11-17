@@ -27,18 +27,29 @@ export default async function OrderPage() {
   const endDate = DateTime.fromISO(dates.fair.days[1], { zone: "Europe/Stockholm" })
 
   const isOpen = !!dates && (() => {
-    if (now.hasSame(startDate, "day")) {
-      const open = startDate.set(START_TIME)
-      const close = startDate.set(END_TIME_DAY_1)
-      return now >= open && now <= close
+
+    // Before day 1 → OPEN
+    if (now < startDate.startOf("day")) {
+      return true
     }
+
+    // Day 1
+    if (now.hasSame(startDate, "day")) {
+      const close = startDate.set(END_TIME_DAY_1)
+      return now <= close
+    }
+
+    // Day 2
     if (now.hasSame(endDate, "day")) {
       const open = endDate.set(START_TIME)
       const close = endDate.set(END_TIME_DAY_2)
       return now >= open && now <= close
     }
+
+    // After day 2 → closed
     return false
   })()
+
 
   return (
     <Page.Background withIndents>

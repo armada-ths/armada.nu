@@ -28,41 +28,6 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
   // VERY IMPORTANT: makes the card tilt and adds cool shadow 🤠🤠
 
-  // Function to handle the "lean" effect
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-
-    // Calculate mouse position relative to card center
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    // Max tilt value
-    const maxTilt = 15;
-
-    // Calculate rotation:
-    // rotateX is based on Y-movement. (y - centerY) is negative at the top.
-    // rotateY is based on X-movement. (x - centerX) is negative on the left.
-    const rotateX = ((y - centerY) / centerY) * maxTilt;
-    const rotateY = ((x - centerX) / centerX) * maxTilt;
-
-    // Calculate shadow offset for 3D depth
-    const shadowX = -rotateY * 0.8; // Opposite of rotateY for parallax effect
-    const shadowY = rotateX * 0.8;  // Matches rotateX (to look like it's lifting)
-
-    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-    card.style.boxShadow = `${shadowX}px ${shadowY}px 25px rgba(0, 255, 0, 0.4)`;
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const card = e.currentTarget;
-    card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
-    // Reset to a subtle default shadow
-    card.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.4)";
-  };
-
   return (
     <>
       <Modal
@@ -84,12 +49,10 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
             ${exhibitor.tier === "Gold" ? "border-yellow-500 bg-yellow-500" : ""}
             ${exhibitor.tier === "Silver" ? "border-gray-400 bg-gray-400" : ""}
             ${exhibitor.tier === "Bronze" ? "border-emerald-900 bg-emerald-900" : ""}
-            group relative flex h-full flex-col border-2 border-solid filter transition 
+            group flex h-full flex-col border-2 border-solid filter transition 
             hover:scale-[1.05] hover:brightness-95
-            max-w-[380px] w-full px-3 rounded-lg
+            max-w-[340px] w-full px-3 rounded-lg
           `}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
         >
 
           <h3
@@ -105,7 +68,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
           </h3>
 
           {(exhibitor.logoSquared || exhibitor.logoFreesize) ? (
-            <div className="relative my-2 flex h-[80px] w-full flex-initial justify-center overflow-hidden">
+            <div className="relative my-2 flex h-20 w-full flex-initial justify-center overflow-hidden">
               <Image
                 className="h-full w-full object-contain"
                 src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
