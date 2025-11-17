@@ -22,29 +22,27 @@ export const AuroraBackground = ({
       )}
       {...props}
     >
-      {/* Outer animated gradient */}
+      {/* BRAND AURORA LAYER */}
       <div
-        className="absolute inset-0 animate-aurora opacity-[0.45] blur-[18px] mix-blend-soft-light"
+        className="absolute inset-0 pointer-events-none animate-aurora opacity-40 blur-xl mix-blend-soft-light"
         style={
           {
             "--aurora": `
               repeating-linear-gradient(
-                115deg,
-                rgba(6,95,70,0.35) 10%,      /* emerald-700 */
-                rgba(16,185,129,0.28) 15%,   /* emerald-500 */
-                rgba(52,211,153,0.22) 20%,   /* emerald-400 */
-                rgba(110,231,183,0.18) 25%,  /* emerald-300 */
-                rgba(167,243,208,0.14) 30%   /* mint/emerald-200 */
+                130deg,
+                rgba(72,188,142,0.40) 0%,   /* MELON */
+                rgba(255,255,255,0.20) 40%, /* SNOW */
+                rgba(45,45,44,0.14) 50%     /* LICORICE depth */
               )
             `,
             "--highlight": `
               repeating-linear-gradient(
                 115deg,
-                rgba(255,255,255,0.10) 0%,
-                rgba(255,255,255,0.08) 7%,
-                transparent 10%,
-                transparent 12%,
-                rgba(255,255,255,0.10) 16%
+                rgba(255,255,255,0.18) 0%,
+                rgba(255,255,255,0.10) 8%,
+                transparent 14%,
+                transparent 18%,
+                rgba(255,255,255,0.16) 24%
               )
             `
           } as React.CSSProperties
@@ -52,29 +50,23 @@ export const AuroraBackground = ({
       >
         <div
           className={cn(
-            `absolute -inset-[20px]
+            `absolute -inset-[25px]
+            after:animate-aurora
             [background-image:var(--highlight),var(--aurora)]
-            bg-size-[260%,200%]
+            bg-size-[300%,200%]
             bg-position-[50%_50%,50%_50%]
-            opacity-[0.85]
-            blur-[20px]
+            opacity-90
+            blur-[22px]
             mix-blend-screen
-            will-change-transform
-            animate-[aurora_18s_ease-in-out_infinite]`,
-
+            will-change-transform`,
             showRadialGradient &&
-            "mask-[radial-gradient(ellipse_at_70%_0%,black_25%,transparent_80%)]"
+            "mask-[radial-gradient(ellipse_at_70%_0%,black_25%,transparent_75%)]"
           )}
         />
       </div>
 
+      {/* PAGE CONTENT */}
       {children}
     </div>
   );
 };
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "aurora-background": HTMLElement;
-  }
-}

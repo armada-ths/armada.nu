@@ -8,6 +8,7 @@ import { Bebas_Neue, Inter, Lato } from "next/font/google"
 
 import { FooterGuard } from "@/components/shared/FooterGuard"
 import { DevToolbar } from "@/components/shared/VercelToolbar"
+import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })

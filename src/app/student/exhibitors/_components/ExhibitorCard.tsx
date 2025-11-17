@@ -26,8 +26,6 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
 
 
-  // VERY IMPORTANT: makes the card tilt and adds cool shadow 🤠🤠
-
   return (
     <>
       <Modal
@@ -36,7 +34,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         onClose={() => {
           setModalOpen(false);
         }}
-        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0">
+        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-800 to-stone-900 p-0">
         <div className="p-4 sm:p-10">
           <ExhibitorDetails exhibitor={exhibitor} />
 
@@ -78,7 +76,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
               />
             </div>
           ) : (
-            <div className="relative mt-2 flex h-[80px] w-full flex-initial justify-center overflow-hidden" />
+            <div className="relative mt-2 flex h-20 w-full flex-initial justify-center overflow-hidden" />
           )
           }
           <BadgeCollection

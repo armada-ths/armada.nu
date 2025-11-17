@@ -136,6 +136,14 @@ const Navbar1 = ({
                 className="max-h-8"
                 alt={logo.alt}
               />
+              <div className="flex mt-2 gap-1">
+                <span className="text-3xl font-bebas-book">
+                  THS
+                </span>
+                <span className="text-3xl font-bebas-bold">
+                  ARMADA
+                </span>
+              </div>
             </a>
             <div className="flex items-center">
               <NavigationMenu>
@@ -157,6 +165,14 @@ const Navbar1 = ({
                 className="max-h-8"
                 alt={logo.alt}
               />
+              <div className="flex mt-2 gap-1">
+                <span className="text-3xl font-bebas-book">
+                  THS
+                </span>
+                <span className="text-3xl font-bebas-bold">
+                  ARMADA
+                </span>
+              </div>
             </a>
             <Sheet>
               <SheetTrigger asChild>
@@ -167,12 +183,20 @@ const Navbar1 = ({
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
+                    <a href={logo.url} className="flex items-center gap-2 w-fit">
                       <img
                         src={logo.src}
                         className="max-h-8"
                         alt={logo.alt}
                       />
+                      <div className="flex mt-2 gap-1">
+                        <span className="text-3xl font-bebas-book">
+                          THS
+                        </span>
+                        <span className="text-3xl font-bebas-bold">
+                          ARMADA
+                        </span>
+                      </div>
                     </a>
                   </SheetTitle>
                 </SheetHeader>
