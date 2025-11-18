@@ -29,7 +29,7 @@ export default function InteractiveMapClient({ exhibitors }: InteractiveMapClien
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-dvh overflow-hidden">
       <CompanySearch exhibitors={exhibitors.filter(e => e.fairLocation)} onSelect={handleCompanySelect} />
 
       <FloorSelector

@@ -12,7 +12,7 @@ export default function FloorSelector({
   onSelect,
 }: FloorSelectorProps) {
   return (
-    <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 bg-white/90 backdrop-blur-md rounded-full flex gap-2 p-2 shadow-lg w-96">
+    <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 bg-white/90 backdrop-blur-md rounded-full flex gap-2 p-2 shadow-lg min-w-[90vw] sm:min-w-0">
       {floors.map(floor => (
         <button
           key={floor}
