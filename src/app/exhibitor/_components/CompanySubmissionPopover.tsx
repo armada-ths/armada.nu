@@ -2,8 +2,8 @@
 import { sendToSlack } from "@/app/exhibitor/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Textarea } from "@/components/ui/textarea"
-import * as Popover from "@radix-ui/react-popover"
 import { Headset, X } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useMemo, useRef, useState } from "react"
@@ -83,21 +83,21 @@ export function CompanySubmissionPopover() {
   }
 
   return (
-    <div className="fixed bottom-0 z-50 mb-4 scale-75 transform md:mb-8 md:ml-8 md:scale-90">
-      <Popover.Root open={isOpen}>
-        <Popover.Trigger>
+    <div className="fixed bottom-0 z-10 mb-4 scale-75 transform md:mb-8 md:ml-8 md:scale-90">
+      <Popover open={isOpen}>
+        <PopoverTrigger>
           <div
-            className="mt-4 flex flex-row rounded-md bg-white p-2 text-black"
+            className="flex flex-row rounded-md bg-white p-2 text-black"
             onClick={() => setIsOpen(!isOpen)}>
             <Headset className="mr-1" />
             Contact Sales
           </div>
-        </Popover.Trigger>
-        <Popover.Content
+        </PopoverTrigger>
+        <PopoverContent
           side="top"
-          className="z-0 ml-4 max-h-[80vh] w-auto md:h-fit">
-          <div className="rounded-lg bg-zinc-800 p-4 shadow-md filter">
-            <div className="flex flex-col gap-2 p-2">
+          className="z-10 ml-4 w-auto">
+          <div className="p-4 shadow-md filter bg-zinc-800">
+            <div className="flex flex-col gap-2">
               <p className="text-l font-semibold">Contact</p>
               <fieldset className="flex flex-col">
                 <label className="mb-1 text-sm" htmlFor="name">
@@ -170,7 +170,6 @@ export function CompanySubmissionPopover() {
                 ref={recaptcha}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
                 onChange={handleVerify}
-                theme="dark"
               />
 
               <div className="flex justify-end">
@@ -187,8 +186,8 @@ export function CompanySubmissionPopover() {
                 onClick={() => setIsOpen(false)}></X>
             </div>
           </div>
-        </Popover.Content>
-      </Popover.Root>
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }

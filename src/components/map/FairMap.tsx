@@ -73,7 +73,7 @@ export default function FairMap({
       );
       if (!booth) return;
 
-      api.zoomToElement(booth as unknown as HTMLElement, isMobile ? 5 : 3, 300);
+      api.zoomToElement(booth as unknown as HTMLElement, isMobile ? 4 : 3, 300);
 
       // Highlight glow
       const tier = (selectedExhibitor.tier || "").toLowerCase();
@@ -126,7 +126,6 @@ export default function FairMap({
 
         const bbox = booth.getBBox();
         const boothTransform = booth.getAttribute("transform");
-        const rotation = parseRotation(boothTransform);
         const cx = bbox.x + bbox.width / 2;
         const cy = bbox.y + bbox.height / 2;
 
@@ -147,24 +146,6 @@ export default function FairMap({
           logo.setAttribute("transform", boothTransform || "");
 
           svg.appendChild(logo);
-        } else {
-          const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-          const firstLetter = (ex.name || "?").charAt(0).toUpperCase();
-          const sizeFactor = 0.5;
-          const fontSize = Math.min(bbox.width, bbox.height) * sizeFactor;
-          text.textContent = firstLetter;
-          text.setAttribute("x", String(cx));
-          text.setAttribute("y", String(cy));
-          text.setAttribute("text-anchor", "middle");
-          text.setAttribute("dominant-baseline", "central");
-          text.setAttribute("font-size", String(fontSize));
-          text.setAttribute("fill", "#444");
-          text.setAttribute("data-initial", "true");
-          text.style.pointerEvents = "none";
-
-          text.setAttribute("transform", boothTransform || "");
-
-          svg.appendChild(text);
         }
       });
 
@@ -187,7 +168,7 @@ export default function FairMap({
     const api = transformRef.current;
     if (api) {
       setTimeout(() => {
-        api.zoomToElement(target as unknown as HTMLElement, isMobile ? 5 : 3, 200);
+        api.zoomToElement(target as unknown as HTMLElement, isMobile ? 4 : 3, 200);
       }, 100); // small delay for mobile gesture processing
     }
   };

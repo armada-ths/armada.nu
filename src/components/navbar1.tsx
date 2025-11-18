@@ -124,7 +124,7 @@ const Navbar1 = ({
   ]
 }: Navbar1Props) => {
   return (
-    <section className="py-4 bg-stone-950">
+    <section className="py-4 bg-stone-950/90 backdrop-blur-lg">
       {/* Desktop Menu */}
       <div className="container">
 
