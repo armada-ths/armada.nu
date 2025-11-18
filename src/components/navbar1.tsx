@@ -15,7 +15,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
+  NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
@@ -125,35 +125,37 @@ const Navbar1 = ({
 }: Navbar1Props) => {
   return (
     <section className="py-4 bg-stone-950">
+      {/* Desktop Menu */}
       <div className="container">
-        {/* Desktop Menu */}
-        <nav className="hidden items-center justify-between lg:flex">
-          <div className="flex items-center gap-6">
-            {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8"
-                alt={logo.alt}
-              />
-              <div className="flex mt-2 gap-1">
-                <span className="text-3xl font-bebas-book">
-                  THS
-                </span>
-                <span className="text-3xl font-bebas-bold">
-                  ARMADA
-                </span>
-              </div>
-            </a>
-            <div className="flex items-center">
-              <NavigationMenu>
-                <NavigationMenuList>
+
+        <nav className="hidden lg:flex items-center">
+          <div className="container flex items-center">
+
+            {/* LEFT — Logo */}
+            <div className="flex flex-1 items-center gap-6">
+              <a href={logo.url} className="flex items-center gap-2">
+                <img src={logo.src} className="max-h-8" alt={logo.alt} />
+                <div className="flex mt-2 gap-1">
+                  <span className="text-3xl font-bebas-book">THS</span>
+                  <span className="text-3xl font-bebas-bold">ARMADA</span>
+                </div>
+              </a>
+            </div>
+
+            {/* CENTER — Navigation */}
+            <div className="justify-center">
+              <NavigationMenu >
+                <NavigationMenuList className="flex-wrap">
                   {menu.map((item) => renderMenuItem(item))}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
+
+            <div className="flex-1"></div>
+
           </div>
         </nav>
+
 
         {/* Mobile Menu */}
         <div className="block lg:hidden">
