@@ -59,8 +59,7 @@ export default async function OrderPage() {
         <div className="flex flex-col items-center justify-center text-center p-8">
           <h1 className="text-2xl font-semibold mb-4">Order Form (Exhibitors)</h1>
           <p>
-            This form is intended for exhibitors at the fair.
-            Please scan the QR code provided at our booth to access it.
+            Form has been closed due to a high volume of orders. Sorry for the inconvenience! Feel free to still drop by the Exhibitor Lounge
           </p>
         </div>
       ) : (
