@@ -26,6 +26,9 @@ export default async function HomePage() {
     .map((g) => g.logoFreesize || g.logoSquared)
     .filter((url): url is string => Boolean(url));
 
+  const today = Date.now()
+  const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
+
   return (
     <>
       <NavigationMenu />
@@ -80,9 +83,26 @@ export default async function HomePage() {
                 Nymble & KTH Innovation
               </p>
             </div>
-            <div className="w-full flex-1 rounded pb-2 text-2xl font-medium mt-2 md:mt-0 overflow-visible">
-              <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
-            </div>
+            {today < fair_end ? (
+              <div className="w-full flex-1 rounded pb-2 text-2xl font-medium mt-2 md:mt-0 overflow-visible">
+                <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
+              </div>
+            ) : (
+              <div className="mt-2 md:mt-0 sm:w-[40vw] flex-1">
+                <h1 className=" text-4xl font-bebas-bold font-bold text-center text-stone-300 rounded-md">
+                  ARMADA 2025 HAS ENDED
+                </h1>
+                <h2 className="text-melon-700">
+                  Thank You to All Our Partners and Participants!
+                </h2>
+                <P>
+                  Armada 2025 was a huge success because of your energy, innovation, and commitment.
+                  We’re grateful to every company and student who made this fair possible and memorable.
+                  Together, we’re shaping the future of talent and industry!
+                  See you next year - let’s keep building!
+                </P>
+              </div>
+            )}
           </div>
           <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-x-hidden overflow-y-visible mt-5">
             <VisitorNumberBar />
