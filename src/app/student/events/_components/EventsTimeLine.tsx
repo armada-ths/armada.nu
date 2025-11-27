@@ -1,7 +1,5 @@
 import { EventItem } from "@/app/student/events/_components/EventItem"
 import { Event } from "@/components/shared/hooks/api/useEvents"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import Link from "next/link"
 import { Suspense } from "react"
 
 import { formatTimestampAsDate } from "@/lib/utils"
@@ -16,23 +14,6 @@ import TimelineOppositeContent, {
 import TimelineSeparator from '@mui/lab/TimelineSeparator'
 
 export function EventsTimeline({ events }: { events: Event[] }) {
-  if (events.length === 0) {
-    return (
-      <Alert className="my-5">
-        <AlertTitle>No events available at the moment</AlertTitle>
-        <AlertDescription>
-          Follow us on{" "}
-          <Link
-            className="text-white underline hover:no-underline"
-            href={"https://www.instagram.com/thsarmada/"}>
-            instagram
-          </Link>{" "}
-          for latest news!
-        </AlertDescription>
-      </Alert>
-    );
-  }
-
   return (
     <Timeline
       position="right"
