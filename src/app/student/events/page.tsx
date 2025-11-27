@@ -2,8 +2,10 @@ import { P } from "@/app/_components/Paragraph"
 import { EventsTimeline } from "@/app/student/events/_components/EventsTimeLine"
 import { Page } from "@/components/shared/Page"
 import { Event, fetchEvents } from "@/components/shared/hooks/api/useEvents"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { eventDateTimeToEpochSeconds } from "@/lib/utils"
 import { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: `Events - Armada`,
@@ -72,9 +74,26 @@ export default async function EventPage() {
             Besides the career fair, Armada hosts a variety of events to help
             you prepare, network, and learn. Browse through our upcoming events below.
           </P>
-          <div className="mx-auto md:-ml-24 flex w-full flex-col items-center pl-1 text-center">
-            <EventsTimeline events={orderedEvents} />
-          </div>
+          {orderedEvents.length > 0 ? (
+            <div className="mx-auto md:-ml-24 flex w-full flex-col items-center pl-1 text-center">
+              <EventsTimeline events={orderedEvents} />
+            </div>
+          ) : (
+            <div className="mx-auto flex w-full flex-col items-center pl-1 text-center">
+              <Alert className="my-5">
+                <AlertTitle>No events available at the moment</AlertTitle>
+                <AlertDescription>
+                  Follow us on{" "}
+                  <Link
+                    className="text-white underline hover:no-underline"
+                    href={"https://www.instagram.com/thsarmada/"}>
+                    instagram
+                  </Link>{" "}
+                  for latest news!
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
         </div>
       </Page.Boundary>
     </Page.Background>
