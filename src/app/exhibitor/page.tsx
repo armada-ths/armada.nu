@@ -1,3 +1,4 @@
+import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { CurrentStatus } from "@/app/exhibitor/_components/CurrentStatus"
 import { Page } from "@/components/shared/Page"
@@ -40,23 +41,23 @@ export default function ForExhibitorsPage() {
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4">
             <Link href="https://app.eventro.se/register/armada">
-              <Button>Signup to Armada</Button>
+              <Button className="bg-grapefruit">Signup to Armada</Button>
             </Link>
             <Link href="/exhibitor/packages">
-              <Button variant={"secondary"} className="dark:bg-liqorice-700">
+              <Button variant={"neutral"}>
                 Packages
               </Button>
             </Link>
             <Link href="/exhibitor/timeline">
-              <Button variant={"secondary"} className="dark:bg-liqorice-700">
+              <Button variant={"neutral"}>
                 Timeline
               </Button>
             </Link>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs">
             Or{" "}
             <Link
-              className="text-white underline hover:no-underline"
+              className="underline hover:no-underline"
               href="mailto:sales@armada.nu">
               contact sales
             </Link>{" "}
@@ -71,13 +72,13 @@ export default function ForExhibitorsPage() {
             <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
               New students, every year!
             </h2>
-            <p className="text-stone-300">
+            <P>
               Every year, around 4000 new students come to KTH. Almost as many
               students get their first full time job or internship.
               Participating in Armada means you get access to all of them, and
               can both build awareness among younger students and be top of mind
               when the older students start looking for a job. Welcome!
-            </p>
+            </P>
           </div>
 
           <div className="mt-6">
@@ -85,24 +86,24 @@ export default function ForExhibitorsPage() {
               Do you write &quot;we place high importance on your personal
               character&quot; in job ads?
             </h2>
-            <p className="text-stone-300">
+            <P>
               Armada realizes that what you study does not always decide where
               you end up in your career. Employers today must be attractive to a
               broad range of workers to recruit a diverse team and because you
               never know, your next star employee might have a different degree
               than you thought!
-            </p>
+            </P>
           </div>
           <div className="mt-6">
             <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
               Skills you need, from all ends of KTH
             </h2>
-            <p className="text-stone-300">
+            <P>
               Did you know that there are at least five programmes at KTH
               teaching computer science and students from more than three
               programmes can call themselves “mechanical engineers” when
               applying for jobs?
-            </p>
+            </P>
           </div>
         </section>
         <PhotoSlideCarousel photoSrc={promotionalPhotos} />

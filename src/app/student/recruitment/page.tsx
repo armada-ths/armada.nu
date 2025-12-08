@@ -97,14 +97,14 @@ export default async function RecruitmentPage() {
               Below you can read more about different roles and you can get to
               know the Armada organization better{" "}
               <Link
-                className="text-white underline hover:no-underline"
+                className=" underline hover:no-underline"
                 href="/about">
                 here
               </Link>
               . If you have any questions you can contact the{" "}
               {hrHead && hrHead.email ? (
                 <Link
-                  className="text-white underline hover:no-underline"
+                  className="underline hover:no-underline"
                   href={`mailto:${hrHead.email}`}>
                   Head of HR
                 </Link>

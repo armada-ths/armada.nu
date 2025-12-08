@@ -16,7 +16,7 @@ export default function AtFairPage() {
             tips on how to get the most out of your conversation.
           </P>
 
-          <ul className="mt-2 text-stone-400">
+          <ul className="mt-2">
             <li>
               <i>· Formulate your sentences and speak clearly.</i>
             </li>
@@ -35,7 +35,7 @@ export default function AtFairPage() {
           </P>
         </div>
         <br />
-        <Page.Header tier="secondary">Example questions</Page.Header>
+        <Page.Header tier="secondary" className="text-melon-700">Example questions</Page.Header>
         <P>
           Below are some examples of questions you can ask the companies during
           Armada to get the conversation started.

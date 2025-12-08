@@ -1,55 +1,69 @@
-import { P } from "@/app/_components/Paragraph"
 import {
   AccordionContent,
   AccordionItem,
-  AccordionTrigger
+  AccordionTrigger,
 } from "@/components/ui/accordion"
-import { cn } from "@/lib/utils"
-import { formatDate } from "@/lib/utils"
+import { cn, formatDate } from "@/lib/utils"
 
 export function TimelineItem({
   children,
   title,
   dateStringISO,
-  dateStringHuman = formatDate(dateStringISO)
+  dateStringHuman = formatDate(dateStringISO),
 }: {
   children?: React.ReactNode
   title: string
   dateStringISO: string
   dateStringHuman?: string
 }) {
-  const expandable = children != null
-  const isPastDate = new Date(dateStringISO) <= new Date()
+  const expandable = !!children
 
   return (
     <AccordionItem
       value={title}
-      disabled={!expandable}
-      className={cn(
-        "border-b-0 border-l-2 border-slate-600 pb-7 transition-[padding] duration-200 data-[state=open]:pb-3",
-        { "border-melon-700": isPastDate }
-      )}>
-      <div
-        className={cn(
-          "absolute -start-1.5 size-3.5 rounded-full border border-melon-700/50 bg-slate-600",
-          { "bg-melon-700": isPastDate }
-        )}></div>
+      className="relative bg-snow"
+    >
+      {/* TIMELINE SPINE */}
+      <div className="absolute left-4 top-4 bottom-0 w-0.5 bg-licorice" />
+
+      {/* NODE */}
+      <div className="absolute left-2.75 top-4 w-3 h-3 bg-melon-700 border border-licorice" />
+
+      {/* HEADER (flat melon block) */}
       <AccordionTrigger
-        disabled={!expandable}
         className={cn(
-          "ml-4 w-full rounded-sm px-2 pb-1.5 text-left font-normal hover:no-underline",
-          { "transition hover:text-melon-700": expandable }
-        )}>
-        <div>
-          <P className="-mt-5 text-stone-400">{dateStringHuman}</P>
-          <div className="flex w-full justify-between">
-            <h3 className="text-2xl md:text-3xl">{title}</h3>
-          </div>
+          "border-l-2 ml-8 w-full text-left rounded-none",
+          "border-l-2 border-licorice bg-melon-700 hover:bg-emerald-500",
+
+          expandable
+            ? "hover:bg-emerald-500 cursor-pointer"
+            : "cursor-default pointer-events-none"
+        )}
+      >
+        <div className="flex flex-col gap-1">
+          {/* DATE */}
+          <span className="text-xs font-semibold px-2 py-0.5 w-fit bg-snow border border-licorice">
+            {dateStringHuman}
+          </span>
+
+          {/* TITLE */}
+          <h3 className="text-3xl font-bebas-neue text-licorice">
+            {title}
+          </h3>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="ml-1 px-5 text-base">
-        {children}
-      </AccordionContent>
+
+      {expandable && (
+        <AccordionContent
+          className="
+            ml-8 my-4
+            border-l-2
+            pb-10
+          "
+        >
+          {children}
+        </AccordionContent>
+      )}
     </AccordionItem>
   )
 }

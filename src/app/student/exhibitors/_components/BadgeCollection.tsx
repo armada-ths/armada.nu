@@ -27,7 +27,7 @@ export default function BadgeCollection({
       {items.slice(0, maxDisplayed).map(({ id, name }) => (
         <Badge
           key={id}
-          variant="secondary"
+          variant="neutral"
           title={name} // full name on hover
           className={cn(
             "w-max flex-none shadow-lg px-2 py-1 text-sm font-medium",
@@ -39,7 +39,7 @@ export default function BadgeCollection({
       ))}
       {items.length > maxDisplayed && (
         <Badge
-          variant="secondary"
+          variant="neutral"
           title={tooltip}
           className={cn("w-max shadow-lg flex-none", badgeClassName)}
         >

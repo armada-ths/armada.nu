@@ -13,7 +13,7 @@ export default async function WhyArmadaPage() {
     <Page.Background withIndents>
       <Page.Boundary maxWidth={600} className="pb-20">
         <Page.Header>Timeline</Page.Header>
-        <p className="mt-4 text-stone-400">
+        <p className="mt-4">
           The application is divided into 2 parts, Priority and Standard.
           Priority Registration is where you apply to exhibit at Armada, and in
           Standard Registration you choose your package, events and other

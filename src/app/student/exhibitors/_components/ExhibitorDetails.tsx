@@ -40,12 +40,15 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
         )}
 
         <div className="flex flex-col items-center sm:ml-2 sm:items-start">
-          <Page.Header className="text-center sm:text-left">
+          <Page.Header className={`
+          text-licorice
+          text-center sm:text-left
+          `}>
             {exhibitor.name}
           </Page.Header>
 
           {exhibitor.companyWebsite && (
-            <div className="mt-2 flex items-center gap-1 text-base font-semibold text-stone-400">
+            <div className="mt-2 flex items-center gap-1 text-base font-semibold">
               <Globe size={16} />
               <Link
                 rel="noopener noreferrer"

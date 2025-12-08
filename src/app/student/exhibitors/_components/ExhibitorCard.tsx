@@ -6,6 +6,7 @@ import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import Modal from "@/components/ui/Modal"
 
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
+import { Card } from "@/components/ui/card"
 import Image from "next/image"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -34,22 +35,32 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         onClose={() => {
           setModalOpen(false);
         }}
-        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-800 to-stone-900 p-0">
-        <div className="p-4 sm:p-10">
+        className={`
+            ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""}
+            ${exhibitor.tier === "Silver" ? "bg-gray-400" : ""}
+            ${exhibitor.tier === "Bronze" ? "bg-melon-700" : ""}
+           min-w-[80vw] p-0 border-licorice
+        `}>
+        <div className={`
+            ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""}
+            ${exhibitor.tier === "Silver" ? "bg-gray-400" : ""}
+            ${exhibitor.tier === "Bronze" ? "bg-melon-700" : ""}
+          p-4 sm:p-10 border-licorice border-solid
+        `}>
           <ExhibitorDetails exhibitor={exhibitor} />
 
         </div>
-      </Modal>
+      </Modal >
 
       <Link href={`/student/exhibitors?id=${exhibitor.id}`} scroll={false}>
-        <div
+        <Card
           className={`
-            ${exhibitor.tier === "Gold" ? "border-yellow-500 bg-yellow-500" : ""}
-            ${exhibitor.tier === "Silver" ? "border-gray-400 bg-gray-400" : ""}
-            ${exhibitor.tier === "Bronze" ? "border-emerald-900 bg-emerald-900" : ""}
+            ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""}
+            ${exhibitor.tier === "Silver" ? "bg-gray-400" : ""}
+            ${exhibitor.tier === "Bronze" ? "bg-melon-700" : ""}
             group flex h-full flex-col border-2 border-solid filter transition 
-            hover:scale-[1.05] hover:brightness-95
-            max-w-[90vw] sm:max-w-[380px] w-full px-3 rounded-lg
+            hover:brightness-95 border-licorice hover:scale-[1.02]
+            max-w-[90vw] sm:max-w-[380px] w-full px-3 rounded-md
           `}
         >
 
@@ -59,7 +70,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
               ${exhibitor.tier === "Gold" ? "text-yellow-100 group-hover:text-yellow-300" : ""}
               ${exhibitor.tier === "Silver" ? "text-gray-200 group-hover:text-gray-100" : ""}
-              ${exhibitor.tier === "Bronze" ? "text-emerald-200 group-hover:text-emerald-400" : ""}
+              ${exhibitor.tier === "Bronze" ? "text-emerald-200 group-hover:text-emerald-700" : ""}
             `}
           >
             {exhibitor.name}
@@ -85,7 +96,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
             className="mt-auto flex-nowrap justify-center overflow-hidden p-2.5 pt-0"
             badgeClassName="text-[0.65em] flex-initial truncate inline-block"
           />
-        </div>
+        </Card>
       </Link>
     </>
   )

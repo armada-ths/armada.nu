@@ -29,12 +29,12 @@ const Banner1 = ({
   if (!isVisible) return null;
 
   return (
-    <section className="w-full px-4 py-3 bg-melon-700">
+    <section className="-mt-1 w-full px-4 py-3 bg-grapefruit border-b border-licorice">
       <div className="flex items-center justify-between gap-2">
         <div className="flex-1 text-center">
           <span className="text-sm">
             <span className="font-medium">{title}</span>{""}
-            <span className="text-stone-200">
+            <span className="text-snow">
               {description}{""}
               <a
                 href={linkUrl}
@@ -49,9 +49,9 @@ const Banner1 = ({
         </div>
 
         <Button
-          variant="ghost"
+          variant="noShadow"
           size="icon"
-          className="-mr-2 h-8 w-8 flex-none"
+          className="-mr-2 h-8 w-8 flex-none bg-snow"
           onClick={handleClose}
         >
           <X className="h-4 w-4" />

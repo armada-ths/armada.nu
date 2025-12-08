@@ -33,16 +33,14 @@ export function PhotoSlideCarousel(props: {
     <div className="mt-8">
       <Carousel arrows swipeable responsive={responsive} infinite autoPlay>
         {props.photoSrc.map((imgDetails, idx) => (
-          <div key={idx}>
-            <Image
-              key={idx}
-              src={imgDetails.source}
-              alt={imgDetails.altText}
-              width={200}
-              height={200}
-              className="mb-4 aspect-square object-cover p-1 transition-all duration-200 hover:scale-105"
-            />
-          </div>
+          <Image
+            key={idx}
+            src={imgDetails.source}
+            alt={imgDetails.altText}
+            width={200}
+            height={200}
+            className="mb-4 aspect-square object-cover p-1 transition-all duration-200 hover:scale-105"
+          />
         ))}
       </Carousel>
     </div>

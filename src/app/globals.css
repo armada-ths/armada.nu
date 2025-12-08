@@ -16,6 +16,45 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.dark {
+  /* Backgrounds */
+  --background: var(--color-coconut);
+  --secondary-background: oklch(100% 0 0);
+  --foreground: oklch(0% 0 0);
+  /* Snow */
+
+  /* Text / Foreground */
+  --foreground: var(--color-licorice);
+  /* Licorice */
+  --main-foreground: var(--color-licorice);
+  /* Licorice */
+
+  /* Primary Brand Color (Melon) */
+  --main: var(--color-melon-700);
+
+  /* Borders, rings, shadows */
+  --border: var(--color-licorice);
+  --ring: var(--color-licorice);
+  --overlay: color-mix(in srgb, var(--color-licorice) 80%, transparent);
+  --shadow: 4px 4px 0px 0px var(--border);
+
+  /* Charts mapped to brand palette */
+  --chart-1: var(--color-melon-700);
+  /* Melon */
+  --chart-2: var(--color-grape-700);
+  /* Grape/Grapefruit */
+  --chart-3: var(--color-licorice);
+  /* Licorice */
+  --chart-4: var(--color-pineapple);
+  /* Pineapple */
+  --chart-5: var(--color-coconut);
+  /* Coconut (light) */
+
+  /* Active Dot */
+  --chart-active-dot: var(--color-licorice);
+}
+
+
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
@@ -27,6 +66,31 @@
   @media (width >=1400px) {
     max-width: 1400px;
   }
+}
+
+@theme inline {
+  --color-main: var(--main);
+  --color-background: var(--background);
+  --color-secondary-background: var(--secondary-background);
+  --color-foreground: var(--foreground);
+  --color-main-foreground: var(--main-foreground);
+  --color-border: var(--border);
+  --color-overlay: var(--overlay);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --spacing-boxShadowX: 4px;
+  --spacing-boxShadowY: 4px;
+  --spacing-reverseBoxShadowX: -4px;
+  --spacing-reverseBoxShadowY: -4px;
+  --radius-base: 5px;
+  --shadow-shadow: var(--shadow);
+  --font-weight-base: 500;
+  --font-weight-heading: 700;
 }
 
 @theme {
@@ -144,7 +208,7 @@
 
   background: conic-gradient(from var(--angle),
       transparent 0deg 300deg,
-      #00d79099 300deg 360deg);
+      var(--color-melon-700) 300deg 360deg);
 
   /* content-box is the inside of the button, second line is the entire button. xor excludes the content-box */
   -webkit-mask:
@@ -192,5 +256,47 @@
 
   body {
     font-family: var(--font-sans);
+    @apply text-foreground font-base;
+
+    background-color: var(--background);
+
+    background-image:
+      /* vertical double lines */
+      repeating-linear-gradient(to right,
+        transparent 0,
+        transparent 28px,
+        var(--color-snow) 28px,
+        var(--color-snow) 29px,
+        transparent 29px,
+        transparent 33px,
+        /* wider gap between stripes */
+        var(--color-snow) 33px,
+        var(--color-snow) 34px,
+        transparent 34px,
+        transparent 60px),
+
+      /* horizontal double lines */
+      repeating-linear-gradient(to bottom,
+        transparent 0,
+        transparent 28px,
+        var(--color-snow) 28px,
+        var(--color-snow) 29px,
+        transparent 29px,
+        transparent 33px,
+        /* wider gap between stripes */
+        var(--color-snow) 33px,
+        var(--color-snow) 34px,
+        transparent 34px,
+        transparent 60px);
+  }
+
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
   }
 }

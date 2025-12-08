@@ -35,8 +35,8 @@ const OrganizationList = ({ group }: { group: Organization }) => {
         <div className="my-20 flex justify-center">
           {group.name === "Project Manager" ? null : (
             <Button
-              variant={"secondary"}
-              className="dark:bg-liqorice-700"
+              variant={"neutral"}
+              className=""
               onClick={handleButtonClick}>
               {showOTs ? (
                 <>

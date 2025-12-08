@@ -9,7 +9,7 @@ import { SiInstagram, SiLinkedin, SiTiktok } from 'react-icons/si';
 
 export function Footer() {
   return (
-    <footer className="w-full bg-black text-white py-8 flex flex-col items-center">
+    <footer className="w-full bg-licorice text-white py-8 flex flex-col items-center">
       {/* Divider */}
       <hr className="w-2/3 h-px bg-slate-600 opacity-40 mb-6" />
 
@@ -90,8 +90,8 @@ export function Footer() {
         <Accordion type="single" collapsible className="w-full">
           {/* Students */}
           <AccordionItem value="students">
-            <AccordionTrigger>Students</AccordionTrigger>
-            <AccordionContent>
+            <AccordionTrigger className="text-snow bg-licorice">Students</AccordionTrigger>
+            <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
                 <a href="/student/recruitment">Recruitment</a>
                 <a href="/student/events">Events</a>
@@ -102,8 +102,8 @@ export function Footer() {
           </AccordionItem>
           {/* Exhibitors */}
           <AccordionItem value="exhibitors">
-            <AccordionTrigger>Exhibitors</AccordionTrigger>
-            <AccordionContent>
+            <AccordionTrigger className="text-snow bg-licorice">Exhibitors</AccordionTrigger>
+            <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
                 <a href="https://app.eventro.se/register/armada">Registration</a>
                 <a href="/exhibitor/packages">Packages</a>

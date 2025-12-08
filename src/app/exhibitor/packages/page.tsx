@@ -8,6 +8,7 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { formatDate } from "@/lib/utils"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -16,25 +17,6 @@ export const metadata: Metadata = {
   title: `Packages - Armada Exhibitor`,
   description:
     "The packages we offer for exhibitors at Armada. Choose between bronze, silver and gold."
-}
-
-function FAQItem({
-  children,
-  title
-}: {
-  children: React.ReactNode
-  title: string
-}) {
-  return (
-    <AccordionItem value={title} className="border-none">
-      <AccordionTrigger className="mb-0 w-full rounded-sm px-2 py-4 text-left font-normal transition hover:bg-slate-700 hover:no-underline">
-        <h3 className="text-xl">{title}</h3>
-      </AccordionTrigger>
-      <AccordionContent className="mt-0 p-2 pt-0 text-base text-stone-400">
-        {children}
-      </AccordionContent>
-    </AccordionItem>
-  )
 }
 
 export default async function Packages() {
@@ -46,7 +28,7 @@ export default async function Packages() {
         <div className="mx-auto max-w-[600px]">
           <Page.Header>Packages</Page.Header>
           <div className="mt-4">
-            <p className="max-w-[500] text-stone-400">
+            <p className="max-w-[500]">
               Armada has the following packages. The Bronze package is all the
               basics you need to exhibit at Armada. The Silver package allows
               you to expand your presence and the Gold package makes you truly
@@ -61,9 +43,9 @@ export default async function Packages() {
         </div>
         <div className="mt-10 flex flex-col">
           <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row">
-            <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-orange-950 p-5 pb-32">
-              <h3 className="font-lato text-2xl text-orange-500">Bronze</h3>
-              <ul className="mt-2 font-lato text-orange-700">
+            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-melon-700 p-5 pb-32">
+              <h3 className="font-lato text-2xl ">Bronze</h3>
+              <ul className="mt-2 font-lato">
                 <li className="my-2 font-extrabold">
                   2x3 sqm, carpeted exhibitor space
                 </li>
@@ -84,10 +66,10 @@ export default async function Packages() {
                 <p>46 500 SEK*</p>
               </div>
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
-            </div>
-            <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-zinc-800 p-5 pb-32">
-              <h3 className="font-lato text-2xl text-zinc-400">Silver</h3>
-              <ul className="mt-2 font-lato text-zinc-500">
+            </Card>
+            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-gray-400 p-5 pb-32">
+              <h3 className="font-lato text-2xl">Silver</h3>
+              <ul className="mt-2 font-lato">
                 <li className="my-2 font-extrabold">
                   2x4 sqm, carpeted exhibitor space
                 </li>
@@ -116,10 +98,10 @@ export default async function Packages() {
                 <p>75 800 SEK*</p>
               </div>
               {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
-            </div>
-            <div className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-yellow-800 p-5 pb-32">
-              <h3 className="font-lato text-2xl text-yellow-400">Gold</h3>
-              <ul className="mt-2 font-lato text-yellow-500">
+            </Card>
+            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-pineapple p-5 pb-32">
+              <h3 className="font-lato text-2xl text-licorice">Gold</h3>
+              <ul className="mt-2 font-lato text-licorice">
                 <li className="my-2 font-extrabold">
                   2x5 sqm booth, carpeted exhibitor space
                 </li>
@@ -157,55 +139,79 @@ export default async function Packages() {
                 <p>118 200 SEK*</p>
               </div>
               {/* 							<p className="absolute bottom-4">108 500 SEK*</p> */}
-            </div>
+            </Card>
           </div>
         </div>
         <p className="mt-4 text-sm">*All prices are ex. VAT. </p>
         <div className="mx-auto mt-10 w-full max-w-[600px]">
           <h1 className="mb-2 ml-2 text-2xl">FAQ</h1>
-          <Accordion type="single" collapsible={true}>
-            <FAQItem title='What does "priority placement" mean?'>
-              Priority placement means that we will place you in spots on the
-              fair where there is good footfall. Gold exhibitors take the best
-              spots and silver exhibitors are prioritized next. Contact{" "}
-              <Link
-                className="text-white underline hover:no-underline"
-                href="mailto:sales@armada.nu">
-                sales@armada.nu
-              </Link>{" "}
-              for more information.
-            </FAQItem>
-
-            <FAQItem title="When is the deadline for Priority Registration?">
-              The Priority Registration ends {formatDate("2025-05-23")}. See our{" "}
-              <Link
-                className="text-white underline hover:no-underline"
-                href="/exhibitor/timeline">
-                timeline
-              </Link>{" "}
-              for more information and other important dates.
-            </FAQItem>
-
-            <FAQItem title="How do I sign up for armada?">
-              <p>You can sign up here:</p>
-              <div className="my-4">
-                <Link href="https://app.eventro.se/register/armada">
-                  <Button>Signup to Armada</Button>
-                </Link>
-              </div>
-              <p>
-                If you have any questions, you can contact us at{" "}
-                <Link
-                  className="text-white underline hover:no-underline"
-                  href="mailto:sales@armada.nu">
-                  sales@armada.nu
-                </Link>
-                .
-              </p>
-            </FAQItem>
+          <Accordion type="single" collapsible className="space-y-6">
+            {/* FAQ 1 */}
+            <AccordionItem value="faq-1">
+              <AccordionTrigger>
+                What does "priority placement" mean?
+              </AccordionTrigger>
+              <AccordionContent>
+                <p>
+                  Priority placement means that we will place you in spots on the fair
+                  where there is good footfall. Gold exhibitors take the best spots
+                  and silver exhibitors are prioritized next. Contact{" "}
+                  <Link
+                    className="underline hover:no-underline"
+                    href="mailto:sales@armada.nu"
+                  >
+                    sales@armada.nu
+                  </Link>{" "}
+                  for more information.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+            {/* FAQ 2 */}
+            <AccordionItem value="faq-2">
+              <AccordionTrigger>
+                When is the deadline for Priority Registration?
+              </AccordionTrigger>
+              <AccordionContent>
+                <p>
+                  The Priority Registration ends {formatDate("2025-05-23")}.
+                  See our{" "}
+                  <Link
+                    className="underline hover:no-underline"
+                    href="/exhibitor/timeline"
+                  >
+                    timeline
+                  </Link>{" "}
+                  for more information and other important dates.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+            {/* FAQ 3 */}
+            <AccordionItem value="faq-3">
+              <AccordionTrigger>
+                How do I sign up for Armada?
+              </AccordionTrigger>
+              <AccordionContent>
+                <p>You can sign up here:</p>
+                <div className="my-4">
+                  <Link href="https://app.eventro.se/register/armada">
+                    <Button className="bg-grapefruit">Signup to Armada</Button>
+                  </Link>
+                </div>
+                <p>
+                  If you have any questions, you can contact us at{" "}
+                  <Link
+                    className="underline hover:no-underline"
+                    href="mailto:sales@armada.nu"
+                  >
+                    sales@armada.nu
+                  </Link>
+                  .
+                </p>
+              </AccordionContent>
+            </AccordionItem>
           </Accordion>
         </div>
       </Page.Boundary>
-    </Page.Background>
+    </Page.Background >
   )
 }

@@ -33,7 +33,7 @@ export default function Modal({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent
           className={cn(
-            "overflow-y-auto max-h-[80%] w-[80%] border border-stone-500",
+            "overflow-y-auto max-h-[80%] w-[80%]",
             className
           )}>
           {children}
@@ -45,7 +45,7 @@ export default function Modal({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent
         className={cn(
-          "max-h-[90%] min-h-[50%] border border-stone-500 pt-0 focus-visible:outline-hidden",
+          "max-h-[90%] min-h-[50%] pt-0 focus-visible:outline-hidden",
           className
         )}>
         {children}

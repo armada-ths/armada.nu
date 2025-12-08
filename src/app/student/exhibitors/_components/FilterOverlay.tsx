@@ -25,7 +25,7 @@ interface FilterOverlayProps {
 export const FilterOverlay: React.FC<FilterOverlayProps> = ({
   isOpen,
   onClose,
-  headerHeight = "4rem",
+  headerHeight = "0",
   exhibitors,
   employments,
   industries,
@@ -73,7 +73,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
         <div className="grow overflow-y-auto pb-24">
           <div className="flex justify-center py-2 mt-2">
             <button
-              className="w-[92%] bg-black text-white py-3 font-medium tracking-widest hover:bg-gray-800 rounded-md transition duration-150 border border-white"
+              className="w-[92%] bg-licorice text-white py-3 font-medium tracking-widest hover:bg-gray-800 rounded-md transition duration-150 border border-white"
               onClick={onClose}
             >
               CLOSE

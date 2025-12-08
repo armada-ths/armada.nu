@@ -27,7 +27,7 @@ export default function CompanySearch({ exhibitors, onSelect }: CompanySearchPro
   };
 
   return (
-    <div className="absolute top-40 left-6 z-50 w-80">
+    <div className="absolute top-44 left-6 z-50 w-80">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button className="flex items-center justify-center p-2 rounded-lg bg-white border border-stone-800 hover:bg-stone-300">
@@ -35,11 +35,11 @@ export default function CompanySearch({ exhibitors, onSelect }: CompanySearchPro
           </button>
         </PopoverTrigger>
 
-        <PopoverContent side="right" align="start" className="p-0 w-[320px] bg-stone-900 border border-stone-800 shadow-xl">
-          <Command>
+        <PopoverContent side="right" align="start" className=" rounded-md p-0 w-[320px] border shadow-xl">
+          <Command className="bg-white rounded-md">
             <CommandInput
               placeholder="Search exhibitors..."
-              className="text-white placeholder:text-stone-500"
+              className="text-white"
             />
             <CommandList className="max-h-64 overflow-y-auto">
               <CommandEmpty>No companies found.</CommandEmpty>

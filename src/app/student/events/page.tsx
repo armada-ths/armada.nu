@@ -68,7 +68,7 @@ export default async function EventPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="items-center pb-20">
-        <div className="mx-auto flex w-full max-w-[600px] flex-col items-center text-center">
+        <div className="w-fit mx-auto flex max-w-[600px] flex-col items-center text-center">
           <Page.Header>Events</Page.Header>
           <P className="mt-4 max-w-2xl">
             Besides the career fair, Armada hosts a variety of events to help
@@ -82,7 +82,7 @@ export default async function EventPage() {
             <div className="mx-auto flex w-full flex-col items-center pl-1 text-center">
               <Alert className="my-5">
                 <AlertTitle>No events available at the moment</AlertTitle>
-                <AlertDescription>
+                <AlertDescription className="flex justify-center">
                   Follow us on{" "}
                   <Link
                     className="text-white underline hover:no-underline"

@@ -1,4 +1,5 @@
 import { Person } from "@/components/shared/hooks/api/useOrganization"
+import { Card } from "@/components/ui/card"
 import { PersonIcon } from "@radix-ui/react-icons"
 import { LinkedinIcon, MailIcon } from "lucide-react"
 import Image from "next/image"
@@ -8,28 +9,24 @@ const PersonCard = ({ person }: { person: Person }) => {
   console.log(person)
   return (
     <>
-      <div key={person.id} className="w-52">
+      <Card key={person.id} className="w-full sm:w-56 hover:scale-105 transition-all py-0 pb-4 sm:h-96">
         {person.picture == null || person.picture.includes("no-image") ? (
           <div className="flex aspect-square w-52 flex-1 items-center justify-center">
             <PersonIcon className="m-auto h-20 w-20 text-melon-700" />
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden">
             <Image
               loading="lazy"
               src={person.picture}
               alt={person.name}
               width={200}
               height={200}
-              className="aspect-square w-full object-cover transition-all duration-200 hover:scale-105"
-              style={{
-                maxWidth: "100%",
-                height: "auto"
-              }}
+              className="aspect-square w-full object-cover transition-all duration-200"
             />
           </div>
         )}
-        <div className="mt-2">
+        <div className="px-4">
           <p className="text-melon-700">{person.name}</p>
           <p className="mt-1 text-sm text-stone-400">
             {person.role.split("–")[1]}
@@ -47,7 +44,7 @@ const PersonCard = ({ person }: { person: Person }) => {
             )}
           </div>
         </div>
-      </div>
+      </Card>
     </>
   )
 }
