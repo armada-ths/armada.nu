@@ -95,8 +95,8 @@ export function CompanySubmissionPopover() {
         </PopoverTrigger>
         <PopoverContent
           side="top"
-          className="z-10 ml-4 w-auto">
-          <div className="p-4 shadow-md filter bg-zinc-800">
+          className="z-10 ml-4 w-auto bg-licorice">
+          <div className="p-4 shadow-md filter bg-licorice">
             <div className="flex flex-col gap-2">
               <p className="text-l font-semibold">Contact</p>
               <fieldset className="flex flex-col">
@@ -174,7 +174,7 @@ export function CompanySubmissionPopover() {
 
               <div className="flex justify-end">
                 <Button
-                  className="mt-2"
+                  className="mt-2 bg-grapefruit"
                   onClick={sendMessage}
                   disabled={!formFilled}>
                   Send

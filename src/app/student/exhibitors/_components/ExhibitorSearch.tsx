@@ -3,6 +3,7 @@
 import FilterOverlay from "@/app/student/exhibitors/_components/FilterOverlay";
 
 import { Employment, Exhibitor, Industry, Program } from "@/components/shared/hooks/api/useExhibitors";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { ExhibitorCard } from "./ExhibitorCard";
 // Import the MultiSelect component and the Option interface
@@ -24,7 +25,7 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
     <div className="py-6 space-y-4">
 
       <div className="py-2 flex flex-col sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
-        <input
+        <Input
           type="text"
           value={searchQueryName}
           onChange={(e) => setSearchQueryName(e.target.value)}
@@ -34,7 +35,7 @@ export default function ExhibitorSearch({ exhibitors, employments, industries, p
 
         <button onClick={() => setModalOpen(true)} className="py-1">
 
-          <div className="flex justify-between items-center py-2 border-b border-gray-200">
+          <div className="flex justify-between items-center py-1 border-b border-licorice">
             <div className="flex items-center space-x-2 cursor-pointer">
               {/* Icon for filter (e.g., a hamburger or three horizontal lines) */}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

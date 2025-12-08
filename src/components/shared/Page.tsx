@@ -1,4 +1,3 @@
-import { AuroraBackground } from "@/components/ui/aurora-background"
 import { cn } from "@/lib/utils"
 
 export function Page() {
@@ -29,7 +28,7 @@ Page.Header = function PageHeader(
   if (props.tier === "secondary") {
     return (
       <h2
-        className={cn("font-bebas-neue text-3xl text-stone-400", className)}
+        className={cn("font-bebas-neue text-3xl", className)}
         {...rest}>
         {children}
       </h2>
@@ -52,7 +51,7 @@ Page.Background = function PageBackground(
 ) {
   const { children, className, withIndents, ...rest } = props
   return (
-    <AuroraBackground
+    <div
       className={cn(
         {
           "px-5 py-10": withIndents
@@ -60,8 +59,8 @@ Page.Background = function PageBackground(
         className
       )}
       {...rest}>
-      {!props.avoidHeader && <div className="h-16" />}
-      <div className="z-10 flex w-full flex-1 flex-col">{children}</div>
-    </AuroraBackground>
+      {!props.avoidHeader && <div className="h-20" />}
+      <div className="z-10 flex w-full flex-1 flex-col min-h-[40vw]">{children}</div>
+    </div>
   )
 }

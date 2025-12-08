@@ -1,6 +1,8 @@
 "use client";
 
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors";
+import { Page } from "@/components/shared/Page";
+import { Card } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -48,50 +50,46 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
   const visibleExhibitors = exhibitors.slice(0, 8);
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen py-20 bg-linear-to-b from-black via-[#32473b] to-black overflow-hidden">
+    <section className="py-16 w-full">
       {/* gold glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,215,0,0.2)_0%,transparent_70%)]" />
-
-      <h2 className="relative text-center text-3xl font-semibold text-amber-400 mb-16 tracking-wide">
+      <Page.Header className="relative text-center text-3xl text-pineapple mb-16 tracking-wide">
         Gold Exhibitors
-      </h2>
+      </Page.Header>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-6 sm:px-10">
-        <Carousel
-          setApi={setApi}
-          plugins={[plugin.current]}
-          opts={{
-            align: "center",
-            loop: true,
-          }}
-          className="w-full select-none"
-        >
-          <CarouselContent>
-            {visibleExhibitors.map((ex, index) => (
-              <CarouselItem key={index} className="basis-full">
-                <ExhibitorCard exhibitor={ex} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious variant={"ghost"} />
-          <CarouselNext variant={"ghost"} />
-        </Carousel>
-
-        {/* dot navigation */}
-        <div className="flex justify-center mt-8 gap-2">
-          {scrollSnaps.map((_, idx) => (
-            <button
-              key={idx}
-              aria-label={`Go to slide ${idx + 1}`}
-              aria-current={idx === selectedIndex}
-              onClick={() => api?.scrollTo(idx)}
-              className={`h-3 w-3 rounded-full transition ${idx === selectedIndex
-                ? "bg-amber-400 scale-110"
-                : "bg-amber-200/30 hover:bg-amber-200/60"
-                }`}
-            />
+      <Carousel
+        setApi={setApi}
+        plugins={[plugin.current]}
+        opts={{
+          align: "center",
+          loop: true,
+        }}
+        className="w-full select-none"
+      >
+        <CarouselContent>
+          {visibleExhibitors.map((ex, index) => (
+            <CarouselItem key={index} className="mb-1">
+              <ExhibitorCard exhibitor={ex} />
+            </CarouselItem>
           ))}
-        </div>
+        </CarouselContent>
+        <CarouselPrevious size="icon" className="bg-snow hidden sm:flex" />
+        <CarouselNext size="icon" className="bg-snow hidden sm:flex" />
+      </Carousel>
+
+      {/* dot navigation */}
+      <div className="flex justify-center mt-8 gap-2">
+        {scrollSnaps.map((_, idx) => (
+          <button
+            key={idx}
+            aria-label={`Go to slide ${idx + 1}`}
+            aria-current={idx === selectedIndex}
+            onClick={() => api?.scrollTo(idx)}
+            className={`h-3 w-3 rounded-full transition ${idx === selectedIndex
+              ? "bg-pineapple scale-110"
+              : "bg-pineapple/30 hover:bg-pineapple/60"
+              }`}
+          />
+        ))}
       </div>
     </section>
   );
@@ -119,14 +117,12 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
     : about.slice(0, maxLength) + (isLong ? "..." : "");
 
   return (
-    <div
+    <Card
       className="
         flex flex-col items-center text-center
-        bg-amber-400 rounded-xl p-8 sm:p-10
-        shadow-[0_0_35px_rgba(255,215,0,0.25)]
-        hover:shadow-[0_0_45px_rgba(255,215,0,0.4)]
+        bg-pineapple rounded p-8 sm:p-10
         transition
-        h-full
+        h-full mr-1
       "
     >
       {exhibitor.logoFreesize && (
@@ -136,7 +132,7 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
             alt={`${exhibitor.name} logo`}
             width={200}
             height={90}
-            className="h-20 object-contain drop-shadow-[0_0_25px_rgba(255,215,0,0.6)]"
+            className="h-20 object-contain"
           />
         </div>
       )}
@@ -168,6 +164,6 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
           {expanded ? "Read less" : "Read more"}
         </button>
       )}
-    </div>
+    </Card>
   );
 }

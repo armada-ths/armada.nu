@@ -120,7 +120,7 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
       sm:w-(--radix-popover-trigger-width)
       max-w-[95vw]
       "
-        className="w-full bg-black! text-white!  hover:bg-gray-800!"
+        className="w-full bg-licorice text-white!  hover:bg-gray-800!"
       />
 
       <MultiSelect
@@ -133,7 +133,7 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
             sm:w-(--radix-popover-trigger-width)
             max-w-[95vw]
           "
-        className="w-full bg-black! text-white!  hover:bg-gray-800!"
+        className="w-full bg-licorice text-white!  hover:bg-gray-800!"
       />
 
 
@@ -146,7 +146,7 @@ export default function ExhibitorFilterItem({ exhibitors, employments, industrie
             w-(--radix-popover-trigger-width) 
             min-w-full
           "
-        className="w-full bg-black! text-white!  hover:bg-gray-800!"
+        className="w-full bg-licorice text-white!  hover:bg-gray-800!"
       />
     </div>)
 }

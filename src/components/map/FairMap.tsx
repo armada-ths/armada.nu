@@ -237,14 +237,24 @@ export default function FairMap({
           setModalOpen(false);
           setActiveExhibitor(null);
         }}
-        className="max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-900 to-stone-900 p-0"
-      >
-        {activeExhibitor && (
-          <div className="p-4 sm:p-10">
+        className={`
+          ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""}
+          ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""}
+          ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-melon-700" : ""}
+         border-licorice min-w-[80vw] p-0
+        `}>
+        <div className={`
+          ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""}
+          ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""}
+          ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-melon-700" : ""}
+          p-4 sm:p-10 border-licorice border-solid 
+        `}>
+          {activeExhibitor && (
             <ExhibitorDetails exhibitor={activeExhibitor} />
-          </div>
-        )}
+          )}
+
+        </div>
       </Modal>
-    </div>
+    </div >
   );
 }

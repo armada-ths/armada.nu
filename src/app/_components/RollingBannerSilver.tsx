@@ -56,7 +56,7 @@ export default function RollingBanner({ logos }: RollingBannerProps) {
       className="
         relative left-1/2 right-1/2 -mx-[50vw]
         w-screen max-w-none
-        overflow-x-hidden overflow-y-visible py-12
+        overflow-y-visible py-12
       "
     >
       <h2 className="text-center text-2xl font-semibold text-gray-700 mb-8">

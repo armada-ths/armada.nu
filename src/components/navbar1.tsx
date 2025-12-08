@@ -124,7 +124,7 @@ const Navbar1 = ({
   ]
 }: Navbar1Props) => {
   return (
-    <section className="py-4 bg-stone-950/90 backdrop-blur-lg">
+    <section className="py-4 bg-melon-700 border-b-2 border-licorice">
       {/* Desktop Menu */}
       <div className="container">
 
@@ -136,15 +136,15 @@ const Navbar1 = ({
               <a href={logo.url} className="flex items-center gap-2">
                 <img src={logo.src} className="max-h-8" alt={logo.alt} />
                 <div className="flex mt-2 gap-1">
-                  <span className="text-3xl font-bebas-book">THS</span>
-                  <span className="text-3xl font-bebas-bold">ARMADA</span>
+                  <span className="text-3xl font-bebas-book text-snow">THS</span>
+                  <span className="text-3xl font-bebas-bold text-snow">ARMADA</span>
                 </div>
               </a>
             </div>
 
             {/* CENTER — Navigation */}
-            <div className="justify-center">
-              <NavigationMenu >
+            <div className="justify-center rounded-md">
+              <NavigationMenu className="rounded-md border-none">
                 <NavigationMenuList className="flex-wrap">
                   {menu.map((item) => renderMenuItem(item))}
                 </NavigationMenuList>
@@ -168,27 +168,27 @@ const Navbar1 = ({
                 alt={logo.alt}
               />
               <div className="flex mt-2 gap-1">
-                <span className="text-3xl font-bebas-book">
+                <span className="text-3xl font-bebas-book text-snow">
                   THS
                 </span>
-                <span className="text-3xl font-bebas-bold">
+                <span className="text-3xl font-bebas-bold text-snow">
                   ARMADA
                 </span>
               </div>
             </a>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
+                <Button variant="neutral" size="icon" className="border-licorice">
                   <Menu className="size-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
+              <SheetContent className="overflow-y-auto bg-coconut">
                 <SheetHeader>
                   <SheetTitle>
                     <a href={logo.url} className="flex items-center gap-2 w-fit">
                       <img
                         src={logo.src}
-                        className="max-h-8"
+                        className="max-h-8 invert"
                         alt={logo.alt}
                       />
                       <div className="flex mt-2 gap-1">
@@ -224,8 +224,8 @@ const renderMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-        <NavigationMenuContent className="text-stone-50">
+        <NavigationMenuTrigger className="rounded-md">{item.title}</NavigationMenuTrigger>
+        <NavigationMenuContent className="bg-snow">
           {item.items.map((subItem) => (
             <NavigationMenuLink asChild key={subItem.title} className="w-80">
               <SubMenuLink item={subItem} />
@@ -240,7 +240,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors bg-stone-950 hover:bg-stone-800 hover:text-stone-50"
+        className="group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium"
       >
         {item.title}
       </NavigationMenuLink>
@@ -251,11 +251,11 @@ const renderMenuItem = (item: MenuItem) => {
 const renderMobileMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
-      <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="text-md py-0 font-semibold hover:no-underline">
+      <AccordionItem key={item.title} value={item.title} className="rounded-md">
+        <AccordionTrigger className="text-md py-4 font-semibold hover:no-underline">
           {item.title}
         </AccordionTrigger>
-        <AccordionContent className="mt-2">
+        <AccordionContent>
           {item.items.map((subItem) => (
             <SubMenuLink key={subItem.title} item={subItem} />
           ))}
@@ -275,15 +275,14 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
       className="
-        hover:bg-stone-100 hover:text-stone-900
-        flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-hidden
-        transition-colors dark:hover:bg-stone-800 dark:hover:text-stone-50
-        max-w-80 sm:min-w-80"
+        rounded-base flex select-none flex-row gap-4 p-3 leading-none no-underline outline-hidden
+        transition-colors hover:border-2 border-licorice
+        max-w-fit sm:min-w-80"
       href={item.url}
     >
-      <div className="text-stone-50">{item.icon}</div>
+      <div className="text-licorice">{item.icon}</div>
       <div>
-        <div className="text-sm font-semibold">{item.title}</div>
+        <div className="text-licorice font-semibold ">{item.title}</div>
         {item.description && (
           <p className="text-stone-500 text-sm leading-snug dark:text-stone-400">
             {item.description}

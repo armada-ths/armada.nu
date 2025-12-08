@@ -863,7 +863,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               screenSize === "tablet" && "max-w-[160px] truncate",
                               screenSize === "desktop" && "max-w-[200px] truncate",
                               singleLine && "shrink-0 whitespace-nowrap",
-                              "[&>svg]:pointer-events-auto"
+                              "[&>svg]:pointer-events-auto",
+                              "bg-snow"
                             )}
                             style={{
                               ...badgeStyle,
@@ -934,7 +935,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           responsiveSettings.compactMode &&
                           "text-xs px-1.5 py-0.5",
                           singleLine && "shrink-0 whitespace-nowrap",
-                          "[&>svg]:pointer-events-auto"
+                          "[&>svg]:pointer-events-auto",
+                          "bg-snow"
                         )}
                         style={{
                           animationDuration: `${animationConfig?.duration || animation
@@ -1018,7 +1020,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             }}
             align="start"
             onEscapeKeyDown={() => setIsPopoverOpen(false)}>
-            <Command>
+            <Command className="bg-snow">
               {searchable && (
                 <CommandInput
                   placeholder="Search options..."

@@ -43,7 +43,7 @@ export default function OrderItem({
         <Button
           type="button"
           size="icon"
-          variant="outline"
+          variant="noShadow"
           onClick={onDecrease}
           disabled={!canDecrease}
           className="w-16"
@@ -61,7 +61,7 @@ export default function OrderItem({
         <Button
           type="button"
           size="icon"
-          variant="outline"
+          variant="noShadow"
           className="w-16"
           onClick={onIncrease}
           disabled={!canIncrease}

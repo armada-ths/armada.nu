@@ -1,5 +1,6 @@
 "use client";
 
+import { Card } from '@/components/ui/card';
 import L from 'leaflet';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
@@ -17,8 +18,8 @@ const MapWithMarker = () => {
   ];
 
   return (
-    <div className="z-10 md:w-1/2 w-full mx-auto border-4 border-melon-700 rounded-xl shadow-lg">
-      <MapContainer center={[59.3485, 18.0715]} zoom={16} className="w-full h-[350px]">
+    <Card className="p-0 z-10 md:w-1/2 w-full mx-auto shadow-lg rounded-md border-melon-700">
+      <MapContainer center={[59.3485, 18.0715]} zoom={16} className="w-full h-[350px] rounded-md">
         <TileLayer
           attribution='&copy; OpenStreetMap contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -29,7 +30,7 @@ const MapWithMarker = () => {
           </Marker>
         ))}
       </MapContainer>
-    </div>
+    </Card>
   );
 };
 
