@@ -36,12 +36,12 @@ export default async function HomePage() {
             description={"The No. 1 career fair at KTH Royal Institute of Technology"}
             buttons={{
               primary: {
-                text: "View the map",
-                url: "/student/map"
+                text: "Apply to Armada",
+                url: "/student/recruitment"
               },
               secondary: {
-                text: "Exhibitors at the fair",
-                url: "/student/exhibitors"
+                text: "About Armada",
+                url: "/about"
               }
             }} />
 
@@ -143,7 +143,7 @@ export default async function HomePage() {
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
                 <Link href="https://app.eventro.se/register/armada">
-                  <Button className="bg-grapefruit">Exhibitor Signup</Button>
+                  <Button className="bg-grapefruit text-snow">Exhibitor Signup</Button>
                 </Link>
                 <Link href="/exhibitor/packages">
                   <Button variant="neutral">
@@ -160,7 +160,7 @@ export default async function HomePage() {
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
                 <Link href="/student/recruitment">
-                  <Button className="bg-grapefruit">Join Us!</Button>
+                  <Button className="bg-grapefruit text-snow">Join Us!</Button>
                 </Link>
               </div>
             </Card>

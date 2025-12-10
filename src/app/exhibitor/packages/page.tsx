@@ -57,14 +57,14 @@ export default async function Packages() {
                 <li className="my-2">700 W of Electricity</li>
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
-              <div className="absolute bottom-4">
+              {/* <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
                   Priority registration price:
                 </p>
                 <p>43 300 SEK*</p>
                 <p className="text-sm">Standard registration price:</p>
                 <p>46 500 SEK*</p>
-              </div>
+              </div> */}
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
             </Card>
             <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-gray-400 p-5 pb-32">
@@ -89,14 +89,14 @@ export default async function Packages() {
                 <li className="my-2">1200 W of Electricity</li>
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
-              <div className="absolute bottom-4">
+              {/* <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
                   Priority Registration price:
                 </p>
                 <p>68 900 SEK*</p>
                 <p className="text-sm">Standard registration price:</p>
                 <p>75 800 SEK*</p>
-              </div>
+              </div> */}
               {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
             </Card>
             <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-pineapple p-5 pb-32">
@@ -130,19 +130,19 @@ export default async function Packages() {
                 <li className="my-2">2300 W of Electricity</li>
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
-              <div className="absolute bottom-4">
+              {/* <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
                   Priority Registration price:
                 </p>
                 <p>107 500 SEK*</p>
                 <p className="text-sm">Standard registration price:</p>
                 <p>118 200 SEK*</p>
-              </div>
+              </div> */}
               {/* 							<p className="absolute bottom-4">108 500 SEK*</p> */}
             </Card>
           </div>
         </div>
-        <p className="mt-4 text-sm">*All prices are ex. VAT. </p>
+        {/* <p className="mt-4 text-sm">*All prices are ex. VAT. </p> */}
         <div className="mx-auto mt-10 w-full max-w-[600px]">
           <h1 className="mb-2 ml-2 text-2xl">FAQ</h1>
           <Accordion type="single" collapsible className="space-y-6">
@@ -194,7 +194,7 @@ export default async function Packages() {
                 <p>You can sign up here:</p>
                 <div className="my-4">
                   <Link href="https://app.eventro.se/register/armada">
-                    <Button className="bg-grapefruit">Signup to Armada</Button>
+                    <Button className="bg-grapefruit text-snow">Signup to Armada</Button>
                   </Link>
                 </div>
                 <p>

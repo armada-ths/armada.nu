@@ -45,7 +45,7 @@ const Hero1 = ({
             </p>
             <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
               {buttons.primary && (
-                <Button asChild className="w-full sm:w-auto bg-grapefruit">
+                <Button asChild className="w-full sm:w-auto bg-grapefruit text-snow">
                   <a href={buttons.primary.url}>{buttons.primary.text}</a>
                 </Button>
               )}
@@ -108,8 +108,8 @@ const Hero1 = ({
               </P>
             </div>
           </Card>
-        </div>
-      </div>
+        </div >
+      </div >
     </section >
   );
 };

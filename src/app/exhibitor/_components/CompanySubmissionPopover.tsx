@@ -174,7 +174,7 @@ export function CompanySubmissionPopover() {
 
               <div className="flex justify-end">
                 <Button
-                  className="mt-2 bg-grapefruit"
+                  className="mt-2 bg-grapefruit text-snow"
                   onClick={sendMessage}
                   disabled={!formFilled}>
                   Send
