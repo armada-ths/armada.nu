@@ -1,8 +1,11 @@
-import { P } from "@/app/_components/Paragraph"
+import { FAQSection } from "@/app/student/recruitment/_components/FAQSection"
+import { Profile } from "@/app/student/recruitment/_components/Profile"
+import { RecruitmentDescription } from "@/app/student/recruitment/_components/RecruitmentDescription"
+import { Testimonial } from "@/app/student/recruitment/_components/Testimonial"
 import { Page } from "@/components/shared/Page"
+import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { Button } from "@/components/ui/button"
-import { DateTime } from "luxon"
 import { Metadata } from "next"
 import Link from "next/link"
 export const metadata: Metadata = {
@@ -17,20 +20,22 @@ export default async function RecruitmentPage() {
     }
   })
 
-  // const organization = await fetchOrganization({
-  //   next: {
-  //     revalidate: 3600 * 24 * 6 // 6 days (S3 caches the images for 7 days exactly, we want to revalidate before that, otherwise the images will not be loaded)
-  //   }
-  // })
+  const organization = await fetchOrganization({
+    next: {
+      revalidate: 3600 * 24 * 6 // 6 days (S3 caches the images for 7 days exactly, we want to revalidate before that, otherwise the images will not be loaded)
+    }
+  })
 
-  // const group = organization.find(group =>
-  //   group.name.includes("Marketing & Communications")
-  // )
+  const group = organization.find(group =>
+    group.name.includes("Project Manager")
+  )
 
-  const hrHead = {
-    name: "Head of HR",
-    email: "agastheeswar.bommaraj@armada.nu"
-  }
+  const profile = group?.people[0]
+
+  // const hrHead = {
+  //   name: "Head of HR",
+  //   email: ""
+  // }
 
   const photoSrc: { source: string; altText: string }[] = [
     {
@@ -114,17 +119,32 @@ export default async function RecruitmentPage() {
     <Page.Background withIndents>
       <Page.Boundary maxWidth={750}>
         <Page.Header>{data.name}</Page.Header>
-        <div className="mb-32 flex flex-1 flex-col">
-          <Page.Header tier="secondary">
-            Open{" "}
-            {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
+        <div className="mt-8 mb-32 flex flex-1 flex-col">
+          {/* <Page.Header tier="secondary">
+            Open {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
             {DateTime.fromISO(data.end_date).toFormat("d MMM")}
-          </Page.Header>
-          <div className="m-8 flex justify-center">
-            <Link href={`${data.link}`}>
-              <Button size={"lg"} className="bg-grapefruit text-snow">Apply to Armada!</Button>
-            </Link>
+          </Page.Header> */}
+          {profile && <Profile profile={profile} />}
+          <div className="mt-8 hidden justify-center sm:flex">
+            <Button
+              asChild
+              size="lg"
+              className="bg-grapefruit text-snow">
+              <Link href={data.link}>Apply to Armada!</Link>
+            </Button>
           </div>
+          <RecruitmentDescription />
+          <Testimonial />
+          <div className="sticky inset-x-4 bottom-8 z-20 mt-12 flex justify-center sm:hidden">
+            <Button
+              asChild
+              variant="noShadow"
+              size="lg"
+              className="bg-grapefruit text-snow w-full max-w-[70vw]">
+              <Link href={data.link}>Apply to Armada!</Link>
+            </Button>
+          </div>
+          <FAQSection />
           {/* <Alert className="my-5">
             <AlertTitle>Be an Armada volunteer</AlertTitle>
             <AlertDescription>
@@ -134,7 +154,7 @@ export default async function RecruitmentPage() {
               really proud of!
             </AlertDescription>
           </Alert> */}
-          <div>
+          {/* <div>
             <P className="mt-4">
               Armada is a rapidly growing organization that goes from 1 person
               to over 200 each year. Now you have the chance to be part of this
@@ -166,7 +186,7 @@ export default async function RecruitmentPage() {
               )}
               .
             </P>
-          </div>
+          </div> */}
           {/* <div className="flex-1">
             <Accordion type="single" collapsible>
               {Object.entries(data.groups).map(([name, group], index) => (

@@ -1,25 +1,25 @@
-"use client";
+"use client"
 
-import ExhibitorFilterItem from "@/app/student/exhibitors/_components/ExhibitorFilterItem";
+import ExhibitorFilterItem from "@/app/student/exhibitors/_components/ExhibitorFilterItem"
 import {
   Employment,
   Exhibitor,
   Industry,
-  Program,
-} from "@/components/shared/hooks/api/useExhibitors";
-import { cn } from "@/lib/utils";
-import React from "react";
+  Program
+} from "@/components/shared/hooks/api/useExhibitors"
+import { cn } from "@/lib/utils"
+import React from "react"
 
 interface FilterOverlayProps {
-  isOpen: boolean;
-  onClose: () => void;
-  headerHeight?: string;
-  exhibitors: Exhibitor[];
-  employments: Employment[];
-  industries: Industry[];
-  programs: Program[];
-  searchQueryName: string;
-  onFilterChange?: (filtered: Exhibitor[]) => void;
+  isOpen: boolean
+  onClose: () => void
+  headerHeight?: string
+  exhibitors: Exhibitor[]
+  employments: Employment[]
+  industries: Industry[]
+  programs: Program[]
+  searchQueryName: string
+  onFilterChange?: (filtered: Exhibitor[]) => void
 }
 
 export const FilterOverlay: React.FC<FilterOverlayProps> = ({
@@ -31,51 +31,48 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
   industries,
   programs,
   searchQueryName,
-  onFilterChange,
+  onFilterChange
 }) => {
   React.useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = "";
+      document.body.style.overflow = ""
     }
     return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+      document.body.style.overflow = ""
+    }
+  }, [isOpen])
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
+    <div className="pointer-events-none fixed inset-0 z-50">
       {/* ✅ BACKDROP — fades in/out, only clickable when open */}
       <div
         className={cn(
           "fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ease-out",
           isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         )}
         onClick={onClose}
         aria-hidden={!isOpen}
       />
 
-
       {/* ✅ PANEL — slides independently and clickable only when open */}
       <div
         className={cn(
-          "absolute right-0 w-full h-full md:w-[420px] md:h-auto",
-          "bg-background/95 backdrop-blur-lg sm:border-l flex flex-col shadow-xl",
-          "transition-transform duration-300 ease-out pointer-events-auto",
+          "absolute right-0 h-full w-full md:h-auto md:w-[420px]",
+          "bg-background/95 flex flex-col shadow-xl backdrop-blur-lg sm:border-l",
+          "pointer-events-auto transition-transform duration-300 ease-out",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
         style={{ top: headerHeight, bottom: 0 }}
-        onClick={(e) => e.stopPropagation()}
-      >
+        onClick={e => e.stopPropagation()}>
         <div className="grow overflow-y-auto pb-24">
-          <div className="flex justify-center py-2 mt-2">
+          <div className="mt-2 flex justify-center py-2">
             <button
-              className="w-[92%] bg-licorice text-white py-3 font-medium tracking-widest hover:bg-gray-800 rounded-md transition duration-150 border border-white"
-              onClick={onClose}
-            >
+              className="bg-licorice w-[92%] rounded-md border border-white py-3 font-medium tracking-widest text-white transition duration-150 hover:bg-gray-800"
+              onClick={onClose}>
               CLOSE
             </button>
           </div>
@@ -91,7 +88,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FilterOverlay;
+export default FilterOverlay

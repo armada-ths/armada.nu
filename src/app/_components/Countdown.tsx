@@ -35,13 +35,13 @@ export function Countdown() {
         role="heading"
         aria-level={2}
         aria-label="fair-date"
-        className="font-bebas-neue text-3xl text-melon-700">
+        className="font-bebas-neue text-melon-700 text-3xl">
         {DateTime.fromISO(startDate).toFormat("d")}-
         {DateTime.fromISO(endDate).toFormat(
           `d MMM${DateTime.fromISO(endDate).year !== DateTime.now().year ? " yyyy" : ""}`
         )}
       </p>
-      <div className="text-licorice-700 flex gap-x-4 font-bebas-neue text-lg opacity-70 md:text-xl">
+      <div className="text-licorice-700 font-bebas-neue flex gap-x-4 text-lg opacity-70 md:text-xl">
         <div>
           <h3>Days</h3>
           <p>{duration.days}</p>

@@ -1,7 +1,12 @@
-import ExhibitorSearch from "@/app/student/exhibitors/_components/ExhibitorSearch";
-import { fetchEmployments, fetchExhibitors, fetchIndustries, fetchPrograms } from "@/components/shared/hooks/api/useExhibitors";
-import { Page } from "@/components/shared/Page";
-import { Suspense } from "react";
+import ExhibitorSearch from "@/app/student/exhibitors/_components/ExhibitorSearch"
+import {
+  fetchEmployments,
+  fetchExhibitors,
+  fetchIndustries,
+  fetchPrograms
+} from "@/components/shared/hooks/api/useExhibitors"
+import { Page } from "@/components/shared/Page"
+import { Suspense } from "react"
 
 export default async function ExhibitorsPage() {
   const exhibitors = await fetchExhibitors({
@@ -24,7 +29,12 @@ export default async function ExhibitorsPage() {
       <Page.Boundary>
         <Page.Header>Companies at the Fair</Page.Header>
         <Suspense>
-          <ExhibitorSearch exhibitors={exhibitors} employments={employments} industries={industries} programs={programs} />
+          <ExhibitorSearch
+            exhibitors={exhibitors}
+            employments={employments}
+            industries={industries}
+            programs={programs}
+          />
         </Suspense>
       </Page.Boundary>
     </Page.Background>

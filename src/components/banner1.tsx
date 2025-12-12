@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { X } from "lucide-react";
-import { useState } from "react";
+import { X } from "lucide-react"
+import { useState } from "react"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
 interface Banner1Props {
-  title: string;
-  description: string;
-  linkText: string;
-  linkUrl: string;
-  defaultVisible?: boolean;
+  title: string
+  description: string
+  linkText: string
+  linkUrl: string
+  defaultVisible?: boolean
 }
 
 const Banner1 = ({
@@ -18,29 +18,29 @@ const Banner1 = ({
   description = "Read the full release notes",
   linkText = "here",
   linkUrl = "#",
-  defaultVisible = true,
+  defaultVisible = true
 }: Banner1Props) => {
-  const [isVisible, setIsVisible] = useState(defaultVisible);
+  const [isVisible, setIsVisible] = useState(defaultVisible)
 
   const handleClose = () => {
-    setIsVisible(false);
-  };
+    setIsVisible(false)
+  }
 
-  if (!isVisible) return null;
+  if (!isVisible) return null
 
   return (
-    <section className="-mt-1 w-full px-4 py-3 bg-grapefruit border-b border-licorice">
+    <section className="bg-grapefruit border-licorice -mt-1 w-full border-b px-4 py-3">
       <div className="flex items-center justify-between gap-2">
         <div className="flex-1 text-center">
           <span className="text-sm">
-            <span className="font-medium">{title}</span>{""}
+            <span className="font-medium">{title}</span>
+            {""}
             <span className="text-snow">
-              {description}{""}
+              {description}
+              {""}
               <a
                 href={linkUrl}
-                className="underline underline-offset-2 hover:text-stone-50"
-                target="_blank"
-              >
+                className="underline underline-offset-2 hover:text-stone-50">
                 {linkText}
               </a>
               .
@@ -51,14 +51,13 @@ const Banner1 = ({
         <Button
           variant="noShadow"
           size="icon"
-          className="-mr-2 h-8 w-8 flex-none bg-snow"
-          onClick={handleClose}
-        >
+          className="bg-snow -mr-2 h-8 w-8 flex-none"
+          onClick={handleClose}>
           <X className="h-4 w-4" />
         </Button>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export { Banner1 };
+export { Banner1 }

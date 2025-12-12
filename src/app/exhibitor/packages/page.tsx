@@ -43,9 +43,9 @@ export default async function Packages() {
         </div>
         <div className="mt-10 flex flex-col">
           <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row">
-            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-melon-700 p-5 pb-32">
-              <h3 className="font-lato text-2xl ">Bronze</h3>
-              <ul className="mt-2 font-lato">
+            <Card className="bg-melon-700 relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
+              <h3 className="font-lato text-2xl">Bronze</h3>
+              <ul className="font-lato mt-2">
                 <li className="my-2 font-extrabold">
                   2x3 sqm, carpeted exhibitor space
                 </li>
@@ -69,7 +69,7 @@ export default async function Packages() {
             </Card>
             <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-gray-400 p-5 pb-32">
               <h3 className="font-lato text-2xl">Silver</h3>
-              <ul className="mt-2 font-lato">
+              <ul className="font-lato mt-2">
                 <li className="my-2 font-extrabold">
                   2x4 sqm, carpeted exhibitor space
                 </li>
@@ -99,9 +99,9 @@ export default async function Packages() {
               </div> */}
               {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
             </Card>
-            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-pineapple p-5 pb-32">
-              <h3 className="font-lato text-2xl text-licorice">Gold</h3>
-              <ul className="mt-2 font-lato text-licorice">
+            <Card className="bg-pineapple relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
+              <h3 className="font-lato text-licorice text-2xl">Gold</h3>
+              <ul className="font-lato text-licorice mt-2">
                 <li className="my-2 font-extrabold">
                   2x5 sqm booth, carpeted exhibitor space
                 </li>
@@ -153,13 +153,13 @@ export default async function Packages() {
               </AccordionTrigger>
               <AccordionContent>
                 <p>
-                  Priority placement means that we will place you in spots on the fair
-                  where there is good footfall. Gold exhibitors take the best spots
-                  and silver exhibitors are prioritized next. Contact{" "}
+                  Priority placement means that we will place you in spots on
+                  the fair where there is good footfall. Gold exhibitors take
+                  the best spots and silver exhibitors are prioritized next.
+                  Contact{" "}
                   <Link
                     className="underline hover:no-underline"
-                    href="mailto:sales@armada.nu"
-                  >
+                    href="mailto:sales@armada.nu">
                     sales@armada.nu
                   </Link>{" "}
                   for more information.
@@ -173,12 +173,11 @@ export default async function Packages() {
               </AccordionTrigger>
               <AccordionContent>
                 <p>
-                  The Priority Registration ends {formatDate("2025-05-23")}.
-                  See our{" "}
+                  The Priority Registration ends {formatDate("2025-05-23")}. See
+                  our{" "}
                   <Link
                     className="underline hover:no-underline"
-                    href="/exhibitor/timeline"
-                  >
+                    href="/exhibitor/timeline">
                     timeline
                   </Link>{" "}
                   for more information and other important dates.
@@ -187,22 +186,21 @@ export default async function Packages() {
             </AccordionItem>
             {/* FAQ 3 */}
             <AccordionItem value="faq-3">
-              <AccordionTrigger>
-                How do I sign up for Armada?
-              </AccordionTrigger>
+              <AccordionTrigger>How do I sign up for Armada?</AccordionTrigger>
               <AccordionContent>
                 <p>You can sign up here:</p>
                 <div className="my-4">
                   <Link href="https://app.eventro.se/register/armada">
-                    <Button className="bg-grapefruit text-snow">Signup to Armada</Button>
+                    <Button className="bg-grapefruit text-snow">
+                      Signup to Armada
+                    </Button>
                   </Link>
                 </div>
                 <p>
                   If you have any questions, you can contact us at{" "}
                   <Link
                     className="underline hover:no-underline"
-                    href="mailto:sales@armada.nu"
-                  >
+                    href="mailto:sales@armada.nu">
                     sales@armada.nu
                   </Link>
                   .
@@ -212,6 +210,6 @@ export default async function Packages() {
           </Accordion>
         </div>
       </Page.Boundary>
-    </Page.Background >
+    </Page.Background>
   )
 }

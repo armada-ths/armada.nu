@@ -18,10 +18,12 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
     initialLeft.minutes === 0 &&
     initialLeft.seconds === 0
 
-  const [animationStage, setAnimationStage] = useState<'counting' | 'final-countdown' | 'celebration'>(
-    initialIsOver ? 'final-countdown' : 'counting'
+  const [animationStage, setAnimationStage] = useState<
+    "counting" | "final-countdown" | "celebration"
+  >(initialIsOver ? "final-countdown" : "counting")
+  const [finalCountdown, setFinalCountdown] = useState(
+    FINAL_COUNTDOWN_START_SECONDS
   )
-  const [finalCountdown, setFinalCountdown] = useState(FINAL_COUNTDOWN_START_SECONDS)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -37,13 +39,13 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
     timeLeft.seconds === 0
 
   useEffect(() => {
-    if (isOver && animationStage === 'counting') {
-      setAnimationStage('final-countdown')
+    if (isOver && animationStage === "counting") {
+      setAnimationStage("final-countdown")
     }
   }, [isOver, animationStage])
 
   useEffect(() => {
-    if (animationStage === 'final-countdown') {
+    if (animationStage === "final-countdown") {
       const startSeconds = FINAL_COUNTDOWN_START_SECONDS
       const totalDurationMs = FINAL_COUNTDOWN_DURATION
       const startTime = Date.now()
@@ -54,12 +56,15 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
         if (elapsed >= totalDurationMs) {
           setFinalCountdown(0)
           clearInterval(countdownInterval)
-          setAnimationStage('celebration')
+          setAnimationStage("celebration")
           return
         }
 
         const progress = elapsed / totalDurationMs
-        const remaining = Math.max(0, startSeconds - Math.floor(progress * startSeconds))
+        const remaining = Math.max(
+          0,
+          startSeconds - Math.floor(progress * startSeconds)
+        )
         setFinalCountdown(remaining)
       }, 30)
 
@@ -68,14 +73,14 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
   }, [animationStage])
 
   return (
-    <div className="w-full flex-1 rounded-sm pb-2 text-2xl font-medium text-center overflow-visible relative">
-      {animationStage === 'celebration' && <ConfettiBurst />}
-      {animationStage === 'final-countdown' ? (
+    <div className="relative w-full flex-1 overflow-visible rounded-sm pb-2 text-center text-2xl font-medium">
+      {animationStage === "celebration" && <ConfettiBurst />}
+      {animationStage === "final-countdown" ? (
         <FinalCountdown count={finalCountdown} />
-      ) : animationStage === 'celebration' ? (
+      ) : animationStage === "celebration" ? (
         <Celebration />
       ) : isOver ? (
-        <p className="p-2 text-3xl font-bold text-melon-700 animate-pulse">
+        <p className="text-melon-700 animate-pulse p-2 text-3xl font-bold">
           The Armada Fair is Live!
         </p>
       ) : (
@@ -123,9 +128,7 @@ function Celebration() {
   return (
     <div className="relative animate-[scale_1.5s_ease-in-out_1,subtlePulse_2s_ease-in-out_1.5s_infinite]">
       <div className="relative z-10">
-        <p className="p-2 text-3xl font-bold">
-          THE FAIR IS LIVE!
-        </p>
+        <p className="p-2 text-3xl font-bold">THE FAIR IS LIVE!</p>
         <div className="flex justify-center">
           <TimeBox value={0} label="Days" />
           <TimeBox value={0} label="Hours" />
@@ -136,7 +139,8 @@ function Celebration() {
 
       <style jsx>{`
         @keyframes scale {
-          0%, 100% {
+          0%,
+          100% {
             transform: scale(1);
           }
           50% {
@@ -144,7 +148,8 @@ function Celebration() {
           }
         }
         @keyframes subtlePulse {
-          0%, 100% {
+          0%,
+          100% {
             opacity: 1;
           }
           50% {
@@ -156,18 +161,27 @@ function Celebration() {
   )
 }
 
-const CONFETTI_COLORS = ['#00d790', '#00d790', '#e73953', '#2d2d2c', '#00d790', '#6b7280', '#e73953', '#00d790']
+const CONFETTI_COLORS = [
+  "#00d790",
+  "#00d790",
+  "#e73953",
+  "#2d2d2c",
+  "#00d790",
+  "#6b7280",
+  "#e73953",
+  "#00d790"
+]
 const CONFETTI_COUNT = 30
 
 function ConfettiBurst() {
-
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] h-[300px] pointer-events-none z-9999 overflow-visible">
+    <div className="pointer-events-none absolute top-1/2 left-1/2 z-9999 h-[300px] w-full max-w-[400px] -translate-x-1/2 -translate-y-1/2 overflow-visible">
       {Array.from({ length: CONFETTI_COUNT }).map((_, i) => {
         const angle = (i / CONFETTI_COUNT) * 360
         const horizontalDistance = 240 + Math.random() * 60
         const verticalDistance = 100 + Math.random() * 40
-        const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]
+        const color =
+          CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]
         const size = 4 + Math.random() * 4
         const duration = 0.8 + Math.random() * 0.4
 
@@ -175,15 +189,21 @@ function ConfettiBurst() {
           <div
             key={i}
             className="absolute top-1/2 left-1/2 rounded-full"
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              backgroundColor: color,
-              animation: `confettiBurst ${duration}s ease-out forwards`,
-              '--angle': `${angle}deg`,
-              '--h-distance': `${horizontalDistance}px`,
-              '--v-distance': `${verticalDistance}px`,
-            } as React.CSSProperties & { '--angle': string; '--h-distance': string; '--v-distance': string }}
+            style={
+              {
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: color,
+                animation: `confettiBurst ${duration}s ease-out forwards`,
+                "--angle": `${angle}deg`,
+                "--h-distance": `${horizontalDistance}px`,
+                "--v-distance": `${verticalDistance}px`
+              } as React.CSSProperties & {
+                "--angle": string
+                "--h-distance": string
+                "--v-distance": string
+              }
+            }
           />
         )
       })}

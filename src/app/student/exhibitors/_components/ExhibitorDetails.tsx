@@ -11,7 +11,11 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }) {
+export default function ExhibitorDetails({
+  exhibitor
+}: {
+  exhibitor: Exhibitor
+}) {
   const hasIndustries = (exhibitor.industries ?? []).length > 0
   const hasEmployments = (exhibitor.employments ?? []).length > 0
   const hasPrograms = (exhibitor.programs ?? []).length > 0
@@ -31,7 +35,7 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
       <div className="flex flex-col-reverse items-center gap-6 sm:h-[100px] sm:flex-row">
         {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
           <Image
-            className="h-20 w-auto object-contain sm:h-full sm:min-w-28 sm:max-w-[25%]"
+            className="h-20 w-auto object-contain sm:h-full sm:max-w-[25%] sm:min-w-28"
             src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
             alt={exhibitor.name}
             width={300}
@@ -40,10 +44,7 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
         )}
 
         <div className="flex flex-col items-center sm:ml-2 sm:items-start">
-          <Page.Header className={`
-          text-licorice
-          text-center sm:text-left
-          `}>
+          <Page.Header className={`text-licorice text-center sm:text-left`}>
             {exhibitor.name}
           </Page.Header>
 
@@ -54,15 +55,7 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
                 rel="noopener noreferrer"
                 target="_blank"
                 href={exhibitor.companyWebsite}
-                className="
-                break-all
-                line-clamp-1
-                overflow-hidden
-                transition-colors
-                hover:text-emerald-100/90
-                hover:underline
-                "
-              >
+                className="line-clamp-1 overflow-hidden break-all transition-colors hover:text-emerald-100/90 hover:underline">
                 {exhibitor.companyWebsite.length > 40
                   ? exhibitor.companyWebsite.slice(0, 40) + "..."
                   : exhibitor.companyWebsite}
@@ -73,7 +66,7 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
       </div>
 
       {/* --- ABOUT + MAP --- */}
-      <div className="flex flex-col md:flex-row gap-20 mt-8">
+      <div className="mt-8 flex flex-col gap-20 md:flex-row">
         {exhibitor.about && (
           <div className="flex-1">
             <P className="border-t border-stone-500 pt-4">{exhibitor.about}</P>
@@ -81,9 +74,9 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
         )}
 
         {exhibitor.mapImg && (
-          <div className="shrink-0 flex justify-center">
+          <div className="flex shrink-0 justify-center">
             <Image
-              className="h-80 w-auto object-contain rounded-lg"
+              className="h-80 w-auto rounded-lg object-contain"
               src={exhibitor.mapImg ?? ""}
               alt="Failed to load image"
               width={300}
@@ -96,9 +89,8 @@ export default function ExhibitorDetails({ exhibitor }: { exhibitor: Exhibitor }
       {/* --- INDUSTRIES / EMPLOYMENTS / PROGRAMS --- */}
       <div
         className={cn("mt-10 grid grid-cols-1", {
-          "gap-5 md:grid-cols-2": hasIndustries && hasEmployments,
-        })}
-      >
+          "gap-5 md:grid-cols-2": hasIndustries && hasEmployments
+        })}>
         {hasIndustries && (
           <div>
             <Page.Header tier="secondary" className="mt-2 pl-1">

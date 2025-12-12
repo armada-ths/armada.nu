@@ -15,7 +15,7 @@ export function EventItem({ event }: { event: Event }) {
     name,
     eventStart: event_start,
     registrationEnd: registration_end,
-    imageUrl: image_url,
+    imageUrl: image_url
   } = event
 
   const router = useRouter()
@@ -33,8 +33,7 @@ export function EventItem({ event }: { event: Event }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => router.push("/student/events", { scroll: false })}
-        className="overflow-y-auto max-w-[1000px] bg-linear-to-br from-emerald-950 via-stone-800 to-stone-900 p-0"
-      >
+        className="max-w-[1000px] overflow-y-auto bg-linear-to-br from-emerald-950 via-stone-800 to-stone-900 p-0">
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
 
@@ -44,13 +43,12 @@ export function EventItem({ event }: { event: Event }) {
           href={`/student/events?id=${id}`}
           scroll={false}
           className={cn(
-            "group flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 via-80% to-liqorice-700 transition hover:scale-[1.02] hover:brightness-95",
-            image_url ? "sm:flex-row flex-col" : "flex-col"
-          )}
-        >
+            "group to-liqorice-700 flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 via-80% transition hover:scale-[1.02] hover:brightness-95",
+            image_url ? "flex-col sm:flex-row" : "flex-col"
+          )}>
           {/* Image section */}
           {image_url && (
-            <div className="relative h-32 w-full shrink-0 sm:h-auto sm:w-48 sm:min-h-44">
+            <div className="relative h-32 w-full shrink-0 sm:h-auto sm:min-h-44 sm:w-48">
               <Image
                 src={image_url}
                 alt={name}
@@ -65,9 +63,8 @@ export function EventItem({ event }: { event: Event }) {
           <div
             className={cn(
               "flex flex-1 flex-col justify-center gap-1 p-5 text-center sm:text-left",
-              !image_url && "items-center text-center py-8"
-            )}
-          >
+              !image_url && "items-center py-8 text-center"
+            )}>
             <h5 className="text-xl font-semibold text-white sm:text-2xl">
               {name}
             </h5>

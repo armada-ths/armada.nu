@@ -2,7 +2,11 @@
 import { sendToSlack } from "@/app/exhibitor/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover"
 import { Textarea } from "@/components/ui/textarea"
 import { Headset, X } from "lucide-react"
 import { usePathname } from "next/navigation"
@@ -93,10 +97,8 @@ export function CompanySubmissionPopover() {
             Contact Sales
           </div>
         </PopoverTrigger>
-        <PopoverContent
-          side="top"
-          className="z-10 ml-4 w-auto bg-licorice">
-          <div className="p-4 shadow-md filter bg-licorice">
+        <PopoverContent side="top" className="bg-licorice z-10 ml-4 w-auto">
+          <div className="bg-licorice p-4 shadow-md filter">
             <div className="flex flex-col gap-2">
               <p className="text-l font-semibold">Contact</p>
               <fieldset className="flex flex-col">
@@ -174,7 +176,7 @@ export function CompanySubmissionPopover() {
 
               <div className="flex justify-end">
                 <Button
-                  className="mt-2 bg-grapefruit text-snow"
+                  className="bg-grapefruit text-snow mt-2"
                   onClick={sendMessage}
                   disabled={!formFilled}>
                   Send
@@ -182,7 +184,7 @@ export function CompanySubmissionPopover() {
               </div>
 
               <X
-                className="absolute right-[5px] top-[5px] cursor-default hover:cursor-pointer"
+                className="absolute top-[5px] right-[5px] cursor-default hover:cursor-pointer"
                 onClick={() => setIsOpen(false)}></X>
             </div>
           </div>

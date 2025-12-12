@@ -27,9 +27,7 @@ Page.Header = function PageHeader(
   const { children, className, ...rest } = props
   if (props.tier === "secondary") {
     return (
-      <h2
-        className={cn("font-bebas-neue text-3xl", className)}
-        {...rest}>
+      <h2 className={cn("font-bebas-neue text-3xl", className)} {...rest}>
         {children}
       </h2>
     )
@@ -37,7 +35,7 @@ Page.Header = function PageHeader(
 
   return (
     <h1
-      className={cn("font-bebas-neue text-5xl text-melon-700", className)}
+      className={cn("font-bebas-neue text-melon-700 text-5xl", className)}
       {...rest}>
       {children}
     </h1>
@@ -60,7 +58,9 @@ Page.Background = function PageBackground(
       )}
       {...rest}>
       {!props.avoidHeader && <div className="h-20" />}
-      <div className="z-10 flex w-full flex-1 flex-col min-h-[40vw]">{children}</div>
+      <div className="z-10 flex min-h-[40vw] w-full flex-1 flex-col">
+        {children}
+      </div>
     </div>
   )
 }

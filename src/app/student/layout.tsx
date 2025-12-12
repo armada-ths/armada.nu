@@ -13,9 +13,14 @@ export default async function ExhibitorLayout({
     }
   })
 
-  const isPastDate = (data?.end_date &&
-    DateTime.fromISO(data.end_date, { zone: "Europe/Stockholm" }).plus({ days: 1 }) < DateTime.now()) ||
-    (data?.start_date && DateTime.fromISO(data.start_date, { zone: "Europe/Stockholm" }) > DateTime.now())
+  const isPastDate =
+    (data?.end_date &&
+      DateTime.fromISO(data.end_date, { zone: "Europe/Stockholm" }).plus({
+        days: 1
+      }) < DateTime.now()) ||
+    (data?.start_date &&
+      DateTime.fromISO(data.start_date, { zone: "Europe/Stockholm" }) >
+        DateTime.now())
 
   return isPastDate ? (
     <>

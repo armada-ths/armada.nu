@@ -23,51 +23,61 @@ export default async function OrderPage() {
   const END_TIME_DAY_1 = { hour: 15, minute: 30 }
   const END_TIME_DAY_2 = { hour: 14, minute: 30 }
 
-  const startDate = DateTime.fromISO(dates.fair.days[0], { zone: "Europe/Stockholm" })
-  const endDate = DateTime.fromISO(dates.fair.days[1], { zone: "Europe/Stockholm" })
+  const startDate = DateTime.fromISO(dates.fair.days[0], {
+    zone: "Europe/Stockholm"
+  })
+  const endDate = DateTime.fromISO(dates.fair.days[1], {
+    zone: "Europe/Stockholm"
+  })
 
-  const isOpen = !!dates && (() => {
+  const isOpen =
+    !!dates &&
+    (() => {
+      // Before day 1 → OPEN
+      if (now < startDate.startOf("day")) {
+        return true
+      }
 
-    // Before day 1 → OPEN
-    if (now < startDate.startOf("day")) {
-      return true
-    }
+      // Day 1
+      if (now.hasSame(startDate, "day")) {
+        const close = startDate.set(END_TIME_DAY_1)
+        return now <= close
+      }
 
-    // Day 1
-    if (now.hasSame(startDate, "day")) {
-      const close = startDate.set(END_TIME_DAY_1)
-      return now <= close
-    }
+      // Day 2
+      if (now.hasSame(endDate, "day")) {
+        const open = endDate.set(START_TIME)
+        const close = endDate.set(END_TIME_DAY_2)
+        return now >= open && now <= close
+      }
 
-    // Day 2
-    if (now.hasSame(endDate, "day")) {
-      const open = endDate.set(START_TIME)
-      const close = endDate.set(END_TIME_DAY_2)
-      return now >= open && now <= close
-    }
-
-    // After day 2 → closed
-    return false
-  })()
-
+      // After day 2 → closed
+      return false
+    })()
 
   return (
     <Page.Background withIndents>
       {hasAccess && isOpen ? (
         <OrderForm exhibitors={exhibitors} />
       ) : !hasAccess ? (
-        <div className="flex flex-col items-center justify-center text-center p-8">
-          <h1 className="text-2xl font-semibold mb-4">Order Form (Exhibitors)</h1>
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <h1 className="mb-4 text-2xl font-semibold">
+            Order Form (Exhibitors)
+          </h1>
           <p>
-            Form has been closed due to a high volume of orders. Sorry for the inconvenience! Feel free to still drop by the Exhibitor Lounge
+            Form has been closed due to a high volume of orders. Sorry for the
+            inconvenience! Feel free to still drop by the Exhibitor Lounge
           </p>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center text-center p-8">
-          <h1 className="text-2xl font-semibold mb-4">Order Form (Exhibitors)</h1>
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <h1 className="mb-4 text-2xl font-semibold">
+            Order Form (Exhibitors)
+          </h1>
           <p>
-            The order form is currently closed. You can place orders during
-            the fair opening hours, but no later than 30 minutes before the end of each day.
+            The order form is currently closed. You can place orders during the
+            fair opening hours, but no later than 30 minutes before the end of
+            each day.
           </p>
         </div>
       )}

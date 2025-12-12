@@ -1,36 +1,30 @@
-"use client";
-import { useEffect, useRef } from "react";
+"use client"
+import { useEffect, useRef } from "react"
 
 const ArmadaAnimatedSVG = () => {
-  const svgRef = useRef<SVGSVGElement | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null)
 
   useEffect(() => {
-    const svg = svgRef.current;
-    if (!svg) return;
+    const svg = svgRef.current
+    if (!svg) return
 
-    const paths: NodeListOf<SVGPathElement> = svg.querySelectorAll("path");
+    const paths: NodeListOf<SVGPathElement> = svg.querySelectorAll("path")
 
     paths.forEach((path: SVGPathElement) => {
-      const length = path.getTotalLength();
+      const length = path.getTotalLength()
 
       // Set up the dash for animation
-      path.style.strokeDasharray = `${length}`;
-      path.style.strokeDashoffset = `${length}`;
+      path.style.strokeDasharray = `${length}`
+      path.style.strokeDashoffset = `${length}`
 
       // Animate the stroke along the path
-      path.animate(
-        [
-          { strokeDashoffset: length },
-          { strokeDashoffset: 0 }
-        ],
-        {
-          duration: 5000, // animation speed
-          iterations: Infinity,
-          easing: "linear" // constant speed along path
-        }
-      );
-    });
-  }, []);
+      path.animate([{ strokeDashoffset: length }, { strokeDashoffset: 0 }], {
+        duration: 5000, // animation speed
+        iterations: Infinity,
+        easing: "linear" // constant speed along path
+      })
+    })
+  }, [])
 
   return (
     <svg
@@ -38,8 +32,7 @@ const ArmadaAnimatedSVG = () => {
       width="400"
       height="400"
       viewBox="0 0 500 500"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient
           id="armadaGradient"
@@ -47,8 +40,7 @@ const ArmadaAnimatedSVG = () => {
           x1="0"
           y1="0"
           x2="400"
-          y2="0"
-        >
+          y2="0">
           <stop offset="0%" stopColor="#00d79099" />
           <stop offset="75%" stopColor="#00d790" />
         </linearGradient>
@@ -62,7 +54,7 @@ const ArmadaAnimatedSVG = () => {
         strokeLinecap="round"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default ArmadaAnimatedSVG;
+export default ArmadaAnimatedSVG

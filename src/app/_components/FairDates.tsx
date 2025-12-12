@@ -5,8 +5,8 @@ export async function FairDates() {
   const dates = await fetchDates()
 
   return (
-    <div className="mt-5 flex gap-4 font-bebas-neue">
-      <p className="text-2xl uppercase text-stone-400">Fair:</p>
+    <div className="font-bebas-neue mt-5 flex gap-4">
+      <p className="text-2xl text-stone-400 uppercase">Fair:</p>
       <div className="flex">
         {[
           // Pick first and last day (ASSUMPTION: days are sorted and continuous)

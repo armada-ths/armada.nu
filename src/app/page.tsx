@@ -16,11 +16,11 @@ import Link from "next/link"
 
 export default async function HomePage() {
   const dates = await fetchDates()
-  const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" });
-  const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" });
+  const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" })
+  const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" })
   const silverLogos = silverExhibitors
-    .map((g) => g.logoFreesize || g.logoSquared)
-    .filter((url): url is string => Boolean(url));
+    .map(g => g.logoFreesize || g.logoSquared)
+    .filter((url): url is string => Boolean(url))
 
   const today = Date.now()
   const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
@@ -33,18 +33,20 @@ export default async function HomePage() {
         <Page.Boundary className="">
           <Hero1
             heading={"Set Sail For Success"}
-            description={"The No. 1 career fair at KTH Royal Institute of Technology"}
+            description={
+              "The No. 1 career fair at KTH Royal Institute of Technology"
+            }
             buttons={{
               primary: {
-                text: "Apply to Armada",
+                text: "Join Armada",
                 url: "/student/recruitment"
               },
               secondary: {
                 text: "About Armada",
                 url: "/about"
               }
-            }} />
-
+            }}
+          />
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-12">
           {/* Time and place */}
@@ -70,14 +72,14 @@ export default async function HomePage() {
               </div>
             )}
           </div> */}
-          <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible mt-5">
+          <section className="relative right-1/2 left-1/2 -mx-[50vw] mt-5 w-screen max-w-none overflow-y-visible">
             <VisitorNumberBar />
           </section>
           {/* Gold Exhibitors */}
           <GoldExhibitors exhibitors={goldExhibitors} />
           <RollingBanner logos={silverLogos} />
 
-          <div className="flex flex-col md:flex-row py-2">
+          <div className="flex flex-col py-2 md:flex-row">
             {/* <div className="justify-center">
               <div className="md:mt-10 flex gap-2 text-melon-700">
                 <p className="text-5xl font-bebas-neue justify-center">
@@ -108,7 +110,8 @@ export default async function HomePage() {
             fair that has grown to become one of the largest in scandinavia. We
             exist to connect students to their dream employer and have since
             come up with different events and happenings to create personal
-            connections between students and employers. As Armada is fully owned by{" "}
+            connections between students and employers. As Armada is fully owned
+            by{" "}
             <Link
               className="underline hover:no-underline"
               href="https://thskth.se/en/">
@@ -123,7 +126,7 @@ export default async function HomePage() {
           </div> */}
 
           {/* Why Armada */}
-          <h2 className="mt-4 font-bebas-neue text-3xl font-medium text-melon-700">
+          <h2 className="font-bebas-neue text-melon-700 mt-4 text-3xl font-medium">
             New students, every year!
           </h2>
           <P>
@@ -137,31 +140,31 @@ export default async function HomePage() {
           {/* Links */}
           <div className="my-6 flex flex-col items-center gap-6 text-center md:flex-row md:justify-center md:gap-8">
             {/* Card 1 */}
-            <Card className="flex w-[90vw] max-w-sm flex-col items-center rounded-md bg-melon-700 bg-opacity-90 p-6 md:flex-1 md:max-w-md md:p-8">
-              <h2 className="font-bebas-neue text-2xl md:text-3xl font-medium">
+            <Card className="bg-melon-700 bg-opacity-90 flex w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:flex-1 md:p-8">
+              <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Exhibitors
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link href="https://app.eventro.se/register/armada">
-                  <Button className="bg-grapefruit text-snow">Exhibitor Signup</Button>
-                </Link>
-                <Link href="/exhibitor/packages">
-                  <Button variant="neutral">
-                    Packages
-                  </Button>
-                </Link>
+                <Button asChild className="bg-grapefruit text-snow">
+                  <Link href="https://app.eventro.se/register/armada">
+                    Exhibitor Signup
+                  </Link>
+                </Button>
+                <Button asChild variant="neutral">
+                  <Link href="/exhibitor/packages">Packages</Link>
+                </Button>
               </div>
             </Card>
 
             {/* Card 2 */}
-            <Card className="flex w-[90vw] max-w-sm flex-col items-center rounded-md bg-melon-700 bg-opacity-90 p-6 md:flex-1 md:max-w-md md:p-8">
-              <h2 className="font-bebas-neue text-2xl md:text-3xl font-medium">
+            <Card className="bg-melon-700 bg-opacity-90 flex w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:flex-1 md:p-8">
+              <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Students
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link href="/student/recruitment">
-                  <Button className="bg-grapefruit text-snow">Join Us!</Button>
-                </Link>
+                <Button asChild className="bg-grapefruit text-snow">
+                  <Link href="/student/recruitment">Join Us!</Link>
+                </Button>
               </div>
             </Card>
           </div>

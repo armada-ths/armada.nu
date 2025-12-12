@@ -30,13 +30,11 @@ export async function fetchRecruitment(options?: RequestInit) {
   //returning null when recruitment is not open
 
   const staticRecruitment: Recruitment = {
-    name: "Project Group Recruitment",
-    link: "https://app.eventro.se/recruitments/4a2402b0-364d-4a58-923e-c93d816ea2da",
-    start_date: "2025-08-25",
-    end_date: "2025-09-22",
-    groups: {
-
-    }
+    name: "Project Group 2026 Recruitment",
+    link: "https://app.eventro.se/recruitments/b61c7cf7-c22a-46e8-bc03-011be6b6d412",
+    start_date: "2025-12-11",
+    end_date: "2026-01-20",
+    groups: {}
   }
 
   return staticRecruitment

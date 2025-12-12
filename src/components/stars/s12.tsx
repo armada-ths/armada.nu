@@ -21,8 +21,7 @@ export default function Star12({
       viewBox="0 200"
       width={size ?? width}
       height={size ?? height}
-      {...props}
-    >
+      {...props}>
       <path
         fill={color ?? "currentColor"}
         stroke={stroke}

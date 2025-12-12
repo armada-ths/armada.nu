@@ -32,10 +32,7 @@ export default function Modal({
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent
-          className={cn(
-            "overflow-y-auto max-h-[80%] w-[80%]",
-            className
-          )}>
+          className={cn("max-h-[80%] w-[80%] overflow-y-auto", className)}>
           {children}
         </DialogContent>
       </Dialog>

@@ -11,13 +11,13 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-main text-main-foreground",
-        neutral: "bg-secondary-background text-foreground",
-      },
+        neutral: "bg-secondary-background text-foreground"
+      }
     },
     defaultVariants: {
-      variant: "default",
-    },
-  },
+      variant: "default"
+    }
+  }
 )
 
 function Badge({
@@ -41,4 +41,3 @@ function Badge({
 }
 
 export { Badge, badgeVariants }
-

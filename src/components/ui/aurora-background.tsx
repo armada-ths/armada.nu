@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import React from "react";
+import { cn } from "@/lib/utils"
+import React from "react"
 
 interface AuroraBackgroundProps extends React.HTMLProps<HTMLDivElement> {
-  children: React.ReactNode;
-  showRadialGradient?: boolean;
+  children: React.ReactNode
+  showRadialGradient?: boolean
 }
 
 export const AuroraBackground = ({
@@ -20,11 +20,10 @@ export const AuroraBackground = ({
         "relative flex min-h-screen flex-col items-center justify-center overflow-hidden",
         className
       )}
-      {...props}
-    >
+      {...props}>
       {/* BRAND AURORA LAYER */}
       <div
-        className="absolute inset-0 pointer-events-none animate-aurora opacity-40 blur-xl mix-blend-soft-light"
+        className="animate-aurora pointer-events-none absolute inset-0 opacity-40 mix-blend-soft-light blur-xl"
         style={
           {
             "--aurora": `
@@ -46,21 +45,12 @@ export const AuroraBackground = ({
               )
             `
           } as React.CSSProperties
-        }
-      >
+        }>
         <div
           className={cn(
-            `absolute -inset-[25px]
-            after:animate-aurora
-            [background-image:var(--highlight),var(--aurora)]
-            bg-size-[300%,200%]
-            bg-position-[50%_50%,50%_50%]
-            opacity-90
-            blur-[22px]
-            mix-blend-screen
-            will-change-transform`,
+            `after:animate-aurora absolute -inset-[25px] [background-image:var(--highlight),var(--aurora)] bg-size-[300%,200%] bg-position-[50%_50%,50%_50%] opacity-90 mix-blend-screen blur-[22px] will-change-transform`,
             showRadialGradient &&
-            "mask-[radial-gradient(ellipse_at_70%_0%,black_25%,transparent_75%)]"
+              "mask-[radial-gradient(ellipse_at_70%_0%,black_25%,transparent_75%)]"
           )}
         />
       </div>
@@ -68,5 +58,5 @@ export const AuroraBackground = ({
       {/* PAGE CONTENT */}
       {children}
     </div>
-  );
-};
+  )
+}

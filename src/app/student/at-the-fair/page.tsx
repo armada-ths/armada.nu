@@ -2,9 +2,7 @@ import { P } from "@/app/_components/Paragraph"
 import { QuestionGenerator } from "@/app/student/at-the-fair/_components/QuestionGenerator"
 import { Page } from "@/components/shared/Page"
 
-
 export default function AtFairPage() {
-
   return (
     <Page.Background withIndents>
       <Page.Boundary>
@@ -35,7 +33,9 @@ export default function AtFairPage() {
           </P>
         </div>
         <br />
-        <Page.Header tier="secondary" className="text-melon-700">Example questions</Page.Header>
+        <Page.Header tier="secondary" className="text-melon-700">
+          Example questions
+        </Page.Header>
         <P>
           Below are some examples of questions you can ask the companies during
           Armada to get the conversation started.
