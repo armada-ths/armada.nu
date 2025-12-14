@@ -48,7 +48,7 @@ export default function EventDetails({
   return (
     <div className={cn("mx-auto max-w-[600px] lg:max-w-[1000px]", className)}>
       <Page.Header>{event.name}</Page.Header>
-      <div className="flex flex-col lg:flex-row lg:items-center gap-10 pt-2">
+      <div className="flex flex-col gap-10 pt-2 lg:flex-row lg:items-center">
         {/* Left: Image + Description */}
         <div className="flex-1 space-y-6">
           {event.imageUrl && (
@@ -63,7 +63,7 @@ export default function EventDetails({
           )}
 
           <div
-            className="prose prose-invert text-stone-300 leading-relaxed"
+            className="prose prose-invert leading-relaxed text-stone-300"
             dangerouslySetInnerHTML={{ __html: event.description }}
           />
         </div>
@@ -100,7 +100,7 @@ export default function EventDetails({
             value={event.fee}
             icon={<Coins size={16} />}></InfoBoxItem>
           {event.openForSignupStudent && registrationClose && (
-            <p className="-mb-1 mt-3 text-xs text-stone-400">
+            <p className="mt-3 -mb-1 text-xs text-stone-400">
               Registration closes {formatTimestampAsDate(event.registrationEnd)}
             </p>
           )}
@@ -112,11 +112,13 @@ export default function EventDetails({
               </Link>
             ) : (
               <Button disabled>
-                {today < registrationCutoff ? "Signup coming soon!" : "Registration closed"}
+                {today < registrationCutoff
+                  ? "Signup coming soon!"
+                  : "Registration closed"}
               </Button>
             )
           ) : (
-            <p className="text-sm text-stone-400 text-center mt-2">
+            <p className="mt-2 text-center text-sm text-stone-400">
               No registration required
             </p>
           )}

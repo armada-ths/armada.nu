@@ -22,20 +22,59 @@ type OrderFormProps = {
 }
 
 const ITEMS: StoreItem[] = [
-  { id: "sandwich-turkey", name: "Sandwich (Turkey)", description: "Freshly made with turkey and vegetables" },
-  { id: "sandwich-vegetarian", name: "Sandwich (Vegetarian)", description: "Freshly made with cheese and vegetables" },
-  { id: "pain-au-chocolat", name: "Pain au Chocolat", description: "Butter pastry with chocolate" },
-  { id: "cinnamon-bun", name: "Cinnamon bun", description: "Classic Swedish Kanelbulle" },
-  { id: "muffin-chocolate", name: "Muffin (Chocolate)", description: "Soft and rich" },
-  { id: "muffin-blueberry", name: "Muffin (Blueberry)", description: "Sweet and fruity" },
-  { id: "apple-cake-vegan", name: "Apple Cake (Vegan)", description: "Plant-based apple cake" },
-  { id: "chocolate-balls-vegan", name: "Chocolate ball (Vegan)", description: "Classic Swedish Chokladboll" },
+  {
+    id: "sandwich-turkey",
+    name: "Sandwich (Turkey)",
+    description: "Freshly made with turkey and vegetables"
+  },
+  {
+    id: "sandwich-vegetarian",
+    name: "Sandwich (Vegetarian)",
+    description: "Freshly made with cheese and vegetables"
+  },
+  {
+    id: "pain-au-chocolat",
+    name: "Pain au Chocolat",
+    description: "Butter pastry with chocolate"
+  },
+  {
+    id: "cinnamon-bun",
+    name: "Cinnamon bun",
+    description: "Classic Swedish Kanelbulle"
+  },
+  {
+    id: "muffin-chocolate",
+    name: "Muffin (Chocolate)",
+    description: "Soft and rich"
+  },
+  {
+    id: "muffin-blueberry",
+    name: "Muffin (Blueberry)",
+    description: "Sweet and fruity"
+  },
+  {
+    id: "apple-cake-vegan",
+    name: "Apple Cake (Vegan)",
+    description: "Plant-based apple cake"
+  },
+  {
+    id: "chocolate-balls-vegan",
+    name: "Chocolate ball (Vegan)",
+    description: "Classic Swedish Chokladboll"
+  },
   { id: "coffee", name: "Black Coffee", description: "Sugar on the side" },
-  { id: "coffee-with-milk", name: "Coffee with Oat milk", description: "Sugar on the side" },
+  {
+    id: "coffee-with-milk",
+    name: "Coffee with Oat milk",
+    description: "Sugar on the side"
+  },
   { id: "tea", name: "Tea", description: "Sugar on the side" },
-  { id: "hot-chocolate", name: "Oboy", description: "Warm and Sweet Cocoa drink" },
+  {
+    id: "hot-chocolate",
+    name: "Oboy",
+    description: "Warm and Sweet Cocoa drink"
+  }
 ]
-
 
 export function OrderForm({ exhibitors }: OrderFormProps) {
   const [company, setCompany] = useState("")
@@ -103,7 +142,6 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
     } catch (err) {
       console.error(err)
     }
-
   }
 
   if (submitted) {
@@ -111,9 +149,12 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
       <Page.Boundary maxWidth={750}>
         <Page.Header>Order</Page.Header>
         <div className="mt-3">
-          <h2 className="text-lg font-semibold mb-2">Order submitted!</h2>
+          <h2 className="mb-2 text-lg font-semibold">Order submitted!</h2>
           <p>We’ll deliver your order as soon as possible.</p>
-          <Button size="sm" className="mt-6" onClick={() => setSubmitted(false)}>
+          <Button
+            size="sm"
+            className="mt-6"
+            onClick={() => setSubmitted(false)}>
             New order
           </Button>
         </div>
@@ -126,9 +167,12 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
       <Page.Header>Order</Page.Header>
       <p className="mt-2 text-stone-400">
         Here you can order drinks and snacks for your booth during Armada.
-        <br /><br />
-        Use this form for delivery straight to your booth – or feel free to drop by the lounge for a friendly chat and a fresh cup of coffee.
-        (If you have any questions about ingredients or allergies, please come by the lounge and we’ll be happy to help.)
+        <br />
+        <br />
+        Use this form for delivery straight to your booth – or feel free to drop
+        by the lounge for a friendly chat and a fresh cup of coffee. (If you
+        have any questions about ingredients or allergies, please come by the
+        lounge and we’ll be happy to help.)
       </p>
 
       {/* Company combobox */}
@@ -148,40 +192,42 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
             onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
             placeholder="Select your company"
           />
-          {showDropdown && (filteredCompanies.length > 0 || showCustomOption) && (
-            <div className="absolute z-50 mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-md shadow-lg max-h-60 overflow-auto">
-              {filteredCompanies.length > 0
-                ? filteredCompanies.map(name => (
-                  <button
-                    key={name}
-                    type="button"
-                    className="flex w-full items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left"
-                    onClick={() => {
-                      setCompany(name)
-                      setShowDropdown(false)
-                    }}>
-                    <Check
-                      className={`h-4 w-4 ${company === name ? "opacity-100" : "opacity-0"
+          {showDropdown &&
+            (filteredCompanies.length > 0 || showCustomOption) && (
+              <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-zinc-700 bg-zinc-800 shadow-lg">
+                {filteredCompanies.length > 0 ? (
+                  filteredCompanies.map(name => (
+                    <button
+                      key={name}
+                      type="button"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-zinc-700"
+                      onClick={() => {
+                        setCompany(name)
+                        setShowDropdown(false)
+                      }}>
+                      <Check
+                        className={`h-4 w-4 ${
+                          company === name ? "opacity-100" : "opacity-0"
                         }`}
-                    />
-                    {name}
-                  </button>
-                ))
-                : (
+                      />
+                      {name}
+                    </button>
+                  ))
+                ) : (
                   <button
                     type="button"
-                    className="flex w-full items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left"
+                    className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-zinc-700"
                     onClick={() => setShowDropdown(false)}>
                     Use “{company}”
                   </button>
                 )}
-            </div>
-          )}
+              </div>
+            )}
         </div>
       </div>
 
       {/* Items */}
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
         {ITEMS.map(item => (
           <Card key={item.id} className="p-4">
             <OrderItem

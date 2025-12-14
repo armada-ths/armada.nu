@@ -9,10 +9,12 @@ const PersonCard = ({ person }: { person: Person }) => {
   console.log(person)
   return (
     <>
-      <Card key={person.id} className="w-full sm:w-56 hover:scale-105 transition-all py-0 pb-4 sm:h-96">
+      <Card
+        key={person.id}
+        className="w-full py-0 pb-4 transition-all hover:scale-105 sm:h-96 sm:w-56">
         {person.picture == null || person.picture.includes("no-image") ? (
           <div className="flex aspect-square w-52 flex-1 items-center justify-center">
-            <PersonIcon className="m-auto h-20 w-20 text-melon-700" />
+            <PersonIcon className="text-melon-700 m-auto h-20 w-20" />
           </div>
         ) : (
           <div className="overflow-hidden">

@@ -13,7 +13,7 @@ export function PostItem({ post }: { post: BlogPost }) {
   return (
     <Card className="mx-auto mt-4 transition-shadow duration-300 hover:shadow-lg">
       <CardHeader className="space-y-2">
-        <CardTitle className="text-2xl font-semibold leading-tight">
+        <CardTitle className="text-2xl leading-tight font-semibold">
           {post.title}
         </CardTitle>
         <CardDescription className="text-muted-foreground">

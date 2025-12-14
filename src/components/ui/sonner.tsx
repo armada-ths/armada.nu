@@ -5,7 +5,7 @@ import {
   Info,
   LoaderCircle,
   OctagonX,
-  TriangleAlert,
+  TriangleAlert
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
@@ -24,18 +24,19 @@ const Toaster = ({ ...props }: ToasterProps) => {
         info: <Info className="h-4 w-4" />,
         warning: <TriangleAlert className="h-4 w-4" />,
         error: <OctagonX className="h-4 w-4" />,
-        loading: <LoaderCircle className="h-4 w-4 animate-spin" />,
+        loading: <LoaderCircle className="h-4 w-4 animate-spin" />
       }}
       toastOptions={{
         classNames: {
           toast:
             "group toast group-[.toaster]:bg-white group-[.toaster]:text-stone-950 group-[.toaster]:border-stone-200 group-[.toaster]:shadow-lg dark:group-[.toaster]:bg-stone-950 dark:group-[.toaster]:text-stone-50 dark:group-[.toaster]:border-stone-800",
-          description: "group-[.toast]:text-stone-500 dark:group-[.toast]:text-stone-400",
+          description:
+            "group-[.toast]:text-stone-500 dark:group-[.toast]:text-stone-400",
           actionButton:
             "group-[.toast]:bg-stone-900 group-[.toast]:text-stone-50 dark:group-[.toast]:bg-stone-50 dark:group-[.toast]:text-stone-900",
           cancelButton:
-            "group-[.toast]:bg-stone-100 group-[.toast]:text-stone-500 dark:group-[.toast]:bg-stone-800 dark:group-[.toast]:text-stone-400",
-        },
+            "group-[.toast]:bg-stone-100 group-[.toast]:text-stone-500 dark:group-[.toast]:bg-stone-800 dark:group-[.toast]:text-stone-400"
+        }
       }}
       {...props}
     />

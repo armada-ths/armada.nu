@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card"
 import { useState } from "react"
 
 export function QuestionGenerator() {
-
   const [randomNumber, setRandomNumber] = useState(-1)
   const questions = [
     "How does your recruitment process look like?",
@@ -37,13 +36,13 @@ export function QuestionGenerator() {
   }
 
   return (
-    <Card className="mt-2 min-h-48 min-w-48 place-items-center text-center rounded-2xl p-5 border-licorice border-2 bg-melon-700">
+    <Card className="border-licorice bg-melon-700 mt-2 min-h-48 min-w-48 place-items-center rounded-2xl border-2 p-5 text-center">
       <p className="absolute opacity-80">
         <i>Question for exhibitors:</i>
       </p>
       <div className="flex">
         <div className="grow place-content-center justify-center">
-          <p className="pt-7 text-center text-3xl text-snow opacity-90">
+          <p className="text-snow pt-7 text-center text-3xl opacity-90">
             <i>
               {randomNumber >= 0
                 ? questions[randomNumber]
@@ -55,9 +54,9 @@ export function QuestionGenerator() {
       <Button
         variant={"noShadow"}
         onClick={() => generateRandomNumber()}
-        className="border-1 text-snow rounded-lg bg-grapefruit p-3 spinning-border hover:bg-grapefruit/70 hover:scale-105 active:scale-95">
+        className="text-snow bg-grapefruit spinning-border hover:bg-grapefruit/70 rounded-lg p-3 hover:scale-105 active:scale-95">
         Generate Question
       </Button>
     </Card>
-  );
+  )
 }

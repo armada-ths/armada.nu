@@ -1,7 +1,7 @@
 import {
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
+  AccordionTrigger
 } from "@/components/ui/accordion"
 import { cn, formatDate } from "@/lib/utils"
 
@@ -9,7 +9,7 @@ export function TimelineItem({
   children,
   title,
   dateStringISO,
-  dateStringHuman = formatDate(dateStringISO),
+  dateStringHuman = formatDate(dateStringISO)
 }: {
   children?: React.ReactNode
   title: string
@@ -19,48 +19,36 @@ export function TimelineItem({
   const expandable = !!children
 
   return (
-    <AccordionItem
-      value={title}
-      className="relative bg-snow"
-    >
+    <AccordionItem value={title} className="bg-snow relative">
       {/* TIMELINE SPINE */}
-      <div className="absolute left-4 top-4 bottom-0 w-0.5 bg-licorice" />
+      <div className="bg-licorice absolute top-4 bottom-0 left-4 w-0.5" />
 
       {/* NODE */}
-      <div className="absolute left-2.75 top-4 w-3 h-3 bg-melon-700 border border-licorice" />
+      <div className="bg-melon-700 border-licorice absolute top-4 left-2.75 h-3 w-3 border" />
 
       {/* HEADER (flat melon block) */}
       <AccordionTrigger
         className={cn(
-          "border-l-2 ml-8 w-full text-left rounded-none",
-          "border-l-2 border-licorice bg-melon-700 hover:bg-emerald-500",
+          "ml-8 w-full rounded-none border-l-2 text-left",
+          "border-licorice bg-melon-700 border-l-2 hover:bg-emerald-500",
 
           expandable
-            ? "hover:bg-emerald-500 cursor-pointer"
-            : "cursor-default pointer-events-none"
-        )}
-      >
+            ? "cursor-pointer hover:bg-emerald-500"
+            : "pointer-events-none cursor-default"
+        )}>
         <div className="flex flex-col gap-1">
           {/* DATE */}
-          <span className="text-xs font-semibold px-2 py-0.5 w-fit bg-snow border border-licorice">
+          <span className="bg-snow border-licorice w-fit border px-2 py-0.5 text-xs font-semibold">
             {dateStringHuman}
           </span>
 
           {/* TITLE */}
-          <h3 className="text-3xl font-bebas-neue text-licorice">
-            {title}
-          </h3>
+          <h3 className="font-bebas-neue text-licorice text-3xl">{title}</h3>
         </div>
       </AccordionTrigger>
 
       {expandable && (
-        <AccordionContent
-          className="
-            ml-8 my-4
-            border-l-2
-            pb-10
-          "
-        >
+        <AccordionContent className="my-4 ml-8 border-l-2 pb-10">
           {children}
         </AccordionContent>
       )}

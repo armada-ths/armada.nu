@@ -1,12 +1,12 @@
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
 export default function BadgeCollection({
   items,
   maxDisplayed = Infinity,
   className,
   badgeClassName,
-  maxChars = 35, // 👈 tweak this for cutoff length
+  maxChars = 35 // 👈 tweak this for cutoff length
 }: {
   items: { id: number; name: string }[]
   maxDisplayed?: number
@@ -30,10 +30,9 @@ export default function BadgeCollection({
           variant="neutral"
           title={name} // full name on hover
           className={cn(
-            "w-max flex-none shadow-lg px-2 py-1 text-sm font-medium",
+            "w-max flex-none px-2 py-1 text-sm font-medium shadow-lg",
             badgeClassName
-          )}
-        >
+          )}>
           {truncate(name)}
         </Badge>
       ))}
@@ -41,8 +40,7 @@ export default function BadgeCollection({
         <Badge
           variant="neutral"
           title={tooltip}
-          className={cn("w-max shadow-lg flex-none", badgeClassName)}
-        >
+          className={cn("w-max flex-none shadow-lg", badgeClassName)}>
           +{items.length - maxDisplayed}
         </Badge>
       )}

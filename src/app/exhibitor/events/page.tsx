@@ -40,17 +40,19 @@ export default async function Packages() {
                 <div className="flex flex-col text-left">
                   <span className="font-heading text-xl">{`Lunch Lecture`}</span>
                   <span className="text-sm opacity-80">Location: TBD</span>
-                  <span className="text-sm opacity-80">Price: 24,000/31,000 SEK</span>
+                  <span className="text-sm opacity-80">
+                    Price: 24,000/31,000 SEK
+                  </span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
                   This is your chance to take the whole stage and showcase your
-                  organization to our students. Seize the spotlight to dive into your
-                  operations, company culture, or any theme of your choice to engage and
-                  inspire the students. Plus, food is provided for both students and your
-                  representatives!
+                  organization to our students. Seize the spotlight to dive into
+                  your operations, company culture, or any theme of your choice
+                  to engage and inspire the students. Plus, food is provided for
+                  both students and your representatives!
                 </p>
               </AccordionContent>
             </AccordionItem>
@@ -60,18 +62,21 @@ export default async function Packages() {
               <AccordionTrigger>
                 <div className="flex flex-col text-left">
                   <span className="font-heading text-xl">{`Panel Discussion`}</span>
-                  <span className="text-sm opacity-80">Location: At the fair</span>
+                  <span className="text-sm opacity-80">
+                    Location: At the fair
+                  </span>
                   <span className="text-sm opacity-80">Price: 9000 SEK</span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
-                  Join a themed panel discussion during the fair where we bring together
-                  representatives from different companies to participate in a lively and
-                  informative moderated discussion. This event provides an opportunity to
-                  showcase your expertise, network with industry leaders and students, and
-                  gain valuable insights into the latest trends and challenges facing your
+                  Join a themed panel discussion during the fair where we bring
+                  together representatives from different companies to
+                  participate in a lively and informative moderated discussion.
+                  This event provides an opportunity to showcase your expertise,
+                  network with industry leaders and students, and gain valuable
+                  insights into the latest trends and challenges facing your
                   industry.
                 </p>
               </AccordionContent>
@@ -82,17 +87,20 @@ export default async function Packages() {
               <AccordionTrigger>
                 <div className="flex flex-col text-left">
                   <span className="font-heading text-xl">{`Field Visit`}</span>
-                  <span className="text-sm opacity-80">Location: Your office</span>
+                  <span className="text-sm opacity-80">
+                    Location: Your office
+                  </span>
                   <span className="text-sm opacity-80">Price: 9000 SEK</span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
-                  Welcome students to your office and show off who you are in a familiar
-                  setting! This event is a unique opportunity to showcase your workplace,
-                  culture, and operations firsthand while creating a memorable and engaging
-                  experience for your future colleagues.
+                  Welcome students to your office and show off who you are in a
+                  familiar setting! This event is a unique opportunity to
+                  showcase your workplace, culture, and operations firsthand
+                  while creating a memorable and engaging experience for your
+                  future colleagues.
                 </p>
               </AccordionContent>
             </AccordionItem>
@@ -102,22 +110,26 @@ export default async function Packages() {
               <AccordionTrigger>
                 <div className="flex flex-col text-left">
                   <span className="font-heading text-xl">{`After Work`}</span>
-                  <span className="text-sm opacity-80">Location: Your Office or Nymble</span>
-                  <span className="text-sm opacity-80">Price: 9000/12,000 SEK</span>
+                  <span className="text-sm opacity-80">
+                    Location: Your Office or Nymble
+                  </span>
+                  <span className="text-sm opacity-80">
+                    Price: 9000/12,000 SEK
+                  </span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
-                  Welcome students to your office to hang out, OR let us organize it for
-                  you at Nymble, THS’s own pub! Choose between an informal hangout
-                  fostering organic conversations and mingling or a more formal networking
-                  session where you can exchange insights to forge meaningful connections
-                  with the future leaders of your industry.
+                  Welcome students to your office to hang out, OR let us
+                  organize it for you at Nymble, THS’s own pub! Choose between
+                  an informal hangout fostering organic conversations and
+                  mingling or a more formal networking session where you can
+                  exchange insights to forge meaningful connections with the
+                  future leaders of your industry.
                 </p>
               </AccordionContent>
             </AccordionItem>
-
           </Accordion>
         </div>
       </Page.Boundary>

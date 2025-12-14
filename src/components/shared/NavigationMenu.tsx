@@ -1,8 +1,20 @@
 "use client"
 
-
 import { MenuItem, Navbar1 } from "@/components/navbar1"
-import { BriefcaseIcon, Building2Icon, CalendarDaysIcon, CalendarSearchIcon, ClipboardPenIcon, ClockIcon, CompassIcon, HandshakeIcon, MapPinnedIcon, PackageIcon, SparklesIcon, UsersRoundIcon } from "lucide-react"
+import {
+  BriefcaseIcon,
+  Building2Icon,
+  CalendarDaysIcon,
+  CalendarSearchIcon,
+  ClipboardPenIcon,
+  ClockIcon,
+  CompassIcon,
+  HandshakeIcon,
+  MapPinnedIcon,
+  PackageIcon,
+  SparklesIcon,
+  UsersRoundIcon
+} from "lucide-react"
 import { DateTime } from "luxon"
 
 const companyLinks: MenuItem[] = [
@@ -41,7 +53,7 @@ const companyLinks: MenuItem[] = [
         icon: <CalendarSearchIcon className="size-5 shrink-0" />
       }
     ]
-  },
+  }
 ]
 
 const studentLinks: MenuItem[] = [
@@ -49,7 +61,6 @@ const studentLinks: MenuItem[] = [
     title: "For Students",
     url: "/student/exhibitors",
     items: [
-
       {
         title: "Exhibitors",
         url: "/student/exhibitors",
@@ -81,7 +92,7 @@ const studentLinks: MenuItem[] = [
         icon: <CompassIcon className="size-5 shrink-0" />
       }
     ]
-  },
+  }
 ]
 
 const aboutLinks: MenuItem[] = [
@@ -121,5 +132,5 @@ export function NavigationMenu() {
         />
       </div>
     </>
-  );
+  )
 }

@@ -40,19 +40,21 @@ export default function ForExhibitorsPage() {
 
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4">
-            <Link href="https://app.eventro.se/register/armada">
-              <Button className="bg-grapefruit">Signup to Armada</Button>
-            </Link>
-            <Link href="/exhibitor/packages">
-              <Button variant={"neutral"}>
+            <Button asChild className="bg-grapefruit">
+              <Link href="https://app.eventro.se/register/armada">
+                Signup to Armada
+              </Link>
+            </Button>
+            <Button asChild variant={"neutral"}>
+              <Link href="/exhibitor/packages">
                 Packages
-              </Button>
-            </Link>
-            <Link href="/exhibitor/timeline">
-              <Button variant={"neutral"}>
+              </Link>
+            </Button>
+            <Button asChild variant={"neutral"}>
+              <Link href="/exhibitor/timeline">
                 Timeline
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
           <p className="text-xs">
             Or{" "}
@@ -69,7 +71,7 @@ export default function ForExhibitorsPage() {
         </div>
         <section className="flex flex-col gap-y-10">
           <div className="mt-6">
-            <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+            <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
               New students, every year!
             </h2>
             <P>
@@ -82,7 +84,7 @@ export default function ForExhibitorsPage() {
           </div>
 
           <div className="mt-6">
-            <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+            <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
               Do you write &quot;we place high importance on your personal
               character&quot; in job ads?
             </h2>
@@ -95,7 +97,7 @@ export default function ForExhibitorsPage() {
             </P>
           </div>
           <div className="mt-6">
-            <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+            <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
               Skills you need, from all ends of KTH
             </h2>
             <P>

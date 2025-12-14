@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import Image from "next/image";
+import Image from "next/image"
 
 interface RollingBannerProps {
-  logos: string[];
+  logos: string[]
 }
 
 function RollingRow({
   logos,
   duration = 30,
-  reverse = false,
+  reverse = false
 }: {
-  logos: string[];
-  duration?: number;
-  reverse?: boolean;
+  logos: string[]
+  duration?: number
+  reverse?: boolean
 }) {
-  const duplicated = [...logos, ...logos]; // or triple if short
-  const animationClass = reverse ? "animate-scroll-reverse" : "animate-scroll";
+  const duplicated = [...logos, ...logos] // or triple if short
+  const animationClass = reverse ? "animate-scroll-reverse" : "animate-scroll"
 
   return (
     <div className="overflow-hidden whitespace-nowrap">
@@ -24,9 +24,8 @@ function RollingRow({
         className={`flex min-w-max ${animationClass} will-change-transform`}
         style={{
           animationDuration: `${duration}s`,
-          transform: "translateZ(0)",
-        }}
-      >
+          transform: "translateZ(0)"
+        }}>
         {duplicated.map((logo, index) => (
           <div key={index} className="mx-12 shrink-0">
             <Image
@@ -35,31 +34,25 @@ function RollingRow({
               width={0}
               height={0}
               sizes="100vw"
-              className="h-12 sm:h-14 md:h-16 w-auto object-contain"
+              className="h-12 w-auto object-contain sm:h-14 md:h-16"
               priority
             />
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 export default function RollingBanner({ logos }: RollingBannerProps) {
-  const perRow = Math.ceil(logos.length / 3);
-  const row1 = logos.slice(0, perRow);
-  const row2 = logos.slice(perRow, perRow * 2);
-  const row3 = logos.slice(perRow * 2);
+  const perRow = Math.ceil(logos.length / 3)
+  const row1 = logos.slice(0, perRow)
+  const row2 = logos.slice(perRow, perRow * 2)
+  const row3 = logos.slice(perRow * 2)
 
   return (
-    <section
-      className="
-        relative left-1/2 right-1/2 -mx-[50vw]
-        w-screen max-w-none
-        overflow-y-visible py-12
-      "
-    >
-      <h2 className="text-center text-2xl font-semibold text-gray-700 mb-8">
+    <section className="relative right-1/2 left-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible py-12">
+      <h2 className="mb-8 text-center text-2xl font-semibold text-gray-700">
         Silver Exhibitors
       </h2>
 
@@ -69,5 +62,5 @@ export default function RollingBanner({ logos }: RollingBannerProps) {
         <RollingRow logos={row3} duration={28} />
       </div>
     </section>
-  );
+  )
 }

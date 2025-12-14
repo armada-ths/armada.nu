@@ -1,23 +1,23 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react"
 
-import { P } from "@/app/_components/Paragraph";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { P } from "@/app/_components/Paragraph"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 
 interface Hero1Props {
-  badge?: string;
-  heading: string;
-  description: string;
+  badge?: string
+  heading: string
+  description: string
   buttons?: {
     primary?: {
-      text: string;
-      url: string;
-    };
+      text: string
+      url: string
+    }
     secondary?: {
-      text: string;
-      url: string;
-    };
-  };
+      text: string
+      url: string
+    }
+  }
 }
 
 const Hero1 = ({
@@ -26,31 +26,33 @@ const Hero1 = ({
   buttons = {
     primary: {
       text: "Discover all components",
-      url: "https://www.shadcnblocks.com",
+      url: "https://www.shadcnblocks.com"
     },
     secondary: {
       text: "View on GitHub",
-      url: "https://www.shadcnblocks.com",
-    },
-  },
+      url: "https://www.shadcnblocks.com"
+    }
+  }
 }: Hero1Props) => {
   return (
     <section className="pt-20">
       <div className="container">
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-            <h1 className="text-5xl lg:text-7xl font-bebas-neue text-melon-700">{heading}</h1>
-            <p className="text mb-8 max-w-xl lg:text-lg">
-              {description}
-            </p>
+            <h1 className="font-bebas-neue text-melon-700 text-5xl lg:text-7xl">
+              {heading}
+            </h1>
+            <p className="text mb-8 max-w-xl lg:text-lg">{description}</p>
             <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
               {buttons.primary && (
-                <Button asChild className="w-full sm:w-auto bg-grapefruit">
+                <Button
+                  asChild
+                  className="bg-grapefruit text-snow w-full sm:w-auto">
                   <a href={buttons.primary.url}>{buttons.primary.text}</a>
                 </Button>
               )}
               {buttons.secondary && (
-                <Button asChild variant="neutral" className="w-full sm:w-auto ">
+                <Button asChild variant="neutral" className="w-full sm:w-auto">
                   <a href={buttons.secondary.url}>
                     {buttons.secondary.text}
                     <ArrowRight className="size-4" />
@@ -59,27 +61,13 @@ const Hero1 = ({
               )}
             </div>
           </div>
-          <Card
-            className="
-              relative sm:w-full h-96 
-              bg-snow rounded-md 
-              border-4 border-licorice 
-              overflow-hidden flex flex-col p-0
-            "
-          >
-
+          <Card className="bg-snow border-licorice relative flex h-96 flex-col overflow-hidden rounded-md border-4 p-0 sm:w-full">
             {/* Nautical Title Bar */}
-            <div
-              className="
-                flex items-center gap-3 px-4 py-2 
-                border-b-4 border-licorice 
-                bg-melon-700 text-licorice z-10
-              "
-            >
+            <div className="border-licorice bg-melon-700 text-licorice z-10 flex items-center gap-3 border-b-4 px-4 py-2">
               {/* Window dots */}
-              <span className="w-3 h-3 bg-grapefruit rounded-full"></span>
-              <span className="w-3 h-3 bg-pineapple rounded-full"></span>
-              <span className="w-3 h-3 bg-emerald-700 rounded-full"></span>
+              <span className="bg-grapefruit h-3 w-3 rounded-full"></span>
+              <span className="bg-pineapple h-3 w-3 rounded-full"></span>
+              <span className="h-3 w-3 rounded-full bg-emerald-700"></span>
 
               {/* Title with ship icon */}
               <div className="ml-3 flex items-center gap-2">
@@ -90,28 +78,34 @@ const Hero1 = ({
             </div>
 
             {/* Subtle animated wave background */}
-            <div className="absolute inset-0 opacity-[0.06] bg-[url('/waves.svg')] bg-coconut pointer-events-none"></div>
+            <div className="bg-coconut pointer-events-none absolute inset-0 bg-[url('/waves.svg')] opacity-[0.06]"></div>
 
             {/* Foreground content */}
-            <div className="relative z-10 px-4 sm:px-8 flex flex-col items-center text-center justify-center flex-1">
-              <h1 className="text-3xl sm:text-4xl font-bebas-bold font-bold text-center text-licorice rounded-md">
-                ARMADA 2025 HAS ENDED
+            <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 text-center sm:px-8">
+              <h1 className="font-bebas-bold text-licorice rounded-md text-center text-3xl font-bold sm:text-4xl">
+                Secure your future
               </h1>
               <h2 className="text-melon-700">
-                Thank You to All Our Partners and Participants!
+                Build real experience that sets you up for success -
+                <a
+                  href="/student/recruitment"
+                  className="underline hover:no-underline">
+                  Join PG26!
+                </a>
               </h2>
               <P className="text-sm">
-                Armada 2025 was a huge success because of your energy, innovation, and commitment.
-                We’re grateful to every company and student who made this fair possible and memorable.
-                Together, we’re shaping the future of talent and industry!
-                See you next year - let’s keep building!
+                The Project Group of Armada consists of around 15 members.
+                Together we are the group that plan the fair, recruit other
+                volunteers and sell to exhibitors. We are elected in February
+                and work throughout the year to create the fair and events that
+                help students find their dream employer.
               </P>
             </div>
           </Card>
         </div>
       </div>
-    </section >
-  );
-};
+    </section>
+  )
+}
 
-export { Hero1 };
+export { Hero1 }

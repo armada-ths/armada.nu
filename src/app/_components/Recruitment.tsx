@@ -9,7 +9,9 @@ export async function RecruitmentBanner() {
     }
   })
 
-  const recruitmentClosed = recruitment == null || DateTime.fromISO(recruitment.end_date) < DateTime.now()
+  const recruitmentClosed =
+    recruitment == null ||
+    DateTime.fromISO(recruitment.end_date) < DateTime.now()
 
   return (
     <Banner1

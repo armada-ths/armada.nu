@@ -84,7 +84,10 @@ export interface ProgramFilters {
   search?: string
 }
 
-export async function fetchExhibitors(options?: RequestInit, filters?: ExhibitorFilters): Promise<Exhibitor[]> {
+export async function fetchExhibitors(
+  options?: RequestInit,
+  filters?: ExhibitorFilters
+): Promise<Exhibitor[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
 
@@ -100,13 +103,13 @@ export async function fetchExhibitors(options?: RequestInit, filters?: Exhibitor
     cache: options?.cache,
     next: {
       ...options?.next,
-      tags: options?.next?.tags ?? [
-        "exhibitors",
-      ]
+      tags: options?.next?.tags ?? ["exhibitors"]
     }
   })
   if (!res.ok) {
-    throw new Error(`Failed to fetch exhibitors: ${res.status} ${res.statusText}`)
+    throw new Error(
+      `Failed to fetch exhibitors: ${res.status} ${res.statusText}`
+    )
   }
 
   const data = await res.json()
@@ -120,11 +123,14 @@ export async function fetchExhibitors(options?: RequestInit, filters?: Exhibitor
 export function useExhibitors(filters?: ExhibitorFilters) {
   return useQuery({
     queryKey: ["exhibitors", filters],
-    queryFn: () => fetchExhibitors(),
+    queryFn: () => fetchExhibitors()
   })
 }
 
-export async function fetchEmployments(options?: RequestInit, filters?: IndustryFilters): Promise<Employment[]> {
+export async function fetchEmployments(
+  options?: RequestInit,
+  filters?: IndustryFilters
+): Promise<Employment[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
 
@@ -139,13 +145,13 @@ export async function fetchEmployments(options?: RequestInit, filters?: Industry
     cache: options?.cache,
     next: {
       ...options?.next,
-      tags: options?.next?.tags ?? [
-        "employments",
-      ]
+      tags: options?.next?.tags ?? ["employments"]
     }
   })
   if (!res.ok) {
-    throw new Error(`Failed to fetch employments: ${res.status} ${res.statusText}`)
+    throw new Error(
+      `Failed to fetch employments: ${res.status} ${res.statusText}`
+    )
   }
 
   const data = await res.json()
@@ -159,11 +165,14 @@ export async function fetchEmployments(options?: RequestInit, filters?: Industry
 export function useEmployments(filters?: ExhibitorFilters) {
   return useQuery({
     queryKey: ["employments", filters],
-    queryFn: () => fetchEmployments(),
+    queryFn: () => fetchEmployments()
   })
 }
 
-export async function fetchIndustries(options?: RequestInit, filters?: IndustryFilters): Promise<Industry[]> {
+export async function fetchIndustries(
+  options?: RequestInit,
+  filters?: IndustryFilters
+): Promise<Industry[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
 
@@ -178,13 +187,13 @@ export async function fetchIndustries(options?: RequestInit, filters?: IndustryF
     cache: options?.cache,
     next: {
       ...options?.next,
-      tags: options?.next?.tags ?? [
-        "industries",
-      ]
+      tags: options?.next?.tags ?? ["industries"]
     }
   })
   if (!res.ok) {
-    throw new Error(`Failed to fetch industries: ${res.status} ${res.statusText}`)
+    throw new Error(
+      `Failed to fetch industries: ${res.status} ${res.statusText}`
+    )
   }
 
   const data = await res.json()
@@ -198,11 +207,14 @@ export async function fetchIndustries(options?: RequestInit, filters?: IndustryF
 export function useIndustries(filters?: IndustryFilters) {
   return useQuery({
     queryKey: ["industries", filters],
-    queryFn: () => fetchEmployments(),
+    queryFn: () => fetchEmployments()
   })
 }
 
-export async function fetchPrograms(options?: RequestInit, filters?: ProgramFilters): Promise<Program[]> {
+export async function fetchPrograms(
+  options?: RequestInit,
+  filters?: ProgramFilters
+): Promise<Program[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
 
@@ -217,9 +229,7 @@ export async function fetchPrograms(options?: RequestInit, filters?: ProgramFilt
     cache: options?.cache,
     next: {
       ...options?.next,
-      tags: options?.next?.tags ?? [
-        "programs",
-      ]
+      tags: options?.next?.tags ?? ["programs"]
     }
   })
   if (!res.ok) {
@@ -237,6 +247,6 @@ export async function fetchPrograms(options?: RequestInit, filters?: ProgramFilt
 export function usePrograms(filters?: ProgramFilters) {
   return useQuery({
     queryKey: ["industries", filters],
-    queryFn: () => fetchEmployments(),
+    queryFn: () => fetchEmployments()
   })
 }

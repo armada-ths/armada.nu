@@ -244,7 +244,7 @@ export function OrganisationMembersGraphic() {
   })
 
   return (
-    <figure className="relative mb-4 mt-8 w-9/12 object-scale-down">
+    <figure className="relative mt-8 mb-4 w-9/12 object-scale-down">
       <svg viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg">
         <circle fill="orange" cx="85" cy="85" r={memberRadius} opacity={1} />
         {pgCircles}

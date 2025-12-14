@@ -30,7 +30,7 @@ export function PhotoSlideCarousel(props: {
     }
   }
   return (
-    <div className="mt-8">
+    <div className="z-10 mt-8">
       <Carousel arrows swipeable responsive={responsive} infinite autoPlay>
         {props.photoSrc.map((imgDetails, idx) => (
           <Image

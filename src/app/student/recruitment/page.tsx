@@ -1,16 +1,11 @@
-import { P } from "@/app/_components/Paragraph"
-import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
+import { FAQSection } from "@/app/student/recruitment/_components/FAQSection"
+import { Profile } from "@/app/student/recruitment/_components/Profile"
+import { RecruitmentDescription } from "@/app/student/recruitment/_components/RecruitmentDescription"
+import { Testimonial } from "@/app/student/recruitment/_components/Testimonial"
 import { Page } from "@/components/shared/Page"
+import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from "@/components/ui/accordion"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { DateTime } from "luxon"
 import { Metadata } from "next"
 import Link from "next/link"
 export const metadata: Metadata = {
@@ -25,20 +20,22 @@ export default async function RecruitmentPage() {
     }
   })
 
-  // const organization = await fetchOrganization({
-  //   next: {
-  //     revalidate: 3600 * 24 * 6 // 6 days (S3 caches the images for 7 days exactly, we want to revalidate before that, otherwise the images will not be loaded)
-  //   }
-  // })
+  const organization = await fetchOrganization({
+    next: {
+      revalidate: 3600 * 24 * 6 // 6 days (S3 caches the images for 7 days exactly, we want to revalidate before that, otherwise the images will not be loaded)
+    }
+  })
 
-  // const group = organization.find(group =>
-  //   group.name.includes("Marketing & Communications")
-  // )
+  const group = organization.find(group =>
+    group.name.includes("Project Manager")
+  )
 
-  const hrHead = {
-    name: "Head of HR",
-    email: "agastheeswar.bommaraj@armada.nu"
-  }
+  const profile = group?.people[0]
+
+  // const hrHead = {
+  //   name: "Head of HR",
+  //   email: ""
+  // }
 
   const photoSrc: { source: string; altText: string }[] = [
     {
@@ -59,20 +56,96 @@ export default async function RecruitmentPage() {
     }
   ]
 
-  //added +1 days to make end date available as a signup date
-  if (
-    (data?.end_date &&
-      DateTime.fromISO(data.end_date, { zone: "Europe/Stockholm" }).plus({ days: 1 }) < DateTime.now()) ||
-    (data?.start_date && DateTime.fromISO(data.start_date, { zone: "Europe/Stockholm" }) > DateTime.now())
-  ) {
-    return (
-      <Page.Background withIndents>
-        <Page.Boundary>
-          <Page.Header>Armada Recruitment</Page.Header>
-          <Page.Header tier="secondary">
-            No available roles at the moment
-          </Page.Header>
-          <Alert className="my-5">
+  // if (
+  //   (data?.end_date &&
+  //     DateTime.fromISO(data.end_date, { zone: "Europe/Stockholm" }).plus({ days: 1 }) < DateTime.now()) ||
+  //   (data?.start_date && DateTime.fromISO(data.start_date, { zone: "Europe/Stockholm" }) > DateTime.now())
+  // ) {
+  //   return (
+  //     <Page.Background withIndents>
+  //       <Page.Boundary>
+  //         <Page.Header>Armada Recruitment</Page.Header>
+  //         <Page.Header tier="secondary">
+  //           No available roles at the moment
+  //         </Page.Header>
+  //         <Alert className="my-5">
+  //           <AlertTitle>Be an Armada volunteer</AlertTitle>
+  //           <AlertDescription>
+  //             In Armada over 200 volunteers join together to create one of
+  //             KTH&apos;s biggest happenings. Take the opportunity to meet new
+  //             friends, expand your network and be a part of something you can be
+  //             really proud of!
+  //           </AlertDescription>
+  //         </Alert>
+  //         <div>
+  //           <P className="mt-4">
+  //             Armada is a rapidly growing organization that goes from 1 person
+  //             to over 200 each year. Now you have the chance to be part of this
+  //             amazing community of ambitious people who want to create something
+  //             amazing: A huge career fair for all students at KTH!
+  //           </P>
+  //           <P className="mt-4">
+  //             Armada offers you a chance to meet students from all different
+  //             chapters, get valuable experience on your CV, get closer to the
+  //             exhibitors and have a lot of fun!
+  //           </P>
+  //           <P className="mt-4">
+  //             Below you can read more about different roles and you can get to
+  //             know the Armada organization better{" "}
+  //             <Link
+  //               className=" underline hover:no-underline"
+  //               href="/about">
+  //               here
+  //             </Link>
+  //             . If you have any questions you can contact the{" "}
+  //             {hrHead && hrHead.email ? (
+  //               <Link
+  //                 className="underline hover:no-underline"
+  //                 href={`mailto:${hrHead.email}`}>
+  //                 Head of HR
+  //               </Link>
+  //             ) : (
+  //               "Head of HR"
+  //             )}
+  //             .
+  //           </P>
+  //         </div>
+  //       </Page.Boundary>
+  //     </Page.Background>
+  //   )
+  // }
+
+  return (
+    <Page.Background withIndents>
+      <Page.Boundary maxWidth={750}>
+        <Page.Header>{data.name}</Page.Header>
+        <div className="mt-8 mb-32 flex flex-1 flex-col">
+          {/* <Page.Header tier="secondary">
+            Open {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
+            {DateTime.fromISO(data.end_date).toFormat("d MMM")}
+          </Page.Header> */}
+          {profile && <Profile profile={profile} />}
+          <div className="mt-8 hidden justify-center sm:flex">
+            <Button
+              asChild
+              size="lg"
+              className="bg-grapefruit text-snow">
+              <Link href={data.link}>Apply to Armada!</Link>
+            </Button>
+          </div>
+          <RecruitmentDescription />
+          <Testimonial />
+          <div className="sticky inset-x-4 bottom-8 z-20 mt-12 flex justify-center sm:hidden">
+            <Button
+              asChild
+              variant="noShadow"
+              size="lg"
+              className="bg-grapefruit text-snow w-full max-w-[70vw]">
+              <Link href={data.link}>Apply to Armada!</Link>
+            </Button>
+          </div>
+          <FAQSection />
+          {/* <Alert className="my-5">
             <AlertTitle>Be an Armada volunteer</AlertTitle>
             <AlertDescription>
               In Armada over 200 volunteers join together to create one of
@@ -80,8 +153,8 @@ export default async function RecruitmentPage() {
               friends, expand your network and be a part of something you can be
               really proud of!
             </AlertDescription>
-          </Alert>
-          <div>
+          </Alert> */}
+          {/* <div>
             <P className="mt-4">
               Armada is a rapidly growing organization that goes from 1 person
               to over 200 each year. Now you have the chance to be part of this
@@ -97,7 +170,7 @@ export default async function RecruitmentPage() {
               Below you can read more about different roles and you can get to
               know the Armada organization better{" "}
               <Link
-                className=" underline hover:no-underline"
+                className="underline hover:no-underline"
                 href="/about">
                 here
               </Link>
@@ -106,69 +179,6 @@ export default async function RecruitmentPage() {
                 <Link
                   className="underline hover:no-underline"
                   href={`mailto:${hrHead.email}`}>
-                  Head of HR
-                </Link>
-              ) : (
-                "Head of HR"
-              )}
-              .
-            </P>
-          </div>
-        </Page.Boundary>
-      </Page.Background>
-    )
-  }
-
-  return (
-    <Page.Background withIndents>
-      <Page.Boundary maxWidth={750}>
-        <Page.Header>{data.name}</Page.Header>
-        <div className="mb-32 flex flex-1 flex-col">
-          <Page.Header tier="secondary">
-            Available roles - Open{" "}
-            {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
-            {DateTime.fromISO(data.end_date).toFormat("d MMM")}
-          </Page.Header>
-          <PhotoSlideCarousel photoSrc={photoSrc} />
-          <div className="m-8 flex justify-center">
-            <Link href={`${data.link}`}>
-              <Button size={"lg"}>Apply to Armada</Button>
-            </Link>
-          </div>
-          <Alert className="my-5">
-            <AlertTitle>Be an Armada volunteer</AlertTitle>
-            <AlertDescription>
-              In Armada over 200 volunteers join together to create one of
-              KTH&apos;s biggest happenings. Take the opportunity to meet new
-              friends, expand your network and be a part of something you can be
-              really proud of!
-            </AlertDescription>
-          </Alert>
-          <div>
-            <P className="mt-4">
-              Armada is a rapidly growing organization that goes from 1 person
-              to over 200 each year. Now you have the chance to be part of this
-              amazing community of ambitious people who want to create something
-              amazing: A huge career fair for all students at KTH!
-            </P>
-            <P className="mt-4">
-              Armada offers you a chance to meet students from all different
-              chapters, get valuable experience on your CV, get closer to the
-              exhibitors and have a lot of fun!
-            </P>
-            <P className="mt-4">
-              Below you can read more about different roles and you can get to
-              know the Armada organization better{" "}
-              <Link
-                className="text-white underline hover:no-underline"
-                href="/about">
-                here
-              </Link>
-              . If you have any questions you can contact the{" "}
-              {hrHead && hrHead.email ? (
-                <Link
-                  className="text-white underline hover:no-underline"
-                  href={`mailto:${hrHead.email}`}>
                   Head of HRD
                 </Link>
               ) : (
@@ -176,8 +186,8 @@ export default async function RecruitmentPage() {
               )}
               .
             </P>
-          </div>
-          <div className="flex-1">
+          </div> */}
+          {/* <div className="flex-1">
             <Accordion type="single" collapsible>
               {Object.entries(data.groups).map(([name, group], index) => (
                 <div key={index} className="mt-10">
@@ -207,7 +217,7 @@ export default async function RecruitmentPage() {
                 </div>
               ))}
             </Accordion>
-          </div>
+          </div> */}
         </div>
       </Page.Boundary>
     </Page.Background>

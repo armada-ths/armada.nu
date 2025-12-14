@@ -47,7 +47,7 @@ export default async function RecruitmentPage() {
           200 student volunteers managing a fair over two days, in several
           locations and 20 000 visitors. As Armada is fully owned by{" "}
           <Link
-            className="text-white underline hover:no-underline"
+            className="underline hover:no-underline"
             href="https://thskth.se/en/">
             THS
           </Link>
@@ -60,7 +60,7 @@ export default async function RecruitmentPage() {
         </div>
 
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
             PM
           </h2>
           <P>
@@ -71,7 +71,7 @@ export default async function RecruitmentPage() {
           </P>
         </div>
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
             Project group
           </h2>
           <P>
@@ -86,7 +86,7 @@ export default async function RecruitmentPage() {
           </P>
         </div>
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
             Operations team
           </h2>
           <P>
@@ -100,7 +100,7 @@ export default async function RecruitmentPage() {
           </P>
         </div>
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-3xl font-medium text-melon-700">
+          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
             Hosts
           </h2>
           <P>

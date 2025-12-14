@@ -33,7 +33,7 @@ export default function OrderItem({
   return (
     <div className="flex h-full flex-col gap-3">
       <div>
-        <div className="text-sm font-medium leading-tight">{name}</div>
+        <div className="text-sm leading-tight font-medium">{name}</div>
         {description && (
           <div className="text-xs text-stone-400">{description}</div>
         )}
@@ -53,7 +53,7 @@ export default function OrderItem({
         <Input
           inputMode="numeric"
           pattern="[0-9]*"
-          className="text-center w-full"
+          className="w-full text-center"
           value={quantity}
           onChange={e => handleInput(e.target.value)}
           aria-label="Quantity"
