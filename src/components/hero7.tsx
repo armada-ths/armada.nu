@@ -86,12 +86,7 @@ const Hero1 = ({
                 Secure your future
               </h1>
               <h2 className="text-melon-700">
-                Build real experience that sets you up for success -
-                <a
-                  href="/student/recruitment"
-                  className="underline hover:no-underline">
-                  Join PG26!
-                </a>
+                Build real experience that sets you up for success
               </h2>
               <P className="text-sm">
                 The Project Group of Armada consists of around 15 members.
