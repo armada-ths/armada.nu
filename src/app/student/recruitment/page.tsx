@@ -29,7 +29,9 @@ export default async function RecruitmentPage() {
     group.name.includes("Project Manager")
   )
 
-  const profile = group?.people[0]
+  const profile = group?.people.find(person =>
+    person.role.match("Project Manager–Project Manager")
+  )
 
   // const hrHead = {
   //   name: "Head of HR",
