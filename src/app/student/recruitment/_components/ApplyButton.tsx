@@ -24,7 +24,7 @@ export function ApplyButton({
         const checkDisabled = () => {
             const now = new Date()
             // Disable at midnight on January 21, 2026 (end of January 20)
-            const disableDate = new Date(2026, 0, 21, 0, 0, 0) // Month is 0-indexed
+            const disableDate = new Date(2026, 0, 22, 0, 0, 0) // Month is 0-indexed
 
             if (now >= disableDate) {
                 setIsDisabled(true)
