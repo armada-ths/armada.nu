@@ -1,3 +1,4 @@
+import { ApplyButton } from "@/app/student/recruitment/_components/ApplyButton"
 import { FAQSection } from "@/app/student/recruitment/_components/FAQSection"
 import { Profile } from "@/app/student/recruitment/_components/Profile"
 import { RecruitmentDescription } from "@/app/student/recruitment/_components/RecruitmentDescription"
@@ -5,9 +6,7 @@ import { Testimonial } from "@/app/student/recruitment/_components/Testimonial"
 import { Page } from "@/components/shared/Page"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
-import { Button } from "@/components/ui/button"
 import { Metadata } from "next"
-import Link from "next/link"
 export const metadata: Metadata = {
   title: `Armada Recruitment`,
   description: "See available roles and apply to become a part of Armada"
@@ -126,23 +125,21 @@ export default async function RecruitmentPage() {
           </Page.Header> */}
           {profile && <Profile profile={profile} />}
           <div className="mt-8 hidden justify-center sm:flex">
-            <Button
-              asChild
+            <ApplyButton
+              href={data.link}
               size="lg"
-              className="bg-grapefruit text-snow">
-              <Link href={data.link}>Apply to Armada!</Link>
-            </Button>
+              className="bg-grapefruit text-snow"
+            />
           </div>
           <RecruitmentDescription />
           <Testimonial />
           <div className="sticky inset-x-4 bottom-8 z-20 mt-12 flex justify-center sm:hidden">
-            <Button
-              asChild
+            <ApplyButton
+              href={data.link}
               variant="noShadow"
               size="lg"
-              className="bg-grapefruit text-snow w-full max-w-[70vw]">
-              <Link href={data.link}>Apply to Armada!</Link>
-            </Button>
+              className="bg-grapefruit text-snow w-full max-w-[70vw]"
+            />
           </div>
           <FAQSection />
           {/* <Alert className="my-5">
