@@ -12,6 +12,8 @@ import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { Hero1 } from "@/components/hero7"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Card } from "@/components/ui/card"
+import { FEATURE_FLAGS, SIGNUP_URL } from "@/feature_flags"
+import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
@@ -24,6 +26,10 @@ export default async function HomePage() {
 
   const today = Date.now()
   const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
+  const exhibitorSignupEnabled = FEATURE_FLAGS.EXHIBITOR_SIGNUP
+  const exhibitorPackagesEnabled = FEATURE_FLAGS.EXHIBITOR_PACKAGES
+  const showExhibitorButtons =
+    exhibitorSignupEnabled || exhibitorPackagesEnabled
 
   return (
     <>
@@ -145,15 +151,25 @@ export default async function HomePage() {
                 For Exhibitors
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
-                {/* <Button asChild className="bg-grapefruit text-snow">
-                  <Link href={SIGNUP_URL}>
-                    Exhibitor Signup
-                  </Link>
-                </Button>
-                <Button asChild variant="neutral">
-                  <Link href="/exhibitor/packages">Packages</Link>
-                </Button> */}
-                <p>More information about our 2026 products is coming soon!</p>
+                {showExhibitorButtons ? (
+                  <>
+                    {exhibitorSignupEnabled && (
+                      <Button asChild className="bg-grapefruit text-snow">
+                        <Link href={SIGNUP_URL}>Exhibitor Signup</Link>
+                      </Button>
+                    )}
+                    {exhibitorPackagesEnabled && (
+                      <Button asChild variant="neutral">
+                        <Link href="/exhibitor/packages">Packages</Link>
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <p>
+                    More information about our {DateTime.now().year} products
+                    is coming soon!
+                  </p>
+                )}
               </div>
             </Card>
 

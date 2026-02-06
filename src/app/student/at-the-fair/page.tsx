@@ -1,8 +1,15 @@
 import { P } from "@/app/_components/Paragraph"
 import { QuestionGenerator } from "@/app/student/at-the-fair/_components/QuestionGenerator"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
+import { feature } from "@/components/shared/feature"
 
-export default function AtFairPage() {
+export default async function AtFairPage() {
+  const showAtFair = await feature("AT_FAIR_PAGE")
+  if (!showAtFair) {
+    return <ComingSoonPage title="At the Fair" />
+  }
+
   return (
     <Page.Background withIndents>
       <Page.Boundary>

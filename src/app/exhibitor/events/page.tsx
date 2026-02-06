@@ -1,13 +1,13 @@
 import { P } from "@/app/_components/Paragraph"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { feature } from "@/components/shared/feature"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion"
-import { FEATURE_FLAGS } from "@/feature_flags"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -16,20 +16,11 @@ export const metadata: Metadata = {
 }
 
 export default async function Packages() {
-  const dates = await fetchDates()
-
-  if (!FEATURE_FLAGS.EXHIBITOR_EVENTS) {
-    return (
-      <Page.Background withIndents>
-        <Page.Boundary className="pb-20">
-          <div className="mx-auto max-w-[600px] text-center">
-            <Page.Header>Events</Page.Header>
-            <P className="mt-4">More info coming soon...</P>
-          </div>
-        </Page.Boundary>
-      </Page.Background>
-    )
+  const showEvents = await feature("EXHIBITOR_EVENTS")
+  if (!showEvents) {
+    return <ComingSoonPage title="Events" />
   }
+
 
   return (
     <Page.Background withIndents>

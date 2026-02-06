@@ -1,6 +1,7 @@
 import { StatusModuleItem } from "@/app/exhibitor/_components/StatusModuleItem"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { feature } from "@/components/shared/feature"
 import {
   Accordion,
   AccordionContent,
@@ -9,8 +10,8 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { SIGNUP_URL } from "@/feature_flags"
 import { formatDate } from "@/lib/utils"
-import { SIGNUP_URL, FEATURE_FLAGS } from "@/feature_flags"
 import { Metadata } from "next"
 import Link from "next/link"
 
@@ -21,20 +22,11 @@ export const metadata: Metadata = {
 }
 
 export default async function Packages() {
-  const dates = await fetchDates()
-
-  if (!FEATURE_FLAGS.EXHIBITOR_PACKAGES) {
-    return (
-      <Page.Background withIndents>
-        <Page.Boundary className="pb-20">
-          <div className="mx-auto max-w-[600px] text-center">
-            <Page.Header>Packages</Page.Header>
-            <p className="mt-4">More info coming soon...</p>
-          </div>
-        </Page.Boundary>
-      </Page.Background>
-    )
+  const showPackages = await feature("EXHIBITOR_PACKAGES")
+  if (!showPackages) {
+    return <ComingSoonPage title="Packages" />
   }
+
 
   return (
     <Page.Background withIndents>
