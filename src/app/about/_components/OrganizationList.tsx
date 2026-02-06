@@ -21,11 +21,25 @@ const OrganizationList = ({ group }: { group: Organization }) => {
     person.role.toLowerCase().includes("operation team")
   )
 
+  const sortedProjectGroup =
+    group.name === "Project Manager"
+      ? [...projectGroup].sort((a, b) => {
+        const getRank = (role: string) => {
+          const normalized = role.toLowerCase()
+          if (normalized.includes("project manager–project manager")) return 0
+          if (normalized.includes("vice project manager")) return 1
+          if (normalized === "project manager") return 0
+          return 2
+        }
+        return getRank(a.role) - getRank(b.role)
+      })
+      : projectGroup
+
   return (
     <div key={group.name} className="mt-16">
       <h2 className="font-bebas-neue text-3xl">{group.name}</h2>
       <div className="mt-5 flex flex-wrap items-start justify-center gap-6 md:justify-start">
-        {projectGroup.map(person => (
+        {sortedProjectGroup.map(person => (
           <PersonCard key={person.id} person={person} />
         ))}
         {showOTs &&
