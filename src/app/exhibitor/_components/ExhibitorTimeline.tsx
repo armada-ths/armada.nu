@@ -6,10 +6,15 @@ import { Button } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
 
 import { SIGNUP_URL } from "@/feature_flags"
+import { DateTime } from "luxon"
 import Link from "next/link"
 
 export async function ExhibitorTimeline() {
   const dates = await fetchDates()
+  const monthLabel = (iso: string, prefix: string = "") => {
+    const month = DateTime.fromISO(iso).toFormat("MMMM")
+    return `${prefix} ${month}`
+  }
 
   //ASSUMPTION: the start date will be first for fair dates
   return (
@@ -19,7 +24,7 @@ export async function ExhibitorTimeline() {
       className="relative mt-10 space-y-8">
       <TimelineItem
         dateStringISO={dates.ir.start}
-        dateStringHuman={`Before ${formatDate(dates.ir.start)}`}
+        dateStringHuman={monthLabel(dates.ir.start, "Before")}
         title="Armada is setting up">
         <P className="mt-3">
           Before the Priority Registration can open, we need to make
@@ -35,6 +40,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.ir.start}
+        dateStringHuman={monthLabel(dates.ir.start, "Early")}
         title="Priority Registration starts">
         <P className="mt-3">
           Priority Registration is where you apply to be an exhibitor. When you
@@ -75,9 +81,13 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.ir.end}
+        dateStringHuman={monthLabel(dates.ir.end, "May -")}
         title="Priority Registration ends"></TimelineItem>
 
-      <TimelineItem dateStringISO={dates.ir.acceptance} title="Acceptance date">
+      <TimelineItem
+        dateStringISO={dates.ir.acceptance}
+        dateStringHuman={monthLabel(dates.ir.acceptance)}
+        title="Acceptance date">
         <P className="">
           We will get back to everyone who made an Priority Registration by{" "}
           {formatDate(dates.ir.end)}. This is when you will know 100% for sure
@@ -100,6 +110,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fr.start}
+        dateStringHuman={monthLabel(dates.fr.start)}
         title="Standard Registration starts">
         <P className="mt-3">
           During the Standard Registration you choose your package, if you want
@@ -132,10 +143,12 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fr.end}
+        dateStringHuman={monthLabel(dates.fr.end)}
         title="Standard Registration ends"></TimelineItem>
 
       <TimelineItem
         dateStringISO={dates.fr.end}
+        dateStringHuman={monthLabel(dates.fr.end, "Late")}
         title="Fair preparations start">
         <P className="mt-3">
           Once Standard Registration is complete, there are a few things that
