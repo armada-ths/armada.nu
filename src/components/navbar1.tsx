@@ -313,7 +313,9 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
 
   if (item.disabled) {
     return (
-      <span className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none select-none opacity-50 cursor-not-allowed sm:min-w-80" aria-disabled>
+      <span
+        className="rounded-base border-2 border-transparent flex max-w-fit flex-row gap-4 p-3 leading-none select-none opacity-50 cursor-not-allowed sm:min-w-80"
+        aria-disabled>
         {content}
       </span>
     )
@@ -321,7 +323,7 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
 
   return (
     <a
-      className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none no-underline outline-hidden transition-colors select-none hover:border-2 sm:min-w-80"
+      className="rounded-base border-2 border-transparent flex max-w-fit flex-row gap-4 p-3 leading-none no-underline outline-hidden transition-[border-color,box-shadow,transform] select-none hover:border-licorice hover:shadow-sm hover:scale-[1.01] sm:min-w-80"
       href={item.url}>
       {content}
     </a>
