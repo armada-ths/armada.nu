@@ -31,7 +31,7 @@ const PersonCard = ({ person }: { person: Person }) => {
         <div className="px-4">
           <p className="text-melon-700">{person.name}</p>
           <p className="mt-1 text-sm text-stone-400">
-            {person.role.split("–")[1]}
+            {(person.role.split("–")[1] ?? person.role).trim()}
           </p>
           <div className="mt-2 flex gap-x-2">
             {person.email != null && (

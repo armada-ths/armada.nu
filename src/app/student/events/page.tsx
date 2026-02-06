@@ -1,6 +1,8 @@
 import { P } from "@/app/_components/Paragraph"
 import { EventsTimeline } from "@/app/student/events/_components/EventsTimeLine"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
+import { feature } from "@/components/shared/feature"
 import { Event, fetchEvents } from "@/components/shared/hooks/api/useEvents"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { eventDateTimeToEpochSeconds } from "@/lib/utils"
@@ -44,6 +46,11 @@ function orderEvents(events: Event[], nowInSeconds: number) {
 }
 
 export default async function EventPage() {
+  const showEvents = await feature("EVENT_PAGE")
+  if (!showEvents) {
+    return <ComingSoonPage title="Events" />
+  }
+
   let events: Event[] = []
 
   try {
