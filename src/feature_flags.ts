@@ -51,7 +51,7 @@ export const FEATURE_FLAGS: Record<
   boolean
 > = {
   EVENT_PAGE: true,
-  MAP_PAGE: true,
+  MAP_PAGE: false,
   AT_FAIR_PAGE: true,
   EXHIBITOR_SIGNUP: false,
   EXHIBITOR_PACKAGES: false,
