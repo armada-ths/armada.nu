@@ -18,6 +18,11 @@ export function TimelineItem({
 }) {
   const expandable = !!children
 
+  const headerClasses = cn(
+    "ml-8 w-full rounded-none border-l-2 text-left",
+    "border-licorice bg-melon-700 border-l-2"
+  )
+
   return (
     <AccordionItem value={title} className="bg-snow relative">
       {/* TIMELINE SPINE */}
@@ -29,13 +34,12 @@ export function TimelineItem({
       {/* HEADER (flat melon block) */}
       <AccordionTrigger
         className={cn(
-          "ml-8 w-full rounded-none border-l-2 text-left",
-          "border-licorice bg-melon-700 border-l-2 hover:bg-emerald-500",
-
+          headerClasses,
           expandable
             ? "cursor-pointer hover:bg-emerald-500"
-            : "pointer-events-none cursor-default"
-        )}>
+            : "pointer-events-none cursor-default [&>svg]:hidden"
+        )}
+        aria-disabled={!expandable}>
         <div className="flex flex-col gap-1">
           {/* DATE */}
           <span className="bg-snow border-licorice w-fit border px-2 py-0.5 text-xs font-semibold">
