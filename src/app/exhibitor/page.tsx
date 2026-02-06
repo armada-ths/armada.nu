@@ -4,6 +4,7 @@ import { CurrentStatus } from "@/app/exhibitor/_components/CurrentStatus"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
+import { SIGNUP_URL } from "@/feature_flags"
 import { Metadata } from "next"
 import Link from "next/link"
 
@@ -41,7 +42,7 @@ export default function ForExhibitorsPage() {
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4">
             <Button asChild className="bg-grapefruit">
-              <Link href="https://app.eventro.se/register/armada">
+              <Link href={SIGNUP_URL}>
                 Signup to Armada
               </Link>
             </Button>

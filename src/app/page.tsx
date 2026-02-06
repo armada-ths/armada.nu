@@ -138,26 +138,27 @@ export default async function HomePage() {
           </P>
 
           {/* Links */}
-          <div className="my-6 flex flex-col items-center gap-6 text-center md:flex-row md:justify-center md:gap-8">
+          <div className="my-6 grid gap-6 text-center md:grid-cols-2 md:items-stretch md:justify-items-center md:gap-8">
             {/* Card 1 */}
-            <Card className="bg-melon-700 bg-opacity-90 flex w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:flex-1 md:p-8">
+            <Card className="bg-melon-700 bg-opacity-90 flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Exhibitors
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
-                <Button asChild className="bg-grapefruit text-snow">
-                  <Link href="https://app.eventro.se/register/armada">
+                {/* <Button asChild className="bg-grapefruit text-snow">
+                  <Link href={SIGNUP_URL}>
                     Exhibitor Signup
                   </Link>
                 </Button>
                 <Button asChild variant="neutral">
                   <Link href="/exhibitor/packages">Packages</Link>
-                </Button>
+                </Button> */}
+                <p>More information about our 2026 products is coming soon!</p>
               </div>
             </Card>
 
             {/* Card 2 */}
-            <Card className="bg-melon-700 bg-opacity-90 flex w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:flex-1 md:p-8">
+            <Card className="bg-melon-700 bg-opacity-90 flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Students
               </h2>

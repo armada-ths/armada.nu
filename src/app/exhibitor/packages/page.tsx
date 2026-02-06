@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { formatDate } from "@/lib/utils"
+import { SIGNUP_URL, FEATURE_FLAGS } from "@/feature_flags"
 import { Metadata } from "next"
 import Link from "next/link"
 
@@ -21,6 +22,19 @@ export const metadata: Metadata = {
 
 export default async function Packages() {
   const dates = await fetchDates()
+
+  if (!FEATURE_FLAGS.EXHIBITOR_PACKAGES) {
+    return (
+      <Page.Background withIndents>
+        <Page.Boundary className="pb-20">
+          <div className="mx-auto max-w-[600px] text-center">
+            <Page.Header>Packages</Page.Header>
+            <p className="mt-4">More info coming soon...</p>
+          </div>
+        </Page.Boundary>
+      </Page.Background>
+    )
+  }
 
   return (
     <Page.Background withIndents>
@@ -190,7 +204,7 @@ export default async function Packages() {
               <AccordionContent>
                 <p>You can sign up here:</p>
                 <div className="my-4">
-                  <Link href="https://app.eventro.se/register/armada">
+                  <Link href={SIGNUP_URL}>
                     <Button className="bg-grapefruit text-snow">
                       Signup to Armada
                     </Button>

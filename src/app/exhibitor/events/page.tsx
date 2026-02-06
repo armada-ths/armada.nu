@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion"
+import { FEATURE_FLAGS } from "@/feature_flags"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -16,6 +17,19 @@ export const metadata: Metadata = {
 
 export default async function Packages() {
   const dates = await fetchDates()
+
+  if (!FEATURE_FLAGS.EXHIBITOR_EVENTS) {
+    return (
+      <Page.Background withIndents>
+        <Page.Boundary className="pb-20">
+          <div className="mx-auto max-w-[600px] text-center">
+            <Page.Header>Events</Page.Header>
+            <P className="mt-4">More info coming soon...</P>
+          </div>
+        </Page.Boundary>
+      </Page.Background>
+    )
+  }
 
   return (
     <Page.Background withIndents>
@@ -122,7 +136,7 @@ export default async function Packages() {
               <AccordionContent>
                 <p>
                   Welcome students to your office to hang out, OR let us
-                  organize it for you at Nymble, THS’s own pub! Choose between
+                  organize it for you at Nymble, THS's own pub! Choose between
                   an informal hangout fostering organic conversations and
                   mingling or a more formal networking session where you can
                   exchange insights to forge meaningful connections with the

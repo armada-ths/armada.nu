@@ -1,6 +1,7 @@
 import { P } from "@/app/_components/Paragraph"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { Button } from "@/components/ui/button"
+import { SIGNUP_URL } from "@/feature_flags"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
@@ -22,7 +23,7 @@ export async function CompanyRegistrationButton() {
   }
 
   return (
-    <Link href="https://app.eventro.se/register/armada">
+    <Link href={SIGNUP_URL}>
       <Button>Exhibitor Signup</Button>
     </Link>
   )

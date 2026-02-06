@@ -5,6 +5,7 @@ import { Accordion } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
 
+import { SIGNUP_URL } from "@/feature_flags"
 import Link from "next/link"
 
 export async function ExhibitorTimeline() {
@@ -66,7 +67,7 @@ export async function ExhibitorTimeline() {
           in the larger packages.
         </P>
         <div className="my-4">
-          <Link href="https://app.eventro.se/register/armada">
+          <Link href={SIGNUP_URL}>
             <Button className="bg-grape-700">Signup to Armada</Button>
           </Link>
         </div>
@@ -109,7 +110,7 @@ export async function ExhibitorTimeline() {
         </P>
         <div className="my-4">
           <Button>
-            <Link href="https://app.eventro.se/register/armada">
+            <Link href={SIGNUP_URL}>
               Signup to Armada
             </Link>
           </Button>

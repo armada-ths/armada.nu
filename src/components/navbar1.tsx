@@ -31,6 +31,7 @@ export interface MenuItem {
   description?: string
   icon?: React.ReactNode
   items?: MenuItem[]
+  disabled?: boolean
 }
 
 interface Navbar1Props {
@@ -218,7 +219,13 @@ const renderMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger className="rounded-md">
+        <NavigationMenuTrigger
+          className={
+            item.disabled
+              ? "rounded-md opacity-50 pointer-events-none"
+              : "rounded-md"
+          }
+          aria-disabled={item.disabled ? true : undefined}>
           {item.title}
         </NavigationMenuTrigger>
         <NavigationMenuContent className="bg-snow">
@@ -234,11 +241,17 @@ const renderMenuItem = (item: MenuItem) => {
 
   return (
     <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium">
-        {item.title}
-      </NavigationMenuLink>
+      {item.disabled ? (
+        <span className="inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium opacity-50 cursor-not-allowed">
+          {item.title}
+        </span>
+      ) : (
+        <NavigationMenuLink
+          href={item.url}
+          className="group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium">
+          {item.title}
+        </NavigationMenuLink>
+      )}
     </NavigationMenuItem>
   )
 }
@@ -247,7 +260,13 @@ const renderMobileMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <AccordionItem key={item.title} value={item.title} className="rounded-md">
-        <AccordionTrigger className="text-md py-4 font-semibold hover:no-underline">
+        <AccordionTrigger
+          className={
+            item.disabled
+              ? "text-md py-4 font-semibold hover:no-underline opacity-50 pointer-events-none"
+              : "text-md py-4 font-semibold hover:no-underline"
+          }
+          aria-disabled={item.disabled ? true : undefined}>
           {item.title}
         </AccordionTrigger>
         <AccordionContent>
@@ -260,17 +279,26 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
-      {item.title}
-    </a>
+    <span
+      key={item.title}
+      className={
+        item.disabled
+          ? "text-md font-semibold opacity-50 cursor-not-allowed"
+          : "text-md font-semibold"
+      }
+      aria-disabled={item.disabled ? true : undefined}>
+      {item.disabled ? (
+        item.title
+      ) : (
+        <a href={item.url}>{item.title}</a>
+      )}
+    </span>
   )
 }
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
-  return (
-    <a
-      className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none no-underline outline-hidden transition-colors select-none hover:border-2 sm:min-w-80"
-      href={item.url}>
+  const content = (
+    <>
       <div className="text-licorice">{item.icon}</div>
       <div>
         <div className="text-licorice font-semibold">{item.title}</div>
@@ -280,8 +308,25 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
           </p>
         )}
       </div>
+    </>
+  )
+
+  if (item.disabled) {
+    return (
+      <span className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none select-none opacity-50 cursor-not-allowed sm:min-w-80" aria-disabled>
+        {content}
+      </span>
+    )
+  }
+
+  return (
+    <a
+      className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none no-underline outline-hidden transition-colors select-none hover:border-2 sm:min-w-80"
+      href={item.url}>
+      {content}
     </a>
   )
 }
 
 export { Navbar1 }
+
