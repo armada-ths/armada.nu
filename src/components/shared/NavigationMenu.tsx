@@ -1,6 +1,7 @@
 "use client"
 
 import { MenuItem, Navbar1 } from "@/components/navbar1"
+import { SIGNUP_URL } from "@/feature_flags"
 import {
   BriefcaseIcon,
   Building2Icon,
@@ -24,15 +25,17 @@ const companyLinks: MenuItem[] = [
     items: [
       {
         title: "Registration",
-        url: "https://app.eventro.se/register/armada",
-        description: `Signup as an exhibitor for the fair ${DateTime.now().year}`,
-        icon: <ClipboardPenIcon className="size-5 shrink-0" />
+        url: SIGNUP_URL,
+        description: `More information coming soon`, // Signup as an exhibitor for the fair ${DateTime.now().year}
+        icon: <ClipboardPenIcon className="size-5 shrink-0" />,
+        disabled: true
       },
       {
         title: "Packages",
         url: "/exhibitor/packages",
-        description: "See what we have to offer",
-        icon: <PackageIcon className="size-5 shrink-0" />
+        description: "More information coming soon", // See what we have to offer
+        icon: <PackageIcon className="size-5 shrink-0" />,
+        disabled: true
       },
       {
         title: "Why Armada",
@@ -49,8 +52,9 @@ const companyLinks: MenuItem[] = [
       {
         title: "Events",
         url: "/exhibitor/events",
-        description: "Interested in having an event with us?",
-        icon: <CalendarSearchIcon className="size-5 shrink-0" />
+        description: "More information coming soon", // Interested in having an event with us?
+        icon: <CalendarSearchIcon className="size-5 shrink-0" />,
+        disabled: true
       }
     ]
   }

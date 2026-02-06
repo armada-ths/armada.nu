@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion"
+import { SIGNUP_URL } from "@/feature_flags"
 import Image from "next/image"
 import { SiInstagram, SiLinkedin, SiTiktok } from "react-icons/si"
 
@@ -64,7 +65,7 @@ export function Footer() {
           <p className="font-semibold">EXHIBITORS</p>
           <div className="flex flex-col gap-1">
             <a
-              href="https://app.eventro.se/register/armada"
+              href={SIGNUP_URL}
               className="hover:text-melon-700">
               Registration
             </a>
@@ -141,7 +142,7 @@ export function Footer() {
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
-                <a href="https://app.eventro.se/register/armada">
+                <a href={SIGNUP_URL}>
                   Registration
                 </a>
                 <a href="/exhibitor/packages">Packages</a>

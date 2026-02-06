@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button"
+import { SIGNUP_URL } from "@/feature_flags"
 import Link from "next/link"
 
 export function RegisterPrompt() {
   //maybe remove
   return (
     <div className="mt-2">
-      <Link href="https://app.eventro.se/register/armada">
+      <Link href={SIGNUP_URL}>
         <Button>Signup to armada</Button>
       </Link>
       <p className="text-xs">
