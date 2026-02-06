@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getDateFormatString(date: DateTime) {
-  return `d MMMM ${date.year !== DateTime.now().year ? " YYYY" : ""}`
+  return `d MMMM ${date.year !== DateTime.now().year ? " yyyy" : ""}`
 }
 
 export function formatDate(isoString: string) {
