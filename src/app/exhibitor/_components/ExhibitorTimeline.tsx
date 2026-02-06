@@ -90,7 +90,7 @@ export async function ExhibitorTimeline() {
           You can always check the status of your registration on the dashboard,
           and contact{" "}
           <Link
-            className="text-white underline hover:no-underline"
+            className="underline hover:no-underline"
             href="mailto:sales@armada.nu">
             sales@armada.nu
           </Link>{" "}
@@ -120,7 +120,7 @@ export async function ExhibitorTimeline() {
           different ways. If you want help finding the best package for you,
           please contact{" "}
           <Link
-            className="text-white underline hover:no-underline"
+            className="underline hover:no-underline"
             href="mailto:sales@armada.nu">
             sales@armada.nu
           </Link>{" "}
