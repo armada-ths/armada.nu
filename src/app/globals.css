@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
 @font-face {
   font-family: "Bebas Neue Book";
   src: url("/fonts/BebasNeue-Book.otf") format("opentype");
@@ -9,10 +13,6 @@
   src: url("/fonts/BebasNeue-Bold.otf") format("opentype");
   font-weight: 700;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
-@import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -204,11 +204,9 @@
 
   padding: 2px;
 
-  background: conic-gradient(
-    from var(--angle),
-    transparent 0deg 300deg,
-    var(--color-melon-700) 300deg 360deg
-  );
+  background: conic-gradient(from var(--angle),
+      transparent 0deg 300deg,
+      var(--color-melon-700) 300deg 360deg);
 
   /* content-box is the inside of the button, second line is the entire button. xor excludes the content-box */
   -webkit-mask:
@@ -245,6 +243,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -261,33 +260,31 @@
 
     background-image:
       /* vertical double lines */
-      repeating-linear-gradient(
-        to right,
+      repeating-linear-gradient(to right,
         transparent 0,
         transparent 28px,
         var(--color-snow) 28px,
         var(--color-snow) 29px,
         transparent 29px,
         transparent 33px,
-        /* wider gap between stripes */ var(--color-snow) 33px,
+        /* wider gap between stripes */
+        var(--color-snow) 33px,
         var(--color-snow) 34px,
         transparent 34px,
-        transparent 60px
-      ),
+        transparent 60px),
       /* horizontal double lines */
-        repeating-linear-gradient(
-          to bottom,
-          transparent 0,
-          transparent 28px,
-          var(--color-snow) 28px,
-          var(--color-snow) 29px,
-          transparent 29px,
-          transparent 33px,
-          /* wider gap between stripes */ var(--color-snow) 33px,
-          var(--color-snow) 34px,
-          transparent 34px,
-          transparent 60px
-        );
+      repeating-linear-gradient(to bottom,
+        transparent 0,
+        transparent 28px,
+        var(--color-snow) 28px,
+        var(--color-snow) 29px,
+        transparent 29px,
+        transparent 33px,
+        /* wider gap between stripes */
+        var(--color-snow) 33px,
+        var(--color-snow) 34px,
+        transparent 34px,
+        transparent 60px);
   }
 
   h1,

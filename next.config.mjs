@@ -87,6 +87,14 @@ const nextConfig = {
         permanent: true
       }
     ]
+  },
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js"
+      }
+    }
   }
 }
 
