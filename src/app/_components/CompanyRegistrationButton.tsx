@@ -1,12 +1,13 @@
 import { P } from "@/app/_components/Paragraph"
+import { getSignupUrl } from "@/components/shared/feature"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { Button } from "@/components/ui/button"
-import { SIGNUP_URL } from "@/feature_flags"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
 export async function CompanyRegistrationButton() {
   const { fr } = await fetchDates()
+  const signupUrl = await getSignupUrl()
   const signUpDate = DateTime.local(2025, 3, 3, { zone: "Europe/Stockholm" })
   const isAfterFr = DateTime.now() > DateTime.fromISO(fr.end)
   const isBeforeSignUpDate = DateTime.now() < signUpDate
@@ -23,7 +24,7 @@ export async function CompanyRegistrationButton() {
   }
 
   return (
-    <Link href={SIGNUP_URL}>
+    <Link href={signupUrl}>
       <Button>Exhibitor Signup</Button>
     </Link>
   )

@@ -1,7 +1,7 @@
 import { StatusModuleItem } from "@/app/exhibitor/_components/StatusModuleItem"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
-import { feature } from "@/components/shared/feature"
+import { feature, getSignupUrl } from "@/components/shared/feature"
 import {
   Accordion,
   AccordionContent,
@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { SIGNUP_URL } from "@/feature_flags"
 import { formatDate } from "@/lib/utils"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -26,6 +25,7 @@ export default async function Packages() {
   if (!showPackages) {
     return <ComingSoonPage title="Packages" />
   }
+  const signupUrl = await getSignupUrl()
 
 
   return (
@@ -196,7 +196,7 @@ export default async function Packages() {
               <AccordionContent>
                 <p>You can sign up here:</p>
                 <div className="my-4">
-                  <Link href={SIGNUP_URL}>
+                  <Link href={signupUrl}>
                     <Button className="bg-grapefruit text-snow">
                       Signup to Armada
                     </Button>

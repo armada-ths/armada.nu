@@ -1,14 +1,15 @@
+import { getSignupUrl } from "@/components/shared/feature"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion"
-import { SIGNUP_URL } from "@/feature_flags"
 import Image from "next/image"
 import { SiInstagram, SiLinkedin, SiTiktok } from "react-icons/si"
 
-export function Footer() {
+export async function Footer() {
+  const signupUrl = await getSignupUrl()
   return (
     <footer className="bg-licorice flex w-full flex-col items-center py-8 text-white">
       {/* Divider */}
@@ -65,7 +66,7 @@ export function Footer() {
           <p className="font-semibold">EXHIBITORS</p>
           <div className="flex flex-col gap-1">
             <a
-              href={SIGNUP_URL}
+              href={signupUrl}
               className="hover:text-melon-700">
               Registration
             </a>
@@ -142,7 +143,7 @@ export function Footer() {
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
-                <a href={SIGNUP_URL}>
+                <a href={signupUrl}>
                   Registration
                 </a>
                 <a href="/exhibitor/packages">Packages</a>

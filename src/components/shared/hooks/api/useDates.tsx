@@ -1,7 +1,7 @@
 import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query"
 
-interface FairDate {
+export interface FairDate {
   fair: {
     description: string
     days: string[]
@@ -25,7 +25,9 @@ interface FairDate {
 }
 
 export async function fetchDates() {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`)
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`, {
+    cache: "no-store"
+  })
   const result = await res.json()
   return result as FairDate
 }

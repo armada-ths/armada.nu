@@ -5,12 +5,13 @@ import { Accordion } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
 
-import { SIGNUP_URL } from "@/feature_flags"
+import { getSignupUrl } from "@/components/shared/feature"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
 export async function ExhibitorTimeline() {
   const dates = await fetchDates()
+  const signupUrl = await getSignupUrl()
   const monthLabel = (iso: string, prefix: string = "") => {
     const month = DateTime.fromISO(iso).toFormat("MMMM")
     return `${prefix} ${month}`
@@ -73,7 +74,7 @@ export async function ExhibitorTimeline() {
           in the larger packages.
         </P>
         <div className="my-4">
-          <Link href={SIGNUP_URL}>
+          <Link href={signupUrl}>
             <Button className="bg-grape-700">Signup to Armada</Button>
           </Link>
         </div>
@@ -121,9 +122,7 @@ export async function ExhibitorTimeline() {
         </P>
         <div className="my-4">
           <Button>
-            <Link href={SIGNUP_URL}>
-              Signup to Armada
-            </Link>
+            <Link href={signupUrl}>Signup to Armada</Link>
           </Button>
         </div>
         <P className="mt-3">

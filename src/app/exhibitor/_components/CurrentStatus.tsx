@@ -10,14 +10,14 @@ export async function CurrentStatus() {
   if (today < new Date(dates.ir.start).getTime()) {
     return (
       <StatusModuleItem title="Registration is opening soon!">
-        We are preparing the registration for next year&apos;s Armada. In the
+        We are preparing the registration for next year&apos;s Armada.{/*  In the
         meanwhile, you are very welcome to report interest in this{" "}
         <Link
           className="text-white underline hover:no-underline"
           href="https://docs.google.com/forms/d/e/1FAIpQLSdny1mhsj1Wutt_FaJtqgxKJP3OOBrWW09Ic3T5_NwEHWhV_w/viewform?usp=sf_link">
           form
         </Link>{" "}
-        and we will get back to you once registration is open!
+        and we will get back to you once registration is open! */}
       </StatusModuleItem>
     )
   } else if (
@@ -26,7 +26,7 @@ export async function CurrentStatus() {
   ) {
     return (
       <StatusModuleItem title="Priority Registration open">
-        We are currently preparing the registration for Armada 2025. In the
+        We are currently preparing the registration for Armada {new Date().getFullYear()}. In the
         meantime, feel free to express your interest. During the Priority
         Registration, you can apply to become an exhibitor at Armada. By doing
         so, you do not commit to participating, yet you'll be eligible for a

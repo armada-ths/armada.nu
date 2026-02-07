@@ -1,4 +1,6 @@
-import { FlagDefinitionsType } from "@vercel/flags"
+import { fetchDates, type FairDate } from "@/components/shared/hooks/api/useDates"
+import { FlagDefinitionsType } from "flags"
+import { DateTime } from "luxon"
 
 export const FEATURE_FLAG_DEFINITIONS = {
   EVENT_PAGE: {
@@ -53,12 +55,42 @@ export const FEATURE_FLAGS: Record<
   EVENT_PAGE: true,
   MAP_PAGE: false,
   AT_FAIR_PAGE: true,
-  EXHIBITOR_SIGNUP: false,
+  EXHIBITOR_SIGNUP: true,
   EXHIBITOR_PACKAGES: false,
   EXHIBITOR_EVENTS: false
 }
 
-export const SIGNUP_URL = FEATURE_FLAGS.EXHIBITOR_SIGNUP
-  ? "https://app.eventro.se/register/armada"
-  : "/exhibitor/signup"
+export function isExhibitorSignupOpen(
+  dates: FairDate,
+  now: DateTime = DateTime.now().setZone("Europe/Stockholm")
+) {
+  const irStart = DateTime.fromISO(dates.ir.start, {
+    zone: "Europe/Stockholm"
+  }).startOf("day")
+  const fairStart = DateTime.fromISO(dates.fair.days[0], {
+    zone: "Europe/Stockholm"
+  }).startOf("day")
+
+  if (!irStart.isValid || !fairStart.isValid) {
+    return false
+  }
+
+  return now.toMillis() >= irStart.toMillis() && now.toMillis() < fairStart.toMillis()
+}
+
+export async function getExhibitorSignupEnabled() {
+  try {
+    const dates = await fetchDates()
+    return isExhibitorSignupOpen(dates)
+  } catch {
+    return FEATURE_FLAGS.EXHIBITOR_SIGNUP
+  }
+}
+
+export async function getSignupUrl() {
+  return (await getExhibitorSignupEnabled())
+    ? "https://app.eventro.se/register/armada"
+    : "/exhibitor/signup"
+}
+
 export default FEATURE_FLAGS
