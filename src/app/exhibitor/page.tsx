@@ -1,10 +1,10 @@
 import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { CurrentStatus } from "@/app/exhibitor/_components/CurrentStatus"
+import { getSignupUrl } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-import { SIGNUP_URL } from "@/feature_flags"
 import { Metadata } from "next"
 import Link from "next/link"
 
@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   title: `Become an exhibitor at Armada`
 }
 
-export default function ForExhibitorsPage() {
+export default async function ForExhibitorsPage() {
+  const signupUrl = await getSignupUrl()
   const promotionalPhotos: { source: string; altText: string }[] = [
     {
       source: "/fair_pictures/49121473038_5876d71e29_b.jpg",
@@ -42,7 +43,7 @@ export default function ForExhibitorsPage() {
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4">
             <Button asChild className="bg-grapefruit">
-              <Link href={SIGNUP_URL}>
+              <Link href={signupUrl}>
                 Signup to Armada
               </Link>
             </Button>

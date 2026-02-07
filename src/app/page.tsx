@@ -10,9 +10,9 @@ import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { Hero1 } from "@/components/hero7"
+import { feature, getSignupUrl } from "@/components/shared/feature"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Card } from "@/components/ui/card"
-import { FEATURE_FLAGS, SIGNUP_URL } from "@/feature_flags"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
@@ -26,10 +26,11 @@ export default async function HomePage() {
 
   const today = Date.now()
   const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
-  const exhibitorSignupEnabled = FEATURE_FLAGS.EXHIBITOR_SIGNUP
-  const exhibitorPackagesEnabled = FEATURE_FLAGS.EXHIBITOR_PACKAGES
+  const exhibitorSignupEnabled = await feature("EXHIBITOR_SIGNUP")
+  const exhibitorPackagesEnabled = await feature("EXHIBITOR_PACKAGES")
   const showExhibitorButtons =
     exhibitorSignupEnabled || exhibitorPackagesEnabled
+  const signupUrl = await getSignupUrl()
 
   return (
     <>
@@ -146,7 +147,7 @@ export default async function HomePage() {
           {/* Links */}
           <div className="my-6 grid gap-6 text-center md:grid-cols-2 md:items-stretch md:justify-items-center md:gap-8">
             {/* Card 1 */}
-            <Card className="bg-melon-700 bg-opacity-90 flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
+            <Card className="bg-melon-700/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Exhibitors
               </h2>
@@ -155,7 +156,7 @@ export default async function HomePage() {
                   <>
                     {exhibitorSignupEnabled && (
                       <Button asChild className="bg-grapefruit text-snow">
-                        <Link href={SIGNUP_URL}>Exhibitor Signup</Link>
+                        <Link href={signupUrl}>Exhibitor Signup</Link>
                       </Button>
                     )}
                     {exhibitorPackagesEnabled && (
@@ -174,7 +175,7 @@ export default async function HomePage() {
             </Card>
 
             {/* Card 2 */}
-            <Card className="bg-melon-700 bg-opacity-90 flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
+            <Card className="bg-melon-700/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Students
               </h2>

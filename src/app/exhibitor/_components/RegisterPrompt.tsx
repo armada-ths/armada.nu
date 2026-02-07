@@ -1,12 +1,13 @@
+import { getSignupUrl } from "@/components/shared/feature"
 import { Button } from "@/components/ui/button"
-import { SIGNUP_URL } from "@/feature_flags"
 import Link from "next/link"
 
-export function RegisterPrompt() {
+export async function RegisterPrompt() {
+  const signupUrl = await getSignupUrl()
   //maybe remove
   return (
     <div className="mt-2">
-      <Link href={SIGNUP_URL}>
+      <Link href={signupUrl}>
         <Button>Signup to armada</Button>
       </Link>
       <p className="text-xs">
