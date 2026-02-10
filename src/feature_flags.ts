@@ -1,6 +1,5 @@
-import { fetchDates, type FairDate } from "@/components/shared/hooks/api/useDates"
+import { env } from "@/env"
 import { FlagDefinitionsType } from "flags"
-import { DateTime } from "luxon"
 
 export const FEATURE_FLAG_DEFINITIONS = {
   EVENT_PAGE: {
@@ -48,43 +47,65 @@ export const FEATURE_FLAG_DEFINITIONS = {
   }
 } satisfies FlagDefinitionsType
 
-export const FEATURE_FLAGS: Record<
-  keyof typeof FEATURE_FLAG_DEFINITIONS,
-  boolean
-> = {
-  EVENT_PAGE: true,
-  MAP_PAGE: false,
-  AT_FAIR_PAGE: true,
-  EXHIBITOR_SIGNUP: true,
-  EXHIBITOR_PACKAGES: false,
-  EXHIBITOR_EVENTS: false
+export type FeatureFlagKey = keyof typeof FEATURE_FLAG_DEFINITIONS
+export type FeatureFlags = Record<FeatureFlagKey, boolean>
+
+const createFallbackFlags = (): FeatureFlags => {
+  return (Object.keys(FEATURE_FLAG_DEFINITIONS) as FeatureFlagKey[]).reduce(
+    (acc, key) => {
+      acc[key] = true
+      return acc
+    },
+    {} as FeatureFlags
+  )
 }
 
-export function isExhibitorSignupOpen(
-  dates: FairDate,
-  now: DateTime = DateTime.now().setZone("Europe/Stockholm")
-) {
-  const irStart = DateTime.fromISO(dates.ir.start, {
-    zone: "Europe/Stockholm"
-  }).startOf("day")
-  const fairStart = DateTime.fromISO(dates.fair.days[0], {
-    zone: "Europe/Stockholm"
-  }).startOf("day")
-
-  if (!irStart.isValid || !fairStart.isValid) {
-    return false
+export async function fetchFeatureFlags(
+  options?: RequestInit
+): Promise<FeatureFlags> {
+  if (!env.NEXT_PUBLIC_API_URL) {
+    return createFallbackFlags()
   }
 
-  return now.toMillis() >= irStart.toMillis() && now.toMillis() < fairStart.toMillis()
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/featureflags`, {
+    cache: "no-store",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options?.headers || {})
+    }
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch feature flags: ${res.status}`)
+  }
+
+  const data = (await res.json()) as Array<{
+    key: FeatureFlagKey
+    enabled: boolean
+  }>
+
+  const flags = createFallbackFlags()
+  for (const flag of data) {
+    if (flag?.key in flags) {
+      flags[flag.key] = Boolean(flag.enabled)
+    }
+  }
+
+  return flags
 }
 
-export async function getExhibitorSignupEnabled() {
+export async function getDefaultFeatureFlags(): Promise<FeatureFlags> {
   try {
-    const dates = await fetchDates()
-    return isExhibitorSignupOpen(dates)
+    return await fetchFeatureFlags()
   } catch {
-    return FEATURE_FLAGS.EXHIBITOR_SIGNUP
+    return createFallbackFlags()
   }
+}
+
+export async function getExhibitorSignupEnabled(defaults?: FeatureFlags) {
+  const baseFlags = defaults ?? (await getDefaultFeatureFlags())
+  return baseFlags.EXHIBITOR_SIGNUP
 }
 
 export async function getSignupUrl() {
@@ -93,4 +114,4 @@ export async function getSignupUrl() {
     : "/exhibitor/signup"
 }
 
-export default FEATURE_FLAGS
+export default FEATURE_FLAG_DEFINITIONS

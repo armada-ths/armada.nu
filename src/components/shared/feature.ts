@@ -1,24 +1,26 @@
-import featureFlags, { FEATURE_FLAGS, getExhibitorSignupEnabled } from "@/feature_flags"
+import {
+  getDefaultFeatureFlags,
+  getExhibitorSignupEnabled,
+  type FeatureFlagKey
+} from "@/feature_flags"
 import { decryptOverrides } from "flags"
 import { cookies } from "next/headers"
 
 export async function features() {
-  const exhibitorSignupEnabled = await getExhibitorSignupEnabled()
+  const baseFlags = await getDefaultFeatureFlags()
+  const exhibitorSignupEnabled = await getExhibitorSignupEnabled(baseFlags)
   const overrideCookie = (await cookies()).get("vercel-flag-overrides")?.value
   const overrides = overrideCookie
     ? (await decryptOverrides(overrideCookie))
     : {}
-  const baseFlags = {
-    ...FEATURE_FLAGS,
-    EXHIBITOR_SIGNUP: exhibitorSignupEnabled
-  }
   return {
     ...baseFlags,
+    EXHIBITOR_SIGNUP: exhibitorSignupEnabled,
     ...overrides
   }
 }
 
-export async function feature(feature: keyof typeof featureFlags) {
+export async function feature(feature: FeatureFlagKey) {
   return (await features())[feature] ?? false
 }
 

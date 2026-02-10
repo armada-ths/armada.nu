@@ -77,14 +77,14 @@ src/
 │   ├── contentful.ts     # Contentful CMS client
 │   └── utils.ts          # cn(), date helpers (Luxon)
 ├── env.ts                # All env vars — add new ones here
-└── feature_flags.ts      # Feature flag definitions & defaults
+└── feature_flags.ts      # Feature flag definitions & CMS-backed defaults
 ```
 
 ## Key Conventions
 
 - **Adding env vars**: Always register them in `src/env.ts`. Use `NEXT_PUBLIC_` prefix for client-safe vars.
 - **Data fetching**: Use the dual-export pattern in `src/components/shared/hooks/api/` — `fetch*()` for server components, `use*()` hooks for client components.
-- **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`).
+- **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel overrides applied. The `EXHIBITOR_SIGNUP` flag may be auto-updated by ArmadaCMS based on fair dates.
 - **Adding shadcn components**: `npx shadcn@latest add <component>`
 - **Adding pages**: Add an entry to `src/app/sitemap.ts`.
 - **Brand colors**: Use Tailwind classes like `text-melon-700`, `bg-coconut`, `text-licorice` (defined in `globals.css`).
