@@ -256,6 +256,8 @@
     font-family: var(--font-sans);
     @apply text-foreground font-base;
 
+    overflow-x: hidden;
+
     background-color: var(--background);
 
     background-image:
