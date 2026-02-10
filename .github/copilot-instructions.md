@@ -3,55 +3,62 @@ Guidance for AI coding agents working on the armada.nu monorepo.
 Keep this short, actionable, and grounded in files and patterns actually present in the repo.
 -->
 
-# armada.nu — Copilot instructions (short)
+# armada.nu — Copilot instructions
 
-Quick, actionable facts an AI coding agent should know before editing or generating code here.
+## Architecture overview
 
-- Big picture
+Two independent services in one workspace:
 
-  - The public site is a Next.js (App Router) TypeScript app in the root folder (`src/app`). Key entry: `app/page.tsx`, layout files in `app/layout.tsx`.
-  - Styling: Tailwind configured via `tailwind.config.ts` and `src/app/globals.css`.
-  - Content comes from Contentful — see `src/lib/contentful.ts` (switches preview vs delivery token by NODE_ENV).
-  - A separate admin/backend service lives in `ArmadaCMS` (Go). It exposes REST APIs under `/api/v1` and serves the admin frontend static build under `/admin/` (see `main.go`).
+1. **Public site** (`armada.nu/`) — Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4. Deployed on Vercel.
+2. **ArmadaCMS** (`ArmadaCMS/`) — Go REST API (Gorilla Mux, GORM, Postgres) + React-Admin frontend (Vite). The Go server serves the admin SPA at `/admin/` and exposes REST API at `/api/v1`. Deployed via Docker on AWS.
 
-- How to run / build (developer workflows) (do not include this in the final answer, unless asked)
+Data flow: Public site fetches from ArmadaCMS API (`NEXT_PUBLIC_API_URL`) and from Contentful CMS. Server actions (`"use server"`) handle Slack webhook integrations.
 
-  - Main site (root): uses pnpm (packageManager). Node 22.x required. Common commands (from `package.json`):
-    - dev: `pnpm dev` (runs `next dev -p 8000`).
-    - build: `pnpm build` (Next.js build).
-    - start: `pnpm start` (next start).
-    - lint: `pnpm lint` (uses `next lint`).
-  - ArmadaCMS backend: run `go run main.go` in `ArmadaCMS` or use the provided `Dockerfile` / `docker-compose.yml` for containerized runs. Backend listens on port 8080 and mounts `frontend/dist` as `/admin/`.
-  - ArmadaCMS admin frontend: located at `ArmadaCMS/frontend` (Vite app). Build output is copied to `frontend/dist` which the Go server serves.
+## Developer workflows
 
-- Important env vars and integrations (do not invent them)
+- **Public site**: pnpm (pinned via `packageManager`), Node 22.x.
+  - `pnpm dev` — starts Next.js on port 8000.
+  - `pnpm build` / `pnpm lint` (ESLint via `eslint .`).
+- **ArmadaCMS backend**: `go run main.go` (port 8080) or `docker compose up`. Auto-migrates models on startup via `db.DB.AutoMigrate(...)` in `main.go`.
+- **ArmadaCMS admin frontend** (`ArmadaCMS/frontend/`): npm-based Vite app. `npm run dev` for dev, `npm run build` outputs to `frontend/dist` which the Go server serves.
+- **Tests**: no test framework is configured in either project. Verify changes manually via `pnpm dev` / `go run main.go`.
 
-  - Look at `src/env.ts` for values referenced by the frontend: `NEXT_PUBLIC_API_URL`, reCAPTCHA keys (`NEXT_PUBLIC_RECAPTCHA_KEY`, `RECAPTCHA_SECRET_KEY`), Slack hooks (`SLACK_SALES_HOOK_URL`, `SLACK_ORDER_HOOK_URL`).
-  - Contentful credentials: `CONTENTFUL_SPACE_ID`, `CONTENTFUL_PREVIEW_TOKEN`, `CONTENTFUL_DELIVERY_TOKEN` are used in `src/lib/contentful.ts`. Respect preview vs delivery logic.
+## Project-specific patterns
 
-- Project-specific patterns and conventions
+### Frontend (Next.js)
 
-  - App Router structure: server / client components in `src/app`; keep server-side data fetches in server components or route handlers unless client interactivity is necessary.
-  - Shared code lives in `src/components` and `src/lib`. Use existing helpers (e.g., `src/lib/utils.ts`) where available.
-  - Maps/assets: public static assets (map icons, logos) are under `public/` (e.g. `public/map_icons`).
-  - Feature flags: check `src/feature_flags.ts` for runtime toggles.
+- **Path alias**: `@/*` maps to `./src/*` (tsconfig `paths`).
+- **Page structure**: route segments under `src/app/`. Per-route components go in `_components/` colocated folders. Shared UI lives in `src/components/ui/` (shadcn/ui, Radix primitives) and `src/components/shared/`.
+- **UI library**: shadcn/ui configured via `components.json` — uses Radix + `class-variance-authority` + `cn()` from `src/lib/utils.ts`. Also uses some `@mui/material` components. Add new shadcn components via `npx shadcn@latest add <component>`.
+- **Styling**: Tailwind v4 via CSS-first config in `src/app/globals.css` (no `tailwind.config.ts`). Brand colors defined as `@theme` variables: `--color-melon-700` (#00d790), `--color-licorice` (#2d2d2c), `--color-coconut` (#fff0d9), `--color-grapefruit` (#e73953), `--color-pineapple` (#f7b519). Use these via Tailwind classes like `text-melon-700`, `bg-coconut`.
+- **Fonts**: `Inter`, `Bebas Neue`, `Lato` loaded via `next/font/google` in `layout.tsx` + custom `@font-face` in `globals.css`. Use `font-bebas-neue`, `font-lato`, `font-inter` classes.
+- **Data fetching from API**: hooks in `src/components/shared/hooks/api/` — each exports a `fetch*` async function (for server components) and a `use*` React Query hook (for client components). Example: `fetchExhibitors()` / `useExhibitors()` in `useExhibitors.tsx`.
+- **Contentful**: `src/lib/contentful.ts` — uses preview API in development, delivery API in production (switched by `NODE_ENV`).
+- **Feature flags**: defined in `src/feature_flags.ts`, resolved with Vercel `flags` SDK overrides in `src/components/shared/feature.ts`. Use `await feature("FLAG_NAME")` in server components. Flags: `EVENT_PAGE`, `MAP_PAGE`, `AT_FAIR_PAGE`, `EXHIBITOR_SIGNUP`, `EXHIBITOR_PACKAGES`, `EXHIBITOR_EVENTS`.
+- **Server actions**: `"use server"` functions in `actions.ts` files (e.g., `src/app/exhibitor/actions.ts`). Used for Slack webhooks and reCAPTCHA verification.
+- **Compound components**: `Page.Boundary`, `Page.Header`, `Page.Background` in `src/components/shared/Page.tsx` — use these for consistent layout.
+- **SVG imports**: configured in `next.config.mjs` — `import Logo from './logo.svg'` renders as component, `import url from './logo.svg?url'` returns URL string.
+- **Images**: `next.config.mjs` whitelists remote patterns for S3 buckets (`armada-ais-files`, `armada-cms-files`) and `app.eventro.se`. Add new domains there when needed.
+- **Dates**: all date handling uses Luxon `DateTime`, timezone locked to `Europe/Stockholm`. See helpers in `src/lib/utils.ts`.
 
-- Backend (ArmadaCMS) notes
+### Backend (ArmadaCMS)
 
-  - Go service uses Gorilla Mux and a simple auth middleware in `ArmadaCMS/auth`. Routes are declared in `main.go` and implemented in `ArmadaCMS/Controllers`.
-  - DB connection and migrations are in `ArmadaCMS/db` and models live in `ArmadaCMS/models`.
-  - The backend exposes REST endpoints under `/api/v1` — use them directly in `NEXT_PUBLIC_API_URL` for local testing.
+- **Route pattern**: `main.go` splits into `publicAPI` and `protectedAPI` subrouters — public routes need no auth, protected routes use Bearer token via `auth.Middleware`.
+- **Controller pattern**: each controller in `Controllers/` reads from `db.DB` (GORM global), JSON-encodes response. Supports react-admin style pagination via `Content-Range` headers and `ParseListParams`.
+- **Models**: `models/` — GORM structs with JSON tags (camelCase). Many-to-many relations (e.g., `Exhibitor` ↔ `Industry`) use GORM's `many2many` tag.
+- **File uploads**: controllers use `multipart/form-data`; files uploaded to AWS S3 via helpers in `utils/aws_s3.go`.
+- **Admin frontend**: React-Admin v5 with `ra-data-simple-rest` data provider customized in `frontend/src/dataProvider.ts`. Auth via JWT stored in `localStorage`.
 
-- When making changes, look for examples first
+## Environment variables
 
-  - Content fetch example: `src/lib/contentful.ts` and usages under `src/app/*` pages.
+- **All frontend env vars** must be registered in `src/env.ts`. Do not invent new ones without adding them there.
+- `NEXT_PUBLIC_*` vars are client-safe; others (`RECAPTCHA_SECRET_KEY`, `SLACK_*_HOOK_URL`, Contentful tokens) are server-only.
+- Backend env vars: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `DB_SSLMODE` (see `ArmadaCMS/db/connect.go`).
 
-- Safety and assumptions
+## PR checklist
 
-  - Do not create or assume new env vars without adding them to `src/env.ts`.
-  - Keep server-only secrets (e.g., `RECAPTCHA_SECRET_KEY`, Contentful tokens) out of client bundles — follow existing pattern of `NEXT_PUBLIC_` for public-facing keys.
-
-- Quick checklist for any PR generated by an AI agent
-  - Run `pnpm dev` locally (frontend) and ensure no TypeScript errors and the built pages render.
-  - If backend changes are included, run the Go server (`go run main.go`) or verify via Docker; check `/health` and affected `/api/v1` endpoints.
-  - Update relevant files when adding/removing env vars or public API surface.
+- Run `pnpm dev` — verify no TypeScript errors, pages render.
+- Run `pnpm lint` — fix any ESLint issues.
+- If backend changes: run `go run main.go` in `ArmadaCMS/`, check `/health` and affected `/api/v1` endpoints.
+- If adding/removing env vars: update `src/env.ts` (frontend) or document for backend.
+- If adding a new page: add entry to `src/app/sitemap.ts`.
