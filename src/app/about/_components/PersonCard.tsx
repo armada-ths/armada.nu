@@ -1,12 +1,12 @@
 import { Person } from "@/components/shared/hooks/api/useOrganization"
+import { LinkedInIcon } from "@/components/shared/icons/LinkedInIcon"
 import { Card } from "@/components/ui/card"
 import { PersonIcon } from "@radix-ui/react-icons"
-import { LinkedinIcon, MailIcon } from "lucide-react"
+import { MailIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
 const PersonCard = ({ person }: { person: Person }) => {
-  console.log(person)
   return (
     <>
       <Card
@@ -30,18 +30,19 @@ const PersonCard = ({ person }: { person: Person }) => {
         )}
         <div className="px-4">
           <p className="text-melon-700">{person.name}</p>
-          <p className="mt-1 text-sm text-stone-400">
-            {(person.role.split("–")[1] ?? person.role).trim()}
-          </p>
+          <p className="mt-1 text-sm text-stone-400">{person.role.trim()}</p>
           <div className="mt-2 flex gap-x-2">
             {person.email != null && (
               <Link href={`mailto:${person.email}`}>
-                <MailIcon className="mr-2 inline-block aspect-square w-5" />
+                <MailIcon className="inline-block aspect-square w-5 text-stone-600 transition-colors hover:text-melon-700" />
               </Link>
             )}
             {person.linkedin_url != null && (
-              <Link href={person.linkedin_url}>
-                <LinkedinIcon className="inline-block aspect-square w-5" />
+              <Link
+                href={person.linkedin_url}
+                target="_blank"
+                rel="noopener noreferrer">
+                <LinkedInIcon className="inline-block aspect-square w-5 ml-1 text-stone-600 transition-colors hover:text-melon-700" />
               </Link>
             )}
           </div>
