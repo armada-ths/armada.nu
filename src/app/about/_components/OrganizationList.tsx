@@ -12,42 +12,53 @@ const OrganizationList = ({ group }: { group: Organization }) => {
     setShowOTs(prevState => !prevState)
   }
 
-  const projectGroup = group.people.filter(
-    person =>
-      person.role.toLowerCase().includes("project group") ||
-      person.role.toLowerCase().includes("project manager")
-  )
-  const operationTeam = group.people.filter(person =>
-    person.role.toLowerCase().includes("operation team")
-  )
+  const rankText = (rank?: string | null) => (rank ?? "").toLowerCase().trim()
 
-  const sortedProjectGroup =
-    group.name === "Project Manager"
-      ? [...projectGroup].sort((a, b) => {
-        const getRank = (role: string) => {
-          const normalized = role.toLowerCase()
-          if (normalized.includes("project manager–project manager")) return 0
-          if (normalized.includes("vice project manager")) return 1
-          if (normalized === "project manager") return 0
-          return 2
-        }
-        return getRank(a.role) - getRank(b.role)
-      })
-      : projectGroup
+  const sortByRoleThenName = (a: { role?: string | null; name?: string | null }, b: { role?: string | null; name?: string | null }) => {
+    const roleComparison = (a.role ?? "").localeCompare(b.role ?? "", undefined, {
+      sensitivity: "base",
+    })
+
+    if (roleComparison !== 0) return roleComparison
+
+    return (a.name ?? "").localeCompare(b.name ?? "", undefined, {
+      sensitivity: "base",
+    })
+  }
+
+  const projectGroup = group.people.filter(
+    person => {
+      const rank = rankText(person.rank)
+      return rank.includes("project group") || rank.includes("project manager")
+    }
+  )
+  const operationTeam = group.people.filter(person => {
+    const rank = rankText(person.rank)
+    return !(rank.includes("project group") || rank.includes("project manager"))
+  })
+  const hasMoreMembers = operationTeam.length > 0
+
+  const sortedProjectGroup = [...projectGroup].sort(sortByRoleThenName)
+  const sortedOperationTeam = [...operationTeam].sort(sortByRoleThenName)
+
+  const groupDisplayName =
+    group.name === "Project Manager" && sortedProjectGroup.length > 1
+      ? "Project Managers"
+      : group.name
 
   return (
     <div key={group.name} className="mt-16">
-      <h2 className="font-bebas-neue text-3xl">{group.name}</h2>
+      <h2 className="font-bebas-neue text-3xl">{groupDisplayName}</h2>
       <div className="mt-5 flex flex-wrap items-start justify-center gap-6 md:justify-start">
         {sortedProjectGroup.map(person => (
           <PersonCard key={person.id} person={person} />
         ))}
         {showOTs &&
-          operationTeam.map(person => (
+          sortedOperationTeam.map(person => (
             <PersonCard key={person.id} person={person} />
           ))}
         <div className="my-20 flex justify-center">
-          {group.name === "Project Manager" ? null : (
+          {group.name === "Project Manager" || !hasMoreMembers ? null : (
             <Button
               variant={"neutral"}
               className=""

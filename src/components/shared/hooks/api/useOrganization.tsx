@@ -9,6 +9,7 @@ export interface Organization {
 export interface Person {
   id: number
   name: string
+  rank?: null | string
   email: null | string
   picture: string
   linkedin_url: null | string

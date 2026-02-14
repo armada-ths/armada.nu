@@ -15,12 +15,18 @@ export default async function TeamPage() {
     }
   })
 
+  const sortedOrganization = [...organization].sort((a, b) => {
+    if (a.name === "Project Manager") return -1
+    if (b.name === "Project Manager") return 1
+    return a.name.localeCompare(b.name)
+  })
+
   return (
     <Page.Background withIndents className="justify-start">
       <Page.Boundary>
         <Page.Header>Meet the team</Page.Header>
         <div className="">
-          {organization.map(group => (
+          {sortedOrganization.map(group => (
             <OrganizationList key={group.name} group={group} />
           ))}
         </div>
