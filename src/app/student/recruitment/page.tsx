@@ -21,7 +21,7 @@ export default async function RecruitmentPage() {
 
   const organization = await fetchOrganization({
     next: {
-      revalidate: 3600 * 24 * 6 // 6 days (S3 caches the images for 7 days exactly, we want to revalidate before that, otherwise the images will not be loaded)
+      revalidate: 60 // 60 seconds – keep profile data fresh
     }
   })
 
