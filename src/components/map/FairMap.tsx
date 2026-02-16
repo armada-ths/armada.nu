@@ -1,6 +1,6 @@
 "use client"
 
-import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails"
+import ExhibitorDetails from "@/app/(frontend)/student/exhibitors/_components/ExhibitorDetails"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import Modal from "@/components/ui/Modal"
 import Image from "next/image"

@@ -1,6 +1,6 @@
 "use client"
 
-import { sendOrderToSlack } from "@/app/exhibitor/actions"
+import { sendOrderToSlack } from "@/app/(frontend)/exhibitor/actions"
 import OrderItem from "@/components/order/OrderItem"
 import { Page } from "@/components/shared/Page"
 import { Button } from "@/components/ui/button"
@@ -206,9 +206,8 @@ export function OrderForm({ exhibitors }: OrderFormProps) {
                         setShowDropdown(false)
                       }}>
                       <Check
-                        className={`h-4 w-4 ${
-                          company === name ? "opacity-100" : "opacity-0"
-                        }`}
+                        className={`h-4 w-4 ${company === name ? "opacity-100" : "opacity-0"
+                          }`}
                       />
                       {name}
                     </button>

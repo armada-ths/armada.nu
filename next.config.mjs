@@ -1,3 +1,4 @@
+import { withPayload } from "@payloadcms/next/withPayload";
 /** @type {import('next').NextConfig} */
 import toolbar from "@vercel/toolbar/plugins/next"
 
@@ -98,4 +99,4 @@ const nextConfig = {
   }
 }
 
-export default withVercelToolbar(nextConfig)
+export default withPayload(withVercelToolbar(nextConfig))

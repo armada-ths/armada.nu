@@ -1,4 +1,4 @@
-import { NumberCountUp } from "@/app/exhibitor/_components/NumberCountUp"
+import { NumberCountUp } from "@/app/(frontend)/exhibitor/_components/NumberCountUp"
 
 export function VisitorNumberBar({
   disableAnimation = false

@@ -1,4 +1,4 @@
-import { BlogPost } from "@/app/blog/page"
+import { BlogPost } from "@/app/(frontend)/blog/page"
 import {
   Card,
   CardContent,

@@ -1,4 +1,4 @@
-import { P } from "@/app/_components/Paragraph"
+import { P } from "@/app/(frontend)/_components/Paragraph"
 import { Page } from "@/components/shared/Page"
 
 export const COMING_SOON_TEXT = "More information coming soon"
