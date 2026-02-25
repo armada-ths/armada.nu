@@ -16,6 +16,8 @@ interface RecruitmentGroup {
 }
 
 export async function fetchRecruitment(options?: RequestInit) {
+  void options
+
   /*const res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/recruitment`,
     options ?? {
@@ -30,11 +32,20 @@ export async function fetchRecruitment(options?: RequestInit) {
   //returning null when recruitment is not open
 
   const staticRecruitment: Recruitment = {
-    name: "Project Group 2026 Recruitment",
-    link: "https://app.eventro.se/recruitments/b61c7cf7-c22a-46e8-bc03-011be6b6d412",
-    start_date: "2025-12-11",
-    end_date: "2026-01-20",
-    groups: {}
+    name: "Operations Team 2026 Recruitment",
+    link: "https://app.eventro.se/recruitments/your-recruitment-link", // Placeholder link
+    start_date: "2026-02-01", // Placeholder start date
+    end_date: "2026-07-01", // Placeholder end date
+    groups: {
+      "Marketing & Communication": [
+        {
+          name: "Graphic designer",
+          parent: null,
+          description:
+            "As a graphic designer in Armada, you will shape the visual identity of KTH's largest student-run career fair. You will create campaign material for recruitment periods, social media launches, exhibitor communication, and events leading up to the fair. The role includes producing assets such as posters, digital screens, Instagram content, and presentation material used by teams across Armada. You will collaborate closely with the Marketing & Communication team to ensure a cohesive and impactful visual presence for Armada, contributing to the success of the fair and our events."
+        }
+      ]
+    }
   }
 
   return staticRecruitment

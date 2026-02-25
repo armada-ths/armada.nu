@@ -23,8 +23,7 @@ export function ApplyButton({
         // Check if we should be disabled right now
         const checkDisabled = () => {
             const now = new Date()
-            // Disable at midnight on January 21, 2026 (end of January 20)
-            const disableDate = new Date(2026, 0, 22, 0, 0, 0) // Month is 0-indexed
+            const disableDate = new Date(2026, 5, 1, 0, 0, 0) // Month is 0-indexed
 
             if (now >= disableDate) {
                 setIsDisabled(true)
@@ -46,7 +45,7 @@ export function ApplyButton({
                 size={size}
                 disabled
                 className={className}>
-                PG applications have closed
+                Applications are closed
             </Button>
         )
     }
