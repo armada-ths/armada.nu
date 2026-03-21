@@ -22,6 +22,7 @@ export function ApplyButton({
     startDate,
     endDate }: ApplyButtonProps) {
     const [isDisabled, setIsDisabled] = useState(false)
+    const [disabledText, setDisabledText] = useState("Recruitment is closed")
 
     useEffect(() => {
         // Check if we should be disabled right now
@@ -38,7 +39,26 @@ export function ApplyButton({
             const isBeforeStart = hasValidStartDate && now < parsedStartDate
             const isAfterEnd = hasValidEndDate && now >= parsedEndDate
 
-            setIsDisabled(isBeforeStart || isAfterEnd)
+            if (isBeforeStart && parsedStartDate) {
+                const formattedStartDate = parsedStartDate.toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                })
+
+                setDisabledText(`Application opens on ${formattedStartDate}`)
+                setIsDisabled(true)
+                return
+            }
+
+            if (isAfterEnd) {
+                setDisabledText("Recruitment is closed")
+                setIsDisabled(true)
+                return
+            }
+
+            setDisabledText("Recruitment is closed")
+            setIsDisabled(false)
         }
 
         checkDisabled()
@@ -56,7 +76,7 @@ export function ApplyButton({
                 size={size}
                 disabled
                 className={className}>
-                Recruitment is closed
+                {disabledText}
             </Button>
         )
     }
