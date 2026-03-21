@@ -12,6 +12,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Metadata } from "next"
 import Link from "next/link"
+import ReactMarkdown from "react-markdown"
 export const metadata: Metadata = {
   title: `Armada Recruitment`,
   description: "See available roles and apply to become a part of Armada"
@@ -30,76 +31,19 @@ export default async function RecruitmentPage() {
     }
   })
 
-  // const group = organization.find(group =>
-  //   group.name.includes("Project Manager")
-  // )
-
-  // const profile = group?.people.find(person =>
-  //   person.role.match("Project Manager")
-  // )
+  const groupEntries = Object.entries(data.groups ?? {})
+  const hasAvailableRoles = groupEntries.some(([, group]) => group.length > 0)
 
   const hrHead = organization
     .flatMap(group => group.people)
     .find(person => {
       const role = person.role.toLowerCase()
-      return (
-        role.includes("head of human resources")
-      )
+      return role.includes("head of human resources")
     })
-
-  const roleAccordionValues = Object.entries(data.groups).flatMap(
-    ([groupName, group]) =>
-      group.map(role => `${groupName}::${role.name}`)
-  )
-
-  // const photoSrc: { source: string; altText: string }[] = [
-  //   {
-  //     source: "/fair_pictures/23031965122_efd3a80707_c.jpg",
-  //     altText: "Students laying down carpet"
-  //   },
-  //   {
-  //     source: "/fair_pictures/52520331777_e86eca961c_c.jpg",
-  //     altText: "Students carrying Armada gear in the snow"
-  //   },
-  //   {
-  //     source: "/fair_pictures/52521081094_8f551d2114_c.jpg",
-  //     altText: "Student getting a drink"
-  //   },
-  //   {
-  //     source: "/fair_pictures/52520926612_8f5d642178_c.jpg",
-  //     altText: "Group of students posing for a photo in formal clothes"
-  //   }
-  // ]
 
   return (
     <Page.Background withIndents>
       <Page.Boundary maxWidth={750}>
-        {/* PG 2026 recruitment (hidden for now) */}
-        {/* <Page.Header>{data.name}</Page.Header>
-        <div className="mt-8 mb-32 flex flex-1 flex-col">
-          <Page.Header tier="secondary">
-            Open {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
-            {DateTime.fromISO(data.end_date).toFormat("d MMM")}
-          </Page.Header>
-          {profile && <Profile profile={profile} />}
-          <div className="mt-8 hidden justify-center sm:flex">
-            <ApplyButton
-              href={data.link}
-              size="lg"
-              className="bg-grapefruit text-snow"
-            />
-          </div>
-          <RecruitmentDescription />
-          <Testimonial />
-          <div className="sticky inset-x-4 bottom-8 z-20 mt-12 flex justify-center sm:hidden">
-            <ApplyButton
-              href={data.link}
-              variant="noShadow"
-              size="lg"
-              className="bg-grapefruit text-snow w-full max-w-[70vw]"
-            />
-          </div>
-          <FAQSection /> */}
         <Page.Header>{data.name}</Page.Header>
         <div className="mb-20 mt-8 flex flex-1 flex-col">
           {/* <Page.Header tier="secondary">
@@ -153,59 +97,92 @@ export default async function RecruitmentPage() {
               href={data.link}
               size="lg"
               className="bg-grapefruit text-snow"
+              startDate={data.start_date}
+              endDate={data.end_date}
             />
           </div>
           <div className="flex-1">
-            <Page.Header tier="secondary" className="mt-10 text-melon-700">
+            <Page.Header tier="secondary" className="mt-10 text-melon-700 text-4xl">
               {"Currently available roles"}
             </Page.Header>
-            <Accordion type="multiple" defaultValue={roleAccordionValues}>
-              {Object.entries(data.groups).map(([name, group], index) => (
-                <div key={index} className="mt-4">
-                  {/* <Page.Header tier="secondary">
-                    {name}
-                  </Page.Header> */}
-                  {group.map(role => (
-                    <AccordionItem
-                      key={`${name}-${role.name}`}
-                      value={`${name}::${role.name}`}>
-                      <AccordionTrigger>{role.name}</AccordionTrigger>
-                      <AccordionContent className="pt-2">
-                        {role.description.split("\n").map(line =>
-                          line.trimStart().startsWith("#") ? (
-                            <P
-                              key={line}
-                              className="text-base font-bold leading-7">
-                              {line.replace("#", "").trimStart()}
-                            </P>
-                          ) : (
-                            <P key={line} className="leading-7">
-                              {line}
-                              {/* {" "}
-                              <Link
-                                className="underline hover:no-underline"
-                                href={data.link}>
-                                {"Apply now!"}
-                              </Link> */}
-                            </P>
-                          )
-                        )}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </div>
-              ))}
-            </Accordion>
+            {hasAvailableRoles ? (
+              <Accordion type="multiple">
+                {groupEntries.map(([name, group], index) => (
+                  <div key={index} className="mt-6">
+                    <Page.Header tier="secondary">
+                      {name}
+                    </Page.Header>
+                    {group.map(role => (
+                      <AccordionItem
+                        key={`${name}-${role.name}`}
+                        value={`${name}::${role.name}`}
+                        className="mt-3">
+                        <AccordionTrigger>{role.name}</AccordionTrigger>
+                        <AccordionContent className="pt-2 prose prose-sm max-w-none">
+                          <ReactMarkdown
+                            components={{
+                              p: (props) => (
+                                <P className="leading-7">{props.children}</P>
+                              ),
+                              ul: (props) => (
+                                <ul className="list-disc space-y-1 pl-5">{props.children}</ul>
+                              ),
+                              ol: (props) => (
+                                <ol className="list-decimal space-y-1 pl-5">{props.children}</ol>
+                              ),
+                              li: (props) => (
+                                <li className="leading-7">{props.children}</li>
+                              ),
+                              strong: (props) => (
+                                <strong className="font-bold">{props.children}</strong>
+                              ),
+                              em: (props) => (
+                                <em className="italic">{props.children}</em>
+                              ),
+                              h1: (props) => (
+                                <h1 className="text-lg font-bold mt-4 mb-2">{props.children}</h1>
+                              ),
+                              h2: (props) => (
+                                <h2 className="text-lg font-bold mt-4 mb-2">{props.children}</h2>
+                              ),
+                              h3: (props) => (
+                                <h3 className="text-base font-bold mt-3 mb-2">{props.children}</h3>
+                              )
+                            }}>
+                            {role.description}
+                          </ReactMarkdown>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </div>
+                ))}
+              </Accordion>
+            ) : (
+              <Alert className="mt-6">
+                <AlertTitle>No available roles at the moment</AlertTitle>
+                <AlertDescription>
+                  Keep an eye on this page for future opportunities to join our volunteer team!
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
-          <P className="mt-4">
-            More roles will be available soon, stay tuned!
-          </P>
+          <div className="mt-14 hidden justify-center sm:flex">
+            <ApplyButton
+              href={data.link}
+              size="lg"
+              className="bg-grapefruit text-snow"
+              startDate={data.start_date}
+              endDate={data.end_date}
+            />
+          </div>
           <div className="sticky inset-x-4 bottom-8 z-20 mt-12 flex justify-center sm:hidden">
             <ApplyButton
               href={data.link}
               variant="noShadow"
               size="lg"
               className="bg-grapefruit text-snow w-full max-w-[70vw]"
+              startDate={data.start_date}
+              endDate={data.end_date}
             />
           </div>
         </div>
