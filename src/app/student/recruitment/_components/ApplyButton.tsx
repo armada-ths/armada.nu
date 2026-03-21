@@ -10,24 +10,35 @@ interface ApplyButtonProps {
     size?: "default" | "lg" | "sm" | "icon"
     className?: string
     mobile?: boolean
+    startDate?: string
+    endDate?: string
 }
 
 export function ApplyButton({
     href,
     variant,
     size = "lg",
-    className }: ApplyButtonProps) {
+    className,
+    startDate,
+    endDate }: ApplyButtonProps) {
     const [isDisabled, setIsDisabled] = useState(false)
 
     useEffect(() => {
         // Check if we should be disabled right now
         const checkDisabled = () => {
             const now = new Date()
-            const disableDate = new Date(2026, 5, 1, 0, 0, 0) // Month is 0-indexed
+            const parsedStartDate = startDate ? new Date(startDate) : null
+            const parsedEndDate = endDate ? new Date(endDate) : null
 
-            if (now >= disableDate) {
-                setIsDisabled(true)
-            }
+            const hasValidStartDate =
+                parsedStartDate != null && !Number.isNaN(parsedStartDate.getTime())
+            const hasValidEndDate =
+                parsedEndDate != null && !Number.isNaN(parsedEndDate.getTime())
+
+            const isBeforeStart = hasValidStartDate && now < parsedStartDate
+            const isAfterEnd = hasValidEndDate && now >= parsedEndDate
+
+            setIsDisabled(isBeforeStart || isAfterEnd)
         }
 
         checkDisabled()
@@ -36,7 +47,7 @@ export function ApplyButton({
         const interval = setInterval(checkDisabled, 60000)
 
         return () => clearInterval(interval)
-    }, [])
+    }, [startDate, endDate])
 
     if (isDisabled) {
         return (
@@ -45,7 +56,7 @@ export function ApplyButton({
                 size={size}
                 disabled
                 className={className}>
-                Applications are closed
+                Recruitment is closed
             </Button>
         )
     }
