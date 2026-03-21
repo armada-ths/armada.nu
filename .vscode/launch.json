@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "armada.nu: Dev server (pnpm dev)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "armada.nu: Integrated browser (localhost:8000)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "armada.nu: Full stack (dev + integrated browser)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm dev",
+      "cwd": "${workspaceFolder}",
+      "serverReadyAction": {
+        "action": "startDebugging",
+        "name": "armada.nu: Integrated browser (localhost:8000)",
+        "pattern": "- Local:\\s+(https?://[^\\s]+)"
+      }
+    }
+  ]
+}
