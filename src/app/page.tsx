@@ -82,9 +82,6 @@ export default async function HomePage() {
           <section className="relative right-1/2 left-1/2 -mx-[50vw] mt-5 w-screen max-w-none overflow-y-visible">
             <VisitorNumberBar />
           </section>
-          {/* Gold Exhibitors */}
-          <GoldExhibitors exhibitors={goldExhibitors} />
-          <RollingBanner logos={silverLogos} />
 
           <div className="flex flex-col py-2 md:flex-row">
             {/* <div className="justify-center">
