@@ -86,7 +86,7 @@ const Hero1 = ({
                 Join the Operations Team
               </h1>
               <h2 className="text-melon-700">
-                Become a graphic designer for Armada 2026 -{" "}
+                Help deliver Armada 2026 behind the scenes -{" "}
                 <a
                   href="/student/recruitment"
                   className="underline hover:no-underline">
@@ -94,12 +94,12 @@ const Hero1 = ({
                 </a>
               </h2>
               <P className="text-sm">
-                As a graphic designer in Armada, you will shape the visual identity of
-                KTH's largest student-run career fair. You will create campaign material
-                for recruitment periods, social media launches, exhibitor communication,
-                and events leading up to the fair. The role includes producing assets
-                such as posters, digital screens, Instagram content, and presentation
-                material used by teams across Armada.
+                The Operations Team powers the fair from planning to execution. Whether
+                your strengths are logistics, event flow, service, communication, or
+                on-site coordination, you'll help create a smooth experience for
+                exhibitors, students, and partners. You'll collaborate across teams,
+                solve real problems under pressure, and build the structure that makes
+                Armada possible.
               </P>
             </div>
           </Card>
