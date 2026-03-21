@@ -41,7 +41,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.ir.start}
-        dateStringHuman={monthLabel(dates.ir.start, "Early")}
+        dateStringHuman={monthLabel(dates.ir.start, "Late")}
         title="Priority Registration starts">
         <P className="mt-3">
           Priority Registration is where you apply to be an exhibitor. When you
