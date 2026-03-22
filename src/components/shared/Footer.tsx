@@ -100,7 +100,7 @@ export async function Footer() {
       {/* Mobile accordion footer */}
       <div className="w-full max-w-6xl px-6 md:hidden">
         {/* Social media */}
-        <div className="mb-6 flex w-full flex-col gap-3">
+        <div className="mb-6 flex w-full flex-col gap-3 pl-4">
           <p className="font-semibold">Follow us on:</p>
           <div className="flex items-center gap-6">
             <a
