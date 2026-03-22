@@ -50,7 +50,7 @@ export default async function HomePage() {
                 subtitle="Help deliver Armada 2026 behind the scenes"
                 ctaText="Join Armada!"
                 ctaUrl="/student/recruitment"
-                description="The Operations Team powers the fair from planning to execution. Whether your strengths are logistics, event flow, service, communication, or on-site coordination, you'll help create a smooth experience for exhibitors, students, and partners. You'll collaborate across teams, solve real problems under pressure, and build the structure that makes Armada possible."
+                description="Become part of the Armada Operations Team and turn ideas into reality. As an OT, you’re one of the driving forces behind Armada and part of the team that keeps everything moving, connected, and on track. You’ll collaborate with passionate students, take on meaningful responsibility, and help build Scandinavia's biggest career fair. Read more about our available roles and apply on the recruitment page!"
               />
             }
             buttons={{
