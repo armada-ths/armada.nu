@@ -1,15 +1,16 @@
 import { P } from "@/app/_components/Paragraph"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
-import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
+// import { fetchDates } from "@/components/shared/hooks/api/useDates"
+// import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-//import Image from "next/image"
+// import Image from "next/image"
 // import { NavigationMenu } from "@/components/shared/NavigationMenu"
-import GoldExhibitors from "@/app/_components/GoldExhibitors"
+// import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
-import RollingBanner from "@/app/_components/RollingBannerSilver"
+// import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { Hero1 } from "@/components/hero7"
+import { HighlightCard } from "@/components/highlight-card"
 import { feature, getSignupUrl } from "@/components/shared/feature"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Card } from "@/components/ui/card"
@@ -17,15 +18,15 @@ import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
-  const dates = await fetchDates()
-  const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" })
-  const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" })
-  const silverLogos = silverExhibitors
-    .map(g => g.logoFreesize || g.logoSquared)
-    .filter((url): url is string => Boolean(url))
+  // const dates = await fetchDates()
+  // const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" })
+  // const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" })
+  // const silverLogos = silverExhibitors
+  //   .map(g => g.logoFreesize || g.logoSquared)
+  //   .filter((url): url is string => Boolean(url))
 
-  const today = Date.now()
-  const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
+  // const today = Date.now()
+  // const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
   const exhibitorSignupEnabled = await feature("EXHIBITOR_SIGNUP")
   const exhibitorPackagesEnabled = await feature("EXHIBITOR_PACKAGES")
   const showExhibitorButtons =
@@ -42,6 +43,15 @@ export default async function HomePage() {
             heading={"Set Sail For Success"}
             description={
               "The No. 1 career fair at KTH Royal Institute of Technology"
+            }
+            sideContent={
+              <HighlightCard
+                title="Join the Operations Team"
+                subtitle="Help deliver Armada 2026 behind the scenes"
+                ctaText="Join Armada!"
+                ctaUrl="/student/recruitment"
+                description="The Operations Team powers the fair from planning to execution. Whether your strengths are logistics, event flow, service, communication, or on-site coordination, you'll help create a smooth experience for exhibitors, students, and partners. You'll collaborate across teams, solve real problems under pressure, and build the structure that makes Armada possible."
+              />
             }
             buttons={{
               primary: {

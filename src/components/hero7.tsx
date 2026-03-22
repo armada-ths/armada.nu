@@ -1,12 +1,13 @@
 import { ArrowRight } from "lucide-react"
+import { ReactNode } from "react"
 
-import { HighlightCard } from "@/components/highlight-card"
 import { Button } from "@/components/ui/button"
 
 interface Hero1Props {
   badge?: string
   heading: string
   description: string
+  sideContent?: ReactNode
   buttons?: {
     primary?: {
       text: string
@@ -22,6 +23,7 @@ interface Hero1Props {
 const Hero1 = ({
   heading = "Blocks Built With Shadcn & Tailwind",
   description = "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
+  sideContent,
   buttons = {
     primary: {
       text: "Discover all components",
@@ -60,13 +62,7 @@ const Hero1 = ({
               )}
             </div>
           </div>
-          <HighlightCard
-            title="Join the Operations Team"
-            subtitle="Help deliver Armada 2026 behind the scenes"
-            ctaText="Join Armada!"
-            ctaUrl="/student/recruitment"
-            description="The Operations Team powers the fair from planning to execution. Whether your strengths are logistics, event flow, service, communication, or on-site coordination, you'll help create a smooth experience for exhibitors, students, and partners. You'll collaborate across teams, solve real problems under pressure, and build the structure that makes Armada possible."
-          />
+          {sideContent}
         </div>
       </div>
     </section>
