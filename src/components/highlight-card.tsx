@@ -47,7 +47,7 @@ const HighlightCard = ({
                         {ctaText}
                     </a>
                 </h2>
-                <P className="text-sm">{description}</P>
+                <P className="text-sm pb-3">{description}</P>
             </div>
         </Card>
     )
