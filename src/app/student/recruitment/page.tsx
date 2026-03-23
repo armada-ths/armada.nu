@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default async function RecruitmentPage() {
   const data = await fetchRecruitment({
     next: {
-      revalidate: 86400 // once a day
+      revalidate: 60 // 60 seconds – reflect CMS updates quickly
     }
   })
 
