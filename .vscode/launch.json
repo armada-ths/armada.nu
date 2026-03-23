@@ -2,11 +2,54 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "armada.nu: Dev server (pnpm dev)",
+      "name": "armada.nu: Frontend dev + integrated browser (cms.armada.nu API)",
       "type": "node-terminal",
       "request": "launch",
       "command": "pnpm dev",
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NEXT_PUBLIC_API_URL": "https://cms.armada.nu"
+      },
+      "serverReadyAction": {
+        "action": "startDebugging",
+        "name": "armada.nu: Integrated browser (localhost:8000)",
+        "pattern": "- Local:\\s+(https?://[^\\s]+)"
+      }
+    },
+    {
+      "name": "armada.nu: Frontend dev + integrated browser (local CMS API)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm dev",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NEXT_PUBLIC_API_URL": "http://localhost:8080"
+      },
+      "serverReadyAction": {
+        "action": "startDebugging",
+        "name": "armada.nu: Integrated browser (localhost:8000)",
+        "pattern": "- Local:\\s+(https?://[^\\s]+)"
+      }
+    },
+    {
+      "name": "armada.nu: Dev server (pnpm dev, cms.armada.nu API)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm dev",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NEXT_PUBLIC_API_URL": "https://cms.armada.nu"
+      }
+    },
+    {
+      "name": "armada.nu: Dev server (pnpm dev, local CMS API)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm dev",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NEXT_PUBLIC_API_URL": "http://localhost:8080"
+      }
     },
     {
       "name": "armada.nu: Integrated browser (localhost:8000)",
@@ -14,18 +57,6 @@
       "request": "launch",
       "url": "http://localhost:8000",
       "webRoot": "${workspaceFolder}"
-    },
-    {
-      "name": "armada.nu: Full stack (dev + integrated browser)",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "pnpm dev",
-      "cwd": "${workspaceFolder}",
-      "serverReadyAction": {
-        "action": "startDebugging",
-        "name": "armada.nu: Integrated browser (localhost:8000)",
-        "pattern": "- Local:\\s+(https?://[^\\s]+)"
-      }
     }
   ]
 }
