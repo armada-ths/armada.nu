@@ -121,9 +121,9 @@ export async function ExhibitorTimeline() {
           Priority Registration.
         </P>
         <div className="my-4">
-          <Button>
-            <Link href={signupUrl}>Signup to Armada</Link>
-          </Button>
+          <Link href={signupUrl}>
+            <Button className="bg-grape-700">Signup to Armada</Button>
+          </Link>
         </div>
         <P className="mt-3">
           We have many different products that help you reach students at KTH in
