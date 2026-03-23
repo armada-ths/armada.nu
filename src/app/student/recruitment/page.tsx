@@ -31,8 +31,9 @@ export default async function RecruitmentPage() {
     }
   })
 
-  const groupEntries = Object.entries(data.groups ?? {})
+  const groupEntries = Object.entries(data?.groups ?? {})
   const hasAvailableRoles = groupEntries.some(([, group]) => group.length > 0)
+  const recruitmentName = data?.name || "Armada Recruitment"
 
   const hrHead = organization
     .flatMap(group => group.people)
@@ -44,7 +45,7 @@ export default async function RecruitmentPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary maxWidth={750}>
-        <Page.Header>{data.name}</Page.Header>
+        <Page.Header>{recruitmentName}</Page.Header>
         <div className="mb-20 mt-8 flex flex-1 flex-col">
           {/* <Page.Header tier="secondary">
             Open {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
@@ -93,13 +94,15 @@ export default async function RecruitmentPage() {
             </P>
           </div>
           <div className="mt-10 hidden justify-center sm:flex">
-            <ApplyButton
-              href={data.link}
-              size="lg"
-              className="bg-grapefruit text-snow"
-              startDate={data.start_date}
-              endDate={data.end_date}
-            />
+            {data ? (
+              <ApplyButton
+                href={data.link}
+                size="lg"
+                className="bg-grapefruit text-snow"
+                startDate={data.start_date}
+                endDate={data.end_date}
+              />
+            ) : null}
           </div>
           <div className="flex-1">
             <Page.Header tier="secondary" className="mt-10 text-melon-700 text-4xl">
@@ -180,23 +183,27 @@ export default async function RecruitmentPage() {
             )}
           </div>
           <div className="mt-14 hidden justify-center sm:flex">
-            <ApplyButton
-              href={data.link}
-              size="lg"
-              className="bg-grapefruit text-snow"
-              startDate={data.start_date}
-              endDate={data.end_date}
-            />
+            {data ? (
+              <ApplyButton
+                href={data.link}
+                size="lg"
+                className="bg-grapefruit text-snow"
+                startDate={data.start_date}
+                endDate={data.end_date}
+              />
+            ) : null}
           </div>
           <div className="sticky inset-x-4 bottom-8 z-20 mt-12 flex justify-center sm:hidden">
-            <ApplyButton
-              href={data.link}
-              variant="noShadow"
-              size="lg"
-              className="bg-grapefruit text-snow w-full max-w-[70vw]"
-              startDate={data.start_date}
-              endDate={data.end_date}
-            />
+            {data ? (
+              <ApplyButton
+                href={data.link}
+                variant="noShadow"
+                size="lg"
+                className="bg-grapefruit text-snow w-full max-w-[70vw]"
+                startDate={data.start_date}
+                endDate={data.end_date}
+              />
+            ) : null}
           </div>
         </div>
       </Page.Boundary>
