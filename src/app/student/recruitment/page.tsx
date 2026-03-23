@@ -106,57 +106,70 @@ export default async function RecruitmentPage() {
               {"Currently available roles"}
             </Page.Header>
             {hasAvailableRoles ? (
-              <Accordion type="multiple">
-                {groupEntries.map(([name, group], index) => (
-                  <div key={index} className="mt-6">
-                    <Page.Header tier="secondary">
-                      {name}
-                    </Page.Header>
-                    {group.map(role => (
-                      <AccordionItem
-                        key={`${name}-${role.name}`}
-                        value={`${name}::${role.name}`}
-                        className="mt-3">
-                        <AccordionTrigger>{role.name}</AccordionTrigger>
-                        <AccordionContent className="pt-2 prose prose-sm max-w-none">
-                          <ReactMarkdown
-                            components={{
-                              p: (props) => (
-                                <P className="leading-7">{props.children}</P>
-                              ),
-                              ul: (props) => (
-                                <ul className="list-disc space-y-1 pl-5">{props.children}</ul>
-                              ),
-                              ol: (props) => (
-                                <ol className="list-decimal space-y-1 pl-5">{props.children}</ol>
-                              ),
-                              li: (props) => (
-                                <li className="leading-7">{props.children}</li>
-                              ),
-                              strong: (props) => (
-                                <strong className="font-bold">{props.children}</strong>
-                              ),
-                              em: (props) => (
-                                <em className="italic">{props.children}</em>
-                              ),
-                              h1: (props) => (
-                                <h1 className="text-lg font-bold mt-4 mb-2">{props.children}</h1>
-                              ),
-                              h2: (props) => (
-                                <h2 className="text-lg font-bold mt-4 mb-2">{props.children}</h2>
-                              ),
-                              h3: (props) => (
-                                <h3 className="text-base font-bold mt-3 mb-2">{props.children}</h3>
-                              )
-                            }}>
-                            {role.description}
-                          </ReactMarkdown>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </div>
-                ))}
-              </Accordion>
+              <div>
+                <div>
+                  <P className="mt-4">
+                    The Operations Team (OT) consists of two types of roles, both essential to the project but with different focuses during the fair:
+                  </P>
+                  <P className="mt-4">
+                    <strong>Team Leader:</strong> You lead and manage a group of hosts. In addition to your planning responsibilities, you are responsible for delegating tasks, motivating your team, and overseeing their work during the fair.
+                  </P>
+                  <P className="mt-4">
+                    <strong>Coordinator:</strong> You are a specialist. Your focus is on independent planning, technical execution, or data management. While you do not lead a team of hosts, you collaborate closely across the organization to ensure your specific area runs smoothly.
+                  </P>
+                </div>
+                <Accordion type="multiple">
+                  {groupEntries.map(([name, group], index) => (
+                    <div key={index} className="mt-6">
+                      <Page.Header tier="secondary">
+                        {name}
+                      </Page.Header>
+                      {group.map(role => (
+                        <AccordionItem
+                          key={`${name}-${role.name}`}
+                          value={`${name}::${role.name}`}
+                          className="mt-3">
+                          <AccordionTrigger>{role.name}</AccordionTrigger>
+                          <AccordionContent className="pt-2 prose prose-sm max-w-none">
+                            <ReactMarkdown
+                              components={{
+                                p: (props) => (
+                                  <P className="leading-7">{props.children}</P>
+                                ),
+                                ul: (props) => (
+                                  <ul className="list-disc space-y-1 pl-5">{props.children}</ul>
+                                ),
+                                ol: (props) => (
+                                  <ol className="list-decimal space-y-1 pl-5">{props.children}</ol>
+                                ),
+                                li: (props) => (
+                                  <li className="leading-7">{props.children}</li>
+                                ),
+                                strong: (props) => (
+                                  <strong className="font-bold">{props.children}</strong>
+                                ),
+                                em: (props) => (
+                                  <em className="italic">{props.children}</em>
+                                ),
+                                h1: (props) => (
+                                  <h1 className="text-lg font-bold mt-4 mb-2">{props.children}</h1>
+                                ),
+                                h2: (props) => (
+                                  <h2 className="text-lg font-bold mt-4 mb-2">{props.children}</h2>
+                                ),
+                                h3: (props) => (
+                                  <h3 className="text-base font-bold mt-3 mb-2">{props.children}</h3>
+                                )
+                              }}>
+                              {role.description}
+                            </ReactMarkdown>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </div>
+                  ))}
+                </Accordion>
+              </div>
             ) : (
               <Alert className="mt-6">
                 <AlertTitle>No available roles at the moment</AlertTitle>
@@ -187,6 +200,6 @@ export default async function RecruitmentPage() {
           </div>
         </div>
       </Page.Boundary>
-    </Page.Background>
+    </Page.Background >
   )
 }
