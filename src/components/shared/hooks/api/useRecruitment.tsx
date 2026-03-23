@@ -62,7 +62,7 @@ Each Team Leader runs their events independently, but the team works closely tog
         {
           name: "Banquet Team Leader: Logistics & Execution",
           parent: null,
-          description: `As Team Leader for Operations, you make sure everything runs smoothly before, during, and after the banquet. You will coordinate logistics such as transportation of decorations, materials, and staff, and lead a small team of banquet hosts during the event. This role suits someone who is organized, independent, and good at solving problems when things don’t go as planned.
+          description: `As Team Leader for Logistics & Execution, you make sure everything runs smoothly before, during, and after the banquet. You will coordinate logistics such as transportation of decorations, materials, and staff, and lead a small team of banquet hosts during the event. This role suits someone who is organized, independent, and good at solving problems when things don’t go as planned.
 
 **Responsibilities**:
 
@@ -80,7 +80,7 @@ Each Team Leader runs their events independently, but the team works closely tog
         {
           name: "Banquet Team Leader: Creative & Decor",
           parent: null,
-          description: `As Team Leader for Creative, you will bring the banquet theme to life. You will plan decorations and the overall atmosphere while staying within budget. On the day of the event, you will lead a small team of hosts and help set up the venue together with the operations team. This role is perfect for someone creative, organized, and eager to shape the look and feel of the event.
+          description: `As Team Leader for Creative & Decor, you will bring the banquet theme to life. You will plan decorations and the overall atmosphere while staying within budget. On the day of the event, you will lead a small team of hosts and help set up the venue together with the operations team. This role is perfect for someone creative, organized, and eager to shape the look and feel of the event.
 
 **Responsibilities:**
 
@@ -99,7 +99,7 @@ Each Team Leader runs their events independently, but the team works closely tog
         {
           name: "Banquet Coordinator: Entertainment",
           parent: null,
-          description: `As Team Leader for Entertainment, you will plan the program for the evening. This includes booking a toastmaster, performers, and other entertainment, as well as creating the banquet schedule. This role suits someone proactive, organized, and excited about creating a fun and memorable evening.
+          description: `As Coordinator for Entertainment, you will plan the program for the evening. This includes booking a toastmaster, performers, and other entertainment, as well as creating the banquet schedule. This role suits someone proactive, organized, and excited about creating a fun and memorable evening.
 
 **Responsibilities:**
 
@@ -117,7 +117,7 @@ Each Team Leader runs their events independently, but the team works closely tog
         {
           name: "Banquet Coordinator: Guest Relations",
           parent: null,
-          description: `As Banquet Coordinator, you will focus on the guests. You will manage the guest list, plan the seating arrangement, and ensure that dietary requirements are handled. This role is ideal for someone structured, communicative, and detail-oriented.
+          description: `As Coordinator for Guest Relations, you will focus on the guests. You will manage the guest list, plan the seating arrangement, and ensure that dietary requirements are handled. This role is ideal for someone structured, communicative, and detail-oriented.
 
 **Responsibilities:**
 
@@ -166,7 +166,7 @@ In this role, you will develop logistical management and hospitality leadership 
 * Serving as the first point of contact regarding logistical issues.
 * Directing a team of Service Hosts, ensuring the Information Desks are continuously staffed and delivering consistent service.
 
-For this role, we look for the following qualification in a person:
+**For this role, we look for the following qualification in a person:**
 
 * Good verbal communication
 * A structured and organized approach to multitasking
@@ -209,58 +209,66 @@ To thrive in this role, you should be well-organized, proactive, and an effectiv
         {
           name: "Team Leader: Photography",
           parent: null,
-          description: `* Detail oriented
+          description: `**Skills:**
+
+* Detail oriented
 * Good at communication
 * Good teamplayer
 * Skills with Editing Softwares (for photo editing)
 
-Role:
+**Role:**
 
-* Overseas all photo-taking and photo-management of the Armada’s events/campaigns (host)/reception (host)/the fair/banquet.
+* Responsible for overseeing photography and image management for all of Armada’s events.
 * From documenting, taking photos and editing photos to publishing and storing photos.
 * Should be familiar with basic photo editing.`
         },
         {
           name: "Team Leader: Videography",
           parent: null,
-          description: `* Detail oriented
+          description: `**Skills:**
+
+* Detail oriented
 * Good at brainstorming
 * Good planner
 * Good communication
 * Good teamplayer
 * Skills with Editing Softwares (for video editing)
 
-Role:
+**Role:**
 
-* Overseas all filming/videography of events/campaigns (host)/the fair/banquet. From documenting to editing to finishing a film.
+* Responsible for overseeing videography and video management for all of Armada’s events.
 * Should know how to be familiar with using editing softwares to edit videos/clips.
 * Also will work with creating and editing videos for the Armada youtube.`
         },
         {
           name: "Media Production Coordinator",
           parent: null,
-          description: `* Should have previous experience with either working in an association/organization -> showcase good communication or experience with content production -> showcases skills hence has an idea on what to oversee when it comes to planning media production for all the events of Armada.
+          description: `**Skills:**
+
+* Previous experience in an association or organization is required, along with strong communication or content production skills to effectively oversee media planning for Armada’s events.
 * Detail oriented
 * Outgoing and initiative-taking
 * Passionate and ambitious with their role
 * Good planner
 * Good communication
 
-Role:
+**Role:**
 
 * Coordinating all media production - with film crew and photo crew- overseeing management and planning in details for all Armada events throughout the year. So all posts look good and we post quantity with quality on time!`
         },
         {
           name: "Social Media Coordinator",
           parent: null,
-          description: `* Outgoing
+          description: `**Skills:**
+
+* Outgoing
 * Initiative-taking
 * Trend Awareness
 * Good at brainstorming, thinking out of the box
 * Have a good overview of social media strategy
 * Have a good overview of marketing strategies
 
-Role:
+**Role:**
 
 * Overseas marketing of Armada.
 * Making videos/tiktoks/posting on all of Armada’s social media and marketing before/after and at the fair.
@@ -298,7 +306,7 @@ Your work may include sketching concepts, creating wireframes and mockups, testi
         {
           name: "Team Leader: Talent & University Relations",
           parent: null,
-          description: `As a Team Leader for Talent & University Relations, you hold a dual role that is central to the Armada spirit. During the fall, you focus inward, driving the recruitment and integration of the entire host organization. During the fair, your focus shifts outward as you become the primary host for visiting representatives from other universities, ensuring they experience the best of Armada through the Alternate Banquet.
+          description: `This role transitions from an internal HR focus in the fall to an external hospitality focus during the fair. You will drive the recruitment and integration of the entire host organization before shifting gears to act as the primary host for visiting university representatives. Your mission is to ensure these guests experience a high quality visit, culminating in the execution of the Alternate Banquet.
 
 **Responsibilities:**
 
