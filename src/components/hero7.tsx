@@ -38,7 +38,7 @@ const Hero1 = ({
   return (
     <section className="pt-20">
       <div className="container">
-        <div className="grid items-center gap-8 lg:grid-cols-2">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <h1 className="font-bebas-neue text-melon-700 text-5xl lg:text-7xl">
               {heading}

@@ -19,7 +19,7 @@ const HighlightCard = ({
     description
 }: HighlightCardProps) => {
     return (
-        <Card className="bg-snow border-licorice relative flex h-96 flex-col overflow-hidden rounded-md border-4 p-0 sm:w-full">
+        <Card className="bg-snow border-licorice relative flex h-auto min-h-96 flex-col overflow-hidden rounded-md border-4 p-0 sm:w-full">
             {/* Nautical Title Bar */}
             <div className="border-licorice bg-melon-700 text-licorice z-10 flex items-center gap-3 border-b-4 px-4 py-2">
                 {/* Window dots */}
