@@ -101,6 +101,7 @@ export default async function RecruitmentPage() {
                 className="bg-grapefruit text-snow"
                 startDate={data.start_date}
                 endDate={data.end_date}
+                tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_top" } }}
               />
             ) : null}
           </div>
@@ -190,6 +191,7 @@ export default async function RecruitmentPage() {
                 className="bg-grapefruit text-snow"
                 startDate={data.start_date}
                 endDate={data.end_date}
+                tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_middle" } }}
               />
             ) : null}
           </div>
@@ -202,6 +204,7 @@ export default async function RecruitmentPage() {
                 className="bg-grapefruit text-snow w-full max-w-[70vw]"
                 startDate={data.start_date}
                 endDate={data.end_date}
+                tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_sticky_mobile" } }}
               />
             ) : null}
           </div>

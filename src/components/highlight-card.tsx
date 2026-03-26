@@ -1,4 +1,5 @@
 import { P } from "@/app/_components/Paragraph"
+import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
 import { Card } from "@/components/ui/card"
 
 interface HighlightCardProps {
@@ -7,6 +8,7 @@ interface HighlightCardProps {
     subtitle: string
     ctaText: string
     ctaUrl: string
+    ctaTracking?: TrackingConfig
     description: string
 }
 
@@ -16,6 +18,7 @@ const HighlightCard = ({
     subtitle,
     ctaText,
     ctaUrl,
+    ctaTracking,
     description
 }: HighlightCardProps) => {
     return (
@@ -43,9 +46,15 @@ const HighlightCard = ({
                 </h1>
                 <h2 className="text-melon-700">
                     {subtitle} -{" "}
-                    <a href={ctaUrl} className="underline hover:no-underline">
-                        {ctaText}
-                    </a>
+                    {ctaTracking ? (
+                        <TrackedLink href={ctaUrl} tracking={ctaTracking} className="underline hover:no-underline">
+                            {ctaText}
+                        </TrackedLink>
+                    ) : (
+                        <a href={ctaUrl} className="underline hover:no-underline">
+                            {ctaText}
+                        </a>
+                    )}
                 </h2>
                 <P className="text-sm pb-3">{description}</P>
             </div>

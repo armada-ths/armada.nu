@@ -1,6 +1,8 @@
 "use client"
 
+import { TrackingConfig } from "@/components/shared/TrackedLink"
 import { Button } from "@/components/ui/button"
+import { track } from "@vercel/analytics"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
@@ -12,6 +14,7 @@ interface ApplyButtonProps {
     mobile?: boolean
     startDate?: string
     endDate?: string
+    tracking?: TrackingConfig
 }
 
 export function ApplyButton({
@@ -20,7 +23,8 @@ export function ApplyButton({
     size = "lg",
     className,
     startDate,
-    endDate }: ApplyButtonProps) {
+    endDate,
+    tracking }: ApplyButtonProps) {
     const [isDisabled, setIsDisabled] = useState(false)
     const [disabledText, setDisabledText] = useState("Recruitment is closed")
 
@@ -83,7 +87,11 @@ export function ApplyButton({
 
     return (
         <Button asChild variant={variant} size={size} className={className}>
-            <Link href={href}>Apply to Armada!</Link>
+            <Link
+                href={href}
+                onClick={tracking ? () => track(tracking.eventName, tracking.eventData) : undefined}>
+                Apply to Armada!
+            </Link>
         </Button>
     )
 }

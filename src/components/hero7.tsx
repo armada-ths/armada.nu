@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react"
 import { ReactNode } from "react"
 
+import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
 import { Button } from "@/components/ui/button"
 
 interface Hero1Props {
@@ -12,10 +13,12 @@ interface Hero1Props {
     primary?: {
       text: string
       url: string
+      tracking?: TrackingConfig
     }
     secondary?: {
       text: string
       url: string
+      tracking?: TrackingConfig
     }
   }
 }
@@ -49,15 +52,28 @@ const Hero1 = ({
                 <Button
                   asChild
                   className="bg-grapefruit text-snow w-full sm:w-auto">
-                  <a href={buttons.primary.url}>{buttons.primary.text}</a>
+                  {buttons.primary.tracking ? (
+                    <TrackedLink href={buttons.primary.url} tracking={buttons.primary.tracking}>
+                      {buttons.primary.text}
+                    </TrackedLink>
+                  ) : (
+                    <a href={buttons.primary.url}>{buttons.primary.text}</a>
+                  )}
                 </Button>
               )}
               {buttons.secondary && (
                 <Button asChild variant="neutral" className="w-full sm:w-auto">
-                  <a href={buttons.secondary.url}>
-                    {buttons.secondary.text}
-                    <ArrowRight className="size-4" />
-                  </a>
+                  {buttons.secondary.tracking ? (
+                    <TrackedLink href={buttons.secondary.url} tracking={buttons.secondary.tracking}>
+                      {buttons.secondary.text}
+                      <ArrowRight className="size-4" />
+                    </TrackedLink>
+                  ) : (
+                    <a href={buttons.secondary.url}>
+                      {buttons.secondary.text}
+                      <ArrowRight className="size-4" />
+                    </a>
+                  )}
                 </Button>
               )}
             </div>

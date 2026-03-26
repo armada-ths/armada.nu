@@ -25,6 +25,7 @@ export async function RecruitmentBanner() {
       linkText={"here"}
       linkUrl={"/student/recruitment"}
       defaultVisible={!recruitmentClosed}
+      linkTracking={{ eventName: "student_signup_click", eventData: { location: "recruitment_banner" } }}
     />
   )
 }
