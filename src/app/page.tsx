@@ -2,6 +2,7 @@ import { P } from "@/app/_components/Paragraph"
 // import { fetchDates } from "@/components/shared/hooks/api/useDates"
 // import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 // import Image from "next/image"
@@ -50,13 +51,15 @@ export default async function HomePage() {
                 subtitle="Help deliver Armada 2026 behind the scenes"
                 ctaText="Join Armada!"
                 ctaUrl="/student/recruitment"
-                description="Become part of the Armada Operations Team and turn ideas into reality. As an OT, you’re one of the driving forces behind Armada and part of the team that keeps everything moving, connected, and on track. You’ll collaborate with passionate students, take on meaningful responsibility, and help build Scandinavia's biggest career fair. Read more about our available roles and apply on the recruitment page!"
+                ctaTracking={{ eventName: "student_signup_click", eventData: { location: "highlight_card" } }}
+                description="Become part of the Armada Operations Team and turn ideas into reality. As an OT, you're one of the driving forces behind Armada and part of the team that keeps everything moving, connected, and on track. You'll collaborate with passionate students, take on meaningful responsibility, and help build Scandinavia's biggest career fair. Read more about our available roles and apply on the recruitment page!"
               />
             }
             buttons={{
               primary: {
                 text: "Join Armada",
-                url: "/student/recruitment"
+                url: "/student/recruitment",
+                tracking: { eventName: "student_signup_click", eventData: { location: "hero_primary" } }
               },
               secondary: {
                 text: "About Armada",
@@ -188,7 +191,12 @@ export default async function HomePage() {
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild className="bg-grapefruit text-snow">
-                  <Link href="/student/recruitment">Join Us!</Link>
+                  <TrackedLink
+                    href="/student/recruitment"
+                    tracking={{ eventName: "student_signup_click", eventData: { location: "for_students_card" } }}
+                  >
+                    Join Us!
+                  </TrackedLink>
                 </Button>
               </div>
             </Card>
