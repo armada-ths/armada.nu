@@ -1,6 +1,7 @@
 import { StatusModuleItem } from "@/app/exhibitor/_components/StatusModuleItem"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import { feature, getSignupUrl } from "@/components/shared/feature"
 import {
   Accordion,
@@ -10,7 +11,6 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { track } from "@vercel/analytics"
 import { formatDate } from "@/lib/utils"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -32,7 +32,7 @@ export default async function Packages() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
-        <div className="mx-auto max-w-[600px]">
+        <div className="mx-auto max-w-150">
           <Page.Header>Packages</Page.Header>
           <div className="mt-4">
             <p className="max-w-[500]">
@@ -150,7 +150,7 @@ export default async function Packages() {
           </div>
         </div>
         {/* <p className="mt-4 text-sm">*All prices are ex. VAT. </p> */}
-        <div className="mx-auto mt-10 w-full max-w-[600px]">
+        <div className="mx-auto mt-10 w-full max-w-150">
           <h1 className="mb-2 ml-2 text-2xl">FAQ</h1>
           <Accordion type="single" collapsible className="space-y-6">
             {/* FAQ 1 */}
@@ -197,17 +197,16 @@ export default async function Packages() {
               <AccordionContent>
                 <p>You can sign up here:</p>
                 <div className="my-4">
-                  <Link
+                  <TrackedLink
                     href={signupUrl}
-                    onClick={() =>
-                      track("exhibitor_signup_click", {
-                        location: "exhibitor_packages_faq"
-                      })
-                    }>
+                    tracking={{
+                      eventName: "exhibitor_signup_click",
+                      eventData: { location: "exhibitor_packages_faq" }
+                    }}>
                     <Button className="bg-grapefruit text-snow">
                       Signup to Armada
                     </Button>
-                  </Link>
+                  </TrackedLink>
                 </div>
                 <p>
                   If you have any questions, you can contact us at{" "}
