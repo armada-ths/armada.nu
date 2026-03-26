@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { track } from "@vercel/analytics"
 import { formatDate } from "@/lib/utils"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -196,7 +197,13 @@ export default async function Packages() {
               <AccordionContent>
                 <p>You can sign up here:</p>
                 <div className="my-4">
-                  <Link href={signupUrl}>
+                  <Link
+                    href={signupUrl}
+                    onClick={() =>
+                      track("exhibitor_signup_click", {
+                        location: "exhibitor_packages_faq"
+                      })
+                    }>
                     <Button className="bg-grapefruit text-snow">
                       Signup to Armada
                     </Button>

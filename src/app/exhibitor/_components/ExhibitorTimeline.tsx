@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
 
 import { getSignupUrl } from "@/components/shared/feature"
+import { track } from "@vercel/analytics"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
@@ -74,7 +75,13 @@ export async function ExhibitorTimeline() {
           in the larger packages.
         </P>
         <div className="my-4">
-          <Link href={signupUrl}>
+          <Link
+            href={signupUrl}
+            onClick={() =>
+              track("exhibitor_signup_click", {
+                location: "exhibitor_timeline_priority_registration"
+              })
+            }>
             <Button className="bg-grape-700">Signup to Armada</Button>
           </Link>
         </div>
@@ -121,7 +128,13 @@ export async function ExhibitorTimeline() {
           Priority Registration.
         </P>
         <div className="my-4">
-          <Link href={signupUrl}>
+          <Link
+            href={signupUrl}
+            onClick={() =>
+              track("exhibitor_signup_click", {
+                location: "exhibitor_timeline_standard_registration"
+              })
+            }>
             <Button className="bg-grape-700">Signup to Armada</Button>
           </Link>
         </div>
