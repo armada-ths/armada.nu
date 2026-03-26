@@ -32,6 +32,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://armada.nu"),
   title: "THS Armada",
   description: `Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
   keywords: [
