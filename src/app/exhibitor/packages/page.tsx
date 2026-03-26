@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { formatDate } from "@/lib/utils"
 import { Metadata } from "next"
 import Link from "next/link"
 
@@ -28,7 +27,6 @@ export default async function Packages() {
   }
   const signupUrl = await getSignupUrl()
 
-
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
@@ -36,10 +34,10 @@ export default async function Packages() {
           <Page.Header>Packages</Page.Header>
           <div className="mt-4">
             <p className="max-w-[500]">
-              Armada has the following packages. The Bronze package is all the
-              basics you need to exhibit at Armada. The Silver package allows
-              you to expand your presence and the Gold package makes you truly
-              stand out from the rest through extra marketing.
+              THS Armada strives to provide the best experience for all
+              exhibitors through our Exhibitor Kit. The Bronze package covers
+              the basics, Silver expands your presence, and Gold makes you
+              truly stand out with extra marketing and a dedicated event.
             </p>
           </div>
           <StatusModuleItem title="Did you know?">
@@ -56,22 +54,22 @@ export default async function Packages() {
                 <li className="my-2 font-extrabold">
                   2x3 sqm, carpeted exhibitor space
                 </li>
-                <li className="my-2 font-extrabold">Host service</li>
                 <li className="my-2 font-extrabold">
                   Lunch for 4 representatives
                 </li>
+                <li className="my-2 font-extrabold">700 W of Electricity</li>
+                <li className="my-2">Host service</li>
                 <li className="my-2">Access to WiFi</li>
-                <li className="my-2">700 W of Electricity</li>
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
-              {/* <div className="absolute bottom-4">
+              <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
                   Priority registration price:
                 </p>
-                <p>43 300 SEK*</p>
+                <p className="font-bold">45 000 SEK*</p>
                 <p className="text-sm">Standard registration price:</p>
-                <p>46 500 SEK*</p>
-              </div> */}
+                <p>48 000 SEK*</p>
+              </div>
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
             </Card>
             <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-gray-400 p-5 pb-32">
@@ -83,73 +81,104 @@ export default async function Packages() {
                 <li className="my-2 font-extrabold">
                   Second priority placement
                 </li>
-                <li className="my-2 font-extrabold">Host service</li>
                 <li className="my-2 font-extrabold">
                   Lunch for 6 representatives
                 </li>
                 <li className="my-2 font-extrabold">2 Armada Run Tickets</li>
                 <li className="my-2 font-extrabold">2 Banquet tickets</li>
                 <li className="my-2 font-extrabold">
-                  Silver Partner Marketing on THS Armada Platforms
+                  Silver partner marketing on Armada platforms
                 </li>
+                <li className="my-2 font-extrabold">1200 W of Electricity</li>
+                <li className="my-2">Host service</li>
                 <li className="my-2">Access to WiFi</li>
-                <li className="my-2">1200 W of Electricity</li>
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
-              {/* <div className="absolute bottom-4">
+              <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
                   Priority Registration price:
                 </p>
-                <p>68 900 SEK*</p>
+                <p className="font-bold">69 000 SEK*</p>
                 <p className="text-sm">Standard registration price:</p>
-                <p>75 800 SEK*</p>
-              </div> */}
+                <p>78 000 SEK*</p>
+              </div>
               {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
             </Card>
             <Card className="bg-pineapple relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
               <h3 className="font-lato text-licorice text-2xl">Gold</h3>
               <ul className="font-lato text-licorice mt-2">
                 <li className="my-2 font-extrabold">
-                  2x5 sqm booth, carpeted exhibitor space
+                  2x5 sqm. carpeted exhibitor space
                 </li>
                 <li className="my-2 font-extrabold">
                   First priority placement
                 </li>
-                <li className="my-2 font-extrabold">Host service</li>
                 <li className="my-2 font-extrabold">
                   Lunch for 8 representatives
                 </li>
-                <li className="my-2 font-extrabold">4 Armada Run Tickets</li>
-                <li className="my-2 font-extrabold">4 Banquet Tickets</li>
+                <li className="my-2 font-extrabold">4 Armada Run tickets</li>
+                <li className="my-2 font-extrabold">4 Banquet tickets</li>
                 <li className="my-2 font-extrabold">
-                  A spot as a speaker in the panel discussion of your choice
+                  One event of your choosing (30 attendees)
+                </li>
+                <li className="my-2 text-sm ml-4">
+                  Field visit, after work, or panel discussion
                 </li>
                 <li className="my-2 font-extrabold">
                   Customized email marketing to students
                 </li>
                 <li className="my-2 font-extrabold">
-                  4 hours of contact calls (1:1)
+                  Gold partner marketing on Armada platforms
                 </li>
-                <li className="my-2 font-extrabold">
-                  Gold Partner Marketing on THS Armada Platforms
-                </li>
+                <li className="my-2 font-extrabold">2300 W of Electricity</li>
+                <li className="my-2">Host service</li>
                 <li className="my-2">Access to WiFi</li>
-                <li className="my-2">2300 W of Electricity</li>
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
-              {/* <div className="absolute bottom-4">
+              <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
                   Priority Registration price:
                 </p>
-                <p>107 500 SEK*</p>
+                <p className="font-bold">105 000 SEK*</p>
                 <p className="text-sm">Standard registration price:</p>
-                <p>118 200 SEK*</p>
-              </div> */}
+                <p>120 000 SEK*</p>
+              </div>
               {/* 							<p className="absolute bottom-4">108 500 SEK*</p> */}
             </Card>
           </div>
         </div>
         {/* <p className="mt-4 text-sm">*All prices are ex. VAT. </p> */}
+        <div className="mx-auto mt-12 w-full max-w-150">
+          <h2 className="text-2xl font-bold">Custom Package</h2>
+          <p className="mt-2">
+            Is the Exhibitor Kit missing something? We have you covered with
+            additional options that may be tailored to your needs!
+          </p>
+          <ul className="mt-4 ml-4 list-disc space-y-2">
+            <li>
+              <strong>Additional exhibitor space</strong> — options to increase
+              in both width and height are available for purchase
+            </li>
+            <li>
+              <strong>Additional electricity</strong> — need more power? We can
+              provide
+            </li>
+            <li>
+              <strong>Social media ad</strong> — advertise your company&apos;s
+              latest project, vacancies, or future plans through our social
+              media platforms
+            </li>
+          </ul>
+          <p className="mt-4 text-sm">
+            Contact{" "}
+            <Link
+              className="underline hover:no-underline"
+              href="mailto:sales@armada.nu">
+              sales@armada.nu
+            </Link>{" "}
+            for custom options and pricing.
+          </p>
+        </div>
         <div className="mx-auto mt-10 w-full max-w-150">
           <h1 className="mb-2 ml-2 text-2xl">FAQ</h1>
           <Accordion type="single" collapsible className="space-y-6">
@@ -176,18 +205,33 @@ export default async function Packages() {
             {/* FAQ 2 */}
             <AccordionItem value="faq-2">
               <AccordionTrigger>
-                When is the deadline for Priority Registration?
+                What is the difference between Priority Registration and
+                Standard Registration?
               </AccordionTrigger>
               <AccordionContent>
                 <p>
-                  The Priority Registration ends {formatDate("2025-05-23")}. See
-                  our{" "}
+                  Priority Registration is where you apply to be an exhibitor.
+                  You do not need to choose a package yet.
+                </p>
+                <p className="mt-3">
+                  Standard Registration is when you choose your package,
+                  events, banquet tickets, and other products in the
+                  registration dashboard.
+                </p>
+                <p className="mt-3">
+                  You can also choose to wait and sign up for the first time
+                  during Standard Registration instead. If you do, you pay the
+                  Standard Registration price rather than the lower Priority
+                  Registration price.
+                </p>
+                <p className="mt-3">
+                  See our{" "}
                   <Link
                     className="underline hover:no-underline"
                     href="/exhibitor/timeline">
                     timeline
                   </Link>{" "}
-                  for more information and other important dates.
+                  for more details and important dates.
                 </p>
               </AccordionContent>
             </AccordionItem>

@@ -9,6 +9,7 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: `Event - Armada Exhibitor`,
@@ -25,40 +26,48 @@ export default async function Packages() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
-        <div className="mx-auto max-w-[600px]">
+        <div className="mx-auto w-full max-w-150">
           <Page.Header>Events</Page.Header>
+          <p className="text-melon-700 mt-1 text-lg font-medium">
+            Make the Most of Your Presence at Armada
+          </p>
           <div className="mt-4">
             <P className="max-w-[500]">
-              Armada offers the opportunity for your organization to stand out
-              in various events. These events are a great way to meet students
-              in a more relaxed environment and to get to know them better. The
-              events are a great way to advertise your organization and to get
-              to know the students better.
+              Going beyond the booth is where real talent connections are made.
+              These events give you dedicated time and space to showcase your
+              brand, culture, and people to KTH&apos;s most driven students, on
+              your terms. Pick a format, or build your own.
             </P>
           </div>
         </div>
-        <div className="mx-auto mt-10 w-full max-w-[600px]">
+        <div className="mx-auto mt-10 w-full max-w-150">
           <Accordion type="multiple" className="space-y-6">
             {/* Lunch Lecture */}
             <AccordionItem value="event-lunch-lecture">
               <AccordionTrigger>
                 <div className="flex flex-col text-left">
                   <span className="font-heading text-xl">{`Lunch Lecture`}</span>
-                  <span className="text-sm opacity-80">Location: TBD</span>
                   <span className="text-sm opacity-80">
-                    Price: 24,000/31,000 SEK
+                    Price: 24,700 / 31,900 SEK excl. VAT
                   </span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
-                  This is your chance to take the whole stage and showcase your
-                  organization to our students. Seize the spotlight to dive into
-                  your operations, company culture, or any theme of your choice
-                  to engage and inspire the students. Plus, food is provided for
-                  both students and your representatives!
+                  Own the room. Present your company, your culture, or a topic
+                  you&apos;re passionate about — while students enjoy a free
+                  lunch courtesy of you. It&apos;s a captive, curious audience
+                  in a relaxed setting, and one of the most effective ways to
+                  leave a lasting impression.
                 </p>
+                <p className="mt-2">
+                  Food is included for both students and your representatives.
+                </p>
+                <ul className="mt-2 ml-4 list-disc text-sm">
+                  <li>60 attendees: 24,700 SEK</li>
+                  <li>100 attendees: 31,900 SEK</li>
+                </ul>
               </AccordionContent>
             </AccordionItem>
 
@@ -68,21 +77,19 @@ export default async function Packages() {
                 <div className="flex flex-col text-left">
                   <span className="font-heading text-xl">{`Panel Discussion`}</span>
                   <span className="text-sm opacity-80">
-                    Location: At the fair
+                    Price: 9,300 SEK excl. VAT
                   </span>
-                  <span className="text-sm opacity-80">Price: 9000 SEK</span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
-                  Join a themed panel discussion during the fair where we bring
-                  together representatives from different companies to
-                  participate in a lively and informative moderated discussion.
-                  This event provides an opportunity to showcase your expertise,
-                  network with industry leaders and students, and gain valuable
-                  insights into the latest trends and challenges facing your
-                  industry.
+                  Position your company as a thought leader. Join a moderated,
+                  themed panel alongside representatives from other leading
+                  companies and engage students in an honest, dynamic
+                  conversation about industry trends, challenges, and careers.
+                  Great for brand credibility and visibility — and you might
+                  learn something too.
                 </p>
               </AccordionContent>
             </AccordionItem>
@@ -95,17 +102,20 @@ export default async function Packages() {
                   <span className="text-sm opacity-80">
                     Location: Your office
                   </span>
-                  <span className="text-sm opacity-80">Price: 9000 SEK</span>
+                  <span className="text-sm opacity-80">
+                    Price: 9,300 SEK / 30 attendees excl. VAT
+                  </span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
-                  Welcome students to your office and show off who you are in a
-                  familiar setting! This event is a unique opportunity to
-                  showcase your workplace, culture, and operations firsthand
-                  while creating a memorable and engaging experience for your
-                  future colleagues.
+                  Bring students into your world. Hosting a visit at your office
+                  is one of the most authentic ways to communicate who you are
+                  as an employer — your space, your team, your energy. Students
+                  get a real feel for what working with you looks like, and you
+                  get face time with motivated candidates in a setting where
+                  you&apos;re at your best.
                 </p>
               </AccordionContent>
             </AccordionItem>
@@ -116,26 +126,83 @@ export default async function Packages() {
                 <div className="flex flex-col text-left">
                   <span className="font-heading text-xl">{`After Work`}</span>
                   <span className="text-sm opacity-80">
-                    Location: Your Office or Nymble
+                    Location: Your office or Nymble
                   </span>
                   <span className="text-sm opacity-80">
-                    Price: 9000/12,000 SEK
+                    Price: 9,300 / 12,400 SEK excl. VAT
                   </span>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent>
                 <p>
-                  Welcome students to your office to hang out, OR let us
-                  organize it for you at Nymble, THS's own pub! Choose between
-                  an informal hangout fostering organic conversations and
-                  mingling or a more formal networking session where you can
-                  exchange insights to forge meaningful connections with the
-                  future leaders of your industry.
+                  Keep the conversation going after the fair floor closes. Host
+                  students for an informal mixer — at your own office for a more
+                  personal touch, or let us set it up for you at Nymble,
+                  THS&apos;s own pub. Whether you prefer casual mingling or
+                  structured networking, this is a low-pressure environment
+                  where real connections happen.
+                </p>
+                <ul className="mt-2 ml-4 list-disc text-sm">
+                  <li>At Nymble: 12,400 SEK</li>
+                  <li>At your office: 9,300 SEK</li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Collaborative Events */}
+            <AccordionItem value="event-collaborative">
+              <AccordionTrigger>
+                <div className="flex flex-col text-left">
+                  <span className="font-heading text-xl">{`Collaborative Events`}</span>
+                  <span className="text-sm opacity-80">
+                    Your concept, your way
+                  </span>
+                </div>
+              </AccordionTrigger>
+
+              <AccordionContent>
+                <p>
+                  Have something more specific in mind? Design your own event —
+                  a workshop, live demo, hackathon, case competition, or
+                  anything else that reflects your brand. You bring the concept
+                  and the people; we handle the logistics and can arrange
+                  catering if needed.
+                </p>
+                <p className="mt-2 text-sm">
+                  Contact our events team for a quotation:{" "}
+                  <Link
+                    className="underline hover:no-underline"
+                    href="mailto:event@armada.nu">
+                    event@armada.nu
+                  </Link>
                 </p>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+        </div>
+        <div className="mx-auto mt-10 w-full max-w-150">
+          <h2 className="text-2xl font-bold">Focus Rooms</h2>
+          <P className="mt-2">
+            To showcase our commitment to our core values Sustainability and
+            Diversity, we&apos;ve created Focus Rooms during the fair for the
+            companies that share our values. These rooms receive extra marketing
+            attention and are highlighted during the fair.
+          </P>
+          <ul className="mt-4 ml-4 list-disc space-y-3">
+            <li>
+              <strong>Green Room</strong> — A place in the Green Room will
+              highlight your sustainability work, a topic that becomes more and
+              more important for students when looking for their future
+              employer.
+            </li>
+            <li>
+              <strong>Diversity Room</strong> — A place in the Diversity Room
+              will spotlight your diversity initiatives, resonating with
+              students seeking inclusive workplaces and enhancing your visibility
+              during the fair.
+            </li>
+          </ul>
         </div>
       </Page.Boundary>
     </Page.Background>
