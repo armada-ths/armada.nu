@@ -184,7 +184,7 @@ export function CompanySubmissionPopover() {
               </div>
 
               <X
-                className="absolute top-[5px] right-[5px] cursor-default hover:cursor-pointer"
+                className="absolute top-1.25 right-1.25 cursor-default hover:cursor-pointer"
                 onClick={() => setIsOpen(false)}></X>
             </div>
           </div>
