@@ -166,7 +166,12 @@ export default async function HomePage() {
                   <>
                     {exhibitorSignupEnabled && (
                       <Button asChild className="bg-grapefruit text-snow">
-                        <Link href={signupUrl}>Exhibitor Signup</Link>
+                        <TrackedLink
+                          href={signupUrl}
+                          tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_landing_card" } }}
+                        >
+                          Exhibitor Signup
+                        </TrackedLink>
                       </Button>
                     )}
                     {exhibitorPackagesEnabled && (
