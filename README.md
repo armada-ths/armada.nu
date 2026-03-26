@@ -60,7 +60,7 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 
 ## Project Structure
 
-```
+```text
 src/
 ├── app/                  # Next.js App Router pages
 │   ├── _components/      # Landing page components
@@ -85,6 +85,7 @@ src/
 - **Adding env vars**: Always register them in `src/env.ts`. Use `NEXT_PUBLIC_` prefix for client-safe vars.
 - **Data fetching**: Use the dual-export pattern in `src/components/shared/hooks/api/` — `fetch*()` for server components, `use*()` hooks for client components.
 - **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel overrides applied. The `EXHIBITOR_SIGNUP` flag may be auto-updated by ArmadaCMS based on fair dates.
+- **Preview-specific flags**: You can set `FEATURE_FLAG_PREVIEW_OVERRIDES_JSON` (server-side env var) to override flags only for preview deployments (`VERCEL_ENV=preview`). Merge order is: CMS defaults → branch overrides (`VERCEL_GIT_COMMIT_REF`) → deployment overrides (`VERCEL_URL`) → `vercel-flag-overrides` cookie. Unknown keys and non-boolean values are ignored.
 - **Adding shadcn components**: `npx shadcn@latest add <component>`
 - **Adding pages**: Add an entry to `src/app/sitemap.ts`.
 - **Brand colors**: Use Tailwind classes like `text-melon-700`, `bg-coconut`, `text-licorice` (defined in `globals.css`).
