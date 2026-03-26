@@ -26,9 +26,7 @@ const lato = Lato({
 
 export const viewport: Viewport = {
   width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false
+  initialScale: 1
 }
 
 export const metadata: Metadata = {
@@ -85,7 +83,9 @@ export default async function RootLayout({
         className={`${inter.variable} ${bebasNeue.variable} ${lato.variable}`}>
         <Analytics />
         <SpeedInsights />
-        <Providers>{children}</Providers>
+        <main>
+          <Providers>{children}</Providers>
+        </main>
         <DevToolbar />
         <FooterGuard>
           <Footer signupUrl={signupUrl} />

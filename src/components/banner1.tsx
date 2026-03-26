@@ -57,6 +57,7 @@ const Banner1 = ({
           variant="noShadow"
           size="icon"
           className="bg-snow -mr-2 h-8 w-8 flex-none"
+          aria-label="Dismiss banner"
           onClick={handleClose}>
           <X className="h-4 w-4" />
         </Button>

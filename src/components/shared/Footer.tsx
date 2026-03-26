@@ -100,6 +100,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             width={70}
             height={70}
             className="object-contain"
+            style={{ height: "auto" }}
           />
         </div>
       </div>
@@ -171,6 +172,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             width={70}
             height={70}
             className="object-contain"
+            style={{ height: "auto" }}
           />
         </div>
       </div>
