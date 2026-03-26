@@ -101,7 +101,7 @@ export default async function RecruitmentPage() {
                 className="bg-grapefruit text-snow"
                 startDate={data.start_date}
                 endDate={data.end_date}
-                tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_top" } }}
+                tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_middle" } }}
               />
             ) : null}
           </div>
@@ -191,7 +191,7 @@ export default async function RecruitmentPage() {
                 className="bg-grapefruit text-snow"
                 startDate={data.start_date}
                 endDate={data.end_date}
-                tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_middle" } }}
+                tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_bottom" } }}
               />
             ) : null}
           </div>
