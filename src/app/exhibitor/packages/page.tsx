@@ -48,7 +48,7 @@ export default async function Packages() {
         </div>
         <div className="mt-10 flex flex-col">
           <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row">
-            <Card className="bg-melon-700 relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
+            <Card className="bg-bronze relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
               <h3 className="font-lato text-2xl">Bronze</h3>
               <ul className="font-lato mt-2">
                 <li className="my-2 font-extrabold">
@@ -178,6 +178,27 @@ export default async function Packages() {
             </Link>{" "}
             for custom options and pricing.
           </p>
+          <h2 className="mt-8 text-2xl font-bold">Focus Rooms</h2>
+          <p className="mt-2">
+            To showcase our commitment to our core values Sustainability and
+            Diversity, we&apos;ve created Focus Rooms during the fair for the
+            companies that share our values. These rooms receive extra marketing
+            attention and are highlighted during the fair.
+          </p>
+          <ul className="mt-4 ml-4 list-disc space-y-3">
+            <li>
+              <strong>Green Room</strong> — A place in the Green Room will
+              highlight your sustainability work, a topic that becomes more and
+              more important for students when looking for their future
+              employer.
+            </li>
+            <li>
+              <strong>Diversity Room</strong> — A place in the Diversity Room
+              will spotlight your diversity initiatives, resonating with
+              students seeking inclusive workplaces and enhancing your visibility
+              during the fair.
+            </li>
+          </ul>
         </div>
         <div className="mx-auto mt-10 w-full max-w-150">
           <h1 className="mb-2 ml-2 text-2xl">FAQ</h1>

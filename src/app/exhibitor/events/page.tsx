@@ -181,29 +181,6 @@ export default async function Packages() {
             </AccordionItem>
           </Accordion>
         </div>
-        <div className="mx-auto mt-10 w-full max-w-150">
-          <h2 className="text-2xl font-bold">Focus Rooms</h2>
-          <P className="mt-2">
-            To showcase our commitment to our core values Sustainability and
-            Diversity, we&apos;ve created Focus Rooms during the fair for the
-            companies that share our values. These rooms receive extra marketing
-            attention and are highlighted during the fair.
-          </P>
-          <ul className="mt-4 ml-4 list-disc space-y-3">
-            <li>
-              <strong>Green Room</strong> — A place in the Green Room will
-              highlight your sustainability work, a topic that becomes more and
-              more important for students when looking for their future
-              employer.
-            </li>
-            <li>
-              <strong>Diversity Room</strong> — A place in the Diversity Room
-              will spotlight your diversity initiatives, resonating with
-              students seeking inclusive workplaces and enhancing your visibility
-              during the fair.
-            </li>
-          </ul>
-        </div>
       </Page.Boundary>
     </Page.Background>
   )
