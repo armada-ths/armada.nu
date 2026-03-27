@@ -6,6 +6,12 @@
   },
   "typescript.format.enable": true,
   "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "css.validate": false,
+  "css.customData": [".vscode/css-custom-data.json"],
+  "css.lint.unknownAtRules": "ignore",
   "[typescriptreact]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "always"
