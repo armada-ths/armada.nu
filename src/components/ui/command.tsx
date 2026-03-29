@@ -23,7 +23,7 @@ function Command({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "bg-main font-base text-main-foreground flex h-full w-full flex-col overflow-hidden rounded-[0px] border-2 border-stone-200 dark:border-stone-800",
+        "bg-main font-base text-main-foreground flex h-full w-full flex-col overflow-hidden rounded-none border-2 border-stone-200 dark:border-stone-800",
         className
       )}
       {...props}
@@ -84,7 +84,7 @@ function CommandList({
     <CommandPrimitive.List
       data-slot="command-list"
       className={cn(
-        "max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto",
+        "max-h-75 scroll-py-1 overflow-x-hidden overflow-y-auto",
         className
       )}
       {...props}
@@ -113,7 +113,7 @@ function CommandGroup({
     <CommandPrimitive.Group
       data-slot="command-group"
       className={cn(
-        "text-main-foreground [&_[cmdk-group-heading]]:font-heading overflow-hidden p-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-base",
+        "text-main-foreground **:[[cmdk-group-heading]]:font-heading overflow-hidden p-2 **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:py-1.5 **:[[cmdk-group-heading]]:text-base",
         className
       )}
       {...props}

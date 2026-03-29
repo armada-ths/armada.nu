@@ -316,7 +316,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       animationConfig,
       maxCount = 3,
       modalPopover = false,
-      asChild = false,
+      // asChild = false,
       className,
       hideSelectAll = false,
       searchable = true,
@@ -856,11 +856,11 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               responsiveSettings.compactMode &&
                               "px-1.5 py-0.5 text-xs",
                               screenSize === "mobile" &&
-                              "max-w-[120px] truncate",
+                              "max-w-30 truncate",
                               screenSize === "tablet" &&
-                              "max-w-[160px] truncate",
+                              "max-w-40 truncate",
                               screenSize === "desktop" &&
-                              "max-w-[200px] truncate",
+                              "max-w-50 truncate",
                               singleLine && "shrink-0 whitespace-nowrap",
                               "[&>svg]:pointer-events-auto",
                               "bg-snow"
@@ -886,10 +886,10 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             )}
                             <span
                               className={cn(
-                                "max-w-[180px] truncate",
-                                screenSize === "mobile" && "max-w-[120px]",
-                                screenSize === "tablet" && "max-w-[160px]",
-                                screenSize === "desktop" && "max-w-[200px]"
+                                "max-w-45 truncate",
+                                screenSize === "mobile" && "max-w-30",
+                                screenSize === "tablet" && "max-w-40",
+                                screenSize === "desktop" && "max-w-50"
                               )}>
                               {option.label}
                             </span>
@@ -1003,9 +1003,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             className={cn(
               "w-auto p-0",
               getPopoverAnimationClass(),
-              screenSize === "mobile" && "w-[85vw] max-w-[280px]",
+              screenSize === "mobile" && "w-[85vw] max-w-70",
               screenSize === "tablet" && "w-[70vw] max-w-md",
-              screenSize === "desktop" && "min-w-[300px]",
+              screenSize === "desktop" && "min-w-75",
               popoverClassName
             )}
             style={{
