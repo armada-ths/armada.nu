@@ -1,8 +1,9 @@
 "use client"
 
 import { track } from "@vercel/analytics"
-import { SiInstagram, SiLinkedin, SiTiktok } from "react-icons/si"
+import { SiInstagram, SiTiktok } from "react-icons/si"
 
+import { LinkedInIcon } from "@/components/shared/icons/LinkedInIcon"
 import {
   Accordion,
   AccordionContent,
@@ -26,7 +27,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             <a
               href="https://linkedin.com/company/armada"
               className="hover:text-melon-700 flex items-center gap-2">
-              <SiLinkedin size={18} />
+              <LinkedInIcon className="h-4.5 w-4.5" />
               <span>LinkedIn</span>
             </a>
             <a
@@ -112,7 +113,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             <a
               href="https://linkedin.com/company/armada"
               className="hover:text-melon-700 transition-colors">
-              <SiLinkedin size={24} />
+              <LinkedInIcon className="h-6 w-6" />
             </a>
             <a
               href="https://instagram.com/thsarmada"
