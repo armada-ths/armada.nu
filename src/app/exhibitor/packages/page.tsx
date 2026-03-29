@@ -33,7 +33,7 @@ export default async function Packages() {
         <div className="mx-auto max-w-150">
           <Page.Header>Packages</Page.Header>
           <div className="mt-4">
-            <p className="max-w-[500]">
+            <p className="max-w-125">
               THS Armada strives to provide the best experience for all
               exhibitors through our Exhibitor Kit. The Bronze package covers
               the basics, Silver expands your presence, and Gold makes you
@@ -66,9 +66,9 @@ export default async function Packages() {
                 <p className="text-sm font-bold">
                   Priority registration price:
                 </p>
-                <p className="font-bold">45 000 SEK*</p>
+                <p className="font-bold">45 000 SEK</p>
                 <p className="text-sm">Standard registration price:</p>
-                <p>48 000 SEK*</p>
+                <p>48 000 SEK</p>
               </div>
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
             </Card>
@@ -98,9 +98,9 @@ export default async function Packages() {
                 <p className="text-sm font-bold">
                   Priority Registration price:
                 </p>
-                <p className="font-bold">69 000 SEK*</p>
+                <p className="font-bold">69 000 SEK</p>
                 <p className="text-sm">Standard registration price:</p>
-                <p>78 000 SEK*</p>
+                <p>78 000 SEK</p>
               </div>
               {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
             </Card>
@@ -139,9 +139,9 @@ export default async function Packages() {
                 <p className="text-sm font-bold">
                   Priority Registration price:
                 </p>
-                <p className="font-bold">105 000 SEK*</p>
+                <p className="font-bold">105 000 SEK</p>
                 <p className="text-sm">Standard registration price:</p>
-                <p>120 000 SEK*</p>
+                <p>120 000 SEK</p>
               </div>
               {/* 							<p className="absolute bottom-4">108 500 SEK*</p> */}
             </Card>
