@@ -45,7 +45,7 @@ export default function CompanySearch({
         <PopoverContent
           side="right"
           align="start"
-          className="w-[320px] rounded-md border p-0 shadow-xl">
+          className="w-80 rounded-md border p-0 shadow-xl">
           <Command className="rounded-md bg-white">
             <CommandInput
               placeholder="Search exhibitors..."

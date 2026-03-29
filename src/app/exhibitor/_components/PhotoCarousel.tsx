@@ -37,7 +37,7 @@ export function PhotoCarousel() {
                     width={430}
                     height={280}
                     alt={alt}
-                    className="h-[280px] w-[430px] object-cover"
+                    className="h-70 w-107.5 object-cover"
                   />
                 </CardContent>
               </Card>

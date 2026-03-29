@@ -10,7 +10,7 @@ export default function ImageCard({ imageUrl, caption, className }: Props) {
   return (
     <figure
       className={cn(
-        "rounded-base bg-main font-base shadow-shadow w-[250px] overflow-hidden border-2 border-stone-200 dark:border-stone-800",
+        "rounded-base bg-main font-base shadow-shadow w-62.5 overflow-hidden border-2 border-stone-200 dark:border-stone-800",
         className
       )}>
       <img className="aspect-4/3 w-full" src={imageUrl} alt="image" />
