@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "armada.nu: Frontend dev + integrated browser (cms.armada.nu API)",
+      "name": "Frontend (Prod CMS)",
       "type": "node-terminal",
       "request": "launch",
       "command": "pnpm dev",
@@ -12,12 +12,12 @@
       },
       "serverReadyAction": {
         "action": "startDebugging",
-        "name": "armada.nu: Integrated browser (localhost:8000)",
+        "name": "Browser",
         "pattern": "- Local:\\s+(https?://[^\\s]+)"
       }
     },
     {
-      "name": "armada.nu: Frontend dev + integrated browser (local CMS API)",
+      "name": "Frontend (Local CMS)",
       "type": "node-terminal",
       "request": "launch",
       "command": "pnpm dev",
@@ -27,32 +27,12 @@
       },
       "serverReadyAction": {
         "action": "startDebugging",
-        "name": "armada.nu: Integrated browser (localhost:8000)",
+        "name": "Browser",
         "pattern": "- Local:\\s+(https?://[^\\s]+)"
       }
     },
     {
-      "name": "armada.nu: Dev server (pnpm dev, cms.armada.nu API)",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "pnpm dev",
-      "cwd": "${workspaceFolder}",
-      "env": {
-        "NEXT_PUBLIC_API_URL": "https://cms.armada.nu"
-      }
-    },
-    {
-      "name": "armada.nu: Dev server (pnpm dev, local CMS API)",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "pnpm dev",
-      "cwd": "${workspaceFolder}",
-      "env": {
-        "NEXT_PUBLIC_API_URL": "http://localhost:8080"
-      }
-    },
-    {
-      "name": "armada.nu: Integrated browser (localhost:8000)",
+      "name": "Browser",
       "type": "editor-browser",
       "request": "launch",
       "url": "http://localhost:8000",
