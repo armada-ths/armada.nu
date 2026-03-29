@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { normalizeExternalUrl } from "@/lib/externalUrl"
 
 export interface Exhibitor {
   id: number
@@ -117,7 +118,10 @@ export async function fetchExhibitors(
     throw new Error("Invalid response format: expected an array")
   }
 
-  return data as Exhibitor[]
+  return (data as Exhibitor[]).map(exhibitor => ({
+    ...exhibitor,
+    companyWebsite: normalizeExternalUrl(exhibitor.companyWebsite) ?? undefined
+  }))
 }
 
 export function useExhibitors(filters?: ExhibitorFilters) {

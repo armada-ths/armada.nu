@@ -1,15 +1,20 @@
+"use client"
+
 import { P } from "@/app/_components/Paragraph"
-import { getSignupUrl } from "@/components/shared/feature"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { track } from "@vercel/analytics"
 import { Button } from "@/components/ui/button"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
-export async function CompanyRegistrationButton() {
-  const { fr } = await fetchDates()
-  const signupUrl = await getSignupUrl()
+export function CompanyRegistrationButton({
+  signupUrl,
+  dates
+}: {
+  signupUrl: string
+  dates: { fr: { end: string } }
+}) {
   const signUpDate = DateTime.local(2025, 3, 3, { zone: "Europe/Stockholm" })
-  const isAfterFr = DateTime.now() > DateTime.fromISO(fr.end)
+  const isAfterFr = DateTime.now() > DateTime.fromISO(dates.fr.end)
   const isBeforeSignUpDate = DateTime.now() < signUpDate
 
   if (isAfterFr) {
@@ -24,7 +29,7 @@ export async function CompanyRegistrationButton() {
   }
 
   return (
-    <Link href={signupUrl}>
+    <Link href={signupUrl} onClick={() => track("exhibitor_signup_click", { location: "exhibitor_page_registration" })}>
       <Button>Exhibitor Signup</Button>
     </Link>
   )

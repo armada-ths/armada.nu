@@ -1,4 +1,5 @@
 import { env } from "@/env"
+import { normalizeExternalUrl } from "@/lib/externalUrl"
 import { useQuery } from "@tanstack/react-query"
 
 export interface Organization {
@@ -23,7 +24,13 @@ export async function fetchOrganization(options?: RequestInit) {
   )
   const result = await res.json()
 
-  return result as Organization[]
+  return (result as Organization[]).map(organization => ({
+    ...organization,
+    people: organization.people.map(person => ({
+      ...person,
+      linkedin_url: normalizeExternalUrl(person.linkedin_url)
+    }))
+  }))
 }
 
 export function useOrganization(options?: RequestInit) {

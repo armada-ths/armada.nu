@@ -9,9 +9,14 @@ export async function RecruitmentBanner() {
     }
   })
 
+  const now = DateTime.now()
+  const recruitmentNotStarted =
+    recruitment != null && DateTime.fromISO(recruitment.start_date) > now
+
   const recruitmentClosed =
     recruitment == null ||
-    DateTime.fromISO(recruitment.end_date) < DateTime.now()
+    recruitmentNotStarted ||
+    DateTime.fromISO(recruitment.end_date) < now
 
   return (
     <Banner1
@@ -20,6 +25,7 @@ export async function RecruitmentBanner() {
       linkText={"here"}
       linkUrl={"/student/recruitment"}
       defaultVisible={!recruitmentClosed}
+      linkTracking={{ eventName: "student_signup_click", eventData: { location: "recruitment_banner" } }}
     />
   )
 }

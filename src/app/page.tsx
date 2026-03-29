@@ -1,15 +1,17 @@
 import { P } from "@/app/_components/Paragraph"
-import { fetchDates } from "@/components/shared/hooks/api/useDates"
-import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
+// import { fetchDates } from "@/components/shared/hooks/api/useDates"
+// import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-//import Image from "next/image"
+// import Image from "next/image"
 // import { NavigationMenu } from "@/components/shared/NavigationMenu"
-import GoldExhibitors from "@/app/_components/GoldExhibitors"
+// import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
-import RollingBanner from "@/app/_components/RollingBannerSilver"
+// import RollingBanner from "@/app/_components/RollingBannerSilver"
 import { Hero1 } from "@/components/hero7"
+import { HighlightCard } from "@/components/highlight-card"
 import { feature, getSignupUrl } from "@/components/shared/feature"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Card } from "@/components/ui/card"
@@ -17,15 +19,15 @@ import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
-  const dates = await fetchDates()
-  const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" })
-  const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" })
-  const silverLogos = silverExhibitors
-    .map(g => g.logoFreesize || g.logoSquared)
-    .filter((url): url is string => Boolean(url))
+  // const dates = await fetchDates()
+  // const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" })
+  // const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" })
+  // const silverLogos = silverExhibitors
+  //   .map(g => g.logoFreesize || g.logoSquared)
+  //   .filter((url): url is string => Boolean(url))
 
-  const today = Date.now()
-  const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
+  // const today = Date.now()
+  // const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
   const exhibitorSignupEnabled = await feature("EXHIBITOR_SIGNUP")
   const exhibitorPackagesEnabled = await feature("EXHIBITOR_PACKAGES")
   const showExhibitorButtons =
@@ -43,10 +45,21 @@ export default async function HomePage() {
             description={
               "The No. 1 career fair at KTH Royal Institute of Technology"
             }
+            sideContent={
+              <HighlightCard
+                title="Join the Operations Team"
+                subtitle="Help deliver Armada 2026 behind the scenes"
+                ctaText="Join Armada!"
+                ctaUrl="/student/recruitment"
+                ctaTracking={{ eventName: "student_signup_click", eventData: { location: "highlight_card" } }}
+                description="Become part of the Armada Operations Team and turn ideas into reality. As an OT, you're one of the driving forces behind Armada and part of the team that keeps everything moving, connected, and on track. You'll collaborate with passionate students, take on meaningful responsibility, and help build Scandinavia's biggest career fair. Read more about our available roles and apply on the recruitment page!"
+              />
+            }
             buttons={{
               primary: {
                 text: "Join Armada",
-                url: "/student/recruitment"
+                url: "/student/recruitment",
+                tracking: { eventName: "student_signup_click", eventData: { location: "hero_primary" } }
               },
               secondary: {
                 text: "About Armada",
@@ -82,9 +95,6 @@ export default async function HomePage() {
           <section className="relative right-1/2 left-1/2 -mx-[50vw] mt-5 w-screen max-w-none overflow-y-visible">
             <VisitorNumberBar />
           </section>
-          {/* Gold Exhibitors */}
-          <GoldExhibitors exhibitors={goldExhibitors} />
-          <RollingBanner logos={silverLogos} />
 
           <div className="flex flex-col py-2 md:flex-row">
             {/* <div className="justify-center">
@@ -156,7 +166,12 @@ export default async function HomePage() {
                   <>
                     {exhibitorSignupEnabled && (
                       <Button asChild className="bg-grapefruit text-snow">
-                        <Link href={signupUrl}>Exhibitor Signup</Link>
+                        <TrackedLink
+                          href={signupUrl}
+                          tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_landing_card" } }}
+                        >
+                          Exhibitor Signup
+                        </TrackedLink>
                       </Button>
                     )}
                     {exhibitorPackagesEnabled && (
@@ -181,7 +196,12 @@ export default async function HomePage() {
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild className="bg-grapefruit text-snow">
-                  <Link href="/student/recruitment">Join Us!</Link>
+                  <TrackedLink
+                    href="/student/recruitment"
+                    tracking={{ eventName: "student_signup_click", eventData: { location: "for_students_card" } }}
+                  >
+                    Join Us!
+                  </TrackedLink>
                 </Button>
               </div>
             </Card>

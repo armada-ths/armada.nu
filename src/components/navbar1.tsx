@@ -1,7 +1,9 @@
 "use client"
 
+import { track } from "@vercel/analytics"
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
 
+import { TrackingConfig } from "@/components/shared/TrackedLink"
 import {
   Accordion,
   AccordionContent,
@@ -32,6 +34,7 @@ export interface MenuItem {
   icon?: React.ReactNode
   items?: MenuItem[]
   disabled?: boolean
+  tracking?: TrackingConfig
 }
 
 interface Navbar1Props {
@@ -290,7 +293,11 @@ const renderMobileMenuItem = (item: MenuItem) => {
       {item.disabled ? (
         item.title
       ) : (
-        <a href={item.url}>{item.title}</a>
+        <a
+          href={item.url}
+          onClick={item.tracking ? () => track(item.tracking!.eventName, item.tracking!.eventData) : undefined}>
+          {item.title}
+        </a>
       )}
     </span>
   )
@@ -322,7 +329,8 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
       className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none no-underline outline-hidden transition-colors select-none hover:border-2 sm:min-w-80"
-      href={item.url}>
+      href={item.url}
+      onClick={item.tracking ? () => track(item.tracking!.eventName, item.tracking!.eventData) : undefined}>
       {content}
     </a>
   )
