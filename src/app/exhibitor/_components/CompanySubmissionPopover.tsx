@@ -78,7 +78,7 @@ export function CompanySubmissionPopover() {
         message: ""
       })
       toast.success(
-        "Submitted! Our sale person will get in touch with you soon!"
+        "Submitted! Our sales person will get in touch with you soon!"
       )
       setIsOpen(false)
     } else {
@@ -135,7 +135,7 @@ export function CompanySubmissionPopover() {
                 <Input
                   id="phone"
                   name="phone"
-                  type="phone"
+                  type="tel"
                   value={formData.phone}
                   onChange={handleFieldChange}
                   placeholder="+46"
