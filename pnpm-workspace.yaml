@@ -2,3 +2,6 @@ onlyBuiltDependencies:
   - core-js
   - sharp
   - unrs-resolver
+
+overrides:
+  path-to-regexp@>=4.0.0 <6.3.0: '>=6.3.0'
