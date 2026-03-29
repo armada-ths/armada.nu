@@ -32,7 +32,7 @@ export default async function Packages() {
             Make the Most of Your Presence at Armada
           </p>
           <div className="mt-4">
-            <P className="max-w-[500]">
+            <P className="max-w-125">
               Going beyond the booth is where real talent connections are made.
               These events give you dedicated time and space to showcase your
               brand, culture, and people to KTH&apos;s most driven students, on

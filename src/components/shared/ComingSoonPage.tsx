@@ -15,7 +15,7 @@ export function ComingSoonPage({
     return (
         <Page.Background withIndents>
             <Page.Boundary className="pb-20">
-                <div className="mx-auto max-w-[600px] text-center">
+                <div className="mx-auto max-w-150 text-center">
                     <Page.Header>{title}</Page.Header>
                     <P className="mt-4">{description}</P>
                 </div>
