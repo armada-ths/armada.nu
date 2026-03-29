@@ -1,6 +1,7 @@
 import { P } from "@/app/_components/Paragraph"
 import { TimelineItem } from "@/app/exhibitor/_components/TimelineItem"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import { Accordion } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
@@ -74,9 +75,14 @@ export async function ExhibitorTimeline() {
           in the larger packages.
         </P>
         <div className="my-4">
-          <Link href={signupUrl}>
+          <TrackedLink
+            href={signupUrl}
+            tracking={{
+              eventName: "exhibitor_signup_click",
+              eventData: { location: "exhibitor_timeline_priority_registration" }
+            }}>
             <Button className="bg-grape-700">Signup to Armada</Button>
-          </Link>
+          </TrackedLink>
         </div>
       </TimelineItem>
 
@@ -121,9 +127,14 @@ export async function ExhibitorTimeline() {
           Priority Registration.
         </P>
         <div className="my-4">
-          <Button>
-            <Link href={signupUrl}>Signup to Armada</Link>
-          </Button>
+          <TrackedLink
+            href={signupUrl}
+            tracking={{
+              eventName: "exhibitor_signup_click",
+              eventData: { location: "exhibitor_timeline_standard_registration" }
+            }}>
+            <Button className="bg-grape-700">Signup to Armada</Button>
+          </TrackedLink>
         </div>
         <P className="mt-3">
           We have many different products that help you reach students at KTH in

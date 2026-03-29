@@ -3,7 +3,9 @@
 import { X } from "lucide-react"
 import { useState } from "react"
 
+import { TrackingConfig } from "@/components/shared/TrackedLink"
 import { Button } from "@/components/ui/button"
+import { track } from "@vercel/analytics"
 
 interface Banner1Props {
   title: string
@@ -11,6 +13,7 @@ interface Banner1Props {
   linkText: string
   linkUrl: string
   defaultVisible?: boolean
+  linkTracking?: TrackingConfig
 }
 
 const Banner1 = ({
@@ -18,7 +21,8 @@ const Banner1 = ({
   description = "Read the full release notes",
   linkText = "here",
   linkUrl = "#",
-  defaultVisible = true
+  defaultVisible = true,
+  linkTracking
 }: Banner1Props) => {
   const [isVisible, setIsVisible] = useState(defaultVisible)
 
@@ -40,7 +44,8 @@ const Banner1 = ({
               {""}
               <a
                 href={linkUrl}
-                className="underline underline-offset-2 hover:text-stone-50">
+                className="underline underline-offset-2 hover:text-stone-50"
+                onClick={linkTracking ? () => track(linkTracking.eventName, linkTracking.eventData) : undefined}>
                 {linkText}
               </a>
               .

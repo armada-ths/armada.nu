@@ -1,5 +1,6 @@
 import Providers from "@/app/providers"
 import { Footer } from "@/components/shared/Footer"
+import { getSignupUrl } from "@/components/shared/feature"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DateTime } from "luxon"
@@ -63,11 +64,13 @@ export const metadata: Metadata = {
 
 export const revalidate = 43200 // 12 hours
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const signupUrl = await getSignupUrl()
+
   return (
     <html
       lang="en"
@@ -84,7 +87,7 @@ export default function RootLayout({
         <Providers>{children}</Providers>
         <DevToolbar />
         <FooterGuard>
-          <Footer />
+          <Footer signupUrl={signupUrl} />
         </FooterGuard>
       </body>
     </html>

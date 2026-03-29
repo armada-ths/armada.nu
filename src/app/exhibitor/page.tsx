@@ -3,6 +3,7 @@ import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { CurrentStatus } from "@/app/exhibitor/_components/CurrentStatus"
 import { getSignupUrl } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { Metadata } from "next"
@@ -43,9 +44,11 @@ export default async function ForExhibitorsPage() {
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4">
             <Button asChild className="bg-grapefruit">
-              <Link href={signupUrl}>
+              <TrackedLink
+                href={signupUrl}
+                tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_why_armada" } }}>
                 Signup to Armada
-              </Link>
+              </TrackedLink>
             </Button>
             <Button asChild variant={"neutral"}>
               <Link href="/exhibitor/packages">

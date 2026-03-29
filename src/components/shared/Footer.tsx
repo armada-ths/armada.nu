@@ -1,4 +1,8 @@
-import { getSignupUrl } from "@/components/shared/feature"
+"use client"
+
+import { track } from "@vercel/analytics"
+import { SiInstagram, SiLinkedin, SiTiktok } from "react-icons/si"
+
 import {
   Accordion,
   AccordionContent,
@@ -6,10 +10,8 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import Image from "next/image"
-import { SiInstagram, SiLinkedin, SiTiktok } from "react-icons/si"
 
-export async function Footer() {
-  const signupUrl = await getSignupUrl()
+export function Footer({ signupUrl }: { signupUrl: string }) {
   return (
     <footer className="bg-licorice flex w-full flex-col items-center py-8 text-white">
       {/* Divider */}
@@ -46,7 +48,10 @@ export async function Footer() {
         <div className="space-y-1">
           <p className="font-semibold">STUDENTS</p>
           <div className="flex flex-col gap-1">
-            <a href="/student/recruitment" className="hover:text-melon-700">
+            <a
+              href="/student/recruitment"
+              className="hover:text-melon-700"
+              onClick={() => track("student_signup_click", { location: "footer_student_recruitment_desktop" })}>
               Recruitment
             </a>
             <a href="/student/events" className="hover:text-melon-700">
@@ -67,7 +72,8 @@ export async function Footer() {
           <div className="flex flex-col gap-1">
             <a
               href={signupUrl}
-              className="hover:text-melon-700">
+              className="hover:text-melon-700"
+              onClick={() => track("exhibitor_signup_click", { location: "footer_exhibitor_desktop" })}>
               Registration
             </a>
             <a href="/exhibitor/packages" className="hover:text-melon-700">
@@ -100,7 +106,7 @@ export async function Footer() {
       {/* Mobile accordion footer */}
       <div className="w-full max-w-6xl px-6 md:hidden">
         {/* Social media */}
-        <div className="mb-6 flex w-full flex-col gap-3">
+        <div className="mb-6 flex w-full flex-col gap-3 pl-4">
           <p className="font-semibold">Follow us on:</p>
           <div className="flex items-center gap-6">
             <a
@@ -129,7 +135,9 @@ export async function Footer() {
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
-                <a href="/student/recruitment">Recruitment</a>
+                <a href="/student/recruitment" onClick={() => track("student_signup_click", { location: "footer_student_recruitment_mobile" })}>
+                  Recruitment
+                </a>
                 <a href="/student/events">Events</a>
                 <a href="/student/exhibitors">Exhibitors</a>
                 <a href="/student/map">Map</a>
@@ -143,7 +151,7 @@ export async function Footer() {
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
-                <a href={signupUrl}>
+                <a href={signupUrl} onClick={() => track("exhibitor_signup_click", { location: "footer_exhibitor_mobile" })}>
                   Registration
                 </a>
                 <a href="/exhibitor/packages">Packages</a>

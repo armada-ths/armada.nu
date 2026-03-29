@@ -60,7 +60,8 @@ export function NavigationMenuClient({
                     url: signupUrl,
                     description: `Signup as an exhibitor for Armada ${DateTime.now().year}`,
                     icon: <ClipboardPenIcon className="size-5 shrink-0" />,
-                    disabled: !exhibitorSignupEnabled
+                    disabled: !exhibitorSignupEnabled,
+                    tracking: { eventName: "exhibitor_signup_click", eventData: { location: "topnav_exhibitor_registration" } }
                 },
                 {
                     title: "Packages",
@@ -114,7 +115,8 @@ export function NavigationMenuClient({
                     title: "Recruitment",
                     url: "/student/recruitment",
                     description: `Join Armada ${DateTime.now().year}. See which roles are available`,
-                    icon: <BriefcaseIcon className="size-5 shrink-0" />
+                    icon: <BriefcaseIcon className="size-5 shrink-0" />,
+                    tracking: { eventName: "student_signup_click", eventData: { location: "topnav_recruitment" } }
                 },
                 {
                     title: "Map",
