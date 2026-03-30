@@ -59,7 +59,7 @@ export async function CurrentStatus() {
   ) {
     return (
       <StatusModuleItem title="Standard registration is open">
-        In the Standard registration you choose your package and finalize your
+        In the Standard registration you choose your kit and finalize your
         order. Once that is done it is time to prepare the practicalities of
         exhibiting. All of this is done on the Armada registration dashboard.
         Read more about how registration works{" "}

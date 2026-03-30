@@ -16,7 +16,7 @@ export default async function WhyArmadaPage() {
         <p className="mt-4">
           The application is divided into 2 parts, Priority and Standard.
           Priority Registration is where you apply to exhibit at Armada, and in
-          Standard Registration you choose your package, events and other
+          Standard Registration you choose your kit, events and other
           products. This is so we don&apos;t overfill the fair, and so we can
           prepare the best possible products for you!
         </p>

@@ -64,7 +64,7 @@ export function NavigationMenuClient({
                     tracking: { eventName: "exhibitor_signup_click", eventData: { location: "topnav_exhibitor_registration" } }
                 },
                 {
-                    title: "Packages",
+                    title: "Kits",
                     url: "/exhibitor/packages",
                     description: "See what we have to offer",
                     icon: <PackageIcon className="size-5 shrink-0" />,

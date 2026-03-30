@@ -176,7 +176,7 @@ export default async function HomePage() {
                     )}
                     {exhibitorPackagesEnabled && (
                       <Button asChild variant="neutral">
-                        <Link href="/exhibitor/packages">Packages</Link>
+                        <Link href="/exhibitor/packages">Kits</Link>
                       </Button>
                     )}
                   </>
