@@ -52,12 +52,12 @@ export default async function ForExhibitorsPage() {
             </Button>
             <Button asChild variant={"neutral"}>
               <Link href="/exhibitor/packages">
-                Kits
+                Exhibitor Kits
               </Link>
             </Button>
             <Button asChild variant={"neutral"}>
               <Link href="/exhibitor/timeline">
-                Timeline
+                Exhibitor Timeline
               </Link>
             </Button>
           </div>

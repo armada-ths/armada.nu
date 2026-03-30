@@ -15,12 +15,12 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: `Kits - Armada Exhibitor`,
+  title: `Exhibitor Kits - Armada`,
   description:
     "The kits we offer for exhibitors at Armada. Choose between bronze, silver and gold."
 }
 
-export default async function Packages() {
+export default async function ExhibitorPackagesPage() {
   const showPackages = await feature("EXHIBITOR_PACKAGES")
   if (!showPackages) {
     return <ComingSoonPage title="Kits" />
@@ -31,7 +31,7 @@ export default async function Packages() {
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
         <div className="mx-auto max-w-150">
-          <Page.Header>Kits</Page.Header>
+          <Page.Header>Exhibitor Kits</Page.Header>
           <div className="mt-4">
             <p className="max-w-125">
               THS Armada strives to provide the best experience for all
@@ -96,7 +96,7 @@ export default async function Packages() {
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
-                  Priority Registration price:
+                  Priority registration price:
                 </p>
                 <p className="font-bold">69 000 SEK</p>
                 <p className="text-sm">Standard registration price:</p>
@@ -137,7 +137,7 @@ export default async function Packages() {
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
-                  Priority Registration price:
+                  Priority registration price:
                 </p>
                 <p className="font-bold">105 000 SEK</p>
                 <p className="text-sm">Standard registration price:</p>

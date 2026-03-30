@@ -12,11 +12,11 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: `Event - Armada Exhibitor`,
+  title: `Exhibitor Events - Armada`,
   description: "The events we offer for exhibitors at Armada."
 }
 
-export default async function Packages() {
+export default async function ExhibitorEventsPage() {
   const showEvents = await feature("EXHIBITOR_EVENTS")
   if (!showEvents) {
     return <ComingSoonPage title="Events" />
@@ -27,7 +27,7 @@ export default async function Packages() {
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
         <div className="mx-auto w-full max-w-150">
-          <Page.Header>Events</Page.Header>
+          <Page.Header>Exhibitor Events</Page.Header>
           <p className="text-melon-700 mt-1 text-lg font-medium">
             Make the Most of Your Presence at Armada
           </p>

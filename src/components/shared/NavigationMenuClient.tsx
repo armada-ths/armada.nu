@@ -66,7 +66,7 @@ export function NavigationMenuClient({
                 {
                     title: "Kits",
                     url: "/exhibitor/packages",
-                    description: "See what we have to offer",
+                    description: "Choose the kit that suits your needs",
                     icon: <PackageIcon className="size-5 shrink-0" />,
                     disabled: !exhibitorPackagesEnabled
                 },
@@ -77,9 +77,9 @@ export function NavigationMenuClient({
                     icon: <HandshakeIcon className="size-5 shrink-0" />
                 },
                 {
-                    title: "Timeline - Step by Step",
+                    title: "Timeline",
                     url: "/exhibitor/timeline",
-                    description: "Your guide to the fair",
+                    description: "Your guide to the fair - step by step",
                     icon: <ClockIcon className="size-5 shrink-0" />
                 },
                 {
