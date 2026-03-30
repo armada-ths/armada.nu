@@ -80,7 +80,7 @@ export default function ExhibitorSearch({
       </div>
 
       <div className="w-full">
-        <div className="mx-auto grid max-w-[1200px] justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-300 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredExhibitors.map(exhibitor => (
             <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
           ))}

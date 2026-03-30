@@ -175,7 +175,7 @@ const CONFETTI_COUNT = 30
 
 function ConfettiBurst() {
   return (
-    <div className="pointer-events-none absolute top-1/2 left-1/2 z-9999 h-[300px] w-full max-w-[400px] -translate-x-1/2 -translate-y-1/2 overflow-visible">
+    <div className="pointer-events-none absolute top-1/2 left-1/2 z-9999 h-75 w-full max-w-100 -translate-x-1/2 -translate-y-1/2 overflow-visible">
       {Array.from({ length: CONFETTI_COUNT }).map((_, i) => {
         const angle = (i / CONFETTI_COUNT) * 360
         const horizontalDistance = 240 + Math.random() * 60

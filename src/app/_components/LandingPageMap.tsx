@@ -22,7 +22,7 @@ const MapWithMarker = () => {
       <MapContainer
         center={[59.3485, 18.0715]}
         zoom={16}
-        className="h-[350px] w-full rounded-md">
+        className="h-87.5 w-full rounded-md">
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

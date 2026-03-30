@@ -26,12 +26,11 @@ const lato = Lato({
 
 export const viewport: Viewport = {
   width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false
+  initialScale: 1
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://armada.nu"),
   title: "THS Armada",
   description: `Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
   keywords: [
@@ -84,7 +83,9 @@ export default async function RootLayout({
         className={`${inter.variable} ${bebasNeue.variable} ${lato.variable}`}>
         <Analytics />
         <SpeedInsights />
-        <Providers>{children}</Providers>
+        <main>
+          <Providers>{children}</Providers>
+        </main>
         <DevToolbar />
         <FooterGuard>
           <Footer signupUrl={signupUrl} />

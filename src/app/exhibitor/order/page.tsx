@@ -66,7 +66,7 @@ export default async function OrderPage() {
           </h1>
           <p>
             Form has been closed due to a high volume of orders. Sorry for the
-            inconvenience! Feel free to still drop by the Exhibitor Lounge
+            inconvenience! Feel free to still drop by the Exhibitor Lounge.
           </p>
         </div>
       ) : (

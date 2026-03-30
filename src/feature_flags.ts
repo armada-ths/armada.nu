@@ -50,6 +50,15 @@ export const FEATURE_FLAG_DEFINITIONS = {
 export type FeatureFlagKey = keyof typeof FEATURE_FLAG_DEFINITIONS
 export type FeatureFlags = Record<FeatureFlagKey, boolean>
 
+type FeatureFlagFetchOptions = RequestInit & {
+  next?: {
+    revalidate?: number
+    tags?: string[]
+  }
+}
+
+const FEATURE_FLAGS_REVALIDATE_SECONDS = 60
+
 const createFallbackFlags = (): FeatureFlags => {
   return (Object.keys(FEATURE_FLAG_DEFINITIONS) as FeatureFlagKey[]).reduce(
     (acc, key) => {
@@ -61,15 +70,18 @@ const createFallbackFlags = (): FeatureFlags => {
 }
 
 export async function fetchFeatureFlags(
-  options?: RequestInit
+  options?: FeatureFlagFetchOptions
 ): Promise<FeatureFlags> {
   if (!env.NEXT_PUBLIC_API_URL) {
     return createFallbackFlags()
   }
 
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/featureflags`, {
-    cache: "no-store",
     ...options,
+    next: {
+      revalidate: FEATURE_FLAGS_REVALIDATE_SECONDS,
+      ...options?.next
+    },
     headers: {
       "Content-Type": "application/json",
       ...(options?.headers || {})

@@ -32,7 +32,7 @@ export default function ExhibitorDetails({
   return (
     <div className="pb-5">
       {/* --- HEADER + LOGO --- */}
-      <div className="flex flex-col-reverse items-center gap-6 sm:h-[100px] sm:flex-row">
+      <div className="flex flex-col-reverse items-center gap-6 sm:h-25 sm:flex-row">
         {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
           <Image
             className="h-20 w-auto object-contain sm:h-full sm:max-w-[25%] sm:min-w-28"
