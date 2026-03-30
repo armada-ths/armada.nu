@@ -4,7 +4,7 @@ import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { TrackedLink } from "@/components/shared/TrackedLink"
 import { Accordion } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { formatDate } from "@/lib/utils"
+import { formatHumanDate } from "@/lib/utils"
 
 import { getSignupUrl } from "@/components/shared/feature"
 import { DateTime } from "luxon"
@@ -13,10 +13,6 @@ import Link from "next/link"
 export async function ExhibitorTimeline() {
   const dates = await fetchDates()
   const signupUrl = await getSignupUrl()
-  const monthLabel = (iso: string, prefix: string = "") => {
-    const month = DateTime.fromISO(iso).toFormat("MMMM")
-    return `${prefix} ${month}`
-  }
 
   //ASSUMPTION: the start date will be first for fair dates
   return (
@@ -26,7 +22,7 @@ export async function ExhibitorTimeline() {
       className="relative mt-10 space-y-8">
       <TimelineItem
         dateStringISO={dates.ir.start}
-        dateStringHuman={monthLabel(dates.ir.start, "Before")}
+        dateStringHuman={`Before ${DateTime.fromISO(dates.ir.start).toFormat("MMMM")}`}
         title="Armada is setting up">
         <P className="mt-3">
           Before the Priority Registration can open, we need to make
@@ -42,7 +38,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.ir.start}
-        dateStringHuman={monthLabel(dates.ir.start, "Late")}
+        dateStringHuman={formatHumanDate(dates.ir.start)}
         title="Priority Registration starts">
         <P className="mt-3">
           Priority Registration is where you apply to be an exhibitor. When you
@@ -88,16 +84,16 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.ir.end}
-        dateStringHuman={monthLabel(dates.ir.end, "May -")}
+        dateStringHuman={formatHumanDate(dates.ir.end)}
         title="Priority Registration ends"></TimelineItem>
 
       <TimelineItem
         dateStringISO={dates.ir.acceptance}
-        dateStringHuman={monthLabel(dates.ir.acceptance)}
+        dateStringHuman={formatHumanDate(dates.ir.acceptance)}
         title="Acceptance date">
         <P className="">
           We will get back to everyone who made an Priority Registration by{" "}
-          {formatDate(dates.ir.end)}. This is when you will know 100% for sure
+          {formatHumanDate(dates.ir.end)}. This is when you will know 100% for sure
           that you are exhibiting at Armada. You will be informed by email to
           the person who made the Standard Registration, and it will be visible
           on the dashboard for anyone with a login to your exhibitor&apos;s
@@ -117,7 +113,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fr.start}
-        dateStringHuman={monthLabel(dates.fr.start)}
+        dateStringHuman={formatHumanDate(dates.fr.start)}
         title="Standard Registration starts">
         <P className="mt-3">
           During the Standard Registration you choose your package, if you want
@@ -153,12 +149,12 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fr.end}
-        dateStringHuman={monthLabel(dates.fr.end)}
+        dateStringHuman={formatHumanDate(dates.fr.end)}
         title="Standard Registration ends"></TimelineItem>
 
       <TimelineItem
         dateStringISO={dates.fr.end}
-        dateStringHuman={monthLabel(dates.fr.end, "Late")}
+        dateStringHuman={formatHumanDate(dates.fr.end)}
         title="Fair preparations start">
         <P className="mt-3">
           Once Standard Registration is complete, there are a few things that
@@ -182,6 +178,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.events.start}
+        dateStringHuman={formatHumanDate(dates.events.start)}
         title="Events Weeks Start">
         <P className="mt-3">
           Before the fair we have three weeks filled with events to build up the
@@ -196,6 +193,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fair.days[0]}
+        dateStringHuman={formatHumanDate(dates.fair.days[0])}
         title="Armada fair starts">
         <P className="mt-3">
           The days we all have waited for! For days Armada have worked together
@@ -219,6 +217,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fair.days[0]}
+        dateStringHuman={formatHumanDate(dates.fair.days[0])}
         title="The Grand Banquet">
         <P className="mt-3">
           On the eve of the first fair day, Armada organizes a Grand Banquet, a
@@ -234,6 +233,7 @@ export async function ExhibitorTimeline() {
 
       <TimelineItem
         dateStringISO={dates.fair.days[1]}
+        dateStringHuman={formatHumanDate(dates.fair.days[1])}
         title="Armada fair ends"></TimelineItem>
     </Accordion>
   )

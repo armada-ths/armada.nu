@@ -76,8 +76,7 @@ function NavigationMenuTrigger({
       {...props}>
       {children}{" "}
       <ChevronDown
-        className="font-heading relative top-[1px] ml-2 size-4 transition duration-200 group-data-[state=open]:rotate-180"
-        aria-hidden="true"
+        className="font-heading relative top-px ml-2 size-4 transition duration-200 group-data-[state=open]:rotate-180"
       />
     </NavigationMenuPrimitive.Trigger>
   )
@@ -128,7 +127,7 @@ function NavigationMenuViewport({
       <NavigationMenuPrimitive.Viewport
         data-slot="navigation-menu-viewport"
         className={cn(
-          "origin-top-center rounded-base border-border bg-main text-main-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden border-2 md:w-[var(--radix-navigation-menu-viewport-width)]",
+          "origin-top-center rounded-base border-border bg-main text-main-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden border-2 md:w-(--radix-navigation-menu-viewport-width)",
           className
         )}
         {...props}
@@ -145,7 +144,7 @@ function NavigationMenuIndicator({
     <NavigationMenuPrimitive.Indicator
       data-slot="navigation-menu-indicator"
       className={cn(
-        "font-heading data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden",
+        "font-heading data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in top-full z-1 flex h-1.5 items-end justify-center overflow-hidden",
         className
       )}
       {...props}>

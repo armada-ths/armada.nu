@@ -5,7 +5,7 @@ import { QuoteIcon } from "lucide-react"
 
 export function Testimonial() {
   return (
-    <Card className="bg-snow mx-auto max-w-[700px] p-6 shadow-none">
+    <Card className="bg-snow mx-auto max-w-175 p-6 shadow-none">
       <div>
         {/* Quote icon */}
         <QuoteIcon size={12} className="mb-2 opacity-60" />

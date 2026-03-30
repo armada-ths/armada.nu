@@ -61,7 +61,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
       {/* ✅ PANEL — slides independently and clickable only when open */}
       <div
         className={cn(
-          "absolute right-0 h-full w-full md:h-auto md:w-[420px]",
+          "absolute right-0 h-full w-full md:h-auto md:w-105",
           "bg-background/95 flex flex-col shadow-xl backdrop-blur-lg sm:border-l",
           "pointer-events-auto transition-transform duration-300 ease-out",
           isOpen ? "translate-x-0" : "translate-x-full"

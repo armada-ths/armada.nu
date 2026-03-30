@@ -22,24 +22,24 @@ interface FairMapProps {
 }
 
 const tierColors: Record<string, { fill: string; stroke: string }> = {
-  gold: { fill: "#facc15", stroke: "#eab308" },
-  silver: { fill: "#a8a29e", stroke: "#a8a29e" },
-  bronze: { fill: "#00d790", stroke: "#00d790" },
+  gold: { fill: "var(--color-pineapple)", stroke: "var(--color-pineapple)" },
+  silver: { fill: "var(--color-gray-400)", stroke: "var(--color-gray-400)" },
+  bronze: { fill: "var(--color-bronze)", stroke: "var(--color-bronze)" },
   default: { fill: "#f5f5f5", stroke: "#737373" }
 }
 
-function parseRotation(transform?: string | null) {
-  if (!transform?.startsWith("rotate(")) return null
-  const match = transform.match(
-    /rotate\(([-0-9.]+)[ ,]([-0-9.]+)?[ ,]([-0-9.]+)?\)/
-  )
-  if (!match) return null
-  return {
-    angle: parseFloat(match[1]),
-    cx: match[2] ? parseFloat(match[2]) : undefined,
-    cy: match[3] ? parseFloat(match[3]) : undefined
-  }
-}
+// function parseRotation(transform?: string | null) {
+//   if (!transform?.startsWith("rotate(")) return null
+//   const match = transform.match(
+//     /rotate\(([-0-9.]+)[ ,]([-0-9.]+)?[ ,]([-0-9.]+)?\)/
+//   )
+//   if (!match) return null
+//   return {
+//     angle: parseFloat(match[1]),
+//     cx: match[2] ? parseFloat(match[2]) : undefined,
+//     cy: match[3] ? parseFloat(match[3]) : undefined
+//   }
+// }
 
 export default function FairMap({
   exhibitors,
@@ -254,9 +254,9 @@ export default function FairMap({
           setModalOpen(false)
           setActiveExhibitor(null)
         }}
-        className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-melon-700" : ""} border-licorice min-w-[80vw] p-0`}>
+        className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
         <div
-          className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-melon-700" : ""} border-licorice border-solid p-4 sm:p-10`}>
+          className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice border-solid p-4 sm:p-10`}>
           {activeExhibitor && <ExhibitorDetails exhibitor={activeExhibitor} />}
         </div>
       </Modal>

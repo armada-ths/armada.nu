@@ -26,7 +26,7 @@ export function PostItem({ post }: { post: BlogPost }) {
           alt="Cover image"
           width="1000"
           height="400"
-          className="h-[400px] w-[1000px] object-contain"
+          className="h-100 w-250 object-contain"
         />
         {post.text.split(/\n\s*\n/).map((paragraph, i) => (
           <p key={i} className="text-muted-foreground mb-4 text-base">

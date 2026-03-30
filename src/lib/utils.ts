@@ -15,6 +15,21 @@ export function formatDate(isoString: string) {
   return date.toFormat(getDateFormatString(date))
 }
 
+function getOrdinalSuffix(day: number) {
+  if (day % 10 === 1 && day % 100 !== 11) return "st"
+  if (day % 10 === 2 && day % 100 !== 12) return "nd"
+  if (day % 10 === 3 && day % 100 !== 13) return "rd"
+  return "th"
+}
+
+export function formatHumanDate(isoString: string) {
+  const date = DateTime.fromISO(isoString)
+  const day = date.day
+  return `${day}${getOrdinalSuffix(day)} of ${date.toFormat("MMMM")}${
+    date.year !== DateTime.now().year ? ` ${date.year}` : ""
+  }`
+}
+
 const EVENT_TIME_ZONE = "Europe/Stockholm"
 
 type EventDateInput = number | string | null | undefined

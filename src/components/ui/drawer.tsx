@@ -24,7 +24,7 @@ const DrawerPortal = DrawerPrimitive.Portal
 const DrawerClose = DrawerPrimitive.Close
 
 const DrawerOverlay = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Overlay>,
+  React.ComponentRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
@@ -43,7 +43,7 @@ type DrawerProps = React.ComponentPropsWithoutRef<
 }
 
 const DrawerContent = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Content>,
+  React.ComponentRef<typeof DrawerPrimitive.Content>,
   DrawerProps
 >(({ className, children, withHandle = true, container, ...props }, ref) => (
   <DrawerPortal container={container}>
@@ -56,7 +56,7 @@ const DrawerContent = React.forwardRef<
       )}
       {...props}>
       {withHandle && (
-        <div className="mx-auto my-3 min-h-1 w-[80px] rounded-full bg-stone-400" />
+        <div className="mx-auto my-3 min-h-1 w-20 rounded-full bg-stone-400" />
       )}
       <div className="overflow-y-auto">{children}</div>
     </DrawerPrimitive.Content>
@@ -87,7 +87,7 @@ const DrawerFooter = ({
 DrawerFooter.displayName = "DrawerFooter"
 
 const DrawerTitle = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Title>,
+  React.ComponentRef<typeof DrawerPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
@@ -102,7 +102,7 @@ const DrawerTitle = React.forwardRef<
 DrawerTitle.displayName = DrawerPrimitive.Title.displayName
 
 const DrawerDescription = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Description>,
+  React.ComponentRef<typeof DrawerPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description

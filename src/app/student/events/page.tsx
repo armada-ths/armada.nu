@@ -75,7 +75,7 @@ export default async function EventPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="items-center pb-20">
-        <div className="mx-auto flex w-fit max-w-[600px] flex-col items-center text-center">
+        <div className="mx-auto flex w-fit max-w-150 flex-col items-center text-center">
           <Page.Header>Events</Page.Header>
           <P className="mt-4 max-w-2xl">
             Besides the career fair, Armada hosts a variety of events to help

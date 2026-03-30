@@ -4,7 +4,8 @@
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "yoavbls.pretty-ts-errors",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "csstools.postcss"
   ],
   "unwantedRecommendations": []
 }

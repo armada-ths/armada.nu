@@ -39,7 +39,7 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "text-main-foreground border-border bg-main font-heading flex flex-1 items-center justify-between p-4 text-left text-base transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 data-[state=open]:rounded-b-none data-[state=open]:border-b-2 [&[data-state=open]>svg]:rotate-180",
+          "text-main-foreground border-border bg-main font-heading flex flex-1 items-center justify-between p-4 text-left text-base transition-all focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:rounded-b-none data-[state=open]:border-b-2 [&[data-state=open]>svg]:rotate-180",
           className
         )}
         {...props}>

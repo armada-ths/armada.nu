@@ -46,13 +46,13 @@ export default function EventDetails({
   const registrationClose = eventDateTimeToEpochSeconds(event.registrationEnd)
   const registrationCutoff = registrationClose ?? eventStart ?? today
   return (
-    <div className={cn("mx-auto max-w-[600px] lg:max-w-[1000px]", className)}>
+    <div className={cn("mx-auto max-w-150 lg:max-w-250", className)}>
       <Page.Header>{event.name}</Page.Header>
       <div className="flex flex-col gap-10 pt-2 lg:flex-row lg:items-center">
         {/* Left: Image + Description */}
         <div className="flex-1 space-y-6">
           {event.imageUrl && (
-            <div className="relative aspect-16/9 overflow-hidden rounded-2xl shadow-lg">
+            <div className="relative aspect-video overflow-hidden rounded-2xl shadow-lg">
               <Image
                 src={event.imageUrl}
                 alt={event.name}

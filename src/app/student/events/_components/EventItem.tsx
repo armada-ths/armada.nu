@@ -33,12 +33,12 @@ export function EventItem({ event }: { event: Event }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => router.push("/student/events", { scroll: false })}
-        className="max-w-[1000px] overflow-y-auto bg-linear-to-br from-emerald-950 via-stone-800 to-stone-900 p-0">
+        className="max-w-250 overflow-y-auto bg-linear-to-br from-emerald-950 via-stone-800 to-stone-900 p-0">
         <EventDetails event={event} className="p-6 md:p-10" />
       </Modal>
 
       {/* Card container */}
-      <div className="mb-6 w-full sm:ml-6 sm:w-3/5 sm:min-w-[500px]">
+      <div className="mb-6 w-full sm:ml-6 sm:w-3/5 sm:min-w-125">
         <Link
           href={`/student/events?id=${id}`}
           scroll={false}

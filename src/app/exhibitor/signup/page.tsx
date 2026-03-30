@@ -12,7 +12,7 @@ export default function SignupPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
-        <div className="mx-auto max-w-[600px] text-center">
+        <div className="mx-auto max-w-150 text-center">
           <Page.Header>Exhibitor Signup</Page.Header>
           <p className="mt-4">
             Signup is not open yet. Check back soon for registration details!
