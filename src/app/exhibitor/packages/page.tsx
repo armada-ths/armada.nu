@@ -41,9 +41,11 @@ export default async function ExhibitorPackagesPage() {
             </p>
           </div>
           <StatusModuleItem title="Did you know?">
-            When we asked the students after the fair which exhibitors they
-            remembered, Gold exhibitors were 3 times as likely to be remembered
-            compared to Bronze exhibitors!
+            <p>
+              When we asked the students after the fair which exhibitors they
+              remembered, Gold exhibitors were 3 times as likely to be remembered
+              compared to Bronze exhibitors!
+            </p>
           </StatusModuleItem>
         </div>
         <div className="mt-10 flex flex-col">
