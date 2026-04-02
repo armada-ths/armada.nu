@@ -223,6 +223,7 @@ export default async function RecruitmentPage() {
                 variant="noShadow"
                 size="lg"
                 className="bg-grapefruit text-snow w-full max-w-[70vw]"
+                mobile
                 startDate={data.start_date}
                 endDate={data.end_date}
                 tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_sticky_mobile" } }}
