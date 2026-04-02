@@ -1,4 +1,5 @@
 import { P } from "@/app/_components/Paragraph"
+import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { ApplyButton } from "@/app/student/recruitment/_components/ApplyButton"
 import { Page } from "@/components/shared/Page"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
@@ -42,6 +43,25 @@ export default async function RecruitmentPage() {
       return role.includes("head of human resources")
     })
 
+  const promotionalPhotos: { source: string; altText: string }[] = [
+    {
+      source: "/fair_pictures/49121473038_5876d71e29_b.jpg",
+      altText: "Student talking to company representative"
+    },
+    {
+      source: "/fair_pictures/49121988801_f0b111943f_k.jpg",
+      altText: "Crowded room of students attending the fair"
+    },
+    {
+      source: "/fair_pictures/49122130686_297ea7d00a_o.jpg",
+      altText: "Student interacting with robot"
+    },
+    {
+      source: "/fair_pictures/53396499463_86ddb61379_k.jpg",
+      altText: "Student talking with company representative"
+    }
+  ]
+
   return (
     <Page.Background withIndents>
       <Page.Boundary maxWidth={750}>
@@ -60,6 +80,7 @@ export default async function RecruitmentPage() {
               really proud of!
             </AlertDescription>
           </Alert>
+          <PhotoSlideCarousel photoSrc={promotionalPhotos} />
           <div>
             <P className="mt-4">
               Armada is a rapidly growing organization that goes from 1 person
@@ -202,6 +223,7 @@ export default async function RecruitmentPage() {
                 variant="noShadow"
                 size="lg"
                 className="bg-grapefruit text-snow w-full max-w-[70vw]"
+                mobile
                 startDate={data.start_date}
                 endDate={data.end_date}
                 tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_sticky_mobile" } }}
