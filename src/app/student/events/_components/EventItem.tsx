@@ -3,7 +3,11 @@
 import EventDetails from "@/app/student/events/_components/EventDetails"
 import Modal from "@/components/shared/Modal"
 import { Event } from "@/components/shared/hooks/api/useEvents"
-import { cn, formatTimestampAsDate } from "@/lib/utils"
+import {
+  cn,
+  formatTimestampAsDate,
+  shouldBypassNextImageOptimization
+} from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -17,6 +21,9 @@ export function EventItem({ event }: { event: Event }) {
     registrationEnd: registration_end,
     imageUrl: image_url
   } = event
+  const shouldBypassImageOptimization = shouldBypassNextImageOptimization(
+    image_url
+  )
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -53,6 +60,7 @@ export function EventItem({ event }: { event: Event }) {
                 src={image_url}
                 alt={name}
                 fill
+                unoptimized={shouldBypassImageOptimization}
                 className="object-cover object-center"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent sm:hidden" />

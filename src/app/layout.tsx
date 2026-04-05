@@ -73,9 +73,8 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className="dark"
       style={{
-        colorScheme: "dark"
+        colorScheme: "light"
       }}>
       <head />
       <body

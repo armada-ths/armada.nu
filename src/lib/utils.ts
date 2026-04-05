@@ -6,6 +6,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function shouldBypassNextImageOptimization(src?: null | string) {
+  if (!src) return false
+
+  return (
+    src.startsWith("http://localhost:9000/") ||
+    src.startsWith("http://127.0.0.1:9000/")
+  )
+}
+
 export function getDateFormatString(date: DateTime) {
   return `d MMMM ${date.year !== DateTime.now().year ? " yyyy" : ""}`
 }
@@ -25,9 +34,8 @@ function getOrdinalSuffix(day: number) {
 export function formatHumanDate(isoString: string) {
   const date = DateTime.fromISO(isoString)
   const day = date.day
-  return `${day}${getOrdinalSuffix(day)} of ${date.toFormat("MMMM")}${
-    date.year !== DateTime.now().year ? ` ${date.year}` : ""
-  }`
+  return `${day}${getOrdinalSuffix(day)} of ${date.toFormat("MMMM")}${date.year !== DateTime.now().year ? ` ${date.year}` : ""
+    }`
 }
 
 const EVENT_TIME_ZONE = "Europe/Stockholm"
