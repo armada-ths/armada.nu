@@ -310,7 +310,7 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
       <div>
         <div className="text-licorice font-semibold">{item.title}</div>
         {item.description && (
-          <p className="text-sm leading-snug text-stone-500 dark:text-stone-400">
+          <p className="text-sm leading-snug text-stone-400">
             {item.description}
           </p>
         )}
