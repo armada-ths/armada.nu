@@ -1,9 +1,9 @@
 "use client"
 
-import { P } from "@/app/_components/Paragraph"
-import { track } from "@vercel/analytics"
+import type { FairDate } from "@/components/shared/hooks/api/useDates"
+import { isExhibitorSignupOpen } from "@/components/shared/hooks/api/useDates"
 import { Button } from "@/components/ui/button"
-import { DateTime } from "luxon"
+import { track } from "@vercel/analytics"
 import Link from "next/link"
 
 export function CompanyRegistrationButton({
@@ -11,21 +11,10 @@ export function CompanyRegistrationButton({
   dates
 }: {
   signupUrl: string
-  dates: { fr: { end: string } }
+  dates: FairDate
 }) {
-  const signUpDate = DateTime.local(2025, 3, 3, { zone: "Europe/Stockholm" })
-  const isAfterFr = DateTime.now() > DateTime.fromISO(dates.fr.end)
-  const isBeforeSignUpDate = DateTime.now() < signUpDate
-
-  if (isAfterFr) {
-    return
-  } else if (isBeforeSignUpDate) {
-    return (
-      <P>
-        {DateTime.now().year} signup opens {signUpDate.monthLong}{" "}
-        {signUpDate.day}
-      </P>
-    )
+  if (!isExhibitorSignupOpen(dates)) {
+    return null
   }
 
   return (
