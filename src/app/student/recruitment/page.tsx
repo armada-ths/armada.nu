@@ -11,6 +11,7 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Sparkles } from "lucide-react"
 import { Metadata } from "next"
 import Link from "next/link"
 import ReactMarkdown from "react-markdown"
@@ -72,6 +73,7 @@ export default async function RecruitmentPage() {
             {DateTime.fromISO(data.end_date).toFormat("d MMM")}
           </Page.Header> */}
           <Alert className="mb-4">
+            <Sparkles size={20} />
             <AlertTitle>Become an Armada volunteer</AlertTitle>
             <AlertDescription>
               In Armada, over 200 volunteers join together to create one of

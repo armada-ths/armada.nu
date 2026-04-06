@@ -9,7 +9,6 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 - **UI**: React 19, [shadcn/ui](https://ui.shadcn.com/) (Radix + CVA), some MUI components
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first config)
 - **Data fetching**: [TanStack React Query](https://tanstack.com/query), server components with async `fetch*` functions
-- **CMS**: [Contentful](https://www.contentful.com/) (preview API in dev, delivery API in prod)
 - **Backend API**: [ArmadaCMS](https://github.com/armada-ths/ArmadaCMS) (Go REST API)
 - **Deployment**: [Vercel](https://vercel.com/)
 
@@ -74,7 +73,6 @@ src/
 │   ├── shared/           # Shared components (Page, NavigationMenu, Footer, hooks)
 │   └── ui/               # shadcn/ui primitives
 ├── lib/
-│   ├── contentful.ts     # Contentful CMS client
 │   └── utils.ts          # cn(), date helpers (Luxon)
 ├── env.ts                # All env vars — add new ones here
 └── feature_flags.ts      # Feature flag definitions & CMS-backed defaults

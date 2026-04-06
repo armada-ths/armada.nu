@@ -23,14 +23,6 @@ export const FEATURE_FLAG_DEFINITIONS = {
       { value: false, label: "Hidden" }
     ]
   },
-  EXHIBITOR_SIGNUP: {
-    description:
-      "Exhibitor signup links. When enabled, links go to Eventro. When disabled, links go to /exhibitor/signup (coming soon page).",
-    options: [
-      { value: true, label: "Open" },
-      { value: false, label: "Closed" }
-    ]
-  },
   EXHIBITOR_PACKAGES: {
     description: "Exhibitor packages page content",
     options: [
@@ -113,17 +105,6 @@ export async function getDefaultFeatureFlags(): Promise<FeatureFlags> {
   } catch {
     return createFallbackFlags()
   }
-}
-
-export async function getExhibitorSignupEnabled(defaults?: FeatureFlags) {
-  const baseFlags = defaults ?? (await getDefaultFeatureFlags())
-  return baseFlags.EXHIBITOR_SIGNUP
-}
-
-export async function getSignupUrl() {
-  return (await getExhibitorSignupEnabled())
-    ? "https://app.eventro.se/register/armada"
-    : "/exhibitor/signup"
 }
 
 export default FEATURE_FLAG_DEFINITIONS

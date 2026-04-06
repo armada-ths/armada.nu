@@ -17,12 +17,18 @@ export interface Recruitment {
 export async function fetchRecruitment(
   options?: RequestInit
 ): Promise<Recruitment | null> {
-  const res = await fetch(
+  let res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/v1/recruitment`,
-    options ?? {
-      cache: "no-cache"
-    }
+    options ?? {}
   )
+
+  if (!res.ok && res.status === 503) {
+    await new Promise(resolve => setTimeout(resolve, 5000))
+    res = await fetch(
+      `${env.NEXT_PUBLIC_API_URL}/api/v1/recruitment`,
+      options ?? {}
+    )
+  }
 
   if (!res.ok) {
     throw new Error(
