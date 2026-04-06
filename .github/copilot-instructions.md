@@ -11,7 +11,7 @@ See `README.md` for setup and scripts. Do not duplicate ArmadaCMS backend/admin 
 
 This folder is the public website: **Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4**, deployed on Vercel.
 
-- Content comes from **ArmadaCMS** (`NEXT_PUBLIC_API_URL`) and **Contentful** (`src/lib/contentful.ts`).
+- Content comes from **ArmadaCMS** (`NEXT_PUBLIC_API_URL`).
 - Server-side integrations such as Slack webhooks and reCAPTCHA verification live in `actions.ts` files with `"use server"`.
 - Styling and theme tokens are defined in `src/app/globals.css`; there is **no** `tailwind.config.ts`.
 
