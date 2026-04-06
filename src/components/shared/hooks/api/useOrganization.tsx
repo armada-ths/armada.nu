@@ -18,10 +18,18 @@ export interface Person {
 }
 
 export async function fetchOrganization(options?: RequestInit) {
-  const res = await fetch(
+  let res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/v1/organization`,
     options ?? {}
   )
+  if (!res.ok && res.status === 503) {
+    // Retry once after a short delay to handle cold-start 503s
+    await new Promise(resolve => setTimeout(resolve, 5000))
+    res = await fetch(
+      `${env.NEXT_PUBLIC_API_URL}/api/v1/organization`,
+      options ?? {}
+    )
+  }
   if (!res.ok) {
     throw new Error(`Failed to fetch organization: ${res.status}`)
   }
