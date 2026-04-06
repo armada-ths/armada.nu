@@ -22,6 +22,9 @@ export async function fetchOrganization(options?: RequestInit) {
     `${env.NEXT_PUBLIC_API_URL}/api/v1/organization`,
     options ?? {}
   )
+  if (!res.ok) {
+    throw new Error(`Failed to fetch organization: ${res.status}`)
+  }
   const result = await res.json()
 
   return (result as Organization[]).map(organization => ({
