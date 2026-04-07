@@ -22,7 +22,7 @@ export async function fetchRecruitment(
     options ?? {}
   )
 
-  if (!res.ok && res.status === 503) {
+  if (!res.ok && (res.status === 503 || res.status === 404)) {
     await new Promise(resolve => setTimeout(resolve, 5000))
     res = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/api/v1/recruitment`,

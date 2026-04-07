@@ -22,8 +22,8 @@ export async function fetchOrganization(options?: RequestInit) {
     `${env.NEXT_PUBLIC_API_URL}/api/v1/organization`,
     options ?? {}
   )
-  if (!res.ok && res.status === 503) {
-    // Retry once after a short delay to handle cold-start 503s
+  if (!res.ok && (res.status === 503 || res.status === 404)) {
+    // Retry once after a short delay to handle cold-start 503s/404s
     await new Promise(resolve => setTimeout(resolve, 5000))
     res = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/api/v1/organization`,
