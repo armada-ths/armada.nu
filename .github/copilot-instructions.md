@@ -31,10 +31,12 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
 - **Routing/layout:** routes live under `src/app/`. Prefer colocated route-specific components in `_components/`; shared UI belongs in `src/components/ui/` or `src/components/shared/`.
 - **Shared layout primitives:** use `Page.Boundary`, `Page.Header`, and `Page.Background` from `src/components/shared/Page.tsx` for consistent page structure.
 - **Data fetching:** API hooks in `src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components.
-- **Feature flags:** definitions live in `src/feature_flags.ts`; read flags with `await feature("FLAG_NAME")` from `src/components/shared/feature.ts`. Preview overrides come from `FEATURE_FLAG_PREVIEW_OVERRIDES_JSON` plus Vercel flag cookies.
+- **Feature flags:** definitions live in `src/feature_flags.ts`; read flags with `await feature("FLAG_NAME")` from `src/components/shared/feature.ts`. Defined flags: `EVENT_PAGE`, `MAP_PAGE`, `AT_FAIR_PAGE`, `EXHIBITOR_PACKAGES`, `EXHIBITOR_EVENTS`. Preview overrides come from `FEATURE_FLAG_PREVIEW_OVERRIDES_JSON` plus Vercel flag cookies (`vercel-flag-overrides`). `FLAGS_SECRET` is required for Vercel's flag evaluation infrastructure (managed in Vercel dashboard, not `src/env.ts`).
 - **Dates/times:** use Luxon helpers from `src/lib/utils.ts`; event times are normalized to `Europe/Stockholm`.
 - **SVGs/images:** `next.config.mjs` enables SVG component imports and whitelists remote image hosts. Update that file when adding new remote image domains.
 - **Site metadata:** if you add or remove public pages, update `src/app/sitemap.ts`.
+- **Server-side actions:** form submissions and external integrations use `actions.ts` files colocated with routes (e.g., `src/app/exhibitor/actions.ts`). Pattern: Zod validation → reCAPTCHA verification via `RECAPTCHA_SECRET_KEY` → Slack webhook via `SLACK_*_HOOK_URL`. Follow this pattern when adding form-to-server flows.
+- **Routes:** main sections are `about/` (with `team/`), `blog/`, `exhibitor/` (with `events/`, `order/`, `packages/`, `signup/`, `timeline/`), and `student/` (with `at-the-fair/`, `events/`, `exhibitors/`, `map/`, `recruitment/`). Legacy paths redirect 301 to these locations.
 
 ## UI and styling notes
 
