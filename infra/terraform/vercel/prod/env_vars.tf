@@ -31,7 +31,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_production" 
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -49,7 +49,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_preview_deve
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -69,7 +69,7 @@ resource "vercel_project_environment_variable" "feature_flag_preview_overrides_j
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -89,7 +89,7 @@ resource "vercel_project_environment_variable" "next_public_recaptcha_site_key" 
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -109,7 +109,7 @@ resource "vercel_project_environment_variable" "next_public_recaptcha_key" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -129,7 +129,7 @@ resource "vercel_project_environment_variable" "expo_access_token" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -149,7 +149,7 @@ resource "vercel_project_environment_variable" "slack_order_hook_url" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -169,7 +169,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -189,7 +189,7 @@ resource "vercel_project_environment_variable" "enable_experimental_corepack" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -209,7 +209,7 @@ resource "vercel_project_environment_variable" "flag_secret" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -229,7 +229,7 @@ resource "vercel_project_environment_variable" "flags_secret" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -249,7 +249,7 @@ resource "vercel_project_environment_variable" "contentful_space_id" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -269,7 +269,7 @@ resource "vercel_project_environment_variable" "contentful_delivery_token" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }
 
@@ -289,6 +289,6 @@ resource "vercel_project_environment_variable" "contentful_preview_token" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [value, sensitive]
   }
 }

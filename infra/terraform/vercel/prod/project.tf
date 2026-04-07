@@ -22,4 +22,6 @@ resource "vercel_project" "armada_nu" {
   # function_default_regions, but kept here to match the current Vercel project
   # configuration. Migrate to resource_config when convenient.
   serverless_function_region = "arn1"
+
+  skew_protection = "12 hours"
 }
