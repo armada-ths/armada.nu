@@ -1,10 +1,3 @@
-# Import the pre-existing Vercel project into Terraform state.
-# Safe to keep after the first apply; re-applying is a no-op.
-import {
-  to = vercel_project.armada_nu
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq"
-}
-
 resource "vercel_project" "armada_nu" {
   name    = var.vercel_project_name
   team_id = var.vercel_team_id
