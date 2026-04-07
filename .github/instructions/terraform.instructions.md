@@ -35,6 +35,7 @@ Values for `vercel_project_environment_variable` resources are **managed in the 
 1. Add the variable in the **Vercel dashboard** with its real value.
 2. Get its ID from the Vercel API or Vercel dashboard network tab (`vercel env ls` also works).
 3. Add a `vercel_project_environment_variable` resource in `env_vars.tf`:
+
    ```hcl
    resource "vercel_project_environment_variable" "my_var" {
      project_id = local.project_id
@@ -49,6 +50,7 @@ Values for `vercel_project_environment_variable` resources are **managed in the 
      }
    }
    ```
+
 4. Add an `import {}` block with the variable ID, run `terraform apply` to import, then remove the block.
 5. Register the key in `src/env.ts` if the app code needs to read it.
 
