@@ -38,3 +38,17 @@ next-env.d.ts
 
 # lock files
 package-lock.json
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+terraform.tfvars
+terraform.tfvars.json
+infra/terraform/**/backend.tf
+infra/terraform/**/backend.hcl

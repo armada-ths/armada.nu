@@ -87,3 +87,11 @@ src/
 - **Adding shadcn components**: `npx shadcn@latest add <component>`
 - **Adding pages**: Add an entry to `src/app/sitemap.ts`.
 - **Brand colors**: Use Tailwind classes like `text-melon-700`, `bg-coconut`, `text-licorice` (defined in `globals.css`).
+
+## Infrastructure as code
+
+Vercel project configuration is managed with Terraform:
+
+- [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) — workspace setup, import bootstrap, and env var lifecycle
+
+Use that document as the canonical source for infrastructure specifics rather than duplicating them here.
