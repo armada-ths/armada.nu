@@ -89,6 +89,7 @@ const nextConfig = {
     ]
   },
   turbopack: {
+    root: import.meta.dirname,
     rules: {
       "*.svg": {
         loaders: ["@svgr/webpack"],
