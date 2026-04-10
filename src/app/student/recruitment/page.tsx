@@ -1,9 +1,10 @@
 import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
-import { ApplyButton } from "@/app/student/recruitment/_components/ApplyButton"
+import { FAQSection } from "@/app/student/recruitment/_components/ot/FAQSection"
+import { ApplyButton } from "@/app/student/recruitment/shared/ApplyButton"
+import { RecruitmentDescription } from "@/app/student/recruitment/shared/RecruitmentDescription"
 import { Page } from "@/components/shared/Page"
-import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import {
   Accordion,
@@ -14,7 +15,6 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Sparkles } from "lucide-react"
 import { Metadata } from "next"
-import Link from "next/link"
 import ReactMarkdown from "react-markdown"
 export const metadata: Metadata = {
   title: `Armada Recruitment`,
@@ -28,22 +28,9 @@ export default async function RecruitmentPage() {
     }
   })
 
-  const organization = await fetchOrganization({
-    next: {
-      revalidate: 60 // 60 seconds – keep profile data fresh
-    }
-  })
-
   const groupEntries = Object.entries(data?.groups ?? {})
   const hasAvailableRoles = groupEntries.some(([, group]) => group.length > 0)
   const recruitmentName = data?.name || "Armada Recruitment"
-
-  const hrHead = organization
-    .flatMap(group => group.people)
-    .find(person => {
-      const role = person.role.toLowerCase()
-      return role.includes("head of human resources")
-    })
 
   const promotionalPhotos: { source: string; altText: string }[] = [
     {
@@ -84,7 +71,7 @@ export default async function RecruitmentPage() {
             Open {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
             {DateTime.fromISO(data.end_date).toFormat("d MMM")}
           </Page.Header> */}
-            <Alert className="mb-4">
+            <Alert className="mb-2">
               <Sparkles size={20} />
               <AlertTitle>Become an Armada volunteer</AlertTitle>
               <AlertDescription>
@@ -95,40 +82,9 @@ export default async function RecruitmentPage() {
               </AlertDescription>
             </Alert>
             <PhotoSlideCarousel photoSrc={promotionalPhotos} />
-            <div>
-              <P className="mt-4">
-                Armada is a rapidly growing organization that goes from 1 person
-                to over 200 each year. Now you have the chance to be part of this
-                amazing community of ambitious people who want to create something
-                amazing: A huge career fair for all students at KTH!
-              </P>
-              <P className="mt-4">
-                Armada offers you a chance to meet students from all different
-                chapters, get valuable experience on your CV, get closer to the
-                exhibitors and have a lot of fun!
-              </P>
-              <P className="mt-4">
-                Below you can read more about different roles and you can get to
-                know the Armada organization better{" "}
-                <Link
-                  className="underline hover:no-underline"
-                  href="/about">
-                  here
-                </Link>
-                . If you have any questions you can contact our{" "}
-                {hrHead && hrHead.email ? (
-                  <Link
-                    className="underline hover:no-underline"
-                    href={`mailto:${hrHead.email}`}>
-                    Head of Human Resources
-                  </Link>
-                ) : (
-                  "Head of Human Resources"
-                )}
-                .
-              </P>
-            </div>
-            <div className="mt-10 hidden justify-center sm:flex">
+            <RecruitmentDescription />
+            <FAQSection />
+            <div className="mt-14 hidden justify-center sm:flex">
               {data ? (
                 <ApplyButton
                   href={data.link}
@@ -141,25 +97,14 @@ export default async function RecruitmentPage() {
               ) : null}
             </div>
             <div className="flex-1">
-              <Page.Header tier="secondary" className="mt-10 text-melon-700 text-4xl">
+              <Page.Header tier="secondary" className="mt-14 md:mt-10 text-melon-700 text-4xl">
                 {"Currently available roles"}
               </Page.Header>
               {hasAvailableRoles ? (
                 <div>
-                  <div>
-                    <P className="mt-4">
-                      The Operations Team (OT) consists of two types of roles, both essential to the project but with different focuses during the fair:
-                    </P>
-                    <P className="mt-4">
-                      <strong>Team Leader:</strong> You lead and manage a group of hosts. In addition to your planning responsibilities, you are responsible for delegating tasks, motivating your team, and overseeing their work during the fair.
-                    </P>
-                    <P className="mt-4">
-                      <strong>Coordinator:</strong> You are a specialist. Your focus is on independent planning, technical execution, or data management. While you do not lead a team of hosts, you collaborate closely across the organization to ensure your specific area runs smoothly.
-                    </P>
-                  </div>
                   <Accordion type="multiple">
                     {groupEntries.map(([name, group], index) => (
-                      <div key={index} className="mt-6">
+                      <div key={index} className={index === 0 ? "mt-3" : "mt-6"}>
                         <Page.Header tier="secondary">
                           {name}
                         </Page.Header>
