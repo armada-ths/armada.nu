@@ -2,6 +2,7 @@ import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { ApplyButton } from "@/app/student/recruitment/_components/ApplyButton"
+import { FAQSection } from "@/app/student/recruitment/_components/FAQSection"
 import { Page } from "@/components/shared/Page"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
@@ -128,7 +129,8 @@ export default async function RecruitmentPage() {
                 .
               </P>
             </div>
-            <div className="mt-10 hidden justify-center sm:flex">
+            <FAQSection />
+            <div className="mt-14 hidden justify-center sm:flex">
               {data ? (
                 <ApplyButton
                   href={data.link}
@@ -146,20 +148,9 @@ export default async function RecruitmentPage() {
               </Page.Header>
               {hasAvailableRoles ? (
                 <div>
-                  <div>
-                    <P className="mt-4">
-                      The Operations Team (OT) consists of two types of roles, both essential to the project but with different focuses during the fair:
-                    </P>
-                    <P className="mt-4">
-                      <strong>Team Leader:</strong> You lead and manage a group of hosts. In addition to your planning responsibilities, you are responsible for delegating tasks, motivating your team, and overseeing their work during the fair.
-                    </P>
-                    <P className="mt-4">
-                      <strong>Coordinator:</strong> You are a specialist. Your focus is on independent planning, technical execution, or data management. While you do not lead a team of hosts, you collaborate closely across the organization to ensure your specific area runs smoothly.
-                    </P>
-                  </div>
                   <Accordion type="multiple">
                     {groupEntries.map(([name, group], index) => (
-                      <div key={index} className="mt-6">
+                      <div key={index} className={index === 0 ? "mt-3" : "mt-6"}>
                         <Page.Header tier="secondary">
                           {name}
                         </Page.Header>

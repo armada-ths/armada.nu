@@ -6,59 +6,35 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion"
-import Link from "next/link"
 
 export function FAQSection() {
   return (
-    <div className="mx-auto mt-10 w-full max-w-150">
+    <div className="mx-auto mt-10 w-full max-w-187.5">
       <Page.Header className="text-licorice mb-2 text-3xl">FAQ</Page.Header>
       <Accordion type="single" collapsible className="space-y-6">
         <AccordionItem value="faq-1">
           <AccordionTrigger>
-            How much work is it to be part of the project group?
+            How much work is it to be part of the Operations Team?
           </AccordionTrigger>
           <AccordionContent>
             <P className="mt-0 max-w-125">
-              It is definitely a major commitment, like heading up a reception
-              or being chairperson of the board at a student organization. We
-              are all students who want to manage school though and some people
-              are able to work part time at the same time. However, you will
-              have much more fun if you see Armada as your main commitment
-              outside of school.
+              The time you need to spend on Armada as an OT varies between roles, but is usually 1-5 hours per week, with some roles having a more distributed workload and others requiring more time before and during the fair (17th - 18th November). Everyone in Armada is also expected to take part in the Construction Weekend before the fair (14th -15th November).
             </P>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="faq-2">
           <AccordionTrigger>
-            What benefits do you get for being part of the project group?
+            What is the difference between a Team Leader and a Coordinator?
           </AccordionTrigger>
           <AccordionContent>
-            <P className="mt-0 max-w-125">
-              We have access to the Armada Office on the third floor in Nymble.
-              We work, study and have AW:s here. We have some PG merch, go on
-              some trips together and visit companies on events. Most of all, we
-              get really close striving together towards making every year the
-              best yet. You can find some behind the scenes on our{" "}
-              <Link
-                className="underline hover:no-underline"
-                href="https://tiktok.com/@ths.armada">
-                TikTok
-              </Link>
-              .
+            <P className="mt-0">
+              The Operations Team (OT) consists of two types of roles, both essential to the project but with different focuses during the fair:
             </P>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="faq-3">
-          <AccordionTrigger>
-            Do I need to have been part of Armada before to qualify?
-          </AccordionTrigger>
-          <AccordionContent>
-            <P className="mt-0 max-w-125">
-              No. There are a lot of other experiences that can qualify you as
-              well, such as being part of other career fairs, student
-              organizations or previous work experience etc. The most important
-              thing is commitment and that you want to work on your leadership
-              skills.
+            <P className="mt-4">
+              <strong>Team Leader:</strong> You lead and manage a group of hosts. In addition to your planning responsibilities, you are responsible for delegating tasks, motivating your team, and overseeing their work during the fair.
+            </P>
+            <P className="mt-4">
+              <strong>Coordinator:</strong> You are a specialist. Your focus is on independent planning, technical execution, or data management. While you do not lead a team of hosts, you collaborate closely across the organization to ensure your specific area runs smoothly.
             </P>
           </AccordionContent>
         </AccordionItem>
