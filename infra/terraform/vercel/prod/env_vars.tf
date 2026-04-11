@@ -17,6 +17,25 @@ locals {
 
 # ── NEXT_PUBLIC_API_URL ───────────────────────────────────────────────────────
 
+import {
+  to = vercel_project_environment_variable.next_public_api_url_staging_branch
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq/qv1O6LZFGAi2f1ZP"
+}
+
+resource "vercel_project_environment_variable" "next_public_api_url_staging_branch" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "NEXT_PUBLIC_API_URL"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["preview"]
+  git_branch = "staging"
+  sensitive  = true
+
+  lifecycle {
+    ignore_changes = [value, sensitive]
+  }
+}
+
 resource "vercel_project_environment_variable" "next_public_api_url_production" {
   project_id = local.project_id
   team_id    = local.team_id
@@ -36,21 +55,6 @@ resource "vercel_project_environment_variable" "next_public_api_url_preview_deve
   key        = "NEXT_PUBLIC_API_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["preview", "development"]
-  sensitive  = true
-
-  lifecycle {
-    ignore_changes = [value, sensitive]
-  }
-}
-
-# ── FEATURE_FLAG_PREVIEW_OVERRIDES_JSON ──────────────────────────────────────
-
-resource "vercel_project_environment_variable" "feature_flag_preview_overrides_json" {
-  project_id = local.project_id
-  team_id    = local.team_id
-  key        = "FEATURE_FLAG_PREVIEW_OVERRIDES_JSON"
-  value      = "" # Managed in Vercel dashboard.
-  target     = ["preview"]
   sensitive  = true
 
   lifecycle {
@@ -169,51 +173,6 @@ resource "vercel_project_environment_variable" "flags_secret" {
   project_id = local.project_id
   team_id    = local.team_id
   key        = "FLAGS_SECRET"
-  value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
-  sensitive  = true
-
-  lifecycle {
-    ignore_changes = [value, sensitive]
-  }
-}
-
-# ── CONTENTFUL_SPACE_ID (legacy) ──────────────────────────────────────────────
-
-resource "vercel_project_environment_variable" "contentful_space_id" {
-  project_id = local.project_id
-  team_id    = local.team_id
-  key        = "CONTENTFUL_SPACE_ID"
-  value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
-  sensitive  = true
-
-  lifecycle {
-    ignore_changes = [value, sensitive]
-  }
-}
-
-# ── CONTENTFUL_DELIVERY_TOKEN (legacy) ────────────────────────────────────────
-
-resource "vercel_project_environment_variable" "contentful_delivery_token" {
-  project_id = local.project_id
-  team_id    = local.team_id
-  key        = "CONTENTFUL_DELIVERY_TOKEN"
-  value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
-  sensitive  = true
-
-  lifecycle {
-    ignore_changes = [value, sensitive]
-  }
-}
-
-# ── CONTENTFUL_PREVIEW_TOKEN (legacy) ─────────────────────────────────────────
-
-resource "vercel_project_environment_variable" "contentful_preview_token" {
-  project_id = local.project_id
-  team_id    = local.team_id
-  key        = "CONTENTFUL_PREVIEW_TOKEN"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production", "preview", "development"]
   sensitive  = true
