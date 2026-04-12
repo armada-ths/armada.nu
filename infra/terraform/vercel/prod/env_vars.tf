@@ -17,11 +17,6 @@ locals {
 
 # ── NEXT_PUBLIC_API_URL ───────────────────────────────────────────────────────
 
-import {
-  to = vercel_project_environment_variable.next_public_api_url_staging_branch
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq/qv1O6LZFGAi2f1ZP"
-}
-
 resource "vercel_project_environment_variable" "next_public_api_url_staging_branch" {
   project_id = local.project_id
   team_id    = local.team_id
