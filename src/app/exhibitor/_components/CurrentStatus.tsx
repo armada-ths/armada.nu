@@ -5,6 +5,7 @@ import Link from "next/link"
 //ASSUMPTION: the start date will be first for fair dates
 export async function CurrentStatus() {
   const dates = await fetchDates()
+  if (!dates) return null
   const today = Date.now() //.toISOString();
 
   if (today < new Date(dates.ir.start).getTime()) {

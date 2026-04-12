@@ -3,6 +3,7 @@ import { DateTime } from "luxon"
 
 export async function FairDates() {
   const dates = await fetchDates()
+  if (!dates) return null
 
   return (
     <div className="font-bebas-neue mt-5 flex gap-4">

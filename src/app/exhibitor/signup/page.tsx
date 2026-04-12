@@ -42,7 +42,7 @@ export default async function SignupPage() {
         Exhibitor registration for {year} isn't open yet. Initial Registration
         opens{" "}
         <strong>
-          {DateTime.fromISO(dates.ir.start, { zone: "Europe/Stockholm" }).toFormat("d MMMM")}
+          {DateTime.fromISO(dates?.ir.start ?? "", { zone: "Europe/Stockholm" }).toFormat("d MMMM")}
         </strong>
         . Follow us on social media or reach out to{" "}
         <Link className="underline hover:no-underline" href="mailto:sales@armada.nu">
@@ -58,7 +58,7 @@ export default async function SignupPage() {
         Thank you to everyone who signed up during Initial Registration! Final
         Registration opens{" "}
         <strong>
-          {DateTime.fromISO(dates.fr.start, { zone: "Europe/Stockholm" }).toFormat("d MMMM")}
+          {DateTime.fromISO(dates?.fr.start ?? "", { zone: "Europe/Stockholm" }).toFormat("d MMMM")}
         </strong>
         . Invitations will be sent out to eligible companies — stay tuned.
       </p>
