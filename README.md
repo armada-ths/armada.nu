@@ -82,8 +82,7 @@ src/
 
 - **Adding env vars**: Always register them in `src/env.ts`. Use `NEXT_PUBLIC_` prefix for client-safe vars.
 - **Data fetching**: Use the dual-export pattern in `src/components/shared/hooks/api/` — `fetch*()` for server components, `use*()` hooks for client components.
-- **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel overrides applied. The `EXHIBITOR_SIGNUP` flag may be auto-updated by ArmadaCMS based on fair dates.
-- **Preview-specific flags**: You can set `FEATURE_FLAG_PREVIEW_OVERRIDES_JSON` (server-side env var) to override flags only for preview deployments (`VERCEL_ENV=preview`). Merge order is: CMS defaults → branch overrides (`VERCEL_GIT_COMMIT_REF`) → deployment overrides (`VERCEL_URL`) → `vercel-flag-overrides` cookie. Unknown keys and non-boolean values are ignored.
+- **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel flag cookie overrides applied.
 - **Adding shadcn components**: `npx shadcn@latest add <component>`
 - **Adding pages**: Add an entry to `src/app/sitemap.ts`.
 - **Brand colors**: Use Tailwind classes like `text-melon-700`, `bg-coconut`, `text-licorice` (defined in `globals.css`).
@@ -95,3 +94,14 @@ Vercel project configuration is managed with Terraform:
 - [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) — workspace setup, import bootstrap, and env var lifecycle
 
 Use that document as the canonical source for infrastructure specifics rather than duplicating them here.
+
+## Backend environments
+
+| Environment | API base URL                           | Admin UI                               |
+| ----------- | -------------------------------------- | -------------------------------------- |
+| Local dev   | `http://localhost:8080/api/v1`         | `http://localhost:5173`                |
+| Staging     | `https://staging.cms.armada.nu/api/v1` | `https://staging.cms.armada.nu/admin/` |
+| Production  | `https://cms.armada.nu/api/v1`         | `https://cms.armada.nu/admin/`         |
+
+To point the local Next.js dev server at one of these environments, set
+`NEXT_PUBLIC_API_URL` in `.env.local`.

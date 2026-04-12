@@ -2,20 +2,20 @@ import { P } from "@/app/_components/Paragraph"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import Link from "next/link"
 
-const organization = await fetchOrganization({
-    next: {
-        revalidate: 60 // 60 seconds – keep profile data fresh
-    }
-})
-
-const hrHead = organization
-    .flatMap(group => group.people)
-    .find(person => {
-        const role = person.role.toLowerCase()
-        return role.includes("head of human resources")
+export async function RecruitmentDescription() {
+    const organization = await fetchOrganization({
+        next: {
+            revalidate: 60 // 60 seconds – keep profile data fresh
+        }
     })
 
-export function RecruitmentDescription() {
+    const hrHead = organization
+        .flatMap(group => group.people)
+        .find(person => {
+            const role = person.role.toLowerCase()
+            return role.includes("head of human resources")
+        })
+
     return (
         <div>
             <P className="mt-4">

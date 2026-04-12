@@ -27,7 +27,7 @@ export async function fetchOrganization(options?: RequestInit) {
   }
   const result = await res.json()
 
-  return (result as Organization[]).map(organization => ({
+  return ((result as Organization[] | null) ?? []).map(organization => ({
     ...organization,
     people: organization.people.map(person => ({
       ...person,
