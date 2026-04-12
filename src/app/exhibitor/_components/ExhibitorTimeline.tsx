@@ -12,6 +12,7 @@ import Link from "next/link"
 
 export async function ExhibitorTimeline() {
   const dates = await fetchDates()
+  if (!dates) return null
   const signupUrl = await getSignupUrl()
 
   //ASSUMPTION: the start date will be first for fair dates

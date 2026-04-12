@@ -23,10 +23,10 @@ export default async function OrderPage() {
   const END_TIME_DAY_1 = { hour: 15, minute: 30 }
   const END_TIME_DAY_2 = { hour: 14, minute: 30 }
 
-  const startDate = DateTime.fromISO(dates.fair.days[0], {
+  const startDate = DateTime.fromISO(dates?.fair.days[0] ?? "", {
     zone: "Europe/Stockholm"
   })
-  const endDate = DateTime.fromISO(dates.fair.days[1], {
+  const endDate = DateTime.fromISO(dates?.fair.days[1] ?? "", {
     zone: "Europe/Stockholm"
   })
 

@@ -25,12 +25,12 @@ export interface FairDate {
   }
 }
 
-export async function fetchDates() {
+export async function fetchDates(): Promise<FairDate | null> {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`, {
     cache: "no-store"
   })
-  const result = await res.json()
-  return result as FairDate
+  if (!res.ok) return null
+  return res.json() as Promise<FairDate>
 }
 
 export function useDates() {
@@ -47,7 +47,8 @@ export type ExhibitorSignupPhase =
   | "fr-open"
   | "closed"
 
-export function getExhibitorSignupPhase(dates: FairDate): ExhibitorSignupPhase {
+export function getExhibitorSignupPhase(dates: FairDate | null): ExhibitorSignupPhase {
+  if (!dates) return "closed"
   const zone = "Europe/Stockholm"
   const now = DateTime.now().setZone(zone)
   const irStart = DateTime.fromISO(dates.ir.start, { zone })
@@ -62,7 +63,7 @@ export function getExhibitorSignupPhase(dates: FairDate): ExhibitorSignupPhase {
   return "closed"
 }
 
-export function isExhibitorSignupOpen(dates: FairDate): boolean {
+export function isExhibitorSignupOpen(dates: FairDate | null): boolean {
   const phase = getExhibitorSignupPhase(dates)
   return phase === "ir-open" || phase === "fr-open"
 }
