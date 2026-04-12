@@ -94,3 +94,14 @@ Vercel project configuration is managed with Terraform:
 - [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) — workspace setup, import bootstrap, and env var lifecycle
 
 Use that document as the canonical source for infrastructure specifics rather than duplicating them here.
+
+## Backend environments
+
+| Environment | API base URL                           | Admin UI                               |
+| ----------- | -------------------------------------- | -------------------------------------- |
+| Local dev   | `http://localhost:8080/api/v1`         | `http://localhost:5173`                |
+| Staging     | `https://staging.cms.armada.nu/api/v1` | `https://staging.cms.armada.nu/admin/` |
+| Production  | `https://cms.armada.nu/api/v1`         | `https://cms.armada.nu/admin/`         |
+
+To point the local Next.js dev server at one of these environments, set
+`NEXT_PUBLIC_API_URL` in `.env.local`.

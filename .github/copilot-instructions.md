@@ -11,7 +11,7 @@ See `README.md` for setup and scripts. Do not duplicate ArmadaCMS backend/admin 
 
 This folder is the public website: **Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4**, deployed on Vercel.
 
-- Content comes from **ArmadaCMS** (`NEXT_PUBLIC_API_URL`).
+- Content comes from **ArmadaCMS** (`NEXT_PUBLIC_API_URL`). Production API: `https://cms.armada.nu`; staging API: `https://staging.cms.armada.nu`. To use the staging backend locally, set `NEXT_PUBLIC_API_URL=https://staging.cms.armada.nu` in `.env.local`.
 - Server-side integrations such as Slack webhooks and reCAPTCHA verification live in `actions.ts` files with `"use server"`.
 - Styling and theme tokens are defined in `src/app/globals.css`; there is **no** `tailwind.config.ts`.
 
