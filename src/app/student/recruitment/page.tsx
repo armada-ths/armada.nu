@@ -28,7 +28,9 @@ export default async function RecruitmentPage() {
     }
   })
 
-  const groupEntries = Object.entries(data?.groups ?? {})
+  const groupEntries = Object.entries(data?.groups ?? {}).sort(([a], [b]) =>
+    b.localeCompare(a)
+  )
   const hasAvailableRoles = groupEntries.some(([, group]) => group.length > 0)
   const recruitmentName = data?.name || "Armada Recruitment"
 
