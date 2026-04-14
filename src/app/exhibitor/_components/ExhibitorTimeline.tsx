@@ -12,6 +12,7 @@ import Link from "next/link"
 
 export async function ExhibitorTimeline() {
   const dates = await fetchDates()
+  if (!dates) return null
   const signupUrl = await getSignupUrl()
 
   //ASSUMPTION: the start date will be first for fair dates
@@ -61,14 +62,14 @@ export async function ExhibitorTimeline() {
         </P>
         <P className="mt-3">
           During the Priority Registration you don&apos;t need to choose a
-          package, and the packages are outlined{" "}
+          kit, and the kits are outlined{" "}
           <Link
             className="underline hover:no-underline"
             href="/exhibitor/packages">
             here
           </Link>{" "}
           to give you an overview. Prices are set, and small changes can occur
-          in the larger packages.
+          in the larger kits.
         </P>
         <div className="my-4">
           <TrackedLink
@@ -116,7 +117,7 @@ export async function ExhibitorTimeline() {
         dateStringHuman={formatHumanDate(dates.fr.start)}
         title="Standard Registration starts">
         <P className="mt-3">
-          During the Standard Registration you choose your package, if you want
+          During the Standard Registration you choose your kit, if you want
           to do any events, number of tickets for the banquet etc. All of this
           is done on the registration dashboard - same as where you did Priority
           Registration. Standard Registration can be done by another person than
@@ -134,7 +135,7 @@ export async function ExhibitorTimeline() {
         </div>
         <P className="mt-3">
           We have many different products that help you reach students at KTH in
-          different ways. If you want help finding the best package for you,
+          different ways. If you want help finding the best kit for you,
           please contact{" "}
           <Link
             className="underline hover:no-underline"

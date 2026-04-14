@@ -2,7 +2,6 @@ import { feature, getSignupUrl } from "@/components/shared/feature"
 import { NavigationMenuClient } from "@/components/shared/NavigationMenuClient"
 
 export async function NavigationMenu() {
-  const exhibitorSignupEnabled = await feature("EXHIBITOR_SIGNUP")
   const signupUrl = await getSignupUrl()
   const exhibitorPackagesEnabled = await feature("EXHIBITOR_PACKAGES")
   const exhibitorEventsEnabled = await feature("EXHIBITOR_EVENTS")
@@ -13,7 +12,6 @@ export async function NavigationMenu() {
   return (
     <NavigationMenuClient
       signupUrl={signupUrl}
-      exhibitorSignupEnabled={exhibitorSignupEnabled}
       exhibitorPackagesEnabled={exhibitorPackagesEnabled}
       exhibitorEventsEnabled={exhibitorEventsEnabled}
       eventsEnabled={eventsEnabled}

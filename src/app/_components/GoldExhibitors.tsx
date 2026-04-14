@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
   type CarouselApi
 } from "@/components/ui/carousel"
+import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import Autoplay from "embla-carousel-autoplay"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
@@ -82,11 +83,10 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
             aria-label={`Go to slide ${idx + 1}`}
             aria-current={idx === selectedIndex}
             onClick={() => api?.scrollTo(idx)}
-            className={`h-3 w-3 rounded-full transition ${
-              idx === selectedIndex
+            className={`h-3 w-3 rounded-full transition ${idx === selectedIndex
                 ? "bg-pineapple scale-110"
                 : "bg-pineapple/30 hover:bg-pineapple/60"
-            }`}
+              }`}
           />
         ))}
       </div>
@@ -97,6 +97,9 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
 function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const [expanded, setExpanded] = useState(false)
   const [maxLength, setMaxLength] = useState(600)
+  const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(
+    exhibitor.logoFreesize
+  )
 
   useEffect(() => {
     const updateLength = () => {
@@ -122,6 +125,7 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
           <Image
             src={exhibitor.logoFreesize}
             alt={`${exhibitor.name} logo`}
+            unoptimized={shouldBypassLogoOptimization}
             width={200}
             height={90}
             className="h-20 object-contain"

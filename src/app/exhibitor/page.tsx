@@ -43,7 +43,7 @@ export default async function ForExhibitorsPage() {
 
         <div className="flex flex-col space-y-4 py-6">
           <div className="mt-2 flex flex-row flex-wrap justify-stretch gap-4">
-            <Button asChild className="bg-grapefruit">
+            <Button asChild className="bg-grapefruit text-white">
               <TrackedLink
                 href={signupUrl}
                 tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_why_armada" } }}>
@@ -52,12 +52,12 @@ export default async function ForExhibitorsPage() {
             </Button>
             <Button asChild variant={"neutral"}>
               <Link href="/exhibitor/packages">
-                Packages
+                Exhibitor Kits
               </Link>
             </Button>
             <Button asChild variant={"neutral"}>
               <Link href="/exhibitor/timeline">
-                Timeline
+                Exhibitor Timeline
               </Link>
             </Button>
           </div>

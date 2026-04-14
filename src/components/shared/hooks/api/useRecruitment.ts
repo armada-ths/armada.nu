@@ -19,9 +19,7 @@ export async function fetchRecruitment(
 ): Promise<Recruitment | null> {
   const res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/v1/recruitment`,
-    options ?? {
-      cache: "no-cache"
-    }
+    options ?? {}
   )
 
   if (!res.ok) {

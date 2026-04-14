@@ -42,25 +42,25 @@ const nextConfig = {
         protocol: "https",
         hostname: "armada-ais-files.s3.eu-north-1.amazonaws.com",
         port: "",
-        pathname: "**"
+        pathname: "/**"
       },
       {
         protocol: "https",
         hostname: "armada-cms-files-e48105192c52.s3.eu-north-1.amazonaws.com",
         port: "",
-        pathname: "**"
+        pathname: "/**"
       },
       {
         protocol: "https",
         hostname: "app.eventro.se",
         port: "",
-        pathname: "**"
+        pathname: "/**"
       },
       {
         protocol: "https",
         hostname: "s3.amazonaws.com",
         port: "",
-        pathname: "**"
+        pathname: "/**"
       }
     ]
   },
@@ -89,6 +89,7 @@ const nextConfig = {
     ]
   },
   turbopack: {
+    root: import.meta.dirname,
     rules: {
       "*.svg": {
         loaders: ["@svgr/webpack"],

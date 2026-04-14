@@ -7,6 +7,7 @@ import Modal from "@/components/ui/Modal"
 
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import { Card } from "@/components/ui/card"
+import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -15,6 +16,8 @@ import { useEffect, useState } from "react"
 export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const searchParams = useSearchParams()
   const [modalOpen, setModalOpen] = useState(false)
+  const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
+  const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(logoSrc)
 
   const { width } = useScreenSize()
   const maxDisplayedBadges = width && width < 470 ? 2 : 1
@@ -52,8 +55,9 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
             <div className="relative my-2 flex h-20 w-full flex-initial justify-center overflow-hidden">
               <Image
                 className="h-full w-full object-contain"
-                src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
+                src={logoSrc}
                 alt={exhibitor.name}
+                unoptimized={shouldBypassLogoOptimization}
                 width={300}
                 height={300}
               />

@@ -4,7 +4,7 @@ import { P } from "@/app/_components/Paragraph"
 import BadgeCollection from "@/app/student/exhibitors/_components/BadgeCollection"
 import { Page } from "@/components/shared/Page"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
-import { cn } from "@/lib/utils"
+import { cn, shouldBypassNextImageOptimization } from "@/lib/utils"
 
 import { Globe } from "lucide-react"
 import Image from "next/image"
@@ -16,6 +16,11 @@ export default function ExhibitorDetails({
 }: {
   exhibitor: Exhibitor
 }) {
+  const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
+  const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(logoSrc)
+  const shouldBypassMapOptimization = shouldBypassNextImageOptimization(
+    exhibitor.mapImg
+  )
   const hasIndustries = (exhibitor.industries ?? []).length > 0
   const hasEmployments = (exhibitor.employments ?? []).length > 0
   const hasPrograms = (exhibitor.programs ?? []).length > 0
@@ -36,8 +41,9 @@ export default function ExhibitorDetails({
         {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
           <Image
             className="h-20 w-auto object-contain sm:h-full sm:max-w-[25%] sm:min-w-28"
-            src={exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""}
+            src={logoSrc}
             alt={exhibitor.name}
+            unoptimized={shouldBypassLogoOptimization}
             width={300}
             height={300}
           />
@@ -79,6 +85,7 @@ export default function ExhibitorDetails({
               className="h-80 w-auto rounded-lg object-contain"
               src={exhibitor.mapImg ?? ""}
               alt="Failed to load image"
+              unoptimized={shouldBypassMapOptimization}
               width={300}
               height={300}
             />

@@ -5,7 +5,8 @@ import {
   cn,
   eventDateTimeToEpochSeconds,
   formatTimestampAsDate,
-  formatTimestampAsTime
+  formatTimestampAsTime,
+  shouldBypassNextImageOptimization
 } from "@/lib/utils"
 
 import { Calendar, Clock, Coins, MapPin, User, Utensils } from "lucide-react"
@@ -41,6 +42,9 @@ export default function EventDetails({
   event: Event
   className?: string
 }) {
+  const shouldBypassImageOptimization = shouldBypassNextImageOptimization(
+    event.imageUrl
+  )
   const today = Math.floor(Date.now() / 1000)
   const eventStart = eventDateTimeToEpochSeconds(event.eventStart)
   const registrationClose = eventDateTimeToEpochSeconds(event.registrationEnd)
@@ -57,6 +61,7 @@ export default function EventDetails({
                 src={event.imageUrl}
                 alt={event.name}
                 fill
+                unoptimized={shouldBypassImageOptimization}
                 className="object-cover object-center"
               />
             </div>

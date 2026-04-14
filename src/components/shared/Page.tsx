@@ -47,7 +47,7 @@ Page.Background = function PageBackground(
     withIndents?: boolean
   }
 ) {
-  const { children, className, withIndents, ...rest } = props
+  const { children, className, withIndents, avoidHeader, ...rest } = props
   return (
     <div
       className={cn(
@@ -57,7 +57,7 @@ Page.Background = function PageBackground(
         className
       )}
       {...rest}>
-      {!props.avoidHeader && <div className="h-20" />}
+      {!avoidHeader && <div className="h-20" />}
       <div className="z-10 flex min-h-[40vw] w-full flex-1 flex-col">
         {children}
       </div>

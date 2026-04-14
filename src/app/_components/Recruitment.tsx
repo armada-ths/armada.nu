@@ -1,4 +1,4 @@
-import { Banner1 } from "@/components/banner1"
+import { RecruitmentRollingBanner } from "@/app/_components/RecruitmentRollingBanner"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { DateTime } from "luxon"
 
@@ -19,13 +19,9 @@ export async function RecruitmentBanner() {
     DateTime.fromISO(recruitment.end_date) < now
 
   return (
-    <Banner1
-      title={"Student Recruitment is open! "}
-      description={"Join Armada "}
-      linkText={"here"}
-      linkUrl={"/student/recruitment"}
+    <RecruitmentRollingBanner
+      endDate={recruitment?.end_date ?? ""}
       defaultVisible={!recruitmentClosed}
-      linkTracking={{ eventName: "student_signup_click", eventData: { location: "recruitment_banner" } }}
     />
   )
 }

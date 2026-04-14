@@ -15,15 +15,15 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: `Packages - Armada Exhibitor`,
+  title: `Exhibitor Kits - Armada`,
   description:
-    "The packages we offer for exhibitors at Armada. Choose between bronze, silver and gold."
+    "The kits we offer for exhibitors at Armada. Choose between bronze, silver and gold."
 }
 
-export default async function Packages() {
+export default async function ExhibitorPackagesPage() {
   const showPackages = await feature("EXHIBITOR_PACKAGES")
   if (!showPackages) {
-    return <ComingSoonPage title="Packages" />
+    return <ComingSoonPage title="Kits" />
   }
   const signupUrl = await getSignupUrl()
 
@@ -31,19 +31,21 @@ export default async function Packages() {
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
         <div className="mx-auto max-w-150">
-          <Page.Header>Packages</Page.Header>
+          <Page.Header>Exhibitor Kits</Page.Header>
           <div className="mt-4">
             <p className="max-w-125">
               THS Armada strives to provide the best experience for all
-              exhibitors through our Exhibitor Kit. The Bronze package covers
+              exhibitors through our exhibitor kits. The Bronze kit covers
               the basics, Silver expands your presence, and Gold makes you
               truly stand out with extra marketing and a dedicated event.
             </p>
           </div>
           <StatusModuleItem title="Did you know?">
-            When we asked the students after the fair which exhibitors they
-            remembered, Gold exhibitors were 3 times as likely to be remembered
-            compared to Bronze exhibitors!
+            <p>
+              When we asked the students after the fair which exhibitors they
+              remembered, Gold exhibitors were 3 times as likely to be remembered
+              compared to Bronze exhibitors!
+            </p>
           </StatusModuleItem>
         </div>
         <div className="mt-10 flex flex-col">
@@ -96,7 +98,7 @@ export default async function Packages() {
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
-                  Priority Registration price:
+                  Priority registration price:
                 </p>
                 <p className="font-bold">69 000 SEK</p>
                 <p className="text-sm">Standard registration price:</p>
@@ -137,7 +139,7 @@ export default async function Packages() {
               </ul>
               <div className="absolute bottom-4">
                 <p className="text-sm font-bold">
-                  Priority Registration price:
+                  Priority registration price:
                 </p>
                 <p className="font-bold">105 000 SEK</p>
                 <p className="text-sm">Standard registration price:</p>
@@ -149,9 +151,9 @@ export default async function Packages() {
         </div>
         {/* <p className="mt-4 text-sm">*All prices are ex. VAT. </p> */}
         <div className="mx-auto mt-12 w-full max-w-150">
-          <h2 className="text-2xl font-bold">Custom Package</h2>
+          <h2 className="text-2xl font-bold">Custom Kit</h2>
           <p className="mt-2">
-            Is the Exhibitor Kit missing something? We have you covered with
+            Is a standard exhibitor kit missing something? We have you covered with
             additional options that may be tailored to your needs!
           </p>
           <ul className="mt-4 ml-4 list-disc space-y-2">
@@ -232,10 +234,10 @@ export default async function Packages() {
               <AccordionContent>
                 <p>
                   Priority Registration is where you apply to be an exhibitor.
-                  You do not need to choose a package yet.
+                  You do not need to choose a kit yet.
                 </p>
                 <p className="mt-3">
-                  Standard Registration is when you choose your package,
+                  Standard Registration is when you choose your kit,
                   events, banquet tickets, and other products in the
                   registration dashboard.
                 </p>

@@ -1,37 +1,21 @@
 import { P } from "@/app/_components/Paragraph"
-// import { fetchDates } from "@/components/shared/hooks/api/useDates"
-// import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
+import { RecruitmentBanner } from "@/app/_components/Recruitment"
+import { Hero1 } from "@/components/hero7"
+import { HighlightCard } from "@/components/highlight-card"
+import { feature, getSignupUrl } from "@/components/shared/feature"
+import { fetchDates, isExhibitorSignupOpen } from "@/components/shared/hooks/api/useDates"
+import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
-// import Image from "next/image"
-// import { NavigationMenu } from "@/components/shared/NavigationMenu"
-// import GoldExhibitors from "@/app/_components/GoldExhibitors"
-import { RecruitmentBanner } from "@/app/_components/Recruitment"
-// import RollingBanner from "@/app/_components/RollingBannerSilver"
-import { Hero1 } from "@/components/hero7"
-import { HighlightCard } from "@/components/highlight-card"
-import { feature, getSignupUrl } from "@/components/shared/feature"
-import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Card } from "@/components/ui/card"
-import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
-  // const dates = await fetchDates()
-  // const goldExhibitors = await fetchExhibitors(undefined, { tier: "Gold" })
-  // const silverExhibitors = await fetchExhibitors(undefined, { tier: "Silver" })
-  // const silverLogos = silverExhibitors
-  //   .map(g => g.logoFreesize || g.logoSquared)
-  //   .filter((url): url is string => Boolean(url))
-
-  // const today = Date.now()
-  // const fair_end = new Date(2025, 10, 19, 15, 0, 0).getTime()
-  const exhibitorSignupEnabled = await feature("EXHIBITOR_SIGNUP")
+  const dates = await fetchDates()
+  const exhibitorSignupEnabled = isExhibitorSignupOpen(dates)
   const exhibitorPackagesEnabled = await feature("EXHIBITOR_PACKAGES")
-  const showExhibitorButtons =
-    exhibitorSignupEnabled || exhibitorPackagesEnabled
   const signupUrl = await getSignupUrl()
 
   return (
@@ -162,29 +146,24 @@ export default async function HomePage() {
                 For Exhibitors
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
-                {showExhibitorButtons ? (
-                  <>
-                    {exhibitorSignupEnabled && (
-                      <Button asChild className="bg-grapefruit text-snow">
-                        <TrackedLink
-                          href={signupUrl}
-                          tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_landing_card" } }}
-                        >
-                          Exhibitor Signup
-                        </TrackedLink>
-                      </Button>
-                    )}
-                    {exhibitorPackagesEnabled && (
-                      <Button asChild variant="neutral">
-                        <Link href="/exhibitor/packages">Packages</Link>
-                      </Button>
-                    )}
-                  </>
+                {exhibitorSignupEnabled ? (
+                  <Button asChild className="bg-grapefruit text-snow">
+                    <TrackedLink
+                      href={signupUrl}
+                      tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_landing_card" } }}
+                    >
+                      Exhibitor Signup
+                    </TrackedLink>
+                  </Button>
                 ) : (
-                  <p>
-                    More information about our {DateTime.now().year} products
-                    is coming soon!
-                  </p>
+                  <Button asChild className="bg-grapefruit text-white">
+                    <Link href="/exhibitor">Why Armada?</Link>
+                  </Button>
+                )}
+                {exhibitorPackagesEnabled && (
+                  <Button asChild variant="neutral">
+                    <Link href="/exhibitor/packages">Kits</Link>
+                  </Button>
                 )}
               </div>
             </Card>

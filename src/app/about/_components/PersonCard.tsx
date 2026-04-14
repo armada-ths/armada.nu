@@ -1,12 +1,17 @@
 import { Person } from "@/components/shared/hooks/api/useOrganization"
 import { LinkedInIcon } from "@/components/shared/icons/LinkedInIcon"
 import { Card } from "@/components/ui/card"
+import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import { PersonIcon } from "@radix-ui/react-icons"
 import { MailIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
 const PersonCard = ({ person }: { person: Person }) => {
+  const shouldBypassOptimization = shouldBypassNextImageOptimization(
+    person.picture
+  )
+
   return (
     <>
       <Card
@@ -22,8 +27,9 @@ const PersonCard = ({ person }: { person: Person }) => {
               loading="lazy"
               src={person.picture}
               alt={person.name}
-              width={200}
-              height={200}
+              unoptimized={shouldBypassOptimization}
+              width={400}
+              height={400}
               className="aspect-square w-full object-cover transition-all duration-200"
             />
           </div>

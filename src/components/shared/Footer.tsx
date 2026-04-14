@@ -78,7 +78,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
               Registration
             </a>
             <a href="/exhibitor/packages" className="hover:text-melon-700">
-              Packages
+              Kits
             </a>
             <a href="/exhibitor" className="hover:text-melon-700">
               Why Armada
@@ -156,7 +156,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                 <a href={signupUrl} onClick={() => track("exhibitor_signup_click", { location: "footer_exhibitor_mobile" })}>
                   Registration
                 </a>
-                <a href="/exhibitor/packages">Packages</a>
+                <a href="/exhibitor/packages">Kits</a>
                 <a href="/exhibitor">Why Armada</a>
                 <a href="/exhibitor/timeline">Timeline</a>
                 <a href="/exhibitor/events">Events</a>

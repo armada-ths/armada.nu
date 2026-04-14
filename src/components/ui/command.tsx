@@ -23,7 +23,7 @@ function Command({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "bg-main font-base text-main-foreground flex h-full w-full flex-col overflow-hidden rounded-none border-2 border-stone-200 dark:border-stone-800",
+        "bg-main font-base text-main-foreground flex h-full w-full flex-col overflow-hidden rounded-none border-2 border-stone-800",
         className
       )}
       {...props}
@@ -62,7 +62,7 @@ function CommandInput({
   return (
     <div
       data-slot="command-input-wrapper"
-      className="flex h-9 items-center gap-2 border-b-2 border-stone-200 px-3 dark:border-stone-800">
+      className="flex h-9 items-center gap-2 border-b-2 border-stone-800 px-3">
       <Search className="size-4 shrink-0" />
       <CommandPrimitive.Input
         data-slot="command-input"
@@ -128,7 +128,7 @@ function CommandSeparator({
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
-      className={cn("-mx-1 h-0.5 bg-stone-200 dark:bg-stone-800", className)}
+      className={cn("-mx-1 h-0.5 bg-stone-800", className)}
       {...props}
     />
   )
@@ -168,12 +168,7 @@ function CommandShortcut({
 
 export {
   Command,
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandShortcut,
-  CommandSeparator
+  CommandDialog, CommandEmpty,
+  CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut
 }
+

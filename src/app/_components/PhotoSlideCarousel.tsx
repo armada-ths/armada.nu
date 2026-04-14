@@ -37,8 +37,8 @@ export function PhotoSlideCarousel(props: {
             key={idx}
             src={imgDetails.source}
             alt={imgDetails.altText}
-            width={200}
-            height={200}
+            width={400}
+            height={400}
             className="mb-4 aspect-square object-cover p-1 transition-all duration-200 hover:scale-105"
           />
         ))}

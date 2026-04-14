@@ -20,7 +20,6 @@ import { DateTime } from "luxon"
 
 interface NavigationMenuClientProps {
     signupUrl: string
-    exhibitorSignupEnabled: boolean
     exhibitorPackagesEnabled: boolean
     exhibitorEventsEnabled: boolean
     eventsEnabled: boolean
@@ -43,7 +42,6 @@ const applyComingSoonDescriptions = (items: MenuItem[]): MenuItem[] =>
 
 export function NavigationMenuClient({
     signupUrl,
-    exhibitorSignupEnabled,
     exhibitorPackagesEnabled,
     exhibitorEventsEnabled,
     eventsEnabled,
@@ -60,13 +58,12 @@ export function NavigationMenuClient({
                     url: signupUrl,
                     description: `Signup as an exhibitor for Armada ${DateTime.now().year}`,
                     icon: <ClipboardPenIcon className="size-5 shrink-0" />,
-                    disabled: !exhibitorSignupEnabled,
                     tracking: { eventName: "exhibitor_signup_click", eventData: { location: "topnav_exhibitor_registration" } }
                 },
                 {
-                    title: "Packages",
+                    title: "Kits",
                     url: "/exhibitor/packages",
-                    description: "See what we have to offer",
+                    description: "Choose the kit that suits your needs",
                     icon: <PackageIcon className="size-5 shrink-0" />,
                     disabled: !exhibitorPackagesEnabled
                 },
@@ -77,9 +74,9 @@ export function NavigationMenuClient({
                     icon: <HandshakeIcon className="size-5 shrink-0" />
                 },
                 {
-                    title: "Timeline - Step by Step",
+                    title: "Timeline",
                     url: "/exhibitor/timeline",
-                    description: "Your guide to the fair",
+                    description: "Your guide to the fair - step by step",
                     icon: <ClockIcon className="size-5 shrink-0" />
                 },
                 {
