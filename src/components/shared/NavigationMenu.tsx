@@ -8,6 +8,7 @@ export async function NavigationMenu() {
   const eventsEnabled = await feature("EVENT_PAGE")
   const mapEnabled = await feature("MAP_PAGE")
   const atFairEnabled = await feature("AT_FAIR_PAGE")
+  const exhibitorPageEnabled = await feature("EXHIBITOR_PAGE")
 
   return (
     <NavigationMenuClient
@@ -17,6 +18,7 @@ export async function NavigationMenu() {
       eventsEnabled={eventsEnabled}
       mapEnabled={mapEnabled}
       atFairEnabled={atFairEnabled}
+      exhibitorPageEnabled={exhibitorPageEnabled}
     />
   )
 }

@@ -3,35 +3,42 @@ import { FlagDefinitionsType } from "flags"
 
 export const FEATURE_FLAG_DEFINITIONS = {
   EVENT_PAGE: {
-    description: "Access to Event Page",
+    description: "Show the student events page",
     options: [
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }
     ]
   },
   MAP_PAGE: {
-    description: "Access to Map Page",
+    description: "Show the fair map page",
     options: [
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }
     ]
   },
   AT_FAIR_PAGE: {
-    description: "Access to At the Fair Page",
+    description: "Show the at-the-fair student page",
     options: [
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }
     ]
   },
   EXHIBITOR_PACKAGES: {
-    description: "Exhibitor packages page content",
+    description: "Show the exhibitor packages page",
     options: [
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }
     ]
   },
   EXHIBITOR_EVENTS: {
-    description: "Exhibitor events page content",
+    description: "Show the exhibitor events page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
+  },
+  EXHIBITOR_PAGE: {
+    description: "Show the student exhibitors/companies page",
     options: [
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }

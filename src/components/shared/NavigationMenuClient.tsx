@@ -25,6 +25,7 @@ interface NavigationMenuClientProps {
     eventsEnabled: boolean
     mapEnabled: boolean
     atFairEnabled: boolean
+    exhibitorPageEnabled: boolean
 }
 
 const applyComingSoonDescriptions = (items: MenuItem[]): MenuItem[] =>
@@ -46,7 +47,8 @@ export function NavigationMenuClient({
     exhibitorEventsEnabled,
     eventsEnabled,
     mapEnabled,
-    atFairEnabled
+    atFairEnabled,
+    exhibitorPageEnabled
 }: NavigationMenuClientProps) {
     const companyLinks: MenuItem[] = [
         {
@@ -99,7 +101,8 @@ export function NavigationMenuClient({
                     title: "Exhibitors",
                     url: "/student/exhibitors",
                     description: `Look at the companies attending the fair`,
-                    icon: <Building2Icon className="size-5 shrink-0" />
+                    icon: <Building2Icon className="size-5 shrink-0" />,
+                    disabled: !exhibitorPageEnabled
                 },
                 {
                     title: "Events",
