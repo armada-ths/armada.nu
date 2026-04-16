@@ -43,6 +43,55 @@ export const FEATURE_FLAG_DEFINITIONS = {
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }
     ]
+  },
+  STUDENT_RECRUITMENT_PAGE: {
+    description: "Show the student recruitment page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
+  },
+  EXHIBITOR_MAIN_PAGE: {
+    description: "Show the exhibitor main/why armada page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
+  },
+  EXHIBITOR_TIMELINE_PAGE: {
+    description: "Show the exhibitor timeline page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
+  },
+  EXHIBITOR_SIGNUP_PAGE: {
+    description: "Show the exhibitor signup/registration page (only controls the topnav link, the page itself is controlled by the exhibitor timeline).",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
+  },
+  ABOUT_PAGE: {
+    description: "Show the about armada page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
+  },
+  ABOUT_TEAM_PAGE: {
+    description: "Show the about team page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
+  },
+  ARMADA_BLOG_PAGE: {
+    description: "Show the armada blog page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
   }
 } satisfies FlagDefinitionsType
 

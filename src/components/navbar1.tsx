@@ -47,6 +47,30 @@ interface Navbar1Props {
   menu?: MenuItem[]
 }
 
+const LogoLink = ({
+  logo
+}: {
+  logo: NonNullable<Navbar1Props["logo"]>
+}) => (
+  <a href={logo.url} className="inline-flex items-center gap-1.5">
+    <img
+      src={logo.src}
+      className="h-8 w-auto shrink-0"
+      alt={logo.alt}
+      width={32}
+      height={32}
+    />
+    <div className="flex items-baseline mt-0.5 gap-1.5 leading-none">
+      <span className="font-bebas-book text-licorice text-3xl leading-none">
+        THS
+      </span>
+      <span className="font-bebas-bold text-licorice text-3xl leading-none">
+        ARMADA
+      </span>
+    </div>
+  </a>
+)
+
 const Navbar1 = ({
   logo = {
     url: "https://www.shadcnblocks.com",
@@ -135,17 +159,7 @@ const Navbar1 = ({
           <div className="container flex items-center">
             {/* LEFT — Logo */}
             <div className="flex flex-1 items-center gap-6">
-              <a href={logo.url} className="flex items-center gap-2">
-                <img src={logo.src} className="max-h-8" alt={logo.alt} />
-                <div className="mt-2 flex gap-1">
-                  <span className="font-bebas-book text-snow text-3xl">
-                    THS
-                  </span>
-                  <span className="font-bebas-bold text-snow text-3xl">
-                    ARMADA
-                  </span>
-                </div>
-              </a>
+              <LogoLink logo={logo} />
             </div>
 
             {/* CENTER — Navigation */}
@@ -165,15 +179,7 @@ const Navbar1 = ({
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="max-h-8" alt={logo.alt} />
-              <div className="mt-2 flex gap-1">
-                <span className="font-bebas-book text-snow text-3xl">THS</span>
-                <span className="font-bebas-bold text-snow text-3xl">
-                  ARMADA
-                </span>
-              </div>
-            </a>
+            <LogoLink logo={logo} />
             <Sheet>
               <SheetTrigger asChild>
                 <Button
@@ -186,19 +192,7 @@ const Navbar1 = ({
               <SheetContent className="bg-coconut overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <a
-                      href={logo.url}
-                      className="flex w-fit items-center gap-2">
-                      <img
-                        src={logo.src}
-                        className="max-h-8 invert"
-                        alt={logo.alt}
-                      />
-                      <div className="mt-2 flex gap-1">
-                        <span className="font-bebas-book text-3xl">THS</span>
-                        <span className="font-bebas-bold text-3xl">ARMADA</span>
-                      </div>
-                    </a>
+                    <LogoLink logo={logo} />
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">

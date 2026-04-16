@@ -1,5 +1,7 @@
 import { P } from "@/app/_components/Paragraph"
 import { PostItem } from "@/components/blog/PostItem"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { feature } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
 
 export interface BlogPost {
@@ -12,6 +14,11 @@ export interface BlogPost {
 }
 
 export default async function BlogPage() {
+  const showBlog = await feature("ARMADA_BLOG_PAGE")
+  if (!showBlog) {
+    return <ComingSoonPage title="The Armada Blog" />
+  }
+
   const mockPosts: BlogPost[] = [
     {
       id: 1,

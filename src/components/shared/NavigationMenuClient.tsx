@@ -26,6 +26,13 @@ interface NavigationMenuClientProps {
     mapEnabled: boolean
     atFairEnabled: boolean
     exhibitorPageEnabled: boolean
+    studentRecruitmentEnabled: boolean
+    exhibitorMainEnabled: boolean
+    exhibitorTimelineEnabled: boolean
+    exhibitorSignupEnabled: boolean
+    aboutPageEnabled: boolean
+    aboutTeamEnabled: boolean
+    blogEnabled: boolean
 }
 
 const applyComingSoonDescriptions = (items: MenuItem[]): MenuItem[] =>
@@ -48,7 +55,14 @@ export function NavigationMenuClient({
     eventsEnabled,
     mapEnabled,
     atFairEnabled,
-    exhibitorPageEnabled
+    exhibitorPageEnabled,
+    studentRecruitmentEnabled,
+    exhibitorMainEnabled,
+    exhibitorTimelineEnabled,
+    exhibitorSignupEnabled,
+    aboutPageEnabled,
+    aboutTeamEnabled,
+    blogEnabled
 }: NavigationMenuClientProps) {
     const companyLinks: MenuItem[] = [
         {
@@ -60,7 +74,8 @@ export function NavigationMenuClient({
                     url: signupUrl,
                     description: `Signup as an exhibitor for Armada ${DateTime.now().year}`,
                     icon: <ClipboardPenIcon className="size-5 shrink-0" />,
-                    tracking: { eventName: "exhibitor_signup_click", eventData: { location: "topnav_exhibitor_registration" } }
+                    tracking: { eventName: "exhibitor_signup_click", eventData: { location: "topnav_exhibitor_registration" } },
+                    disabled: !exhibitorSignupEnabled
                 },
                 {
                     title: "Kits",
@@ -73,13 +88,15 @@ export function NavigationMenuClient({
                     title: "Why Armada",
                     url: "/exhibitor",
                     description: "The industry's top engineers come from KTH",
-                    icon: <HandshakeIcon className="size-5 shrink-0" />
+                    icon: <HandshakeIcon className="size-5 shrink-0" />,
+                    disabled: !exhibitorMainEnabled
                 },
                 {
                     title: "Timeline",
                     url: "/exhibitor/timeline",
                     description: "Your guide to the fair - step by step",
-                    icon: <ClockIcon className="size-5 shrink-0" />
+                    icon: <ClockIcon className="size-5 shrink-0" />,
+                    disabled: !exhibitorTimelineEnabled
                 },
                 {
                     title: "Events",
@@ -116,7 +133,8 @@ export function NavigationMenuClient({
                     url: "/student/recruitment",
                     description: `Join Armada ${DateTime.now().year}. See which roles are available`,
                     icon: <BriefcaseIcon className="size-5 shrink-0" />,
-                    tracking: { eventName: "student_signup_click", eventData: { location: "topnav_recruitment" } }
+                    tracking: { eventName: "student_signup_click", eventData: { location: "topnav_recruitment" } },
+                    disabled: !studentRecruitmentEnabled
                 },
                 {
                     title: "Map",
@@ -145,13 +163,15 @@ export function NavigationMenuClient({
                     title: "About Armada",
                     url: "/about",
                     description: `Get to know the Armada organization`,
-                    icon: <SparklesIcon className="size-5 shrink-0" />
+                    icon: <SparklesIcon className="size-5 shrink-0" />,
+                    disabled: !aboutPageEnabled
                 },
                 {
                     title: "Team",
                     url: "/about/team",
                     description: `Get to know the team working on Armada ${DateTime.now().year}`,
-                    icon: <UsersRoundIcon className="size-5 shrink-0" />
+                    icon: <UsersRoundIcon className="size-5 shrink-0" />,
+                    disabled: !aboutTeamEnabled
                 }
             ]
         }
@@ -160,7 +180,8 @@ export function NavigationMenuClient({
     const blogLinks: MenuItem[] = [
         {
             title: "The Armada Blog",
-            url: "/blog"
+            url: "/blog",
+            disabled: !blogEnabled
         }
     ]
 
@@ -174,7 +195,7 @@ export function NavigationMenuClient({
                 <Navbar1
                     logo={{
                         url: "/",
-                        src: "/armada_white.svg",
+                        src: "/armada_licorice.svg",
                         alt: "",
                         title: ""
                     }}

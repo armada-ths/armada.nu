@@ -1,6 +1,8 @@
 import OrganizationList from "@/app/about/_components/OrganizationList"
-import { Page } from "@/components/shared/Page"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { feature } from "@/components/shared/feature"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
+import { Page } from "@/components/shared/Page"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -9,6 +11,11 @@ export const metadata: Metadata = {
 }
 
 export default async function TeamPage() {
+  const showTeamPage = await feature("ABOUT_TEAM_PAGE")
+  if (!showTeamPage) {
+    return <ComingSoonPage title="Team" />
+  }
+
   const organization = await fetchOrganization({
     next: {
       revalidate: 60 // 60 seconds – keep profile data fresh

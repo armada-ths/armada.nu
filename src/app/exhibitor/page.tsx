@@ -1,7 +1,8 @@
 import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { CurrentStatus } from "@/app/exhibitor/_components/CurrentStatus"
-import { getSignupUrl } from "@/components/shared/feature"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { feature, getSignupUrl } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
 import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
@@ -14,6 +15,11 @@ export const metadata: Metadata = {
 }
 
 export default async function ForExhibitorsPage() {
+  const showExhibitorMain = await feature("EXHIBITOR_MAIN_PAGE")
+  if (!showExhibitorMain) {
+    return <ComingSoonPage title="For Exhibitors" />
+  }
+
   const signupUrl = await getSignupUrl()
   const promotionalPhotos: { source: string; altText: string }[] = [
     {
