@@ -5,7 +5,9 @@
     "editorconfig.editorconfig",
     "yoavbls.pretty-ts-errors",
     "bradlc.vscode-tailwindcss",
-    "csstools.postcss"
+    "csstools.postcss",
+    "hashicorp.terraform",
+    "redhat.vscode-yaml"
   ],
   "unwantedRecommendations": []
 }
