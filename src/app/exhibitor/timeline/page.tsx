@@ -1,4 +1,6 @@
 import { ExhibitorTimeline } from "@/app/exhibitor/_components/ExhibitorTimeline"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { feature } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
 import { Metadata } from "next"
 
@@ -9,6 +11,11 @@ export const metadata: Metadata = {
 }
 
 export default async function ExhibitorTimelinePage() {
+  const showTimeline = await feature("EXHIBITOR_TIMELINE_PAGE")
+  if (!showTimeline) {
+    return <ComingSoonPage title="Exhibitor Timeline" />
+  }
+
   return (
     <Page.Background withIndents>
       <Page.Boundary maxWidth={600} className="pb-20">

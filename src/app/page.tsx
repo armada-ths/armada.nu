@@ -2,8 +2,9 @@ import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { Hero1 } from "@/components/hero7"
 import { HighlightCard } from "@/components/highlight-card"
-import { feature, getSignupUrl } from "@/components/shared/feature"
+import { feature } from "@/components/shared/feature"
 import { fetchDates, isExhibitorSignupOpen } from "@/components/shared/hooks/api/useDates"
+import { fetchHighlightCards } from "@/components/shared/hooks/api/useHighlightCards"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { TrackedLink } from "@/components/shared/TrackedLink"
@@ -13,10 +14,17 @@ import { Card } from "@/components/ui/card"
 import Link from "next/link"
 
 export default async function HomePage() {
-  const dates = await fetchDates()
+  const [dates, exhibitorPackagesEnabled, highlightCards] = await Promise.all([
+    fetchDates(),
+    feature("EXHIBITOR_PACKAGES"),
+    fetchHighlightCards()
+  ])
+
   const exhibitorSignupEnabled = isExhibitorSignupOpen(dates)
-  const exhibitorPackagesEnabled = await feature("EXHIBITOR_PACKAGES")
-  const signupUrl = await getSignupUrl()
+  const signupUrl = exhibitorSignupEnabled
+    ? "https://app.eventro.se/register/armada"
+    : "/exhibitor/signup"
+  const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
 
   return (
     <>
@@ -30,14 +38,17 @@ export default async function HomePage() {
               "The No. 1 career fair at KTH Royal Institute of Technology"
             }
             sideContent={
-              <HighlightCard
-                title="Join the Operations Team"
-                subtitle="Help deliver Armada 2026 behind the scenes"
-                ctaText="Join Armada!"
-                ctaUrl="/student/recruitment"
-                ctaTracking={{ eventName: "student_signup_click", eventData: { location: "highlight_card" } }}
-                description="Become part of the Armada Operations Team and turn ideas into reality. As an OT, you're one of the driving forces behind Armada and part of the team that keeps everything moving, connected, and on track. You'll collaborate with passionate students, take on meaningful responsibility, and help build Scandinavia's biggest career fair. Read more about our available roles and apply on the recruitment page!"
-              />
+              highlightCard && (
+                <HighlightCard
+                  title={highlightCard.title}
+                  subtitle={highlightCard.subtitle}
+                  description={highlightCard.description}
+                  brand={highlightCard.brand}
+                  ctaText={highlightCard.linkText}
+                  ctaUrl={highlightCard.linkUrl}
+                  ctaTracking={highlightCard.linkUrl && highlightCard.ctaEventName ? { eventName: highlightCard.ctaEventName, eventData: { location: "highlight_card" } } : undefined}
+                />
+              )
             }
             buttons={{
               primary: {

@@ -1,6 +1,8 @@
 import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { OrganisationMembersGraphic } from "@/app/about/_components/OrganisationMembersGraphic"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { feature } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -11,6 +13,11 @@ export const metadata: Metadata = {
 }
 
 export default async function RecruitmentPage() {
+  const showAboutPage = await feature("ABOUT_PAGE")
+  if (!showAboutPage) {
+    return <ComingSoonPage title="About Armada" />
+  }
+
   const photoSrc: { source: string; altText: string }[] = [
     {
       source: "/fair_pictures/23031965122_efd3a80707_c.jpg",

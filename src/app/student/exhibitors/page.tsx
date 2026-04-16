@@ -1,4 +1,6 @@
 import ExhibitorSearch from "@/app/student/exhibitors/_components/ExhibitorSearch"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { feature } from "@/components/shared/feature"
 import {
   fetchEmployments,
   fetchExhibitors,
@@ -9,6 +11,11 @@ import { Page } from "@/components/shared/Page"
 import { Suspense } from "react"
 
 export default async function ExhibitorsPage() {
+  const showExhibitors = await feature("EXHIBITOR_PAGE")
+  if (!showExhibitors) {
+    return <ComingSoonPage title="Companies" />
+  }
+
   const exhibitors = await fetchExhibitors({
     next: { revalidate: 3600 / 2 /* 30 min */ }
   })

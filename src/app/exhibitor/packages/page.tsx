@@ -121,7 +121,7 @@ export default async function ExhibitorPackagesPage() {
                 <li className="my-2 font-extrabold">4 Armada Run tickets</li>
                 <li className="my-2 font-extrabold">4 Banquet tickets</li>
                 <li className="my-2 font-extrabold">
-                  One event of your choosing (30 attendees)
+                  One event of your choosing
                 </li>
                 <li className="my-2 text-sm ml-4">
                   Field visit, after work, or panel discussion

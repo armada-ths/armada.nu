@@ -1,54 +1,109 @@
+import { getDefaultFeatureFlags, type FeatureFlagKey } from "@/feature_flags"
 import { MetadataRoute } from "next"
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+type SitemapEntry = {
+  url: string
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"]
+  priority: number
+  flag?: FeatureFlagKey
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const flags = await getDefaultFeatureFlags()
+  const lastModified = new Date()
+
+  const entries: SitemapEntry[] = [
     {
       url: "https://armada.nu",
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1
     },
     {
       url: "https://armada.nu/about",
-      lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.5
+      priority: 0.6,
+      flag: "ABOUT_PAGE"
     },
     {
       url: "https://armada.nu/about/team",
-      lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.5
+      priority: 0.45,
+      flag: "ABOUT_TEAM_PAGE"
     },
     {
       url: "https://armada.nu/student/recruitment",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5
+      changeFrequency: "weekly",
+      priority: 0.75,
+      flag: "STUDENT_RECRUITMENT_PAGE"
     },
     {
       url: "https://armada.nu/student/exhibitors",
-      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+      flag: "EXHIBITOR_PAGE"
+    },
+    {
+      url: "https://armada.nu/student/events",
+      changeFrequency: "weekly",
+      priority: 0.7,
+      flag: "EVENT_PAGE"
+    },
+    {
+      url: "https://armada.nu/student/map",
       changeFrequency: "monthly",
-      priority: 0.5
+      priority: 0.4,
+      flag: "MAP_PAGE"
+    },
+    {
+      url: "https://armada.nu/student/at-the-fair",
+      changeFrequency: "monthly",
+      priority: 0.45,
+      flag: "AT_FAIR_PAGE"
     },
     {
       url: "https://armada.nu/exhibitor",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8
+      changeFrequency: "weekly",
+      priority: 0.9,
+      flag: "EXHIBITOR_MAIN_PAGE"
+    },
+    {
+      url: "https://armada.nu/exhibitor/signup",
+      changeFrequency: "weekly",
+      priority: 0.8,
+      flag: "EXHIBITOR_SIGNUP_PAGE"
     },
     {
       url: "https://armada.nu/exhibitor/packages",
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.5
+      changeFrequency: "monthly",
+      priority: 0.65,
+      flag: "EXHIBITOR_PACKAGES"
     },
     {
       url: "https://armada.nu/exhibitor/timeline",
-      lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.5
+      priority: 0.45,
+      flag: "EXHIBITOR_TIMELINE_PAGE"
+    },
+    {
+      url: "https://armada.nu/exhibitor/events",
+      changeFrequency: "weekly",
+      priority: 0.6,
+      flag: "EXHIBITOR_EVENTS"
+    },
+    {
+      url: "https://armada.nu/blog",
+      changeFrequency: "weekly",
+      priority: 0.4,
+      flag: "ARMADA_BLOG_PAGE"
     }
   ]
+
+  return entries
+    .filter(entry => (entry.flag ? flags[entry.flag] : true))
+    .map(({ url, changeFrequency, priority }) => ({
+      url,
+      lastModified,
+      changeFrequency,
+      priority
+    }))
 }

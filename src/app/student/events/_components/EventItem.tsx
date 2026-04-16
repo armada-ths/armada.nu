@@ -50,7 +50,7 @@ export function EventItem({ event }: { event: Event }) {
           href={`/student/events?id=${id}`}
           scroll={false}
           className={cn(
-            "group to-liqorice-700 flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 via-80% transition hover:scale-[1.02] hover:brightness-95",
+            "group to-licorice-700 flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 via-80% transition hover:scale-[1.02] hover:brightness-95",
             image_url ? "flex-col sm:flex-row" : "flex-col"
           )}>
           {/* Image section */}

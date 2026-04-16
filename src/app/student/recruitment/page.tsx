@@ -1,11 +1,12 @@
 import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
-import { FAQSection } from "@/app/student/recruitment/_components/ot/FAQSection"
 import { ApplyButton } from "@/app/student/recruitment/shared/ApplyButton"
 import { RecruitmentDescription } from "@/app/student/recruitment/shared/RecruitmentDescription"
-import { Page } from "@/components/shared/Page"
+import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { feature } from "@/components/shared/feature"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
+import { Page } from "@/components/shared/Page"
 import {
   Accordion,
   AccordionContent,
@@ -22,6 +23,11 @@ export const metadata: Metadata = {
 }
 
 export default async function RecruitmentPage() {
+  const showRecruitment = await feature("STUDENT_RECRUITMENT_PAGE")
+  if (!showRecruitment) {
+    return <ComingSoonPage title="Recruitment" />
+  }
+
   const data = await fetchRecruitment({
     next: {
       revalidate: 60 // 60 seconds – reflect CMS updates quickly
@@ -85,7 +91,6 @@ export default async function RecruitmentPage() {
             </Alert>
             <PhotoSlideCarousel photoSrc={promotionalPhotos} />
             <RecruitmentDescription />
-            <FAQSection />
             <div className="mt-14 hidden justify-center sm:flex">
               {data ? (
                 <ApplyButton

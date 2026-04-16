@@ -27,7 +27,9 @@ export interface FairDate {
 
 export async function fetchDates(): Promise<FairDate | null> {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`, {
-    cache: "no-store"
+    next: {
+      revalidate: 60
+    }
   })
   if (!res.ok) return null
   return res.json() as Promise<FairDate>
