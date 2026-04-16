@@ -236,19 +236,17 @@ const renderMenuItem = (item: MenuItem) => {
     )
   }
 
+  if (item.disabled) {
+    return null
+  }
+
   return (
     <NavigationMenuItem key={item.title}>
-      {item.disabled ? (
-        <span className="inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium opacity-50 cursor-not-allowed">
-          {item.title}
-        </span>
-      ) : (
-        <NavigationMenuLink
-          href={item.url}
-          className="group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium">
-          {item.title}
-        </NavigationMenuLink>
-      )}
+      <NavigationMenuLink
+        href={item.url}
+        className="group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium">
+        {item.title}
+      </NavigationMenuLink>
     </NavigationMenuItem>
   )
 }
@@ -275,24 +273,17 @@ const renderMobileMenuItem = (item: MenuItem) => {
     )
   }
 
+  if (item.disabled) {
+    return null
+  }
+
   return (
-    <span
-      key={item.title}
-      className={
-        item.disabled
-          ? "text-md font-semibold opacity-50 cursor-not-allowed"
-          : "text-md font-semibold"
-      }
-      aria-disabled={item.disabled ? true : undefined}>
-      {item.disabled ? (
-        item.title
-      ) : (
-        <a
-          href={item.url}
-          onClick={item.tracking ? () => track(item.tracking!.eventName, item.tracking!.eventData) : undefined}>
-          {item.title}
-        </a>
-      )}
+    <span key={item.title} className="text-md font-semibold">
+      <a
+        href={item.url}
+        onClick={item.tracking ? () => track(item.tracking!.eventName, item.tracking!.eventData) : undefined}>
+        {item.title}
+      </a>
     </span>
   )
 }

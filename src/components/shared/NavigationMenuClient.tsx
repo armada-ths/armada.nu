@@ -177,13 +177,14 @@ export function NavigationMenuClient({
         }
     ]
 
-    const blogLinks: MenuItem[] = [
-        {
-            title: "The Armada Blog",
-            url: "/blog",
-            disabled: !blogEnabled
-        }
-    ]
+    const blogLinks: MenuItem[] = blogEnabled
+        ? [
+            {
+                title: "The Armada Blog",
+                url: "/blog"
+            }
+        ]
+        : []
 
     const menuItems = applyComingSoonDescriptions(
         studentLinks.concat(companyLinks.concat(aboutLinks).concat(blogLinks))
