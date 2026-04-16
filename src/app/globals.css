@@ -1,16 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @font-face {
   font-family: "Bebas Neue Book";
   src: url("/fonts/BebasNeue-Book.otf") format("opentype");
+  font-display: swap;
   font-weight: 300;
 }
 
 @font-face {
   font-family: "Bebas Neue Bold";
   src: url("/fonts/BebasNeue-Bold.otf") format("opentype");
+  font-display: swap;
   font-weight: 700;
 }
 

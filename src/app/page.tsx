@@ -2,7 +2,7 @@ import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { Hero1 } from "@/components/hero7"
 import { HighlightCard } from "@/components/highlight-card"
-import { feature, getSignupUrl } from "@/components/shared/feature"
+import { feature } from "@/components/shared/feature"
 import { fetchDates, isExhibitorSignupOpen } from "@/components/shared/hooks/api/useDates"
 import { fetchHighlightCards } from "@/components/shared/hooks/api/useHighlightCards"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
@@ -14,11 +14,16 @@ import { Card } from "@/components/ui/card"
 import Link from "next/link"
 
 export default async function HomePage() {
-  const dates = await fetchDates()
+  const [dates, exhibitorPackagesEnabled, highlightCards] = await Promise.all([
+    fetchDates(),
+    feature("EXHIBITOR_PACKAGES"),
+    fetchHighlightCards()
+  ])
+
   const exhibitorSignupEnabled = isExhibitorSignupOpen(dates)
-  const exhibitorPackagesEnabled = await feature("EXHIBITOR_PACKAGES")
-  const signupUrl = await getSignupUrl()
-  const highlightCards = await fetchHighlightCards()
+  const signupUrl = exhibitorSignupEnabled
+    ? "https://app.eventro.se/register/armada"
+    : "/exhibitor/signup"
   const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
 
   return (

@@ -5,22 +5,30 @@ import {
 } from "@/feature_flags"
 import { decryptOverrides } from "flags"
 import { cookies } from "next/headers"
+import { cache } from "react"
 
-export async function features() {
-  const baseFlags = await getDefaultFeatureFlags()
+const getFlagOverrides = cache(async () => {
   const overrideCookie = (await cookies()).get("vercel-flag-overrides")?.value
-  const overrides = overrideCookie ? await decryptOverrides(overrideCookie) : {}
+  return overrideCookie ? await decryptOverrides(overrideCookie) : {}
+})
+
+export const features = cache(async () => {
+  const [baseFlags, overrides] = await Promise.all([
+    getDefaultFeatureFlags(),
+    getFlagOverrides()
+  ])
+
   return {
     ...baseFlags,
     ...overrides
   }
-}
+})
 
 export async function feature(feature: FeatureFlagKey) {
   return (await features())[feature] ?? false
 }
 
-export async function getSignupUrl() {
+export const getSignupUrl = cache(async () => {
   try {
     const dates = await fetchDates()
     return isExhibitorSignupOpen(dates)
@@ -29,4 +37,4 @@ export async function getSignupUrl() {
   } catch {
     return "/exhibitor/signup"
   }
-}
+})

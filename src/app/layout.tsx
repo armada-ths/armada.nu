@@ -12,13 +12,19 @@ import { DevToolbar } from "@/components/shared/VercelToolbar"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter"
+})
 const bebasNeue = Bebas_Neue({
   subsets: ["latin"],
+  display: "swap",
   weight: ["400"],
   variable: "--font-bebas-neue"
 })
 const lato = Lato({
+  display: "swap",
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato"
