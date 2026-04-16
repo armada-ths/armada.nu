@@ -1,7 +1,6 @@
 import { P } from "@/app/_components/Paragraph"
 import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
-import { FAQSection } from "@/app/student/recruitment/_components/ot/FAQSection"
 import { ApplyButton } from "@/app/student/recruitment/shared/ApplyButton"
 import { RecruitmentDescription } from "@/app/student/recruitment/shared/RecruitmentDescription"
 import { Page } from "@/components/shared/Page"
@@ -83,7 +82,6 @@ export default async function RecruitmentPage() {
             </Alert>
             <PhotoSlideCarousel photoSrc={promotionalPhotos} />
             <RecruitmentDescription />
-            <FAQSection />
             <div className="mt-14 hidden justify-center sm:flex">
               {data ? (
                 <ApplyButton
