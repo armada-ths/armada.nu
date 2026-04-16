@@ -60,7 +60,7 @@ const LogoLink = ({
       width={32}
       height={32}
     />
-    <div className="flex items-baseline mt-0.5 gap-1.5 leading-none">
+    <div className="flex items-baseline mt-0.5 gap-1 leading-none">
       <span className="font-bebas-book text-licorice text-3xl leading-none">
         THS
       </span>
