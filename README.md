@@ -48,6 +48,35 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 
    Open [http://localhost:8000](http://localhost:8000).
 
+## VS Code workspace and launches
+
+This repo includes shared VS Code configuration for both single-repo and multi-repo workflows.
+
+### Single-repo config
+
+In `.vscode/` you will find:
+
+- `tasks.json` — shared tasks for `dev`, `lint`, `type-check`, and `build`
+- `launch.json` — browser launches that use the shared dev tasks
+
+### Multi-repo workspace
+
+If you work on both the public site and the CMS together, open:
+
+- `Armada.code-workspace`
+
+That workspace opens:
+
+- `armada.nu`
+- `../ArmadaCMS`
+
+and includes compound launches such as:
+
+- `✅ Frontend + Prod CMS`
+- `✅ Full Stack Local (Docker)`
+
+This requires you to have both repos checked out in the same parent directory.
+
 ## Scripts
 
 | Command      | Description                  |

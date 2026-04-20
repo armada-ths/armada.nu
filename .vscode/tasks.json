@@ -1,0 +1,132 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".+",
+          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "dev (Prod CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "env": {
+          "NEXT_PUBLIC_API_URL": "https://cms.armada.nu"
+        }
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".+",
+          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+        }
+      }
+    },
+    {
+      "label": "dev (Local CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "env": {
+          "NEXT_PUBLIC_API_URL": "http://localhost:8080"
+        }
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".+",
+          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+        }
+      }
+    },
+    {
+      "label": "lint",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["lint"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": ["$eslint-stylish"],
+      "group": "test"
+    },
+    {
+      "label": "type-check",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["type-check"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": ["$tsc"],
+      "group": "test"
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["build"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": "build"
+    }
+  ]
+}
