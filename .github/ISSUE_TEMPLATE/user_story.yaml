@@ -1,7 +1,7 @@
 name: User Story
 description: Create a new user story
 title: "As a [role], I want to [capability], so that [benefit]"
-labels: ["user-story"]
+type: User Story
 body:
   - type: markdown
     attributes:
@@ -9,11 +9,21 @@ body:
         ## User Story Details
         Please provide the details for this user story.
 
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched the existing issues to avoid creating a duplicate.
+          required: true
+        - label: This issue describes user or business value rather than implementation details.
+          required: true
+
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: Provide a detailed description of the user story
+      description: Describe the user need and value, not the technical solution.
       placeholder: "As a [role], I want to [capability], so that [benefit]"
     validations:
       required: true
@@ -29,6 +39,18 @@ body:
         - [ ] Criteria 3
     validations:
       required: true
+
+  - type: textarea
+    id: testing-notes
+    attributes:
+      label: Testing Notes
+      description: Describe how this user story should be validated.
+      placeholder: |
+        - Manual testing steps...
+        - Edge cases to verify...
+        - Any success criteria to demo...
+    validations:
+      required: false
 
   - type: textarea
     id: additional-context
