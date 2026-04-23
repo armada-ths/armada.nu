@@ -138,9 +138,9 @@ export default async function HomePage() {
           </div> */}
 
           {/* Why Armada */}
-          <h2 className="font-bebas-neue text-melon-700 mt-4 text-3xl font-medium">
+          <Page.Header tier="secondary" className="mt-4 text-melon-700 font-medium">
             New students, every year!
-          </h2>
+          </Page.Header>
           <P>
             Every year, around 4000 new students come to KTH. Almost as many
             students get their first full time job or internship. Participating

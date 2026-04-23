@@ -151,7 +151,7 @@ export default async function ExhibitorPackagesPage() {
         </div>
         {/* <p className="mt-4 text-sm">*All prices are ex. VAT. </p> */}
         <div className="mx-auto mt-12 w-full max-w-150">
-          <h2 className="text-2xl font-bold">Custom Kit</h2>
+          <Page.Header tier="secondary">Custom Kit</Page.Header>
           <p className="mt-2">
             Is a standard exhibitor kit missing something? We have you covered with
             additional options that may be tailored to your needs!
@@ -180,7 +180,9 @@ export default async function ExhibitorPackagesPage() {
             </Link>{" "}
             for custom options and pricing.
           </p>
-          <h2 className="mt-8 text-2xl font-bold">Focus Rooms</h2>
+          <Page.Header tier="secondary" className="mt-8">
+            Focus Rooms
+          </Page.Header>
           <p className="mt-2">
             To showcase our commitment to our core values Sustainability and
             Diversity, we&apos;ve created Focus Rooms during the fair for the
@@ -203,7 +205,9 @@ export default async function ExhibitorPackagesPage() {
           </ul>
         </div>
         <div className="mx-auto mt-10 w-full max-w-150">
-          <h1 className="mb-2 ml-2 text-2xl">FAQ</h1>
+          <Page.Header tier="secondary" className="mb-3">
+            FAQ
+          </Page.Header>
           <Accordion type="single" collapsible className="space-y-6">
             {/* FAQ 1 */}
             <AccordionItem value="faq-1">

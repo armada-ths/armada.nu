@@ -35,7 +35,7 @@ export async function CurrentStatus() {
           so, you do not commit to participating, yet you'll be eligible for a
           discount. Learn more about each stage{"\u00A0"}
           <Link
-            className="whitespace-nowrap text-white underline hover:no-underline"
+            className="whitespace-nowrap underline hover:no-underline"
             href="/exhibitor/timeline">
             here
           </Link>.

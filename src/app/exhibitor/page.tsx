@@ -77,14 +77,12 @@ export default async function ForExhibitorsPage() {
             if you have any questions
           </p>
         </div>
-        <div className="mt-2">
-          <CurrentStatus />
-        </div>
-        <section className="flex flex-col gap-y-10">
-          <div className="mt-6">
-            <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
+        <CurrentStatus />
+        <section className="flex flex-col gap-y-12">
+          <div className="mt-12">
+            <Page.Header tier="secondary">
               New students, every year!
-            </h2>
+            </Page.Header>
             <P>
               Every year, around 4000 new students come to KTH. Almost as many
               students get their first full time job or internship.
@@ -94,11 +92,11 @@ export default async function ForExhibitorsPage() {
             </P>
           </div>
 
-          <div className="mt-6">
-            <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
+          <div>
+            <Page.Header tier="secondary">
               Do you write &quot;we place high importance on your personal
               character&quot; in job ads?
-            </h2>
+            </Page.Header>
             <P>
               Armada realizes that what you study does not always decide where
               you end up in your career. Employers today must be attractive to a
@@ -107,10 +105,10 @@ export default async function ForExhibitorsPage() {
               than you thought!
             </P>
           </div>
-          <div className="mt-6">
-            <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
+          <div>
+            <Page.Header tier="secondary">
               Skills you need, from all ends of KTH
-            </h2>
+            </Page.Header>
             <P>
               Did you know that there are at least five programmes at KTH
               teaching computer science and students from more than three
