@@ -32,11 +32,19 @@ const lato = Lato({
 
 export const viewport: Viewport = {
   width: "device-width",
-  initialScale: 1
+  initialScale: 1,
+  themeColor: "#48bc8e"
 }
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://armada.nu"),
+  icons: {
+    icon: [
+      { url: "/icons/favicon.ico", sizes: "48x48" },
+      { url: "/icons/armada-icon.svg", type: "image/svg+xml" }
+    ],
+    apple: "/icons/apple-touch-icon-180x180.png"
+  },
   title: "THS Armada",
   description: `Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
   keywords: [
