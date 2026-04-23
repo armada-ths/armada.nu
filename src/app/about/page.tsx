@@ -67,9 +67,9 @@ export default async function RecruitmentPage() {
         </div>
 
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
+          <Page.Header tier="secondary">
             PM
-          </h2>
+          </Page.Header>
           <P>
             The Project Manager (PM) is elected by the THS board in november.
             The PM is working full time with Armada and is responsible for the
@@ -78,9 +78,9 @@ export default async function RecruitmentPage() {
           </P>
         </div>
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
+          <Page.Header tier="secondary">
             Project group
-          </h2>
+          </Page.Header>
           <P>
             The Project Group (PG) is chosen by the Project Manager in
             December/January. They then work with Armada the whole calendar
@@ -93,9 +93,9 @@ export default async function RecruitmentPage() {
           </P>
         </div>
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
+          <Page.Header tier="secondary">
             Operations team
-          </h2>
+          </Page.Header>
           <P>
             The operations team are volunteers recruited in the spring, around
             April/May. They are Coordinators, responsible for a specific issue
@@ -107,9 +107,9 @@ export default async function RecruitmentPage() {
           </P>
         </div>
         <div className="mt-8">
-          <h2 className="font-bebas-neue text-melon-700 text-3xl font-medium">
+          <Page.Header tier="secondary">
             Hosts
-          </h2>
+          </Page.Header>
           <P>
             The Hosts join Armada in the autumn, and being a Hosts is a special
             experience. Most hosts are career fair hosts, helping a couple of
