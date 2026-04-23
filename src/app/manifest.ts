@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: "THS Armada",
         short_name: "Armada",
         description:
-            "KTH's and Sweden's largest student career fair. Connect with Sweden's most attractive employers.",
+            "KTH's and Sweden's largest student-driven career fair",
         icons: [
             {
                 src: "/icons/pwa-64x64.png",
