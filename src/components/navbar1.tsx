@@ -152,7 +152,7 @@ const Navbar1 = ({
   ]
 }: Navbar1Props) => {
   return (
-    <section className="bg-melon-700 border-licorice border-b-2 py-4">
+    <section className="bg-melon border-licorice border-b-2 py-4">
       {/* Desktop Menu */}
       <div className="container">
         <nav className="hidden items-center lg:flex">

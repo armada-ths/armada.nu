@@ -1,5 +1,6 @@
 "use client"
 
+import { COUNTDOWN_CONFETTI_COLORS } from "@/lib/colors"
 import { useEffect, useState } from "react"
 
 interface CountdownTimerProps {
@@ -80,7 +81,7 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
       ) : animationStage === "celebration" ? (
         <Celebration />
       ) : isOver ? (
-        <p className="text-melon-700 animate-pulse p-2 text-3xl font-bold">
+        <p className="text-melon animate-pulse p-2 text-3xl font-bold">
           The Armada Fair is Live!
         </p>
       ) : (
@@ -161,16 +162,7 @@ function Celebration() {
   )
 }
 
-const CONFETTI_COLORS = [
-  "#00d790",
-  "#00d790",
-  "#e73953",
-  "#2d2d2c",
-  "#00d790",
-  "#6b7280",
-  "#e73953",
-  "#00d790"
-]
+const CONFETTI_COLORS = [...COUNTDOWN_CONFETTI_COLORS]
 const CONFETTI_COUNT = 30
 
 function ConfettiBurst() {

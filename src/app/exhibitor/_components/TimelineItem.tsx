@@ -20,7 +20,7 @@ export function TimelineItem({
 
   const headerClasses = cn(
     "ml-8 w-full rounded-none border-l-2 text-left",
-    "border-licorice bg-melon-700 border-l-2"
+    "border-licorice bg-melon border-l-2"
   )
 
   return (
@@ -29,7 +29,7 @@ export function TimelineItem({
       <div className="bg-licorice absolute top-4 bottom-0 left-4 w-0.5" />
 
       {/* NODE */}
-      <div className="bg-melon-700 border-licorice absolute top-4 left-2.75 h-3 w-3 border" />
+      <div className="bg-melon border-licorice absolute top-4 left-2.75 h-3 w-3 border" />
 
       {/* HEADER (flat melon block) */}
       <AccordionTrigger

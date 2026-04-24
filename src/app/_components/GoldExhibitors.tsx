@@ -84,8 +84,8 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
             aria-current={idx === selectedIndex}
             onClick={() => api?.scrollTo(idx)}
             className={`h-3 w-3 rounded-full transition ${idx === selectedIndex
-                ? "bg-pineapple scale-110"
-                : "bg-pineapple/30 hover:bg-pineapple/60"
+              ? "bg-pineapple scale-110"
+              : "bg-pineapple/30 hover:bg-pineapple/60"
               }`}
           />
         ))}
@@ -133,13 +133,13 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         </div>
       )}
 
-      <h3 className="mb-3 text-2xl font-semibold text-black">
+      <h3 className="mb-3 text-2xl font-semibold text-licorice">
         {exhibitor.companyWebsite ? (
           <a
             href={exhibitor.companyWebsite}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline-offset-4 transition hover:text-white hover:underline">
+            className="underline-offset-4 transition hover:text-snow hover:underline">
             {exhibitor.name}
           </a>
         ) : (
@@ -147,14 +147,14 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         )}
       </h3>
 
-      <p className="mb-3 max-w-prose text-sm leading-relaxed text-black sm:text-base">
+      <p className="mb-3 max-w-prose text-sm leading-relaxed text-licorice sm:text-base">
         {displayedText}
       </p>
 
       {isLong && (
         <button
           onClick={() => setExpanded(prev => !prev)}
-          className="text-sm font-medium text-black underline underline-offset-2 transition hover:text-white">
+          className="text-sm font-medium text-licorice underline underline-offset-2 transition hover:text-snow">
           {expanded ? "Read less" : "Read more"}
         </button>
       )}

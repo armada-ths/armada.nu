@@ -3,6 +3,7 @@
 import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import Modal from "@/components/ui/Modal"
+import { HEX_COLORS } from "@/lib/colors"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import {
@@ -23,9 +24,9 @@ interface FairMapProps {
 
 const tierColors: Record<string, { fill: string; stroke: string }> = {
   gold: { fill: "var(--color-pineapple)", stroke: "var(--color-pineapple)" },
-  silver: { fill: "var(--color-gray-400)", stroke: "var(--color-gray-400)" },
+  silver: { fill: "var(--color-silver)", stroke: "var(--color-silver)" },
   bronze: { fill: "var(--color-bronze)", stroke: "var(--color-bronze)" },
-  default: { fill: "#f5f5f5", stroke: "#737373" }
+  default: { fill: HEX_COLORS.lightGray, stroke: HEX_COLORS.mediumGray }
 }
 
 // function parseRotation(transform?: string | null) {
@@ -110,8 +111,8 @@ export default function FairMap({
 
       const booths = svg.querySelectorAll<SVGElement>("[id*='__booth']")
       booths.forEach(el => {
-        el.setAttribute("fill", "#ffffff")
-        el.setAttribute("stroke", "#cccccc")
+        el.setAttribute("fill", HEX_COLORS.snow)
+        el.setAttribute("stroke", HEX_COLORS.boothStroke)
         el.setAttribute("stroke-width", "1")
         el.classList.add("cursor-pointer", "transition-all", "duration-200")
       })
@@ -209,7 +210,7 @@ export default function FairMap({
       </TransformWrapper>
 
       {isLoading && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 text-white backdrop-blur-xs transition-opacity duration-500">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 text-snow backdrop-blur-xs transition-opacity duration-500">
           <div className="flex flex-col items-center space-y-6">
             {/* Spinner with logo inside */}
             <div className="relative flex h-20 w-20 items-center justify-center">
@@ -232,7 +233,7 @@ export default function FairMap({
                   <path
                     d="M50 5 a45 45 0 0 1 0 90 a45 45 0 0 1 0 -90"
                     fill="none"
-                    stroke="#00d790"
+                    stroke={HEX_COLORS.emeraldAccent}
                     strokeWidth="8"
                     strokeLinecap="round"
                     strokeDasharray="70 270"
@@ -254,9 +255,9 @@ export default function FairMap({
           setModalOpen(false)
           setActiveExhibitor(null)
         }}
-        className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
+        className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-silver" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
         <div
-          className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice border-solid p-4 sm:p-10`}>
+          className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-silver" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice border-solid p-4 sm:p-10`}>
           {activeExhibitor && <ExhibitorDetails exhibitor={activeExhibitor} />}
         </div>
       </Modal>

@@ -1,4 +1,5 @@
 "use client"
+import { HEX_COLORS } from "@/lib/colors"
 import { useEffect, useRef } from "react"
 
 const ArmadaAnimatedSVG = () => {
@@ -41,8 +42,8 @@ const ArmadaAnimatedSVG = () => {
           y1="0"
           x2="400"
           y2="0">
-          <stop offset="0%" stopColor="#00d79099" />
-          <stop offset="75%" stopColor="#00d790" />
+          <stop offset="0%" stopColor={HEX_COLORS.emeraldAccentAlpha60} />
+          <stop offset="75%" stopColor={HEX_COLORS.emeraldAccent} />
         </linearGradient>
       </defs>
 

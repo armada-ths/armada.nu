@@ -1,5 +1,6 @@
 import { EventItem } from "@/app/student/events/_components/EventItem"
 import { Event } from "@/components/shared/hooks/api/useEvents"
+import { HEX_COLORS } from "@/lib/colors"
 import { Suspense } from "react"
 
 import { formatTimestampAsDate } from "@/lib/utils"
@@ -37,7 +38,7 @@ export function EventsTimeline({ events }: { events: Event[] }) {
             {formatTimestampAsDate(event.eventStart)}
           </TimelineOppositeContent>
           <TimelineSeparator>
-            <TimelineDot sx={{ bgcolor: "#00d790" }} />
+            <TimelineDot sx={{ bgcolor: HEX_COLORS.emeraldAccent }} />
             {idx < events.length - 1 && <TimelineConnector />}
           </TimelineSeparator>
           <TimelineContent>

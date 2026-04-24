@@ -43,7 +43,7 @@ const Hero1 = ({
       <div className="container">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-            <h1 className="font-bebas-neue text-melon-700 text-5xl lg:text-7xl">
+            <h1 className="font-bebas-neue text-melon text-5xl lg:text-7xl">
               {heading}
             </h1>
             <p className="text mb-8 max-w-xl lg:text-lg">{description}</p>

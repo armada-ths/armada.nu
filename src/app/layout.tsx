@@ -9,6 +9,7 @@ import { Bebas_Neue, Inter, Lato } from "next/font/google"
 
 import { FooterGuard } from "@/components/shared/FooterGuard"
 import { DevToolbar } from "@/components/shared/VercelToolbar"
+import { HEX_COLORS } from "@/lib/colors"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
@@ -33,7 +34,7 @@ const lato = Lato({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#48bc8e"
+  themeColor: HEX_COLORS.melon
 }
 
 export const metadata: Metadata = {

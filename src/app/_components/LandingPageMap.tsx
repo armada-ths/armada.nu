@@ -18,7 +18,7 @@ const MapWithMarker = () => {
   ]
 
   return (
-    <Card className="border-melon-700 z-10 mx-auto w-full rounded-md p-0 shadow-lg md:w-1/2">
+    <Card className="border-melon z-10 mx-auto w-full rounded-md p-0 shadow-lg md:w-1/2">
       <MapContainer
         center={[59.3485, 18.0715]}
         zoom={16}

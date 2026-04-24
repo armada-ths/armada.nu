@@ -93,7 +93,7 @@ export default async function EventPage() {
                 <AlertDescription className="flex justify-center">
                   Follow us on{" "}
                   <Link
-                    className="text-white underline hover:no-underline"
+                    className="text-snow underline hover:no-underline"
                     href={"https://www.instagram.com/thsarmada/"}>
                     instagram
                   </Link>{" "}

@@ -114,7 +114,11 @@ src/
 - **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel flag cookie overrides applied.
 - **Adding shadcn components**: `npx shadcn@latest add <component>`
 - **Adding pages**: Add an entry to `src/app/sitemap.ts`.
-- **Brand colors**: Use Tailwind classes like `text-melon-700`, `bg-coconut`, `text-licorice` (defined in `globals.css`).
+- **Brand colors**:
+  - Prefer semantic Tailwind classes like `text-melon`, `bg-coconut`, `text-licorice` (from `src/app/globals.css`).
+  - Runtime JS/TS color values live in `src/lib/colors.ts` (`HEX_COLORS`).
+  - `src/app/globals.css` and `src/lib/colors.ts` are a paired source of truth and must be kept in sync when adding/changing color values.
+  - Avoid hardcoded hex values in `src/**/*.{ts,tsx,js,jsx}`; add/reuse constants in `src/lib/colors.ts`.
 
 ## Infrastructure as code
 

@@ -74,7 +74,7 @@ export default async function ExhibitorPackagesPage() {
               </div>
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
             </Card>
-            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-gray-400 p-5 pb-32">
+            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-silver p-5 pb-32">
               <h3 className="font-lato text-2xl">Silver</h3>
               <ul className="font-lato mt-2">
                 <li className="my-2 font-extrabold">
