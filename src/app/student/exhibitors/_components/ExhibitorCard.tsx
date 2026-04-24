@@ -36,16 +36,16 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         onClose={() => {
           setModalOpen(false)
         }}
-        className={` ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${exhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${exhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
+        className={` ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${exhibitor.tier === "Silver" ? "bg-silver" : ""} ${exhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
         <div
-          className={` ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${exhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${exhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice border-solid p-4 sm:p-10`}>
+          className={` ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${exhibitor.tier === "Silver" ? "bg-silver" : ""} ${exhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice border-solid p-4 sm:p-10`}>
           <ExhibitorDetails exhibitor={exhibitor} />
         </div>
       </Modal>
 
       <Link href={`/student/exhibitors?id=${exhibitor.id}`} scroll={false}>
         <Card
-          className={` ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${exhibitor.tier === "Silver" ? "bg-gray-400" : ""} ${exhibitor.tier === "Bronze" ? "bg-bronze" : ""} group border-licorice flex h-full w-full max-w-[90vw] flex-col rounded-md border-2 border-solid px-3 filter transition hover:scale-[1.02] hover:brightness-95 sm:max-w-95`}>
+          className={` ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${exhibitor.tier === "Silver" ? "bg-silver" : ""} ${exhibitor.tier === "Bronze" ? "bg-bronze" : ""} group border-licorice flex h-full w-full max-w-[90vw] flex-col rounded-md border-2 border-solid px-3 filter transition hover:scale-[1.02] hover:brightness-95 sm:max-w-95`}>
           <h3
             className={`font-bebas-neue xs:text-xl my-2 text-center text-2xl font-bold antialiased transition ${exhibitor.tier === "Gold" ? "text-yellow-100 group-hover:text-yellow-300" : ""} ${exhibitor.tier === "Silver" ? "text-gray-200 group-hover:text-gray-100" : ""} ${exhibitor.tier === "Bronze" ? "text-stone-100 group-hover:text-yellow-100" : ""} `}>
             {exhibitor.name}

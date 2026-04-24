@@ -1,3 +1,4 @@
+import { HEX_COLORS } from "@/lib/colors"
 import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
@@ -31,7 +32,7 @@ export default function manifest(): MetadataRoute.Manifest {
         ],
         start_url: "/",
         display: "standalone",
-        theme_color: "#48bc8e",
-        background_color: "#2d2d2c"
+        theme_color: HEX_COLORS.melon,
+        background_color: HEX_COLORS.licorice
     }
 }

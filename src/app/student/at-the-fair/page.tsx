@@ -40,7 +40,7 @@ export default async function AtFairPage() {
           </P>
         </div>
         <br />
-        <Page.Header tier="secondary" className="text-melon-700">
+        <Page.Header tier="secondary" className="text-melon">
           Example questions
         </Page.Header>
         <P>

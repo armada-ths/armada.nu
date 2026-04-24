@@ -28,7 +28,7 @@ export default async function ExhibitorEventsPage() {
       <Page.Boundary className="pb-20">
         <div className="mx-auto w-full max-w-150">
           <Page.Header>Exhibitor Events</Page.Header>
-          <p className="text-melon-700 mt-1 text-lg font-medium">
+          <p className="text-melon mt-1 text-lg font-medium">
             Make the Most of Your Presence at Armada
           </p>
           <div className="mt-4">

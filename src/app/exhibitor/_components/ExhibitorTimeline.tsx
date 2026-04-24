@@ -78,7 +78,7 @@ export async function ExhibitorTimeline() {
               eventName: "exhibitor_signup_click",
               eventData: { location: "exhibitor_timeline_priority_registration" }
             }}>
-            <Button className="bg-grape-700">Signup to Armada</Button>
+            <Button className="bg-grapefruit text-snow">Signup to Armada</Button>
           </TrackedLink>
         </div>
       </TimelineItem>
@@ -130,7 +130,7 @@ export async function ExhibitorTimeline() {
               eventName: "exhibitor_signup_click",
               eventData: { location: "exhibitor_timeline_standard_registration" }
             }}>
-            <Button className="bg-grape-700">Signup to Armada</Button>
+            <Button className="bg-grapefruit text-snow">Signup to Armada</Button>
           </TrackedLink>
         </div>
         <P className="mt-3">

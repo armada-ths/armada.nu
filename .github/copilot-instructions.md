@@ -41,7 +41,12 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
 ## UI and styling notes
 
 - Tailwind v4 uses a **CSS-first** setup in `src/app/globals.css`.
-- Brand tokens are defined with `@theme`; prefer classes such as `text-melon-700`, `bg-coconut`, and `text-licorice` over ad hoc colors.
+- Brand tokens are defined with `@theme`; prefer classes such as `text-melon`, `bg-coconut`, and `text-licorice` over ad hoc colors.
+- Color values are intentionally split across **two files that must stay in sync**:
+  - `src/app/globals.css` — CSS/Tailwind theme tokens (`--color-*`) used by utility classes and CSS variables.
+  - `src/lib/colors.ts` — shared TypeScript runtime hex constants (`HEX_COLORS`, `COUNTDOWN_CONFETTI_COLORS`) for JS/TS contexts (MUI `sx`, SVG props, scripts, metadata/manifest values, etc.).
+- If you add or change a brand color value, update both files in the same change and keep naming aligned (for example `--color-grapefruit` ↔ `HEX_COLORS.grapefruit`).
+- Avoid introducing raw hex literals directly in `src/**/*.{ts,tsx,js,jsx}`; define/reuse entries in `src/lib/colors.ts` instead.
 - Fonts are defined in `src/app/layout.tsx` and `src/app/globals.css`; use the existing font utility classes (`font-bebas-neue`, `font-lato`, `font-inter`).
 - `shadcn/ui` is configured via `components.json`, with utilities such as `cn()` in `src/lib/utils.ts`. Some pages also use `@mui/material`; match the surrounding pattern rather than mixing UI approaches unnecessarily.
 

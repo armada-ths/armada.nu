@@ -35,7 +35,7 @@ Page.Header = function PageHeader(
 
   return (
     <h1
-      className={cn("font-bebas-neue text-melon-700 text-5xl", className)}
+      className={cn("font-bebas-neue text-melon text-5xl", className)}
       {...rest}>
       {children}
     </h1>

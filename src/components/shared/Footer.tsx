@@ -14,7 +14,7 @@ import Image from "next/image"
 
 export function Footer({ signupUrl }: { signupUrl: string }) {
   return (
-    <footer className="bg-licorice flex w-full flex-col items-center py-8 text-white">
+    <footer className="bg-licorice flex w-full flex-col items-center py-8 text-snow">
       {/* Divider */}
       <hr className="mb-6 h-px w-2/3 bg-slate-600 opacity-40" />
 
@@ -26,19 +26,19 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           <div className="flex flex-col items-center gap-1 md:items-start">
             <a
               href="https://linkedin.com/company/armada"
-              className="hover:text-melon-700 flex items-center gap-2">
+              className="hover:text-melon flex items-center gap-2">
               <LinkedInIcon className="h-4.5 w-4.5" />
               <span>LinkedIn</span>
             </a>
             <a
               href="https://instagram.com/thsarmada"
-              className="hover:text-melon-700 flex items-center gap-2">
+              className="hover:text-melon flex items-center gap-2">
               <SiInstagram size={18} />
               <span>Instagram</span>
             </a>
             <a
               href="https://tiktok.com/@ths.armada"
-              className="hover:text-melon-700 flex items-center gap-2">
+              className="hover:text-melon flex items-center gap-2">
               <SiTiktok size={18} />
               <span>TikTok</span>
             </a>
@@ -51,17 +51,17 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           <div className="flex flex-col gap-1">
             <a
               href="/student/recruitment"
-              className="hover:text-melon-700"
+              className="hover:text-melon"
               onClick={() => track("student_signup_click", { location: "footer_student_recruitment_desktop" })}>
               Recruitment
             </a>
-            <a href="/student/events" className="hover:text-melon-700">
+            <a href="/student/events" className="hover:text-melon">
               Events
             </a>
-            <a href="/student/exhibitors" className="hover:text-melon-700">
+            <a href="/student/exhibitors" className="hover:text-melon">
               Exhibitors
             </a>
-            <a href="/student/map" className="hover:text-melon-700">
+            <a href="/student/map" className="hover:text-melon">
               Map
             </a>
           </div>
@@ -73,20 +73,20 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           <div className="flex flex-col gap-1">
             <a
               href={signupUrl}
-              className="hover:text-melon-700"
+              className="hover:text-melon"
               onClick={() => track("exhibitor_signup_click", { location: "footer_exhibitor_desktop" })}>
               Registration
             </a>
-            <a href="/exhibitor/packages" className="hover:text-melon-700">
+            <a href="/exhibitor/packages" className="hover:text-melon">
               Kits
             </a>
-            <a href="/exhibitor" className="hover:text-melon-700">
+            <a href="/exhibitor" className="hover:text-melon">
               Why Armada
             </a>
-            <a href="/exhibitor/timeline" className="hover:text-melon-700">
+            <a href="/exhibitor/timeline" className="hover:text-melon">
               Timeline
             </a>
-            <a href="/exhibitor/events" className="hover:text-melon-700">
+            <a href="/exhibitor/events" className="hover:text-melon">
               Events
             </a>
           </div>
@@ -113,17 +113,17 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           <div className="flex items-center gap-6">
             <a
               href="https://linkedin.com/company/armada"
-              className="hover:text-melon-700 transition-colors">
+              className="hover:text-melon transition-colors">
               <LinkedInIcon className="h-6 w-6" />
             </a>
             <a
               href="https://instagram.com/thsarmada"
-              className="hover:text-melon-700 transition-colors">
+              className="hover:text-melon transition-colors">
               <SiInstagram size={24} />
             </a>
             <a
               href="https://tiktok.com/@ths.armada"
-              className="hover:text-melon-700 transition-colors">
+              className="hover:text-melon transition-colors">
               <SiTiktok size={24} />
             </a>
           </div>

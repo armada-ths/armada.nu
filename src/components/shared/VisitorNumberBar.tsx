@@ -6,7 +6,7 @@ export function VisitorNumberBar({
   disableAnimation?: boolean
 }) {
   return (
-    <div className="bg-melon-700 border-licorice w-full border-2 p-6">
+    <div className="bg-melon border-licorice w-full border-2 p-6">
       <div className="mx-auto flex max-w-4xl flex-row justify-between text-center md:text-2xl">
         <div className="font-bebas-neue w-3/12 font-medium text-stone-900">
           <NumberCountUp

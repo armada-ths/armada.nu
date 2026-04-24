@@ -6,7 +6,7 @@ import Link from "next/link"
 
 export function Profile({ profile }: { profile: Person }) {
   return (
-    <Card className="bg-melon-700 p-6">
+    <Card className="bg-melon p-6">
       {/* Mobile header */}
       <div className="flex items-center gap-3 sm:hidden">
         <Avatar className="h-22 w-22 shrink-0">

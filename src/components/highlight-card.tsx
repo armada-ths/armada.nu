@@ -25,7 +25,7 @@ const HighlightCard = ({
     return (
         <Card className="bg-snow border-licorice relative flex h-auto flex-col overflow-hidden rounded-md border-4 p-0 sm:w-full">
             {/* Nautical Title Bar */}
-            <div className="border-licorice bg-melon-700 text-licorice z-10 flex items-center gap-3 border-b-4 px-4 py-2">
+            <div className="border-licorice bg-melon text-licorice z-10 flex items-center gap-3 border-b-4 px-4 py-2">
                 {/* Window dots */}
                 <span className="bg-grapefruit h-3 w-3 rounded-full"></span>
                 <span className="bg-pineapple h-3 w-3 rounded-full"></span>
@@ -45,7 +45,7 @@ const HighlightCard = ({
                 <h1 className="font-bebas-bold text-licorice rounded-md text-center text-3xl font-bold sm:text-4xl">
                     {title}
                 </h1>
-                <h2 className="text-melon-700">
+                <h2 className="text-melon">
                     {subtitle}
                     {hasLink && " - "}
                     {hasLink && (

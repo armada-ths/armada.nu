@@ -15,7 +15,7 @@ export async function CurrentStatus() {
           We are preparing the registration for next year&apos;s Armada.{/*  In the
           meanwhile, you are very welcome to report interest in this{" "}
           <Link
-            className="text-white underline hover:no-underline"
+            className="text-snow underline hover:no-underline"
             href="https://docs.google.com/forms/d/e/1FAIpQLSdny1mhsj1Wutt_FaJtqgxKJP3OOBrWW09Ic3T5_NwEHWhV_w/viewform?usp=sf_link">
             form
           </Link>{" "}
@@ -51,7 +51,7 @@ export async function CurrentStatus() {
         <p>
           Registration is over for now, but there might be spots left. Please{" "}
           <Link
-            className="text-white underline hover:no-underline"
+            className="text-snow underline hover:no-underline"
             href="mailto:sales@armada.nu">
             contact sales
           </Link>{" "}
@@ -71,7 +71,7 @@ export async function CurrentStatus() {
           exhibiting. All of this is done on the Armada registration dashboard.
           Read more about how registration works{"\u00A0"}
           <Link
-            className="whitespace-nowrap text-white underline hover:no-underline"
+            className="whitespace-nowrap text-snow underline hover:no-underline"
             href="/exhibitor/timeline">
             here
           </Link>{" "}

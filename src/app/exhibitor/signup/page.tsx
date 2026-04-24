@@ -29,7 +29,7 @@ export default async function SignupPage() {
           registration portal to secure your spot.
         </p>
         <div className="mt-6">
-          <Button asChild className="bg-grapefruit">
+          <Button asChild className="bg-grapefruit text-snow">
             <a href="https://app.eventro.se/register/armada">Register on Eventro</a>
           </Button>
         </div>

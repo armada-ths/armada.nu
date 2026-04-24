@@ -110,7 +110,7 @@ export function ApplyButton({
             </Button>
             {countdown && (
                 <p className={mobile
-                    ? "text-sm font-medium px-3 py-1 rounded-full bg-black/60 text-white backdrop-blur-sm"
+                    ? "text-sm font-medium px-3 py-1 rounded-full bg-black/60 text-snow backdrop-blur-sm"
                     : "text-sm text-muted-foreground"}>
                     {countdown}
                 </p>

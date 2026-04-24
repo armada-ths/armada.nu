@@ -19,7 +19,7 @@ const PersonCard = ({ person }: { person: Person }) => {
         className="w-full py-0 pb-4 transition-all hover:scale-105 sm:h-96 sm:w-56">
         {person.picture == null || person.picture.includes("no-image") ? (
           <div className="flex aspect-square w-52 flex-1 items-center justify-center">
-            <PersonIcon className="text-melon-700 m-auto h-20 w-20" />
+            <PersonIcon className="text-melon m-auto h-20 w-20" />
           </div>
         ) : (
           <div className="overflow-hidden">
@@ -35,12 +35,12 @@ const PersonCard = ({ person }: { person: Person }) => {
           </div>
         )}
         <div className="px-4">
-          <p className="text-melon-700">{person.name}</p>
+          <p className="text-melon">{person.name}</p>
           <p className="mt-1 text-sm text-stone-400">{person.role.trim()}</p>
           <div className="mt-2 flex gap-x-2">
             {person.email != null && (
               <Link href={`mailto:${person.email}`}>
-                <MailIcon className="inline-block aspect-square w-5 text-stone-600 transition-colors hover:text-melon-700" />
+                <MailIcon className="inline-block aspect-square w-5 text-stone-600 transition-colors hover:text-melon" />
               </Link>
             )}
             {person.linkedin_url != null && (
@@ -48,7 +48,7 @@ const PersonCard = ({ person }: { person: Person }) => {
                 href={person.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer">
-                <LinkedInIcon className="inline-block aspect-square w-5 ml-1 text-stone-600 transition-colors hover:text-melon-700" />
+                <LinkedInIcon className="inline-block aspect-square w-5 ml-1 text-stone-600 transition-colors hover:text-melon" />
               </Link>
             )}
           </div>

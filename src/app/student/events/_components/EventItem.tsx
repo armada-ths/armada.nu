@@ -50,7 +50,7 @@ export function EventItem({ event }: { event: Event }) {
           href={`/student/events?id=${id}`}
           scroll={false}
           className={cn(
-            "group to-licorice-700 flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 via-80% transition hover:scale-[1.02] hover:brightness-95",
+            "group to-licorice flex overflow-hidden rounded-lg border-2 border-emerald-900 bg-linear-to-br from-emerald-950 via-80% transition hover:scale-[1.02] hover:brightness-95",
             image_url ? "flex-col sm:flex-row" : "flex-col"
           )}>
           {/* Image section */}
@@ -73,7 +73,7 @@ export function EventItem({ event }: { event: Event }) {
               "flex flex-1 flex-col justify-center gap-1 p-5 text-center sm:text-left",
               !image_url && "items-center py-8 text-center"
             )}>
-            <h5 className="text-xl font-semibold text-white sm:text-2xl">
+            <h5 className="text-xl font-semibold text-snow sm:text-2xl">
               {name}
             </h5>
             <p className="text-sm text-stone-300">

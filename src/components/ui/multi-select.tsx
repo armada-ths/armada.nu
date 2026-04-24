@@ -852,7 +852,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               getBadgeAnimationClass(),
                               multiSelectVariants({ variant }),
                               customStyle?.gradient &&
-                              "border-transparent text-white",
+                              "border-transparent text-snow",
                               responsiveSettings.compactMode &&
                               "px-1.5 py-0.5 text-xs",
                               screenSize === "mobile" &&

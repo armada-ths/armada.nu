@@ -36,7 +36,7 @@ export function QuestionGenerator() {
   }
 
   return (
-    <Card className="border-licorice bg-melon-700 mt-2 min-h-48 min-w-48 place-items-center rounded-2xl border-2 p-5 text-center">
+    <Card className="border-licorice bg-melon mt-2 min-h-48 min-w-48 place-items-center rounded-2xl border-2 p-5 text-center">
       <p className="absolute opacity-80">
         <i>Question for exhibitors:</i>
       </p>

@@ -75,7 +75,7 @@ export default async function HomePage() {
                 <h1 className=" text-4xl font-bebas-bold font-bold text-center text-licorice rounded-md">
                   ARMADA 2025 HAS ENDED
                 </h1>
-                <h2 className="text-melon-700">
+                <h2 className="text-melon">
                   Thank You to All Our Partners and Participants!
                 </h2>
                 <P>
@@ -93,20 +93,20 @@ export default async function HomePage() {
 
           <div className="flex flex-col py-2 md:flex-row">
             {/* <div className="justify-center">
-              <div className="md:mt-10 flex gap-2 text-melon-700">
+              <div className="md:mt-10 flex gap-2 text-melon">
                 <p className="text-5xl font-bebas-neue justify-center">
                   VENUES
                 </p>
                 <MapPin className="mt-2 size-7" />
               </div>
               <div className="mt-4 md:mt-10 text-left mix-blend-normal">
-                <h2 className="text-melon-700 text-3xl font-bebas-neue">Nymble</h2>
+                <h2 className="text-melon text-3xl font-bebas-neue">Nymble</h2>
                 <p className="text-2xl">
                   Drottning Kristinas väg 15-19, 114 28 Stockholm
                 </p>
               </div>
               <div className="mb-4 mt-4 md:mt-10 text-left mix-blend-normal">
-                <h2 className="text-melon-700 text-3xl font-bebas-neue">KTH Innovation</h2>
+                <h2 className="text-melon text-3xl font-bebas-neue">KTH Innovation</h2>
                 <p className="text-2xl">
                   Teknikringen 1, 114 28 Stockholm
                 </p>
@@ -138,7 +138,7 @@ export default async function HomePage() {
           </div> */}
 
           {/* Why Armada */}
-          <Page.Header tier="secondary" className="mt-4 text-melon-700 font-medium">
+          <Page.Header tier="secondary" className="mt-4 text-melon font-medium">
             New students, every year!
           </Page.Header>
           <P>
@@ -152,7 +152,7 @@ export default async function HomePage() {
           {/* Links */}
           <div className="my-6 grid gap-6 text-center md:grid-cols-2 md:items-stretch md:justify-items-center md:gap-8">
             {/* Card 1 */}
-            <Card className="bg-melon-700/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
+            <Card className="bg-melon/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Exhibitors
               </h2>
@@ -167,7 +167,7 @@ export default async function HomePage() {
                     </TrackedLink>
                   </Button>
                 ) : (
-                  <Button asChild className="bg-grapefruit text-white">
+                  <Button asChild className="bg-grapefruit text-snow">
                     <Link href="/exhibitor">Why Armada?</Link>
                   </Button>
                 )}
@@ -180,7 +180,7 @@ export default async function HomePage() {
             </Card>
 
             {/* Card 2 */}
-            <Card className="bg-melon-700/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
+            <Card className="bg-melon/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Students
               </h2>

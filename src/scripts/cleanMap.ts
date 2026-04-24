@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "fs"
 import { JSDOM } from "jsdom"
 import { basename } from "path"
 import prettier from "prettier"
+import { HEX_COLORS } from "../lib/colors"
 
 interface Booth {
   id: string
@@ -55,8 +56,8 @@ for (const rect of rects) {
 
   rect.setAttribute("id", `booth${boothNumber}`)
   rect.setAttribute("data-booth", boothNumber)
-  rect.setAttribute("fill", "#ffffff")
-  rect.setAttribute("stroke", "#000000")
+  rect.setAttribute("fill", HEX_COLORS.snow)
+  rect.setAttribute("stroke", HEX_COLORS.black)
   rect.setAttribute("stroke-width", "0.5")
   rect.setAttribute("cursor", "pointer")
 
@@ -85,13 +86,13 @@ const name = basename(inputFile).replace(/\.svg$/i, "")
 const outSvg = `clean-${name}.svg`
 const outJson = `booths-${name}.json`
 
-;(async () => {
-  const prettySvg = await prettier.format(svgEl.outerHTML, { parser: "html" })
-  writeFileSync(outSvg, prettySvg)
-  writeFileSync(outJson, JSON.stringify(booths, null, 2))
+  ; (async () => {
+    const prettySvg = await prettier.format(svgEl.outerHTML, { parser: "html" })
+    writeFileSync(outSvg, prettySvg)
+    writeFileSync(outJson, JSON.stringify(booths, null, 2))
 
-  console.log(`Clean SVG saved: ${outSvg}`)
-  console.log(`Booth metadata saved: ${outJson}`)
-  console.log(`Labeled ${booths.length} booths.`)
-  console.log(`All booths normalized to ${TARGET_WIDTH}×${TARGET_HEIGHT}px`)
-})()
+    console.log(`Clean SVG saved: ${outSvg}`)
+    console.log(`Booth metadata saved: ${outJson}`)
+    console.log(`Labeled ${booths.length} booths.`)
+    console.log(`All booths normalized to ${TARGET_WIDTH}×${TARGET_HEIGHT}px`)
+  })()

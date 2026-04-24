@@ -104,7 +104,7 @@ export default async function RecruitmentPage() {
               ) : null}
             </div>
             <div className="flex-1">
-              <Page.Header tier="secondary" className="mt-14 md:mt-10 text-melon-700 text-4xl">
+              <Page.Header tier="secondary" className="mt-14 md:mt-10 text-melon text-4xl">
                 {"Currently available roles"}
               </Page.Header>
               {hasAvailableRoles ? (

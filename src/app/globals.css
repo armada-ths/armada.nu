@@ -29,7 +29,7 @@
   /* Licorice */
 
   /* Primary Brand Color (Melon) */
-  --main: var(--color-melon-700);
+  --main: var(--color-melon);
 
   /* Borders, rings, shadows */
   --border: var(--color-licorice);
@@ -38,9 +38,9 @@
   --shadow: 4px 4px 0px 0px var(--border);
 
   /* Charts mapped to brand palette */
-  --chart-1: var(--color-melon-700);
+  --chart-1: var(--color-melon);
   /* Melon */
-  --chart-2: var(--color-grape-700);
+  --chart-2: var(--color-grapefruit);
   /* Grape/Grapefruit */
   --chart-3: var(--color-licorice);
   /* Licorice */
@@ -100,11 +100,7 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
 
-  --color-melon-700: #48bc8e;
-
-  --color-grape-700: #e73953;
-
-  --color-licorice-700: #2d2d2c;
+  --color-melon: #48bc8e;
 
   --color-grapefruit: #e73953;
   --color-licorice: #2d2d2c;
@@ -112,6 +108,7 @@
   --color-snow: #ffffff;
   --color-pineapple: #f7b519;
   --color-bronze: #cd7f32;
+  --color-silver: #99a1af;
 
   --font-bebas-neue: var(--font-bebas-neue);
   --font-lato: "Lato", sans-serif;
@@ -207,7 +204,7 @@
   background: conic-gradient(
     from var(--angle),
     transparent 0deg 300deg,
-    var(--color-melon-700) 300deg 360deg
+    var(--color-melon) 300deg 360deg
   );
 
   /* content-box is the inside of the button, second line is the entire button. xor excludes the content-box */
