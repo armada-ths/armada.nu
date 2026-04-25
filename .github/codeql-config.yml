@@ -1,0 +1,15 @@
+name: "armada.nu CodeQL config"
+
+# Keep all default security queries and add the extended security-and-quality suite.
+disable-default-queries: false
+
+queries:
+  - uses: security-and-quality
+
+# Exclude paths that are generated, vendored, or not application code.
+paths-ignore:
+  - node_modules
+  - .next
+  - public
+  - "**/*.min.js"
+  - "src/scripts"
