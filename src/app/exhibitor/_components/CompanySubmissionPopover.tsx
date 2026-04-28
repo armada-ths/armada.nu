@@ -10,9 +10,13 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Headset, X } from "lucide-react"
 import { usePathname } from "next/navigation"
-import { useMemo, useRef, useState } from "react"
-import ReCAPTCHA from "react-google-recaptcha"
+import Script from "next/script"
+import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
+
+function isRecaptchaAllowedHostname(hostname: string) {
+  return hostname === "armada.nu" || hostname === "staging.armada.nu"
+}
 
 export function CompanySubmissionPopover() {
   const pathname = usePathname()
@@ -21,7 +25,6 @@ export function CompanySubmissionPopover() {
   if (pathname === "/exhibitor/order") {
     return null
   }
-  const recaptcha = useRef<{ getValue: () => string } | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,8 +32,16 @@ export function CompanySubmissionPopover() {
     company: "",
     message: ""
   })
-  const [isVerified, setIsVerified] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [isAllowedHost, setIsAllowedHost] = useState(false)
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+
+  useEffect(() => {
+    setIsAllowedHost(isRecaptchaAllowedHostname(window.location.hostname))
+  }, [])
+
+  const shouldLoadRecaptcha = Boolean(siteKey) && isAllowedHost && isOpen
 
   const formFilled = useMemo(
     () =>
@@ -38,9 +49,8 @@ export function CompanySubmissionPopover() {
       formData.email !== "" &&
       formData.phone !== "" &&
       formData.company !== "" &&
-      formData.message !== "" &&
-      isVerified,
-    [formData, isVerified]
+      formData.message !== "",
+    [formData]
   )
 
   function handleFieldChange(event: {
@@ -52,42 +62,69 @@ export function CompanySubmissionPopover() {
     setFormData(newFormData)
   }
 
-  function handleVerify(response: string | null) {
-    if (response) {
-      setIsVerified(true)
-    } else {
-      setIsVerified(false)
-    }
-  }
-
   async function sendMessage() {
-    const captchaValue = recaptcha.current?.getValue()
-    if (!captchaValue) {
-      toast.warning("Please verify the reCAPTCHA!")
+    if (!siteKey) {
+      toast.error("reCAPTCHA site key is missing.")
       return
     }
-    const result = await sendToSlack(formData)
 
-    if (result.success) {
-      // Reset form fields
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        message: ""
+    if (!isAllowedHost) {
+      toast.error("reCAPTCHA is not configured for this domain.")
+      return
+    }
+
+    const grecaptchaEnterprise = window.grecaptcha?.enterprise
+    if (!grecaptchaEnterprise) {
+      toast.error("reCAPTCHA is not ready yet. Please try again.")
+      return
+    }
+
+    try {
+      setIsSubmitting(true)
+
+      await new Promise<void>(resolve => {
+        grecaptchaEnterprise.ready(() => resolve())
       })
-      toast.success(
-        "Submitted! Our sales person will get in touch with you soon!"
-      )
-      setIsOpen(false)
-    } else {
-      toast.error("Submit failed! Please check your email format.")
+
+      const recaptchaToken = await grecaptchaEnterprise.execute(siteKey, {
+        action: "contact_sales"
+      })
+
+      const result = await sendToSlack({
+        ...formData,
+        recaptchaToken
+      })
+
+      if (result.success) {
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          company: "",
+          message: ""
+        })
+        toast.success(
+          "Submitted! Our sales person will get in touch with you soon!"
+        )
+        setIsOpen(false)
+      } else {
+        toast.error("Submit failed. Please try again.")
+      }
+    } catch {
+      toast.error("Submit failed. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   return (
     <div className="fixed bottom-0 z-10 mb-4 scale-75 transform md:mb-8 md:ml-8 md:scale-90">
+      {shouldLoadRecaptcha ? (
+        <Script
+          src={`https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`}
+          strategy="afterInteractive"
+        />
+      ) : null}
       <Popover open={isOpen}>
         <PopoverTrigger>
           <div
@@ -164,22 +201,17 @@ export function CompanySubmissionPopover() {
                   name="message"
                   value={formData.message}
                   onChange={handleFieldChange}
+                  className="bg-snow text-licorice placeholder:text-licorice/50"
                   placeholder="Enter your message"
                 />
               </fieldset>
-
-              <ReCAPTCHA
-                ref={recaptcha}
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
-                onChange={handleVerify}
-              />
 
               <div className="flex justify-end">
                 <Button
                   className="bg-grapefruit text-snow mt-2"
                   onClick={sendMessage}
-                  disabled={!formFilled}>
-                  Send
+                  disabled={!formFilled || isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Send"}
                 </Button>
               </div>
 
