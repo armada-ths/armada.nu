@@ -201,6 +201,7 @@ export function CompanySubmissionPopover() {
                   name="message"
                   value={formData.message}
                   onChange={handleFieldChange}
+                  className="bg-snow text-licorice placeholder:text-licorice/50"
                   placeholder="Enter your message"
                 />
               </fieldset>
