@@ -61,8 +61,8 @@ export async function ExhibitorTimeline() {
           employer!
         </P>
         <P className="mt-3">
-          During the Priority Registration you don&apos;t need to choose a
-          kit, and the kits are outlined{" "}
+          During the Priority Registration you don&apos;t need to choose a kit,
+          and the kits are outlined{" "}
           <Link
             className="underline hover:no-underline"
             href="/exhibitor/packages">
@@ -76,9 +76,13 @@ export async function ExhibitorTimeline() {
             href={signupUrl}
             tracking={{
               eventName: "exhibitor_signup_click",
-              eventData: { location: "exhibitor_timeline_priority_registration" }
+              eventData: {
+                location: "exhibitor_timeline_priority_registration"
+              }
             }}>
-            <Button className="bg-grapefruit text-snow">Signup to Armada</Button>
+            <Button className="bg-grapefruit text-snow">
+              Signup to Armada
+            </Button>
           </TrackedLink>
         </div>
       </TimelineItem>
@@ -94,11 +98,11 @@ export async function ExhibitorTimeline() {
         title="Acceptance date">
         <P className="">
           We will get back to everyone who made an Priority Registration by{" "}
-          {formatHumanDate(dates.ir.end)}. This is when you will know 100% for sure
-          that you are exhibiting at Armada. You will be informed by email to
-          the person who made the Standard Registration, and it will be visible
-          on the dashboard for anyone with a login to your exhibitor&apos;s
-          page.
+          {formatHumanDate(dates.ir.end)}. This is when you will know 100% for
+          sure that you are exhibiting at Armada. You will be informed by email
+          to the person who made the Standard Registration, and it will be
+          visible on the dashboard for anyone with a login to your
+          exhibitor&apos;s page.
         </P>
         <P className="">
           You can always check the status of your registration on the dashboard,
@@ -117,9 +121,9 @@ export async function ExhibitorTimeline() {
         dateStringHuman={formatHumanDate(dates.fr.start)}
         title="Standard Registration starts">
         <P className="mt-3">
-          During the Standard Registration you choose your kit, if you want
-          to do any events, number of tickets for the banquet etc. All of this
-          is done on the registration dashboard - same as where you did Priority
+          During the Standard Registration you choose your kit, if you want to
+          do any events, number of tickets for the banquet etc. All of this is
+          done on the registration dashboard - same as where you did Priority
           Registration. Standard Registration can be done by another person than
           Priority Registration.
         </P>
@@ -128,15 +132,19 @@ export async function ExhibitorTimeline() {
             href={signupUrl}
             tracking={{
               eventName: "exhibitor_signup_click",
-              eventData: { location: "exhibitor_timeline_standard_registration" }
+              eventData: {
+                location: "exhibitor_timeline_standard_registration"
+              }
             }}>
-            <Button className="bg-grapefruit text-snow">Signup to Armada</Button>
+            <Button className="bg-grapefruit text-snow">
+              Signup to Armada
+            </Button>
           </TrackedLink>
         </div>
         <P className="mt-3">
           We have many different products that help you reach students at KTH in
-          different ways. If you want help finding the best kit for you,
-          please contact{" "}
+          different ways. If you want help finding the best kit for you, please
+          contact{" "}
           <Link
             className="underline hover:no-underline"
             href="mailto:sales@armada.nu">

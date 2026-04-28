@@ -4,7 +4,7 @@ import {
   Industry,
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
-import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"; // Adjust path as needed
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select" // Adjust path as needed
 import { useEffect, useMemo, useState } from "react"
 
 interface Props {
@@ -145,7 +145,7 @@ export default function ExhibitorFilterItem({
       sm:w-(--radix-popover-trigger-width)
       max-w-[95vw]
       "
-        className="bg-licorice w-full text-snow! hover:bg-gray-800!"
+        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
       />
 
       <MultiSelect
@@ -158,7 +158,7 @@ export default function ExhibitorFilterItem({
             sm:w-(--radix-popover-trigger-width)
             max-w-[95vw]
           "
-        className="bg-licorice w-full text-snow! hover:bg-gray-800!"
+        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
       />
 
       {/* Program Filter */}
@@ -170,7 +170,7 @@ export default function ExhibitorFilterItem({
             w-(--radix-popover-trigger-width) 
             min-w-full
           "
-        className="bg-licorice w-full text-snow! hover:bg-gray-800!"
+        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
       />
     </div>
   )

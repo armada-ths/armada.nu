@@ -52,19 +52,18 @@ export default async function ForExhibitorsPage() {
             <Button asChild className="bg-grapefruit text-snow">
               <TrackedLink
                 href={signupUrl}
-                tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_why_armada" } }}>
+                tracking={{
+                  eventName: "exhibitor_signup_click",
+                  eventData: { location: "exhibitor_why_armada" }
+                }}>
                 Signup to Armada
               </TrackedLink>
             </Button>
             <Button asChild variant={"neutral"}>
-              <Link href="/exhibitor/packages">
-                Exhibitor Kits
-              </Link>
+              <Link href="/exhibitor/packages">Exhibitor Kits</Link>
             </Button>
             <Button asChild variant={"neutral"}>
-              <Link href="/exhibitor/timeline">
-                Exhibitor Timeline
-              </Link>
+              <Link href="/exhibitor/timeline">Exhibitor Timeline</Link>
             </Button>
           </div>
           <p className="text-xs">

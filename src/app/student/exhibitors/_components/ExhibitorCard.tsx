@@ -17,7 +17,8 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const searchParams = useSearchParams()
   const [modalOpen, setModalOpen] = useState(false)
   const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
-  const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(logoSrc)
+  const shouldBypassLogoOptimization =
+    shouldBypassNextImageOptimization(logoSrc)
 
   const { width } = useScreenSize()
   const maxDisplayedBadges = width && width < 470 ? 2 : 1

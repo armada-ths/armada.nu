@@ -86,13 +86,13 @@ const name = basename(inputFile).replace(/\.svg$/i, "")
 const outSvg = `clean-${name}.svg`
 const outJson = `booths-${name}.json`
 
-  ; (async () => {
-    const prettySvg = await prettier.format(svgEl.outerHTML, { parser: "html" })
-    writeFileSync(outSvg, prettySvg)
-    writeFileSync(outJson, JSON.stringify(booths, null, 2))
+;(async () => {
+  const prettySvg = await prettier.format(svgEl.outerHTML, { parser: "html" })
+  writeFileSync(outSvg, prettySvg)
+  writeFileSync(outJson, JSON.stringify(booths, null, 2))
 
-    console.log(`Clean SVG saved: ${outSvg}`)
-    console.log(`Booth metadata saved: ${outJson}`)
-    console.log(`Labeled ${booths.length} booths.`)
-    console.log(`All booths normalized to ${TARGET_WIDTH}×${TARGET_HEIGHT}px`)
-  })()
+  console.log(`Clean SVG saved: ${outSvg}`)
+  console.log(`Booth metadata saved: ${outJson}`)
+  console.log(`Labeled ${booths.length} booths.`)
+  console.log(`All booths normalized to ${TARGET_WIDTH}×${TARGET_HEIGHT}px`)
+})()

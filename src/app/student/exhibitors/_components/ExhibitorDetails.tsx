@@ -17,7 +17,8 @@ export default function ExhibitorDetails({
   exhibitor: Exhibitor
 }) {
   const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
-  const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(logoSrc)
+  const shouldBypassLogoOptimization =
+    shouldBypassNextImageOptimization(logoSrc)
   const shouldBypassMapOptimization = shouldBypassNextImageOptimization(
     exhibitor.mapImg
   )

@@ -22,7 +22,6 @@ export default async function ExhibitorEventsPage() {
     return <ComingSoonPage title="Events" />
   }
 
-
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">

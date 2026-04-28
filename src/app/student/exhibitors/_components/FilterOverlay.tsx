@@ -71,7 +71,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
         <div className="grow overflow-y-auto pb-24">
           <div className="mt-2 flex justify-center py-2">
             <button
-              className="bg-licorice w-[92%] rounded-md border border-snow py-3 font-medium tracking-widest text-snow transition duration-150 hover:bg-gray-800"
+              className="bg-licorice border-snow text-snow w-[92%] rounded-md border py-3 font-medium tracking-widest transition duration-150 hover:bg-gray-800"
               onClick={onClose}>
               CLOSE
             </button>

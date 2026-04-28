@@ -1,6 +1,9 @@
 import { BackButton } from "@/components/shared/BackButton"
 import { Page } from "@/components/shared/Page"
-import { fetchDates, getExhibitorSignupPhase } from "@/components/shared/hooks/api/useDates"
+import {
+  fetchDates,
+  getExhibitorSignupPhase
+} from "@/components/shared/hooks/api/useDates"
 import { Button } from "@/components/ui/button"
 import { DateTime } from "luxon"
 import { Metadata } from "next"
@@ -30,7 +33,9 @@ export default async function SignupPage() {
         </p>
         <div className="mt-6">
           <Button asChild className="bg-grapefruit text-snow">
-            <a href="https://app.eventro.se/register/armada">Register on Eventro</a>
+            <a href="https://app.eventro.se/register/armada">
+              Register on Eventro
+            </a>
           </Button>
         </div>
       </>
@@ -42,10 +47,14 @@ export default async function SignupPage() {
         Exhibitor registration for {year} isn't open yet. Initial Registration
         opens{" "}
         <strong>
-          {DateTime.fromISO(dates?.ir.start ?? "", { zone: "Europe/Stockholm" }).toFormat("d MMMM")}
+          {DateTime.fromISO(dates?.ir.start ?? "", {
+            zone: "Europe/Stockholm"
+          }).toFormat("d MMMM")}
         </strong>
         . Follow us on social media or reach out to{" "}
-        <Link className="underline hover:no-underline" href="mailto:sales@armada.nu">
+        <Link
+          className="underline hover:no-underline"
+          href="mailto:sales@armada.nu">
           sales@armada.nu
         </Link>{" "}
         if you'd like to get in touch in the meantime.
@@ -58,7 +67,9 @@ export default async function SignupPage() {
         Thank you to everyone who signed up during Initial Registration! Final
         Registration opens{" "}
         <strong>
-          {DateTime.fromISO(dates?.fr.start ?? "", { zone: "Europe/Stockholm" }).toFormat("d MMMM")}
+          {DateTime.fromISO(dates?.fr.start ?? "", {
+            zone: "Europe/Stockholm"
+          }).toFormat("d MMMM")}
         </strong>
         . Invitations will be sent out to eligible companies — stay tuned.
       </p>
@@ -70,7 +81,9 @@ export default async function SignupPage() {
       <p className="mt-4">
         Exhibitor registration for {year} has now closed. We hope to see you at
         Armada {year + 1}! In the meantime, feel free to reach out to{" "}
-        <Link className="underline hover:no-underline" href="mailto:sales@armada.nu">
+        <Link
+          className="underline hover:no-underline"
+          href="mailto:sales@armada.nu">
           sales@armada.nu
         </Link>{" "}
         if you have any questions.

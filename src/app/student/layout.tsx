@@ -16,10 +16,10 @@ export default async function ExhibitorLayout({
   const isPastDate =
     (data?.end_date &&
       DateTime.fromISO(data.end_date, { zone: "Europe/Stockholm" }) <
-      DateTime.now()) ||
+        DateTime.now()) ||
     (data?.start_date &&
       DateTime.fromISO(data.start_date, { zone: "Europe/Stockholm" }) >
-      DateTime.now())
+        DateTime.now())
 
   return isPastDate ? (
     <>

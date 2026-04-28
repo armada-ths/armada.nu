@@ -12,7 +12,8 @@ export async function CurrentStatus() {
     return (
       <StatusModuleItem title="Registration is opening soon!">
         <p>
-          We are preparing the registration for next year&apos;s Armada.{/*  In the
+          We are preparing the registration for next year&apos;s Armada.
+          {/*  In the
           meanwhile, you are very welcome to report interest in this{" "}
           <Link
             className="text-snow underline hover:no-underline"
@@ -30,15 +31,15 @@ export async function CurrentStatus() {
     return (
       <StatusModuleItem title="Priority Registration open">
         <p>
-          During the Priority
-          Registration, you can apply to become an exhibitor at Armada. By doing
-          so, you do not commit to participating, yet you'll be eligible for a
-          discount. Learn more about each stage{"\u00A0"}
+          During the Priority Registration, you can apply to become an exhibitor
+          at Armada. By doing so, you do not commit to participating, yet you'll
+          be eligible for a discount. Learn more about each stage{"\u00A0"}
           <Link
             className="whitespace-nowrap underline hover:no-underline"
             href="/exhibitor/timeline">
             here
-          </Link>.
+          </Link>
+          .
         </p>
       </StatusModuleItem>
     )
@@ -71,7 +72,7 @@ export async function CurrentStatus() {
           exhibiting. All of this is done on the Armada registration dashboard.
           Read more about how registration works{"\u00A0"}
           <Link
-            className="whitespace-nowrap text-snow underline hover:no-underline"
+            className="text-snow whitespace-nowrap underline hover:no-underline"
             href="/exhibitor/timeline">
             here
           </Link>{" "}

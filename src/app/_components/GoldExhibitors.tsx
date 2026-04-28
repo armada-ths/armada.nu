@@ -83,10 +83,11 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
             aria-label={`Go to slide ${idx + 1}`}
             aria-current={idx === selectedIndex}
             onClick={() => api?.scrollTo(idx)}
-            className={`h-3 w-3 rounded-full transition ${idx === selectedIndex
-              ? "bg-pineapple scale-110"
-              : "bg-pineapple/30 hover:bg-pineapple/60"
-              }`}
+            className={`h-3 w-3 rounded-full transition ${
+              idx === selectedIndex
+                ? "bg-pineapple scale-110"
+                : "bg-pineapple/30 hover:bg-pineapple/60"
+            }`}
           />
         ))}
       </div>
@@ -133,13 +134,13 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         </div>
       )}
 
-      <h3 className="mb-3 text-2xl font-semibold text-licorice">
+      <h3 className="text-licorice mb-3 text-2xl font-semibold">
         {exhibitor.companyWebsite ? (
           <a
             href={exhibitor.companyWebsite}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline-offset-4 transition hover:text-snow hover:underline">
+            className="hover:text-snow underline-offset-4 transition hover:underline">
             {exhibitor.name}
           </a>
         ) : (
@@ -147,14 +148,14 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         )}
       </h3>
 
-      <p className="mb-3 max-w-prose text-sm leading-relaxed text-licorice sm:text-base">
+      <p className="text-licorice mb-3 max-w-prose text-sm leading-relaxed sm:text-base">
         {displayedText}
       </p>
 
       {isLong && (
         <button
           onClick={() => setExpanded(prev => !prev)}
-          className="text-sm font-medium text-licorice underline underline-offset-2 transition hover:text-snow">
+          className="text-licorice hover:text-snow text-sm font-medium underline underline-offset-2 transition">
           {expanded ? "Read less" : "Read more"}
         </button>
       )}

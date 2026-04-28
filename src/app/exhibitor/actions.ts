@@ -20,9 +20,9 @@ export async function sendToSlack(
   const msg = {
     text: `
         # New External Contact Message #\n*Name:* ${args.name}\n*Email:* ${args.email}\n*Phone Number:* ${args.phone}\n*Company:* ${args.company}\n*Description:*\n${args.message
-        .split("\n")
-        .map(line => `>${line}`)
-        .join("\n")}\n`
+          .split("\n")
+          .map(line => `>${line}`)
+          .join("\n")}\n`
   }
   try {
     if (typeof env.SLACK_SALES_HOOK_URL !== "string") {

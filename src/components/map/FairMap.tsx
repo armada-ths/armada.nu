@@ -210,7 +210,7 @@ export default function FairMap({
       </TransformWrapper>
 
       {isLoading && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 text-snow backdrop-blur-xs transition-opacity duration-500">
+        <div className="text-snow absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-xs transition-opacity duration-500">
           <div className="flex flex-col items-center space-y-6">
             {/* Spinner with logo inside */}
             <div className="relative flex h-20 w-20 items-center justify-center">
