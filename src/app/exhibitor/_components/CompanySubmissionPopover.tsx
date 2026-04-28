@@ -70,12 +70,9 @@ export function CompanySubmissionPopover() {
         grecaptchaEnterprise.ready(() => resolve())
       })
 
-      const recaptchaToken = await grecaptchaEnterprise.execute(
-        siteKey,
-        {
-          action: "contact_sales"
-        }
-      )
+      const recaptchaToken = await grecaptchaEnterprise.execute(siteKey, {
+        action: "contact_sales"
+      })
 
       const result = await sendToSlack({
         ...formData,
