@@ -14,7 +14,7 @@ import Image from "next/image"
 
 export function Footer({ signupUrl }: { signupUrl: string }) {
   return (
-    <footer className="bg-licorice flex w-full flex-col items-center py-8 text-snow">
+    <footer className="bg-licorice text-snow flex w-full flex-col items-center py-8">
       {/* Divider */}
       <hr className="mb-6 h-px w-2/3 bg-slate-600 opacity-40" />
 
@@ -52,7 +52,11 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             <a
               href="/student/recruitment"
               className="hover:text-melon"
-              onClick={() => track("student_signup_click", { location: "footer_student_recruitment_desktop" })}>
+              onClick={() =>
+                track("student_signup_click", {
+                  location: "footer_student_recruitment_desktop"
+                })
+              }>
               Recruitment
             </a>
             <a href="/student/events" className="hover:text-melon">
@@ -74,7 +78,11 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             <a
               href={signupUrl}
               className="hover:text-melon"
-              onClick={() => track("exhibitor_signup_click", { location: "footer_exhibitor_desktop" })}>
+              onClick={() =>
+                track("exhibitor_signup_click", {
+                  location: "footer_exhibitor_desktop"
+                })
+              }>
               Registration
             </a>
             <a href="/exhibitor/packages" className="hover:text-melon">
@@ -137,7 +145,13 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
-                <a href="/student/recruitment" onClick={() => track("student_signup_click", { location: "footer_student_recruitment_mobile" })}>
+                <a
+                  href="/student/recruitment"
+                  onClick={() =>
+                    track("student_signup_click", {
+                      location: "footer_student_recruitment_mobile"
+                    })
+                  }>
                   Recruitment
                 </a>
                 <a href="/student/events">Events</a>
@@ -153,7 +167,13 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
-                <a href={signupUrl} onClick={() => track("exhibitor_signup_click", { location: "footer_exhibitor_mobile" })}>
+                <a
+                  href={signupUrl}
+                  onClick={() =>
+                    track("exhibitor_signup_click", {
+                      location: "footer_exhibitor_mobile"
+                    })
+                  }>
                   Registration
                 </a>
                 <a href="/exhibitor/packages">Kits</a>

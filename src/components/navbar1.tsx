@@ -47,11 +47,7 @@ interface Navbar1Props {
   menu?: MenuItem[]
 }
 
-const LogoLink = ({
-  logo
-}: {
-  logo: NonNullable<Navbar1Props["logo"]>
-}) => (
+const LogoLink = ({ logo }: { logo: NonNullable<Navbar1Props["logo"]> }) => (
   <a href={logo.url} className="inline-flex items-center gap-1.5">
     <img
       src={logo.src}
@@ -60,7 +56,7 @@ const LogoLink = ({
       width={32}
       height={32}
     />
-    <div className="flex items-baseline mt-1 gap-1 leading-none">
+    <div className="mt-1 flex items-baseline gap-1 leading-none">
       <span className="font-bebas-book text-licorice text-3xl leading-none">
         THS
       </span>
@@ -219,7 +215,7 @@ const renderMenuItem = (item: MenuItem) => {
         <NavigationMenuTrigger
           className={
             item.disabled
-              ? "rounded-md opacity-50 pointer-events-none"
+              ? "pointer-events-none rounded-md opacity-50"
               : "rounded-md"
           }
           aria-disabled={item.disabled ? true : undefined}>
@@ -258,7 +254,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
         <AccordionTrigger
           className={
             item.disabled
-              ? "text-md py-4 font-semibold hover:no-underline opacity-50 pointer-events-none"
+              ? "text-md pointer-events-none py-4 font-semibold opacity-50 hover:no-underline"
               : "text-md py-4 font-semibold hover:no-underline"
           }
           aria-disabled={item.disabled ? true : undefined}>
@@ -281,7 +277,11 @@ const renderMobileMenuItem = (item: MenuItem) => {
     <span key={item.title} className="text-md font-semibold">
       <a
         href={item.url}
-        onClick={item.tracking ? () => track(item.tracking!.eventName, item.tracking!.eventData) : undefined}>
+        onClick={
+          item.tracking
+            ? () => track(item.tracking!.eventName, item.tracking!.eventData)
+            : undefined
+        }>
         {item.title}
       </a>
     </span>
@@ -305,7 +305,9 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
 
   if (item.disabled) {
     return (
-      <span className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none select-none opacity-50 cursor-not-allowed sm:min-w-80" aria-disabled>
+      <span
+        className="rounded-base border-licorice flex max-w-fit cursor-not-allowed flex-row gap-4 p-3 leading-none opacity-50 select-none sm:min-w-80"
+        aria-disabled>
         {content}
       </span>
     )
@@ -315,11 +317,14 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
     <a
       className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none no-underline outline-hidden transition-colors select-none hover:border-2 sm:min-w-80"
       href={item.url}
-      onClick={item.tracking ? () => track(item.tracking!.eventName, item.tracking!.eventData) : undefined}>
+      onClick={
+        item.tracking
+          ? () => track(item.tracking!.eventName, item.tracking!.eventData)
+          : undefined
+      }>
       {content}
     </a>
   )
 }
 
 export { Navbar1 }
-

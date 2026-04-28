@@ -18,7 +18,13 @@ export function CompanyRegistrationButton({
   }
 
   return (
-    <Link href={signupUrl} onClick={() => track("exhibitor_signup_click", { location: "exhibitor_page_registration" })}>
+    <Link
+      href={signupUrl}
+      onClick={() =>
+        track("exhibitor_signup_click", {
+          location: "exhibitor_page_registration"
+        })
+      }>
       <Button>Exhibitor Signup</Button>
     </Link>
   )

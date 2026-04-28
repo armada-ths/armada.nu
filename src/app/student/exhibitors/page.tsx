@@ -34,7 +34,8 @@ export default async function ExhibitorsPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary>
-        <Page.Header>Companies at the Fair 2025</Page.Header> {/* Remember to change/remove year when updated! */}
+        <Page.Header>Companies at the Fair 2025</Page.Header>{" "}
+        {/* Remember to change/remove year when updated! */}
         <Suspense>
           <ExhibitorSearch
             exhibitors={exhibitors}

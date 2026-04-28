@@ -14,24 +14,29 @@ const OrganizationList = ({ group }: { group: Organization }) => {
 
   const rankText = (rank?: string | null) => (rank ?? "").toLowerCase().trim()
 
-  const sortByRoleThenName = (a: { role?: string | null; name?: string | null }, b: { role?: string | null; name?: string | null }) => {
-    const roleComparison = (a.role ?? "").localeCompare(b.role ?? "", undefined, {
-      sensitivity: "base",
-    })
+  const sortByRoleThenName = (
+    a: { role?: string | null; name?: string | null },
+    b: { role?: string | null; name?: string | null }
+  ) => {
+    const roleComparison = (a.role ?? "").localeCompare(
+      b.role ?? "",
+      undefined,
+      {
+        sensitivity: "base"
+      }
+    )
 
     if (roleComparison !== 0) return roleComparison
 
     return (a.name ?? "").localeCompare(b.name ?? "", undefined, {
-      sensitivity: "base",
+      sensitivity: "base"
     })
   }
 
-  const projectGroup = group.people.filter(
-    person => {
-      const rank = rankText(person.rank)
-      return rank.includes("project group") || rank.includes("project manager")
-    }
-  )
+  const projectGroup = group.people.filter(person => {
+    const rank = rankText(person.rank)
+    return rank.includes("project group") || rank.includes("project manager")
+  })
   const operationTeam = group.people.filter(person => {
     const rank = rankText(person.rank)
     return !(rank.includes("project group") || rank.includes("project manager"))

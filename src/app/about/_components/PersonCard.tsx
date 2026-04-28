@@ -40,7 +40,7 @@ const PersonCard = ({ person }: { person: Person }) => {
           <div className="mt-2 flex gap-x-2">
             {person.email != null && (
               <Link href={`mailto:${person.email}`}>
-                <MailIcon className="inline-block aspect-square w-5 text-stone-600 transition-colors hover:text-melon" />
+                <MailIcon className="hover:text-melon inline-block aspect-square w-5 text-stone-600 transition-colors" />
               </Link>
             )}
             {person.linkedin_url != null && (
@@ -48,7 +48,7 @@ const PersonCard = ({ person }: { person: Person }) => {
                 href={person.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer">
-                <LinkedInIcon className="inline-block aspect-square w-5 ml-1 text-stone-600 transition-colors hover:text-melon" />
+                <LinkedInIcon className="hover:text-melon ml-1 inline-block aspect-square w-5 text-stone-600 transition-colors" />
               </Link>
             )}
           </div>

@@ -49,7 +49,9 @@ export type ExhibitorSignupPhase =
   | "fr-open"
   | "closed"
 
-export function getExhibitorSignupPhase(dates: FairDate | null): ExhibitorSignupPhase {
+export function getExhibitorSignupPhase(
+  dates: FairDate | null
+): ExhibitorSignupPhase {
   if (!dates) return "closed"
   const zone = "Europe/Stockholm"
   const now = DateTime.now().setZone(zone)

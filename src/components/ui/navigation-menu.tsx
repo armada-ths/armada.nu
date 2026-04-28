@@ -75,9 +75,7 @@ function NavigationMenuTrigger({
       className={cn(navigationMenuTriggerStyle(), "group", className)}
       {...props}>
       {children}{" "}
-      <ChevronDown
-        className="font-heading relative top-px ml-2 size-4 transition duration-200 group-data-[state=open]:rotate-180"
-      />
+      <ChevronDown className="font-heading relative top-px ml-2 size-4 transition duration-200 group-data-[state=open]:rotate-180" />
     </NavigationMenuPrimitive.Trigger>
   )
 }
@@ -148,7 +146,7 @@ function NavigationMenuIndicator({
         className
       )}
       {...props}>
-      <div className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-snow" />
+      <div className="bg-snow relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm" />
     </NavigationMenuPrimitive.Indicator>
   )
 }
@@ -164,4 +162,3 @@ export {
   navigationMenuTriggerStyle,
   NavigationMenuViewport
 }
-

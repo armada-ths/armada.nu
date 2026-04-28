@@ -3,7 +3,10 @@ import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { Hero1 } from "@/components/hero7"
 import { HighlightCard } from "@/components/highlight-card"
 import { feature } from "@/components/shared/feature"
-import { fetchDates, isExhibitorSignupOpen } from "@/components/shared/hooks/api/useDates"
+import {
+  fetchDates,
+  isExhibitorSignupOpen
+} from "@/components/shared/hooks/api/useDates"
 import { fetchHighlightCards } from "@/components/shared/hooks/api/useHighlightCards"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
@@ -46,7 +49,14 @@ export default async function HomePage() {
                   brand={highlightCard.brand}
                   ctaText={highlightCard.linkText}
                   ctaUrl={highlightCard.linkUrl}
-                  ctaTracking={highlightCard.linkUrl && highlightCard.ctaEventName ? { eventName: highlightCard.ctaEventName, eventData: { location: "highlight_card" } } : undefined}
+                  ctaTracking={
+                    highlightCard.linkUrl && highlightCard.ctaEventName
+                      ? {
+                          eventName: highlightCard.ctaEventName,
+                          eventData: { location: "highlight_card" }
+                        }
+                      : undefined
+                  }
                 />
               )
             }
@@ -54,7 +64,10 @@ export default async function HomePage() {
               primary: {
                 text: "Join Armada",
                 url: "/student/recruitment",
-                tracking: { eventName: "student_signup_click", eventData: { location: "hero_primary" } }
+                tracking: {
+                  eventName: "student_signup_click",
+                  eventData: { location: "hero_primary" }
+                }
               },
               secondary: {
                 text: "About Armada",
@@ -138,7 +151,7 @@ export default async function HomePage() {
           </div> */}
 
           {/* Why Armada */}
-          <Page.Header tier="secondary" className="mt-4 text-melon font-medium">
+          <Page.Header tier="secondary" className="text-melon mt-4 font-medium">
             New students, every year!
           </Page.Header>
           <P>
@@ -161,8 +174,10 @@ export default async function HomePage() {
                   <Button asChild className="bg-grapefruit text-snow">
                     <TrackedLink
                       href={signupUrl}
-                      tracking={{ eventName: "exhibitor_signup_click", eventData: { location: "exhibitor_landing_card" } }}
-                    >
+                      tracking={{
+                        eventName: "exhibitor_signup_click",
+                        eventData: { location: "exhibitor_landing_card" }
+                      }}>
                       Exhibitor Signup
                     </TrackedLink>
                   </Button>
@@ -188,8 +203,10 @@ export default async function HomePage() {
                 <Button asChild className="bg-grapefruit text-snow">
                   <TrackedLink
                     href="/student/recruitment"
-                    tracking={{ eventName: "student_signup_click", eventData: { location: "for_students_card" } }}
-                  >
+                    tracking={{
+                      eventName: "student_signup_click",
+                      eventData: { location: "for_students_card" }
+                    }}>
                     Join Us!
                   </TrackedLink>
                 </Button>

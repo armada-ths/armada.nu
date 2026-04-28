@@ -3,206 +3,212 @@
 import { MenuItem, Navbar1 } from "@/components/navbar1"
 import { COMING_SOON_TEXT } from "@/components/shared/ComingSoonPage"
 import {
-    BriefcaseIcon,
-    Building2Icon,
-    CalendarDaysIcon,
-    CalendarSearchIcon,
-    ClipboardPenIcon,
-    ClockIcon,
-    CompassIcon,
-    HandshakeIcon,
-    MapPinnedIcon,
-    PackageIcon,
-    SparklesIcon,
-    UsersRoundIcon
+  BriefcaseIcon,
+  Building2Icon,
+  CalendarDaysIcon,
+  CalendarSearchIcon,
+  ClipboardPenIcon,
+  ClockIcon,
+  CompassIcon,
+  HandshakeIcon,
+  MapPinnedIcon,
+  PackageIcon,
+  SparklesIcon,
+  UsersRoundIcon
 } from "lucide-react"
 import { DateTime } from "luxon"
 
 interface NavigationMenuClientProps {
-    signupUrl: string
-    exhibitorPackagesEnabled: boolean
-    exhibitorEventsEnabled: boolean
-    eventsEnabled: boolean
-    mapEnabled: boolean
-    atFairEnabled: boolean
-    exhibitorPageEnabled: boolean
-    studentRecruitmentEnabled: boolean
-    exhibitorMainEnabled: boolean
-    exhibitorTimelineEnabled: boolean
-    exhibitorSignupEnabled: boolean
-    aboutPageEnabled: boolean
-    aboutTeamEnabled: boolean
-    blogEnabled: boolean
+  signupUrl: string
+  exhibitorPackagesEnabled: boolean
+  exhibitorEventsEnabled: boolean
+  eventsEnabled: boolean
+  mapEnabled: boolean
+  atFairEnabled: boolean
+  exhibitorPageEnabled: boolean
+  studentRecruitmentEnabled: boolean
+  exhibitorMainEnabled: boolean
+  exhibitorTimelineEnabled: boolean
+  exhibitorSignupEnabled: boolean
+  aboutPageEnabled: boolean
+  aboutTeamEnabled: boolean
+  blogEnabled: boolean
 }
 
 const applyComingSoonDescriptions = (items: MenuItem[]): MenuItem[] =>
-    items.map(item => {
-        if (item.items) {
-            return { ...item, items: applyComingSoonDescriptions(item.items) }
-        }
+  items.map(item => {
+    if (item.items) {
+      return { ...item, items: applyComingSoonDescriptions(item.items) }
+    }
 
-        if (item.disabled) {
-            return { ...item, description: COMING_SOON_TEXT }
-        }
+    if (item.disabled) {
+      return { ...item, description: COMING_SOON_TEXT }
+    }
 
-        return item
-    })
+    return item
+  })
 
 export function NavigationMenuClient({
-    signupUrl,
-    exhibitorPackagesEnabled,
-    exhibitorEventsEnabled,
-    eventsEnabled,
-    mapEnabled,
-    atFairEnabled,
-    exhibitorPageEnabled,
-    studentRecruitmentEnabled,
-    exhibitorMainEnabled,
-    exhibitorTimelineEnabled,
-    exhibitorSignupEnabled,
-    aboutPageEnabled,
-    aboutTeamEnabled,
-    blogEnabled
+  signupUrl,
+  exhibitorPackagesEnabled,
+  exhibitorEventsEnabled,
+  eventsEnabled,
+  mapEnabled,
+  atFairEnabled,
+  exhibitorPageEnabled,
+  studentRecruitmentEnabled,
+  exhibitorMainEnabled,
+  exhibitorTimelineEnabled,
+  exhibitorSignupEnabled,
+  aboutPageEnabled,
+  aboutTeamEnabled,
+  blogEnabled
 }: NavigationMenuClientProps) {
-    const companyLinks: MenuItem[] = [
+  const companyLinks: MenuItem[] = [
+    {
+      title: "For Exhibitors",
+      url: "/exhibitor",
+      items: [
         {
-            title: "For Exhibitors",
-            url: "/exhibitor",
-            items: [
-                {
-                    title: "Registration",
-                    url: signupUrl,
-                    description: `Signup as an exhibitor for Armada ${DateTime.now().year}`,
-                    icon: <ClipboardPenIcon className="size-5 shrink-0" />,
-                    tracking: { eventName: "exhibitor_signup_click", eventData: { location: "topnav_exhibitor_registration" } },
-                    disabled: !exhibitorSignupEnabled
-                },
-                {
-                    title: "Kits",
-                    url: "/exhibitor/packages",
-                    description: "Choose the kit that suits your needs",
-                    icon: <PackageIcon className="size-5 shrink-0" />,
-                    disabled: !exhibitorPackagesEnabled
-                },
-                {
-                    title: "Why Armada",
-                    url: "/exhibitor",
-                    description: "The industry's top engineers come from KTH",
-                    icon: <HandshakeIcon className="size-5 shrink-0" />,
-                    disabled: !exhibitorMainEnabled
-                },
-                {
-                    title: "Timeline",
-                    url: "/exhibitor/timeline",
-                    description: "Your guide to the fair - step by step",
-                    icon: <ClockIcon className="size-5 shrink-0" />,
-                    disabled: !exhibitorTimelineEnabled
-                },
-                {
-                    title: "Events",
-                    url: "/exhibitor/events",
-                    description: "Interested in having an event with us?",
-                    icon: <CalendarSearchIcon className="size-5 shrink-0" />,
-                    disabled: !exhibitorEventsEnabled
-                }
-            ]
-        }
-    ]
-
-    const studentLinks: MenuItem[] = [
+          title: "Registration",
+          url: signupUrl,
+          description: `Signup as an exhibitor for Armada ${DateTime.now().year}`,
+          icon: <ClipboardPenIcon className="size-5 shrink-0" />,
+          tracking: {
+            eventName: "exhibitor_signup_click",
+            eventData: { location: "topnav_exhibitor_registration" }
+          },
+          disabled: !exhibitorSignupEnabled
+        },
         {
-            title: "For Students",
-            url: "/student/exhibitors",
-            items: [
-                {
-                    title: "Exhibitors",
-                    url: "/student/exhibitors",
-                    description: `Look at the companies attending the fair`,
-                    icon: <Building2Icon className="size-5 shrink-0" />,
-                    disabled: !exhibitorPageEnabled
-                },
-                {
-                    title: "Events",
-                    url: "/student/events",
-                    description: "See the events leading up to the fair",
-                    icon: <CalendarDaysIcon className="size-5 shrink-0" />,
-                    disabled: !eventsEnabled
-                },
-                {
-                    title: "Recruitment",
-                    url: "/student/recruitment",
-                    description: `Join Armada ${DateTime.now().year}. See which roles are available`,
-                    icon: <BriefcaseIcon className="size-5 shrink-0" />,
-                    tracking: { eventName: "student_signup_click", eventData: { location: "topnav_recruitment" } },
-                    disabled: !studentRecruitmentEnabled
-                },
-                {
-                    title: "Map",
-                    url: "/student/map",
-                    description: "Find your way around the fair",
-                    icon: <MapPinnedIcon className="size-5 shrink-0" />,
-                    disabled: !mapEnabled
-                },
-                {
-                    title: "At the Fair",
-                    url: "/student/at-the-fair",
-                    description: "Make the most out of your visit",
-                    icon: <CompassIcon className="size-5 shrink-0" />,
-                    disabled: !atFairEnabled
-                }
-            ]
-        }
-    ]
-
-    const aboutLinks: MenuItem[] = [
+          title: "Kits",
+          url: "/exhibitor/packages",
+          description: "Choose the kit that suits your needs",
+          icon: <PackageIcon className="size-5 shrink-0" />,
+          disabled: !exhibitorPackagesEnabled
+        },
         {
-            title: "About us",
-            url: "/about",
-            items: [
-                {
-                    title: "About Armada",
-                    url: "/about",
-                    description: `Get to know the Armada organization`,
-                    icon: <SparklesIcon className="size-5 shrink-0" />,
-                    disabled: !aboutPageEnabled
-                },
-                {
-                    title: "Team",
-                    url: "/about/team",
-                    description: `Get to know the team working on Armada ${DateTime.now().year}`,
-                    icon: <UsersRoundIcon className="size-5 shrink-0" />,
-                    disabled: !aboutTeamEnabled
-                }
-            ]
+          title: "Why Armada",
+          url: "/exhibitor",
+          description: "The industry's top engineers come from KTH",
+          icon: <HandshakeIcon className="size-5 shrink-0" />,
+          disabled: !exhibitorMainEnabled
+        },
+        {
+          title: "Timeline",
+          url: "/exhibitor/timeline",
+          description: "Your guide to the fair - step by step",
+          icon: <ClockIcon className="size-5 shrink-0" />,
+          disabled: !exhibitorTimelineEnabled
+        },
+        {
+          title: "Events",
+          url: "/exhibitor/events",
+          description: "Interested in having an event with us?",
+          icon: <CalendarSearchIcon className="size-5 shrink-0" />,
+          disabled: !exhibitorEventsEnabled
         }
-    ]
+      ]
+    }
+  ]
 
-    const blogLinks: MenuItem[] = blogEnabled
-        ? [
-            {
-                title: "The Armada Blog",
-                url: "/blog"
-            }
-        ]
-        : []
+  const studentLinks: MenuItem[] = [
+    {
+      title: "For Students",
+      url: "/student/exhibitors",
+      items: [
+        {
+          title: "Exhibitors",
+          url: "/student/exhibitors",
+          description: `Look at the companies attending the fair`,
+          icon: <Building2Icon className="size-5 shrink-0" />,
+          disabled: !exhibitorPageEnabled
+        },
+        {
+          title: "Events",
+          url: "/student/events",
+          description: "See the events leading up to the fair",
+          icon: <CalendarDaysIcon className="size-5 shrink-0" />,
+          disabled: !eventsEnabled
+        },
+        {
+          title: "Recruitment",
+          url: "/student/recruitment",
+          description: `Join Armada ${DateTime.now().year}. See which roles are available`,
+          icon: <BriefcaseIcon className="size-5 shrink-0" />,
+          tracking: {
+            eventName: "student_signup_click",
+            eventData: { location: "topnav_recruitment" }
+          },
+          disabled: !studentRecruitmentEnabled
+        },
+        {
+          title: "Map",
+          url: "/student/map",
+          description: "Find your way around the fair",
+          icon: <MapPinnedIcon className="size-5 shrink-0" />,
+          disabled: !mapEnabled
+        },
+        {
+          title: "At the Fair",
+          url: "/student/at-the-fair",
+          description: "Make the most out of your visit",
+          icon: <CompassIcon className="size-5 shrink-0" />,
+          disabled: !atFairEnabled
+        }
+      ]
+    }
+  ]
 
-    const menuItems = applyComingSoonDescriptions(
-        studentLinks.concat(companyLinks.concat(aboutLinks).concat(blogLinks))
-    )
+  const aboutLinks: MenuItem[] = [
+    {
+      title: "About us",
+      url: "/about",
+      items: [
+        {
+          title: "About Armada",
+          url: "/about",
+          description: `Get to know the Armada organization`,
+          icon: <SparklesIcon className="size-5 shrink-0" />,
+          disabled: !aboutPageEnabled
+        },
+        {
+          title: "Team",
+          url: "/about/team",
+          description: `Get to know the team working on Armada ${DateTime.now().year}`,
+          icon: <UsersRoundIcon className="size-5 shrink-0" />,
+          disabled: !aboutTeamEnabled
+        }
+      ]
+    }
+  ]
 
-    return (
-        <>
-            <div className="fixed top-0 z-40 w-screen">
-                <Navbar1
-                    logo={{
-                        url: "/",
-                        src: "/armada_licorice.svg",
-                        alt: "",
-                        title: ""
-                    }}
-                    menu={menuItems}
-                />
-            </div>
-        </>
-    )
+  const blogLinks: MenuItem[] = blogEnabled
+    ? [
+        {
+          title: "The Armada Blog",
+          url: "/blog"
+        }
+      ]
+    : []
+
+  const menuItems = applyComingSoonDescriptions(
+    studentLinks.concat(companyLinks.concat(aboutLinks).concat(blogLinks))
+  )
+
+  return (
+    <>
+      <div className="fixed top-0 z-40 w-screen">
+        <Navbar1
+          logo={{
+            url: "/",
+            src: "/armada_licorice.svg",
+            alt: "",
+            title: ""
+          }}
+          menu={menuItems}
+        />
+      </div>
+    </>
+  )
 }

@@ -52,4 +52,3 @@ function AvatarFallback({
 }
 
 export { Avatar, AvatarFallback, AvatarImage }
-
