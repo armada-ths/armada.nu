@@ -11,8 +11,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { Headset, X } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Script from "next/script"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
+
+function isRecaptchaAllowedHostname(hostname: string) {
+  return (
+    hostname === "armada.nu" ||
+    hostname === "staging.armada.nu"
+  )
+}
 
 export function CompanySubmissionPopover() {
   const pathname = usePathname()
@@ -30,7 +37,14 @@ export function CompanySubmissionPopover() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [isAllowedHost, setIsAllowedHost] = useState(false)
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+
+  useEffect(() => {
+    setIsAllowedHost(isRecaptchaAllowedHostname(window.location.hostname))
+  }, [])
+
+  const shouldLoadRecaptcha = Boolean(siteKey) && isAllowedHost && isOpen
 
   const formFilled = useMemo(
     () =>
@@ -54,6 +68,11 @@ export function CompanySubmissionPopover() {
   async function sendMessage() {
     if (!siteKey) {
       toast.error("reCAPTCHA site key is missing.")
+      return
+    }
+
+    if (!isAllowedHost) {
+      toast.error("reCAPTCHA is not configured for this domain.")
       return
     }
 
@@ -103,7 +122,7 @@ export function CompanySubmissionPopover() {
 
   return (
     <div className="fixed bottom-0 z-10 mb-4 scale-75 transform md:mb-8 md:ml-8 md:scale-90">
-      {siteKey ? (
+      {shouldLoadRecaptcha ? (
         <Script
           src={`https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`}
           strategy="afterInteractive"
