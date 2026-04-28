@@ -4,22 +4,22 @@ import { Page } from "@/components/shared/Page"
 export const COMING_SOON_TEXT = "More information coming soon"
 
 interface ComingSoonPageProps {
-    title: string
-    description?: string
+  title: string
+  description?: string
 }
 
 export function ComingSoonPage({
-    title,
-    description = COMING_SOON_TEXT
+  title,
+  description = COMING_SOON_TEXT
 }: ComingSoonPageProps) {
-    return (
-        <Page.Background withIndents>
-            <Page.Boundary className="pb-20">
-                <div className="mx-auto max-w-150 text-center">
-                    <Page.Header>{title}</Page.Header>
-                    <P className="mt-4">{description}</P>
-                </div>
-            </Page.Boundary>
-        </Page.Background>
-    )
+  return (
+    <Page.Background withIndents>
+      <Page.Boundary className="pb-20">
+        <div className="mx-auto max-w-150 text-center">
+          <Page.Header>{title}</Page.Header>
+          <P className="mt-4">{description}</P>
+        </div>
+      </Page.Boundary>
+    </Page.Background>
+  )
 }

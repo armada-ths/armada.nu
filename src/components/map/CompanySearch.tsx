@@ -37,7 +37,7 @@ export default function CompanySearch({
     <div className="absolute top-44 left-6 z-50 w-80">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <button className="flex items-center justify-center rounded-lg border border-stone-800 bg-snow p-2 hover:bg-stone-300">
+          <button className="bg-snow flex items-center justify-center rounded-lg border border-stone-800 p-2 hover:bg-stone-300">
             <Search className="h-4 w-4 text-stone-800" />
           </button>
         </PopoverTrigger>
@@ -46,7 +46,7 @@ export default function CompanySearch({
           side="right"
           align="start"
           className="w-80 rounded-md border p-0 shadow-xl">
-          <Command className="rounded-md bg-snow">
+          <Command className="bg-snow rounded-md">
             <CommandInput
               placeholder="Search exhibitors..."
               className="text-licorice"

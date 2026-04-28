@@ -35,16 +35,16 @@ export default async function ExhibitorPackagesPage() {
           <div className="mt-4">
             <p className="max-w-125">
               THS Armada strives to provide the best experience for all
-              exhibitors through our exhibitor kits. The Bronze kit covers
-              the basics, Silver expands your presence, and Gold makes you
-              truly stand out with extra marketing and a dedicated event.
+              exhibitors through our exhibitor kits. The Bronze kit covers the
+              basics, Silver expands your presence, and Gold makes you truly
+              stand out with extra marketing and a dedicated event.
             </p>
           </div>
           <StatusModuleItem title="Did you know?">
             <p>
               When we asked the students after the fair which exhibitors they
-              remembered, Gold exhibitors were 3 times as likely to be remembered
-              compared to Bronze exhibitors!
+              remembered, Gold exhibitors were 3 times as likely to be
+              remembered compared to Bronze exhibitors!
             </p>
           </StatusModuleItem>
         </div>
@@ -74,7 +74,7 @@ export default async function ExhibitorPackagesPage() {
               </div>
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
             </Card>
-            <Card className="relative flex min-w-48 flex-1 flex-col rounded-lg bg-silver p-5 pb-32">
+            <Card className="bg-silver relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
               <h3 className="font-lato text-2xl">Silver</h3>
               <ul className="font-lato mt-2">
                 <li className="my-2 font-extrabold">
@@ -123,7 +123,7 @@ export default async function ExhibitorPackagesPage() {
                 <li className="my-2 font-extrabold">
                   One event of your choosing
                 </li>
-                <li className="my-2 text-sm ml-4">
+                <li className="my-2 ml-4 text-sm">
                   Field visit, after work, or panel discussion
                 </li>
                 <li className="my-2 font-extrabold">
@@ -153,8 +153,8 @@ export default async function ExhibitorPackagesPage() {
         <div className="mx-auto mt-12 w-full max-w-150">
           <Page.Header tier="secondary">Custom Kit</Page.Header>
           <p className="mt-2">
-            Is a standard exhibitor kit missing something? We have you covered with
-            additional options that may be tailored to your needs!
+            Is a standard exhibitor kit missing something? We have you covered
+            with additional options that may be tailored to your needs!
           </p>
           <ul className="mt-4 ml-4 list-disc space-y-2">
             <li>
@@ -199,8 +199,8 @@ export default async function ExhibitorPackagesPage() {
             <li>
               <strong>Diversity Room</strong> — A place in the Diversity Room
               will spotlight your diversity initiatives, resonating with
-              students seeking inclusive workplaces and enhancing your visibility
-              during the fair.
+              students seeking inclusive workplaces and enhancing your
+              visibility during the fair.
             </li>
           </ul>
         </div>
@@ -241,9 +241,9 @@ export default async function ExhibitorPackagesPage() {
                   You do not need to choose a kit yet.
                 </p>
                 <p className="mt-3">
-                  Standard Registration is when you choose your kit,
-                  events, banquet tickets, and other products in the
-                  registration dashboard.
+                  Standard Registration is when you choose your kit, events,
+                  banquet tickets, and other products in the registration
+                  dashboard.
                 </p>
                 <p className="mt-3">
                   You can also choose to wait and sign up for the first time

@@ -46,8 +46,12 @@ export function OrganisationMembersGraphic() {
     for (let i = pg_layer1; i < people; i++) {
       pg_circles.push({
         name: i,
-        cx: roundCoord(85 + 2 * layerRadius * Math.sin(i * pi_division2 - theta)),
-        cy: roundCoord(85 + 2 * layerRadius * Math.cos(i * pi_division2 - theta)),
+        cx: roundCoord(
+          85 + 2 * layerRadius * Math.sin(i * pi_division2 - theta)
+        ),
+        cy: roundCoord(
+          85 + 2 * layerRadius * Math.cos(i * pi_division2 - theta)
+        ),
         r: memberRadius,
         opacity: opacity_constant_pg
       })
@@ -98,8 +102,12 @@ export function OrganisationMembersGraphic() {
     for (let i = 0; i < Math.min(people, ot_layer1); i++) {
       ot_circles.push({
         name: i,
-        cx: roundCoord(85 + 3 * layerRadius * Math.sin(i * pi_division + theta)),
-        cy: roundCoord(85 + 3 * layerRadius * Math.cos(i * pi_division + theta)),
+        cx: roundCoord(
+          85 + 3 * layerRadius * Math.sin(i * pi_division + theta)
+        ),
+        cy: roundCoord(
+          85 + 3 * layerRadius * Math.cos(i * pi_division + theta)
+        ),
         r: memberRadius,
         opacity: opacity_constant_ot
       })
@@ -107,8 +115,12 @@ export function OrganisationMembersGraphic() {
     for (let i = ot_layer1; i < ot_layer1 + ot_layer2; i++) {
       ot_circles.push({
         name: i,
-        cx: roundCoord(85 + 4 * layerRadius * Math.sin(i * pi_division2 - theta)),
-        cy: roundCoord(85 + 4 * layerRadius * Math.cos(i * pi_division2 - theta)),
+        cx: roundCoord(
+          85 + 4 * layerRadius * Math.sin(i * pi_division2 - theta)
+        ),
+        cy: roundCoord(
+          85 + 4 * layerRadius * Math.cos(i * pi_division2 - theta)
+        ),
         r: memberRadius,
         opacity: opacity_constant_ot
       })
@@ -116,8 +128,12 @@ export function OrganisationMembersGraphic() {
     for (let i = ot_layer1 + ot_layer2; i < people; i++) {
       ot_circles.push({
         name: i,
-        cx: roundCoord(85 + 5 * layerRadius * Math.sin(i * pi_division3 + theta)),
-        cy: roundCoord(85 + 5 * layerRadius * Math.cos(i * pi_division3 + theta)),
+        cx: roundCoord(
+          85 + 5 * layerRadius * Math.sin(i * pi_division3 + theta)
+        ),
+        cy: roundCoord(
+          85 + 5 * layerRadius * Math.cos(i * pi_division3 + theta)
+        ),
         r: memberRadius,
         opacity: opacity_constant_ot
       })
@@ -168,8 +184,12 @@ export function OrganisationMembersGraphic() {
     for (let i = 0; i < Math.min(people, host_layer1); i++) {
       host_circles.push({
         name: i,
-        cx: roundCoord(85 + 6 * layerRadius * Math.sin(i * pi_division - theta)),
-        cy: roundCoord(85 + 6 * layerRadius * Math.cos(i * pi_division - theta)),
+        cx: roundCoord(
+          85 + 6 * layerRadius * Math.sin(i * pi_division - theta)
+        ),
+        cy: roundCoord(
+          85 + 6 * layerRadius * Math.cos(i * pi_division - theta)
+        ),
         r: memberRadius,
         opacity: opacity_constant_host
       })
@@ -177,8 +197,12 @@ export function OrganisationMembersGraphic() {
     for (let i = host_layer1; i < host_layer1 + host_layer2; i++) {
       host_circles.push({
         name: i,
-        cx: roundCoord(85 + 7 * layerRadius * Math.sin(i * pi_division2 + theta)),
-        cy: roundCoord(85 + 7 * layerRadius * Math.cos(i * pi_division2 + theta)),
+        cx: roundCoord(
+          85 + 7 * layerRadius * Math.sin(i * pi_division2 + theta)
+        ),
+        cy: roundCoord(
+          85 + 7 * layerRadius * Math.cos(i * pi_division2 + theta)
+        ),
         r: memberRadius,
         opacity: opacity_constant_host
       })
@@ -186,8 +210,12 @@ export function OrganisationMembersGraphic() {
     for (let i = host_layer1 + host_layer2; i < people; i++) {
       host_circles.push({
         name: i,
-        cx: roundCoord(85 + 8 * layerRadius * Math.sin(i * pi_division3 - theta)),
-        cy: roundCoord(85 + 8 * layerRadius * Math.cos(i * pi_division3 - theta)),
+        cx: roundCoord(
+          85 + 8 * layerRadius * Math.sin(i * pi_division3 - theta)
+        ),
+        cy: roundCoord(
+          85 + 8 * layerRadius * Math.cos(i * pi_division3 - theta)
+        ),
         r: memberRadius,
         opacity: opacity_constant_host
       })

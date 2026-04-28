@@ -4,4 +4,4 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 overrides:
-  path-to-regexp@>=4.0.0 <6.3.0: '>=6.3.0'
+  path-to-regexp@>=4.0.0 <6.3.0: ">=6.3.0"

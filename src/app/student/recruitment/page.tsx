@@ -74,7 +74,7 @@ export default async function RecruitmentPage() {
       <Page.Background withIndents avoidHeader>
         <Page.Boundary maxWidth={750}>
           <Page.Header>{recruitmentName}</Page.Header>
-          <div className="mb-20 mt-8 flex flex-1 flex-col">
+          <div className="mt-8 mb-20 flex flex-1 flex-col">
             {/* <Page.Header tier="secondary">
             Open {DateTime.fromISO(data.start_date).toFormat("d MMM")} -{" "}
             {DateTime.fromISO(data.end_date).toFormat("d MMM")}
@@ -85,8 +85,8 @@ export default async function RecruitmentPage() {
               <AlertDescription>
                 In Armada, over 200 volunteers join together to create one of
                 KTH&apos;s biggest happenings. Take the opportunity to meet new
-                friends, expand your network and be a part of something you can be
-                really proud of!
+                friends, expand your network and be a part of something you can
+                be really proud of!
               </AlertDescription>
             </Alert>
             <PhotoSlideCarousel photoSrc={promotionalPhotos} />
@@ -99,57 +99,78 @@ export default async function RecruitmentPage() {
                   className="bg-grapefruit text-snow"
                   startDate={data.start_date}
                   endDate={data.end_date}
-                  tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_middle" } }}
+                  tracking={{
+                    eventName: "recruitment_apply_click",
+                    eventData: { location: "recruitment_middle" }
+                  }}
                 />
               ) : null}
             </div>
             <div className="flex-1">
-              <Page.Header tier="secondary" className="mt-14 md:mt-10 text-melon text-4xl">
+              <Page.Header
+                tier="secondary"
+                className="text-melon mt-14 text-4xl md:mt-10">
                 {"Currently available roles"}
               </Page.Header>
               {hasAvailableRoles ? (
                 <div>
                   <Accordion type="multiple">
                     {groupEntries.map(([name, group], index) => (
-                      <div key={index} className={index === 0 ? "mt-3" : "mt-6"}>
-                        <Page.Header tier="secondary">
-                          {name}
-                        </Page.Header>
+                      <div
+                        key={index}
+                        className={index === 0 ? "mt-3" : "mt-6"}>
+                        <Page.Header tier="secondary">{name}</Page.Header>
                         {group.map(role => (
                           <AccordionItem
                             key={`${name}-${role.name}`}
                             value={`${name}::${role.name}`}
                             className="mt-3">
                             <AccordionTrigger>{role.name}</AccordionTrigger>
-                            <AccordionContent className="pt-2 prose prose-sm max-w-none">
+                            <AccordionContent className="prose prose-sm max-w-none pt-2">
                               <ReactMarkdown
                                 components={{
-                                  p: (props) => (
-                                    <P className="leading-7">{props.children}</P>
+                                  p: props => (
+                                    <P className="leading-7">
+                                      {props.children}
+                                    </P>
                                   ),
-                                  ul: (props) => (
-                                    <ul className="list-disc space-y-1 pl-5">{props.children}</ul>
+                                  ul: props => (
+                                    <ul className="list-disc space-y-1 pl-5">
+                                      {props.children}
+                                    </ul>
                                   ),
-                                  ol: (props) => (
-                                    <ol className="list-decimal space-y-1 pl-5">{props.children}</ol>
+                                  ol: props => (
+                                    <ol className="list-decimal space-y-1 pl-5">
+                                      {props.children}
+                                    </ol>
                                   ),
-                                  li: (props) => (
-                                    <li className="leading-7">{props.children}</li>
+                                  li: props => (
+                                    <li className="leading-7">
+                                      {props.children}
+                                    </li>
                                   ),
-                                  strong: (props) => (
-                                    <strong className="font-bold">{props.children}</strong>
+                                  strong: props => (
+                                    <strong className="font-bold">
+                                      {props.children}
+                                    </strong>
                                   ),
-                                  em: (props) => (
+                                  em: props => (
                                     <em className="italic">{props.children}</em>
                                   ),
-                                  h1: (props) => (
-                                    <h1 className="text-lg font-bold mt-4 mb-2">{props.children}</h1>
+                                  h1: props => (
+                                    <h1 className="mt-4 mb-2 text-lg font-bold">
+                                      {props.children}
+                                    </h1>
                                   ),
-                                  h2: (props) => (
-                                    <h2 className="text-lg font-bold mt-4 mb-2">{props.children}</h2>
+                                  h2: props => (
+                                    <h2 className="mt-4 mb-2 text-lg font-bold">
+                                      {props.children}
+                                    </h2>
                                   ),
-                                  h3: (props) => (
-                                    <h3 className="text-base font-bold mt-3 mb-2">{props.children}</h3>
+                                  h3: props => (
+                                    <h3 className="mt-3 mb-2 text-base font-bold">
+                                      {props.children}
+                                    </h3>
                                   )
                                 }}>
                                 {role.description}
@@ -165,7 +186,8 @@ export default async function RecruitmentPage() {
                 <Alert className="mt-6">
                   <AlertTitle>No available roles at the moment</AlertTitle>
                   <AlertDescription>
-                    Keep an eye on this page for future opportunities to join our volunteer team!
+                    Keep an eye on this page for future opportunities to join
+                    our volunteer team!
                   </AlertDescription>
                 </Alert>
               )}
@@ -178,7 +200,10 @@ export default async function RecruitmentPage() {
                   className="bg-grapefruit text-snow"
                   startDate={data.start_date}
                   endDate={data.end_date}
-                  tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_bottom" } }}
+                  tracking={{
+                    eventName: "recruitment_apply_click",
+                    eventData: { location: "recruitment_bottom" }
+                  }}
                 />
               ) : null}
             </div>
@@ -192,7 +217,10 @@ export default async function RecruitmentPage() {
                   mobile
                   startDate={data.start_date}
                   endDate={data.end_date}
-                  tracking={{ eventName: "recruitment_apply_click", eventData: { location: "recruitment_sticky_mobile" } }}
+                  tracking={{
+                    eventName: "recruitment_apply_click",
+                    eventData: { location: "recruitment_sticky_mobile" }
+                  }}
                 />
               ) : null}
             </div>

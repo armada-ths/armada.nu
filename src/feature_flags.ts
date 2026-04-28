@@ -66,7 +66,8 @@ export const FEATURE_FLAG_DEFINITIONS = {
     ]
   },
   EXHIBITOR_SIGNUP_PAGE: {
-    description: "Show the exhibitor signup/registration page (only controls the topnav link, the page itself is controlled by the exhibitor timeline).",
+    description:
+      "Show the exhibitor signup/registration page (only controls the topnav link, the page itself is controlled by the exhibitor timeline).",
     options: [
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }

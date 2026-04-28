@@ -91,7 +91,7 @@ export function CompanySubmissionPopover() {
       <Popover open={isOpen}>
         <PopoverTrigger>
           <div
-            className="flex flex-row rounded-md bg-snow p-2 text-licorice"
+            className="bg-snow text-licorice flex flex-row rounded-md p-2"
             onClick={() => setIsOpen(!isOpen)}>
             <Headset className="mr-1" />
             Contact Sales

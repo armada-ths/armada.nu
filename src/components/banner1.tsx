@@ -45,7 +45,12 @@ const Banner1 = ({
               <a
                 href={linkUrl}
                 className="underline underline-offset-2 hover:text-stone-50"
-                onClick={linkTracking ? () => track(linkTracking.eventName, linkTracking.eventData) : undefined}>
+                onClick={
+                  linkTracking
+                    ? () =>
+                        track(linkTracking.eventName, linkTracking.eventData)
+                    : undefined
+                }>
                 {linkText}
               </a>
               .

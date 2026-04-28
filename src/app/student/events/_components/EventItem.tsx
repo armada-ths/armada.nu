@@ -21,9 +21,8 @@ export function EventItem({ event }: { event: Event }) {
     registrationEnd: registration_end,
     imageUrl: image_url
   } = event
-  const shouldBypassImageOptimization = shouldBypassNextImageOptimization(
-    image_url
-  )
+  const shouldBypassImageOptimization =
+    shouldBypassNextImageOptimization(image_url)
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -73,7 +72,7 @@ export function EventItem({ event }: { event: Event }) {
               "flex flex-1 flex-col justify-center gap-1 p-5 text-center sm:text-left",
               !image_url && "items-center py-8 text-center"
             )}>
-            <h5 className="text-xl font-semibold text-snow sm:text-2xl">
+            <h5 className="text-snow text-xl font-semibold sm:text-2xl">
               {name}
             </h5>
             <p className="text-sm text-stone-300">

@@ -53,7 +53,9 @@ const Hero1 = ({
                   asChild
                   className="bg-grapefruit text-snow w-full sm:w-auto">
                   {buttons.primary.tracking ? (
-                    <TrackedLink href={buttons.primary.url} tracking={buttons.primary.tracking}>
+                    <TrackedLink
+                      href={buttons.primary.url}
+                      tracking={buttons.primary.tracking}>
                       {buttons.primary.text}
                     </TrackedLink>
                   ) : (
@@ -64,7 +66,9 @@ const Hero1 = ({
               {buttons.secondary && (
                 <Button asChild variant="neutral" className="w-full sm:w-auto">
                   {buttons.secondary.tracking ? (
-                    <TrackedLink href={buttons.secondary.url} tracking={buttons.secondary.tracking}>
+                    <TrackedLink
+                      href={buttons.secondary.url}
+                      tracking={buttons.secondary.tracking}>
                       {buttons.secondary.text}
                       <ArrowRight className="size-4" />
                     </TrackedLink>
@@ -86,4 +90,3 @@ const Hero1 = ({
 }
 
 export { Hero1 }
-
