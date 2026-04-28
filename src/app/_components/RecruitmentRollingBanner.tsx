@@ -17,8 +17,7 @@ function formatTimeLeft(endDate: Date): string {
   const hours = Math.floor((totalSeconds % 86400) / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
-  if (days > 3)
-    return `OT APPLICATIONS CLOSES IN ${days} DAYS`
+  if (days > 3) return `OT APPLICATIONS CLOSES IN ${days} DAYS`
   if (days > 0)
     return `OT APPLICATIONS CLOSES IN ${days}D ${hours}H ${minutes}M`
   if (hours > 0) return `OT APPLICATIONS CLOSES IN ${hours}H ${minutes}M`
