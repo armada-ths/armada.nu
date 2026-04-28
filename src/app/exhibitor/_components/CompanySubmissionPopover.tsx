@@ -15,10 +15,7 @@ import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
 function isRecaptchaAllowedHostname(hostname: string) {
-  return (
-    hostname === "armada.nu" ||
-    hostname === "staging.armada.nu"
-  )
+  return hostname === "armada.nu" || hostname === "staging.armada.nu"
 }
 
 export function CompanySubmissionPopover() {
