@@ -70,7 +70,10 @@ export async function sendToSlack(
 ) {
   const result = ContactSalesSlackSchema.safeParse(args)
   if (!result.success) {
-    return { success: false }
+    return {
+      success: false,
+      error: result.error.flatten()
+    }
   }
 
   const siteKey = env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
