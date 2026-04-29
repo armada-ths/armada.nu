@@ -107,7 +107,7 @@ resource "vercel_project_environment_variable" "slack_order_hook_url" {
   team_id    = local.team_id
   key        = "SLACK_ORDER_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["production", "preview"]
   sensitive  = true
 
   lifecycle {
