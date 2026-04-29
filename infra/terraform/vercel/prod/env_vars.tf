@@ -81,7 +81,7 @@ resource "vercel_project_environment_variable" "next_public_recaptcha_site_key_p
   sensitive  = false
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -96,7 +96,7 @@ resource "vercel_project_environment_variable" "expo_access_token" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -107,11 +107,11 @@ resource "vercel_project_environment_variable" "slack_order_hook_url" {
   team_id    = local.team_id
   key        = "SLACK_ORDER_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["production", "preview"]
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -126,7 +126,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url_production"
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -139,7 +139,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url_preview_dev
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -154,7 +154,7 @@ resource "vercel_project_environment_variable" "enable_experimental_corepack" {
   sensitive  = false
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -169,7 +169,7 @@ resource "vercel_project_environment_variable" "flag_secret" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -184,7 +184,7 @@ resource "vercel_project_environment_variable" "flags_secret" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -199,7 +199,7 @@ resource "vercel_project_environment_variable" "recaptcha_project_id_production"
   sensitive  = false
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -214,7 +214,7 @@ resource "vercel_project_environment_variable" "recaptcha_secret_key_production"
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -227,6 +227,6 @@ resource "vercel_project_environment_variable" "recaptcha_secret_key_preview" {
   sensitive  = true
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
