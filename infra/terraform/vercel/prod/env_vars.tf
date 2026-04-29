@@ -135,7 +135,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url_preview_dev
   team_id    = local.team_id
   key        = "SLACK_SALES_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["preview", "development"]
+  target     = ["preview"]
   sensitive  = true
 
   lifecycle {
