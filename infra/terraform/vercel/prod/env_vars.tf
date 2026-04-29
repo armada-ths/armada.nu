@@ -27,7 +27,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_staging_bran
   sensitive  = false
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -40,7 +40,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_production" 
   sensitive  = false
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -53,7 +53,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_preview_deve
   sensitive  = false
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -68,7 +68,7 @@ resource "vercel_project_environment_variable" "next_public_recaptcha_site_key_p
   sensitive  = false
 
   lifecycle {
-    ignore_changes = [value, sensitive]
+    ignore_changes = [value]
   }
 }
 
@@ -108,7 +108,7 @@ resource "vercel_project_environment_variable" "slack_order_hook_url" {
   key        = "SLACK_ORDER_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production", "preview", "development"]
-  sensitive  = false
+  sensitive  = true
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -123,7 +123,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url_production"
   key        = "SLACK_SALES_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production"]
-  sensitive  = false
+  sensitive  = true
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -136,7 +136,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url_preview_dev
   key        = "SLACK_SALES_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["preview", "development"]
-  sensitive  = false
+  sensitive  = true
 
   lifecycle {
     ignore_changes = [value, sensitive]
