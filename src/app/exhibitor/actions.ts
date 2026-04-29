@@ -84,7 +84,7 @@ export async function sendToSlack(
     siteKey
   )
   if (!recaptchaValid) {
-    return { success: false }
+    return { success: false, error: "recaptcha_validation_failed" }
   }
 
   const msg = {
