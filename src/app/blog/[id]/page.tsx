@@ -28,7 +28,7 @@ export default async function BlogPostPage({
   }
 
   return (
-    <Page.Background withIndents>
+    <Page.Background withIndents className="bg-snow">
       <Page.Boundary maxWidth={800}>
         <Link
           href="/blog"
