@@ -173,6 +173,19 @@ resource "vercel_project_environment_variable" "flags_secret" {
   }
 }
 
+resource "vercel_project_environment_variable" "flags_secret_development" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "FLAGS_SECRET"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["development"]
+  sensitive  = false
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 # ── RECAPTCHA_PROJECT_ID ──────────────────────────────────────────────────────
 
 resource "vercel_project_environment_variable" "recaptcha_project_id_production" {
