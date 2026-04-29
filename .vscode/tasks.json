@@ -94,6 +94,17 @@
       }
     },
     {
+      "label": "format",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["format"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": "test"
+    },
+    {
       "label": "lint",
       "type": "shell",
       "command": "pnpm",
