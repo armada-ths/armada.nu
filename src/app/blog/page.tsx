@@ -27,7 +27,7 @@ export default async function BlogPage() {
     <Page.Background withIndents>
       <Page.Boundary maxWidth={1100}>
         <Page.Header>The Armada Blog</Page.Header>
-        <p className="mt-2 mb-8 text-licorice/70">
+        <p className="text-licorice/70 mt-2 mb-8">
           Stay up to date with behind-the-scenes stories and write-ups from the
           team.
         </p>
@@ -38,7 +38,7 @@ export default async function BlogPage() {
             ))}
           </div>
         ) : (
-          <div className="py-16 text-center text-licorice/50">
+          <div className="text-licorice/50 py-16 text-center">
             <p className="text-lg">No blog posts yet.</p>
             <p className="mt-1 text-sm">Check back soon!</p>
           </div>

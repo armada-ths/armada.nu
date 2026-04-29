@@ -15,7 +15,7 @@ export function PostItem({ post }: { post: BlogPost }) {
   return (
     <Card className="mx-auto overflow-hidden transition-shadow duration-300">
       {showCover && (
-        <div className="relative aspect-2/1 w-full overflow-hidden -mt-6">
+        <div className="relative -mt-6 aspect-2/1 w-full overflow-hidden">
           <Image
             src={coverImage}
             alt={post.title}
@@ -30,7 +30,7 @@ export function PostItem({ post }: { post: BlogPost }) {
         <CardTitle className="font-bebas-neue text-3xl leading-tight sm:text-4xl">
           {post.title}
         </CardTitle>
-        <div className="text-sm text-licorice/60">
+        <div className="text-licorice/60 text-sm">
           {new Date(post.createdAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -42,7 +42,7 @@ export function PostItem({ post }: { post: BlogPost }) {
         <ReactMarkdown
           components={{
             p: props => (
-              <p className="mb-4 text-base leading-relaxed text-licorice/80">
+              <p className="text-licorice/80 mb-4 text-base leading-relaxed">
                 {props.children}
               </p>
             ),
@@ -51,12 +51,12 @@ export function PostItem({ post }: { post: BlogPost }) {
             ),
             em: props => <em className="italic">{props.children}</em>,
             ul: props => (
-              <ul className="mb-4 list-disc space-y-1 pl-5 text-licorice/80">
+              <ul className="text-licorice/80 mb-4 list-disc space-y-1 pl-5">
                 {props.children}
               </ul>
             ),
             ol: props => (
-              <ol className="mb-4 list-decimal space-y-1 pl-5 text-licorice/80">
+              <ol className="text-licorice/80 mb-4 list-decimal space-y-1 pl-5">
                 {props.children}
               </ol>
             ),
@@ -64,17 +64,17 @@ export function PostItem({ post }: { post: BlogPost }) {
               <li className="text-base leading-relaxed">{props.children}</li>
             ),
             h1: props => (
-              <h1 className="mt-6 mb-2 text-2xl font-bold text-licorice">
+              <h1 className="text-licorice mt-6 mb-2 text-2xl font-bold">
                 {props.children}
               </h1>
             ),
             h2: props => (
-              <h2 className="mt-5 mb-2 text-xl font-bold text-licorice">
+              <h2 className="text-licorice mt-5 mb-2 text-xl font-bold">
                 {props.children}
               </h2>
             ),
             h3: props => (
-              <h3 className="mt-4 mb-2 text-lg font-bold text-licorice">
+              <h3 className="text-licorice mt-4 mb-2 text-lg font-bold">
                 {props.children}
               </h3>
             ),
@@ -100,14 +100,14 @@ export function PostItem({ post }: { post: BlogPost }) {
               )
             },
             blockquote: props => (
-              <blockquote className="my-4 border-l-4 border-melon pl-4 italic text-licorice/60">
+              <blockquote className="border-melon text-licorice/60 my-4 border-l-4 pl-4 italic">
                 {props.children}
               </blockquote>
             ),
             a: props => (
               <a
                 href={props.href}
-                className="text-melon underline hover:text-melon/80"
+                className="text-melon hover:text-melon/80 underline"
                 target="_blank"
                 rel="noopener noreferrer">
                 {props.children}
@@ -118,7 +118,7 @@ export function PostItem({ post }: { post: BlogPost }) {
         </ReactMarkdown>
       </CardContent>
       <CardFooter className="flex items-center justify-between border-t pt-4">
-        <div className="text-sm text-licorice/60">By {post.author}</div>
+        <div className="text-licorice/60 text-sm">By {post.author}</div>
       </CardFooter>
     </Card>
   )

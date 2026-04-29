@@ -69,7 +69,7 @@ const nextConfig = {
         hostname: "localhost",
         port: "9000",
         pathname: "/**"
-      },
+      }
     ]
   },
   redirects: async () => {
