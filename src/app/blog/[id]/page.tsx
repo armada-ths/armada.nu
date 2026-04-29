@@ -19,7 +19,9 @@ export default async function BlogPostPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const post = await getPost(Number(id))
+  const numId = Number(id)
+  if (!Number.isFinite(numId)) notFound()
+  const post = await getPost(numId)
 
   if (!post) {
     notFound()

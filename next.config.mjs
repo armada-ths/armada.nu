@@ -42,13 +42,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "armada-ais-files.s3.eu-north-1.amazonaws.com",
+        hostname: "armada-cms-files-e48105192c52.s3.eu-north-1.amazonaws.com",
         port: "",
         pathname: "/**"
       },
       {
         protocol: "https",
-        hostname: "armada-cms-files-e48105192c52.s3.eu-north-1.amazonaws.com",
+        hostname:
+          "armada-cms-files-staging-b3f79a2e1d84.s3.eu-north-1.amazonaws.com",
         port: "",
         pathname: "/**"
       },

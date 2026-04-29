@@ -1,5 +1,3 @@
-"use client"
-
 import { BlogPost } from "@/app/blog/_data/posts"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"

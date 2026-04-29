@@ -13,7 +13,7 @@ export function PostItem({ post }: { post: BlogPost }) {
   const coverImage = post.imageUrl ?? "/armada_white.svg"
   const showCover = post.showCoverInPost !== false
   return (
-    <Card className="mx-auto overflow-hidden transition-shadow duration-300">
+    <Card className="mx-auto w-full max-w-4xl overflow-hidden transition-shadow duration-300">
       {showCover && (
         <div className="relative -mt-6 aspect-2/1 w-full overflow-hidden">
           <Image
@@ -80,6 +80,7 @@ export function PostItem({ post }: { post: BlogPost }) {
             ),
             img: props => {
               const src = typeof props.src === "string" ? props.src : ""
+              if (!src) return null
               // Support size syntax: ![alt|WIDTHxHEIGHT](url)
               const altRaw = props.alt ?? ""
               const sizeMatch = altRaw.match(/^(.+?)\|(\d+)x(\d+)$/)
