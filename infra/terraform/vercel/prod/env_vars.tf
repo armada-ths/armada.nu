@@ -158,21 +158,6 @@ resource "vercel_project_environment_variable" "enable_experimental_corepack" {
   }
 }
 
-# ── FLAG_SECRET ───────────────────────────────────────────────────────────────
-
-resource "vercel_project_environment_variable" "flag_secret" {
-  project_id = local.project_id
-  team_id    = local.team_id
-  key        = "FLAG_SECRET"
-  value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview"]
-  sensitive  = true
-
-  lifecycle {
-    ignore_changes = [value]
-  }
-}
-
 # ── FLAGS_SECRET ──────────────────────────────────────────────────────────────
 
 resource "vercel_project_environment_variable" "flags_secret" {
