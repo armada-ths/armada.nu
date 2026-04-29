@@ -13,7 +13,7 @@ const ContactSalesSlackSchema = z.object({
 
 const RECAPTCHA_MIN_SCORE = 0.5
 const RECAPTCHA_EXPECTED_ACTION = "contact_sales"
-const RECAPTCHA_PROJECT_ID = "just-sunrise-491718-m9"
+const RECAPTCHA_PROJECT_ID = env.RECAPTCHA_PROJECT_ID
 
 async function verifyRecaptchaToken(
   token: string,
@@ -22,6 +22,10 @@ async function verifyRecaptchaToken(
   const secretKey = env.RECAPTCHA_SECRET_KEY
   if (!secretKey) {
     console.warn("RECAPTCHA_SECRET_KEY is missing")
+    return false
+  }
+  if (!RECAPTCHA_PROJECT_ID) {
+    console.warn("RECAPTCHA_PROJECT_ID is missing")
     return false
   }
 
