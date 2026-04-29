@@ -13,7 +13,7 @@ export function PostItem({ post }: { post: BlogPost }) {
   const coverImage = post.imageUrl ?? "/armada_white.svg"
   const showCover = post.showCoverInPost !== false
   return (
-    <Card className="mx-auto w-full max-w-4xl overflow-hidden transition-shadow duration-300">
+    <Card className="bg-snow mx-auto w-full max-w-4xl overflow-hidden transition-shadow duration-300">
       {showCover && (
         <div className="relative -mt-6 aspect-2/1 w-full overflow-hidden">
           <Image
