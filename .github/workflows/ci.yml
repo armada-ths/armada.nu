@@ -46,4 +46,4 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
       - run: pnpm install
-      - run: pnpm exec prettier . --check
+      - run: pnpm format:check
