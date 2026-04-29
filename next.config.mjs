@@ -35,6 +35,8 @@ const nextConfig = {
     return config
   },
   images: {
+    // eslint-disable-next-line no-undef
+    unoptimized: process.env.NODE_ENV === "development",
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
@@ -61,7 +63,13 @@ const nextConfig = {
         hostname: "s3.amazonaws.com",
         port: "",
         pathname: "/**"
-      }
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "9000",
+        pathname: "/**"
+      },
     ]
   },
   redirects: async () => {

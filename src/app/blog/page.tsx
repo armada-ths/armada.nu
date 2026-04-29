@@ -1,8 +1,17 @@
-import { mockPosts } from "@/app/blog/_data/posts"
+import { BlogPost } from "@/app/blog/_data/posts"
 import { PostCard } from "@/components/blog/PostCard"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
+import { fetchBlogPosts } from "@/components/shared/hooks/api/useBlogPosts"
 import { Page } from "@/components/shared/Page"
+
+async function getPosts(): Promise<BlogPost[]> {
+  try {
+    return await fetchBlogPosts()
+  } catch {
+    return []
+  }
+}
 
 export default async function BlogPage() {
   const showBlog = await feature("ARMADA_BLOG_PAGE")
@@ -10,8 +19,8 @@ export default async function BlogPage() {
     return <ComingSoonPage title="The Armada Blog" />
   }
 
-  const posts = [...mockPosts].sort(
-    (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+  const posts = (await getPosts()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
 
   return (
@@ -22,11 +31,18 @@ export default async function BlogPage() {
           Stay up to date with behind-the-scenes stories and write-ups from the
           team.
         </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map(post => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+        {posts.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map(post => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        ) : (
+          <div className="py-16 text-center text-licorice/50">
+            <p className="text-lg">No blog posts yet.</p>
+            <p className="mt-1 text-sm">Check back soon!</p>
+          </div>
+        )}
       </Page.Boundary>
     </Page.Background>
   )

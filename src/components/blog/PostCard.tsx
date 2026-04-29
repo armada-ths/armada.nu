@@ -6,12 +6,13 @@ import Image from "next/image"
 import Link from "next/link"
 
 export function PostCard({ post }: { post: BlogPost }) {
+    const coverImage = post.imageUrl ?? "/armada_white.svg"
     return (
         <Link href={`/blog/${post.id}`} className="group block">
             <Card className="h-full overflow-hidden border-2 p-0 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
                 <div className="relative aspect-square w-full overflow-hidden">
                     <Image
-                        src={post.image}
+                        src={coverImage}
                         alt={post.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -23,7 +24,7 @@ export function PostCard({ post }: { post: BlogPost }) {
                             {post.title}
                         </h3>
                         <p className="mt-1 text-xs text-white/80">
-                            {post.createdAt.toLocaleDateString("en-US", {
+                            {new Date(post.createdAt).toLocaleDateString("en-US", {
                                 year: "numeric",
                                 month: "short",
                                 day: "numeric"

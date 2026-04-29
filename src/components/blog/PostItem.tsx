@@ -10,24 +10,28 @@ import Image from "next/image"
 import ReactMarkdown from "react-markdown"
 
 export function PostItem({ post }: { post: BlogPost }) {
+  const coverImage = post.imageUrl ?? "/armada_white.svg"
+  const showCover = post.showCoverInPost !== false
   return (
     <Card className="mx-auto overflow-hidden transition-shadow duration-300">
-      <div className="relative aspect-2/1 w-full overflow-hidden -mt-6">
-        <Image
-          src={post.image}
-          alt={post.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 1000px) 100vw, 1000px"
-          priority
-        />
-      </div>
+      {showCover && (
+        <div className="relative aspect-2/1 w-full overflow-hidden -mt-6">
+          <Image
+            src={coverImage}
+            alt={post.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 1000px) 100vw, 1000px"
+            priority
+          />
+        </div>
+      )}
       <CardHeader className="space-y-2">
         <CardTitle className="font-bebas-neue text-3xl leading-tight sm:text-4xl">
           {post.title}
         </CardTitle>
         <div className="text-sm text-licorice/60">
-          {post.createdAt.toLocaleDateString("en-US", {
+          {new Date(post.createdAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric"
@@ -76,14 +80,21 @@ export function PostItem({ post }: { post: BlogPost }) {
             ),
             img: props => {
               const src = typeof props.src === "string" ? props.src : ""
+              // Support size syntax: ![alt|WIDTHxHEIGHT](url)
+              const altRaw = props.alt ?? ""
+              const sizeMatch = altRaw.match(/^(.+?)\|(\d+)x(\d+)$/)
+              const alt = sizeMatch ? sizeMatch[1] : altRaw
+              const width = sizeMatch ? Number(sizeMatch[2]) : 800
+              const height = sizeMatch ? Number(sizeMatch[3]) : 450
               return (
                 <span className="my-4 block">
                   <Image
                     src={src}
-                    alt={props.alt ?? ""}
-                    width={800}
-                    height={450}
-                    className="rounded-base w-full object-cover"
+                    alt={alt}
+                    width={width}
+                    height={height}
+                    className="rounded-base object-cover"
+                    style={{ maxWidth: "100%", height: "auto" }}
                   />
                 </span>
               )

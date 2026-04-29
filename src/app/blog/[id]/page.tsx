@@ -1,11 +1,16 @@
-import { getPostById, mockPosts } from "@/app/blog/_data/posts"
+import { BlogPost } from "@/app/blog/_data/posts"
 import { PostItem } from "@/components/blog/PostItem"
+import { fetchBlogPostById } from "@/components/shared/hooks/api/useBlogPosts"
 import { Page } from "@/components/shared/Page"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
-export function generateStaticParams() {
-    return mockPosts.map(post => ({ id: String(post.id) }))
+async function getPost(id: number): Promise<BlogPost | null> {
+    try {
+        return await fetchBlogPostById(id)
+    } catch {
+        return null
+    }
 }
 
 export default async function BlogPostPage({
@@ -14,7 +19,7 @@ export default async function BlogPostPage({
     params: Promise<{ id: string }>
 }) {
     const { id } = await params
-    const post = getPostById(Number(id))
+    const post = await getPost(Number(id))
 
     if (!post) {
         notFound()
