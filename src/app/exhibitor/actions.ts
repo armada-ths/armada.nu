@@ -98,13 +98,20 @@ export async function sendToSlack(
     if (typeof env.SLACK_SALES_HOOK_URL !== "string") {
       throw new Error("SLACK_SALES_HOOK_URL must be a string")
     }
-    await fetch(env.SLACK_SALES_HOOK_URL, {
+    const res = await fetch(env.SLACK_SALES_HOOK_URL, {
       method: "POST",
       body: JSON.stringify(msg),
       headers: {
         "Content-Type": "application/json"
       }
     })
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "")
+      console.warn(`Slack sales hook error ${res.status}: ${body}`)
+      return { success: false }
+    }
+
     return { success: true }
   } catch (e) {
     console.warn(e)
