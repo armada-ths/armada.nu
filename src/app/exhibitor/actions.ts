@@ -111,10 +111,18 @@ export async function sendToSlack(
           .join("\n")}\n`
   }
   try {
-    if (typeof env.SLACK_SALES_HOOK_URL !== "string") {
-      throw new Error("SLACK_SALES_HOOK_URL must be a string")
+    const url = env.SLACK_SALES_HOOK_URL
+    if (!url) {
+      console.warn("SLACK_SALES_HOOK_URL is not configured")
+      return { success: false, error: "slack_not_configured" }
     }
-    const res = await fetch(env.SLACK_SALES_HOOK_URL, {
+    try {
+      new URL(url)
+    } catch {
+      return { success: false, error: "slack_hook_url_invalid" }
+    }
+
+    const res = await fetch(url, {
       method: "POST",
       body: JSON.stringify(msg),
       headers: {
