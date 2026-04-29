@@ -11,25 +11,34 @@ const ContactSalesSlackSchema = z.object({
   recaptchaToken: z.string().min(1)
 })
 
+type SendToSlackResponse =
+  | { success: true }
+  | { success: false; error: string | Record<string, unknown> }
+
 const RECAPTCHA_MIN_SCORE = 0.5
 const RECAPTCHA_EXPECTED_ACTION = "contact_sales"
-const RECAPTCHA_PROJECT_ID = env.RECAPTCHA_PROJECT_ID
+
+if (!env.RECAPTCHA_PROJECT_ID) {
+  console.error("RECAPTCHA_PROJECT_ID is not configured")
+}
 
 async function verifyRecaptchaToken(
   token: string,
   siteKey: string
 ): Promise<boolean> {
   const secretKey = env.RECAPTCHA_SECRET_KEY
+  const projectId = env.RECAPTCHA_PROJECT_ID
+
   if (!secretKey) {
     console.warn("RECAPTCHA_SECRET_KEY is missing")
     return false
   }
-  if (!RECAPTCHA_PROJECT_ID) {
+  if (!projectId) {
     console.warn("RECAPTCHA_PROJECT_ID is missing")
     return false
   }
 
-  const assessmentUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${RECAPTCHA_PROJECT_ID}/assessments?key=${secretKey}`
+  const assessmentUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/assessments?key=${secretKey}`
 
   const response = await fetch(assessmentUrl, {
     method: "POST",
@@ -71,7 +80,7 @@ async function verifyRecaptchaToken(
 
 export async function sendToSlack(
   args: z.infer<typeof ContactSalesSlackSchema>
-) {
+): Promise<SendToSlackResponse> {
   const result = ContactSalesSlackSchema.safeParse(args)
   if (!result.success) {
     return {
@@ -83,7 +92,7 @@ export async function sendToSlack(
   const siteKey = env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
   if (!siteKey) {
     console.warn("NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing")
-    return { success: false }
+    return { success: false, error: "recaptcha_not_configured" }
   }
 
   const recaptchaValid = await verifyRecaptchaToken(
@@ -97,9 +106,9 @@ export async function sendToSlack(
   const msg = {
     text: `
         # New External Contact Message #\n*Name:* ${args.name}\n*Email:* ${args.email}\n*Phone Number:* ${args.phone}\n*Company:* ${args.company}\n*Description:*\n${args.message
-          .split("\n")
-          .map(line => `>${line}`)
-          .join("\n")}\n`
+        .split("\n")
+        .map(line => `>${line}`)
+        .join("\n")}\n`
   }
   try {
     if (typeof env.SLACK_SALES_HOOK_URL !== "string") {
@@ -114,15 +123,15 @@ export async function sendToSlack(
     })
 
     if (!res.ok) {
-      const body = await res.text().catch(() => "")
-      console.warn(`Slack sales hook error ${res.status}: ${body}`)
-      return { success: false }
+      const body = await res.text().catch(() => "(empty response)")
+      console.warn(`Slack sales hook error: ${res.status} - ${body}`)
+      return { success: false, error: "slack_delivery_failed" }
     }
 
     return { success: true }
   } catch (e) {
-    console.warn(e)
-    return { success: false }
+    console.warn("Failed to send message to Slack:", e)
+    return { success: false, error: "slack_request_error" }
   }
 }
 
