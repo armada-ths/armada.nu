@@ -59,12 +59,12 @@ resource "vercel_project_environment_variable" "next_public_api_url_preview_deve
 
 # ── NEXT_PUBLIC_RECAPTCHA_SITE_KEY ────────────────────────────────────────────
 
-resource "vercel_project_environment_variable" "next_public_recaptcha_site_key" {
+resource "vercel_project_environment_variable" "next_public_recaptcha_site_key_production" {
   project_id = local.project_id
   team_id    = local.team_id
   key        = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["production"]
   sensitive  = true
 
   lifecycle {
@@ -72,14 +72,12 @@ resource "vercel_project_environment_variable" "next_public_recaptcha_site_key" 
   }
 }
 
-# ── NEXT_PUBLIC_RECAPTCHA_KEY ─────────────────────────────────────────────────
-
-resource "vercel_project_environment_variable" "next_public_recaptcha_key" {
+resource "vercel_project_environment_variable" "next_public_recaptcha_site_key_preview" {
   project_id = local.project_id
   team_id    = local.team_id
-  key        = "NEXT_PUBLIC_RECAPTCHA_KEY"
+  key        = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["preview"]
   sensitive  = true
 
   lifecycle {
@@ -119,12 +117,25 @@ resource "vercel_project_environment_variable" "slack_order_hook_url" {
 
 # ── SLACK_SALES_HOOK_URL ──────────────────────────────────────────────────────
 
-resource "vercel_project_environment_variable" "slack_sales_hook_url" {
+resource "vercel_project_environment_variable" "slack_sales_hook_url_production" {
   project_id = local.project_id
   team_id    = local.team_id
   key        = "SLACK_SALES_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["production"]
+  sensitive  = true
+
+  lifecycle {
+    ignore_changes = [value, sensitive]
+  }
+}
+
+resource "vercel_project_environment_variable" "slack_sales_hook_url_preview_development" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "SLACK_SALES_HOOK_URL"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["preview", "development"]
   sensitive  = true
 
   lifecycle {
@@ -175,4 +186,89 @@ resource "vercel_project_environment_variable" "flags_secret" {
   lifecycle {
     ignore_changes = [value, sensitive]
   }
+}
+
+# ── RECAPTCHA_PROJECT_ID ──────────────────────────────────────────────────────
+
+resource "vercel_project_environment_variable" "recaptcha_project_id_production" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "RECAPTCHA_PROJECT_ID"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["production", "preview"]
+  sensitive  = false
+
+  lifecycle {
+    ignore_changes = [value, sensitive]
+  }
+}
+
+# ── RECAPTCHA_SECRET_KEY ──────────────────────────────────────────────────────
+
+resource "vercel_project_environment_variable" "recaptcha_secret_key_production" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "RECAPTCHA_SECRET_KEY"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["production"]
+  sensitive  = true
+
+  lifecycle {
+    ignore_changes = [value, sensitive]
+  }
+}
+
+resource "vercel_project_environment_variable" "recaptcha_secret_key_preview" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "RECAPTCHA_SECRET_KEY"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["preview"]
+  sensitive  = true
+
+  lifecycle {
+    ignore_changes = [value, sensitive]
+  }
+}
+
+# ── MOVED BLOCKS ──────────────────────────────────────────────────────────────
+# These tell Terraform that existing state entries have been renamed, avoiding
+# a destroy+create cycle.
+
+moved {
+  from = vercel_project_environment_variable.next_public_recaptcha_site_key
+  to   = vercel_project_environment_variable.next_public_recaptcha_site_key_preview
+}
+
+moved {
+  from = vercel_project_environment_variable.slack_sales_hook_url
+  to   = vercel_project_environment_variable.slack_sales_hook_url_production
+}
+
+# ── IMPORT BLOCKS ─────────────────────────────────────────────────────────────
+# IDs discovered via GET /v10/projects/{projectId}/env?teamId={teamId}
+
+import {
+  to = vercel_project_environment_variable.next_public_recaptcha_site_key_production
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq/2AdhQ3ggcXMeNTfe"
+}
+
+import {
+  to = vercel_project_environment_variable.slack_sales_hook_url_preview_development
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq/Ry5lYPlol70j7ass"
+}
+
+import {
+  to = vercel_project_environment_variable.recaptcha_project_id_production
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq/3PYzxFaZIoX5HBJD"
+}
+
+import {
+  to = vercel_project_environment_variable.recaptcha_secret_key_production
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq/FmEcoQ47HXOSOk6j"
+}
+
+import {
+  to = vercel_project_environment_variable.recaptcha_secret_key_preview
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_1QAHp2yja1LumPMNUb0t6H4HEeiq/jkcD2fd5cu31x1II"
 }
