@@ -24,7 +24,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_staging_bran
   value      = "" # Managed in Vercel dashboard.
   target     = ["preview"]
   git_branch = "staging"
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -37,7 +37,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_production" 
   key        = "NEXT_PUBLIC_API_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -50,7 +50,7 @@ resource "vercel_project_environment_variable" "next_public_api_url_preview_deve
   key        = "NEXT_PUBLIC_API_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["preview", "development"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -65,7 +65,7 @@ resource "vercel_project_environment_variable" "next_public_recaptcha_site_key_p
   key        = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -78,7 +78,7 @@ resource "vercel_project_environment_variable" "next_public_recaptcha_site_key_p
   key        = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY"
   value      = "" # Managed in Vercel dashboard.
   target     = ["preview"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -92,7 +92,7 @@ resource "vercel_project_environment_variable" "expo_access_token" {
   team_id    = local.team_id
   key        = "EXPO_ACCESS_TOKEN"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["production", "preview"]
   sensitive  = true
 
   lifecycle {
@@ -108,7 +108,7 @@ resource "vercel_project_environment_variable" "slack_order_hook_url" {
   key        = "SLACK_ORDER_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production", "preview", "development"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -123,7 +123,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url_production"
   key        = "SLACK_SALES_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -136,7 +136,7 @@ resource "vercel_project_environment_variable" "slack_sales_hook_url_preview_dev
   key        = "SLACK_SALES_HOOK_URL"
   value      = "" # Managed in Vercel dashboard.
   target     = ["preview", "development"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -151,7 +151,7 @@ resource "vercel_project_environment_variable" "enable_experimental_corepack" {
   key        = "ENABLE_EXPERIMENTAL_COREPACK"
   value      = "" # Managed in Vercel dashboard.
   target     = ["production", "preview", "development"]
-  sensitive  = true
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value, sensitive]
@@ -165,7 +165,7 @@ resource "vercel_project_environment_variable" "flag_secret" {
   team_id    = local.team_id
   key        = "FLAG_SECRET"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["production", "preview"]
   sensitive  = true
 
   lifecycle {
@@ -180,7 +180,7 @@ resource "vercel_project_environment_variable" "flags_secret" {
   team_id    = local.team_id
   key        = "FLAGS_SECRET"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview", "development"]
+  target     = ["production", "preview"]
   sensitive  = true
 
   lifecycle {
