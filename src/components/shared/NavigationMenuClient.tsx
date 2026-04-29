@@ -12,6 +12,7 @@ import {
   CompassIcon,
   HandshakeIcon,
   MapPinnedIcon,
+  NotebookPenIcon,
   PackageIcon,
   SparklesIcon,
   UsersRoundIcon
@@ -178,22 +179,20 @@ export function NavigationMenuClient({
           description: `Get to know the team working on Armada ${DateTime.now().year}`,
           icon: <UsersRoundIcon className="size-5 shrink-0" />,
           disabled: !aboutTeamEnabled
+        },
+        {
+          title: "The Armada Blog",
+          url: "/blog",
+          description: "News, stories and insights from Armada",
+          icon: <NotebookPenIcon className="size-5 shrink-0" />,
+          disabled: !blogEnabled
         }
       ]
     }
   ]
 
-  const blogLinks: MenuItem[] = blogEnabled
-    ? [
-        {
-          title: "The Armada Blog",
-          url: "/blog"
-        }
-      ]
-    : []
-
   const menuItems = applyComingSoonDescriptions(
-    studentLinks.concat(companyLinks.concat(aboutLinks).concat(blogLinks))
+    studentLinks.concat(companyLinks.concat(aboutLinks))
   )
 
   return (
