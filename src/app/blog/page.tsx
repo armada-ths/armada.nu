@@ -1,16 +1,16 @@
-import { P } from "@/app/_components/Paragraph"
-import { PostItem } from "@/components/blog/PostItem"
+import { BlogPost } from "@/app/blog/_data/posts"
+import { PostCard } from "@/components/blog/PostCard"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
+import { fetchBlogPosts } from "@/components/shared/hooks/api/useBlogPosts"
 import { Page } from "@/components/shared/Page"
 
-export interface BlogPost {
-  id: number
-  userId: number
-  title: string
-  text: string
-  author: string
-  createdAt: Date
+async function getPosts(): Promise<BlogPost[]> {
+  try {
+    return await fetchBlogPosts()
+  } catch {
+    return []
+  }
 }
 
 export default async function BlogPage() {
@@ -19,28 +19,30 @@ export default async function BlogPage() {
     return <ComingSoonPage title="The Armada Blog" />
   }
 
-  const mockPosts: BlogPost[] = [
-    {
-      id: 1,
-      userId: 101,
-      title: "Message from the web team",
-      text: "Hello students and exhibitors! \n\nWe are the web team responsible for this site. We are currently working on rebranding this site but are rolling out a new feature for you in the likes of The Armada Blog. The Armada Blog will consists of write-ups and behind-the-scenes information going forward. \n\nSet sail for success!",
-      author: "The web development team",
-      createdAt: new Date("2025-06-26T09:00:00")
-    }
-  ]
+  const posts = (await getPosts()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  )
 
   return (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={1000}>
+      <Page.Boundary maxWidth={1100}>
         <Page.Header>The Armada Blog</Page.Header>
-        <P>
-          Stay up to date with the work fair through behind-the-scenes and
-          write-ups from the team.
-        </P>
-        {mockPosts.map(post => (
-          <PostItem key={post.id} post={post} />
-        ))}
+        <p className="text-licorice/70 mt-2 mb-8">
+          Stay up to date with behind-the-scenes stories and write-ups from the
+          team.
+        </p>
+        {posts.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map(post => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-licorice/50 py-16 text-center">
+            <p className="text-lg">No blog posts yet.</p>
+            <p className="mt-1 text-sm">Check back soon!</p>
+          </div>
+        )}
       </Page.Boundary>
     </Page.Background>
   )

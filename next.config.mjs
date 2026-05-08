@@ -35,18 +35,21 @@ const nextConfig = {
     return config
   },
   images: {
+    // eslint-disable-next-line no-undef
+    unoptimized: process.env.NODE_ENV === "development",
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "armada-ais-files.s3.eu-north-1.amazonaws.com",
+        hostname: "armada-cms-files-e48105192c52.s3.eu-north-1.amazonaws.com",
         port: "",
         pathname: "/**"
       },
       {
         protocol: "https",
-        hostname: "armada-cms-files-e48105192c52.s3.eu-north-1.amazonaws.com",
+        hostname:
+          "armada-cms-files-staging-b3f79a2e1d84.s3.eu-north-1.amazonaws.com",
         port: "",
         pathname: "/**"
       },
@@ -60,6 +63,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "s3.amazonaws.com",
         port: "",
+        pathname: "/**"
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "9000",
         pathname: "/**"
       }
     ]

@@ -8,26 +8,66 @@ import {
   isExhibitorSignupOpen
 } from "@/components/shared/hooks/api/useDates"
 import { fetchHighlightCards } from "@/components/shared/hooks/api/useHighlightCards"
+import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
 import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
-  const [dates, exhibitorPackagesEnabled, highlightCards] = await Promise.all([
-    fetchDates(),
-    feature("EXHIBITOR_PACKAGES"),
-    fetchHighlightCards()
-  ])
+  const [dates, exhibitorPackagesEnabled, highlightCards, recruitment] =
+    await Promise.all([
+      fetchDates(),
+      feature("EXHIBITOR_PACKAGES"),
+      fetchHighlightCards(),
+      fetchRecruitment({ next: { revalidate: 3600 } })
+    ])
+
+  const now = DateTime.now()
+  const recruitmentOpen =
+    recruitment != null &&
+    DateTime.fromISO(recruitment.start_date) <= now &&
+    DateTime.fromISO(recruitment.end_date) >= now
 
   const exhibitorSignupEnabled = isExhibitorSignupOpen(dates)
   const signupUrl = exhibitorSignupEnabled
     ? "https://app.eventro.se/register/armada"
     : "/exhibitor/signup"
   const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
+
+  const heroButtons = recruitmentOpen
+    ? {
+        primary: {
+          text: "Join Armada",
+          url: "/student/recruitment",
+          tracking: {
+            eventName: "student_signup_click",
+            eventData: { location: "hero_primary" }
+          }
+        },
+        secondary: {
+          text: "Meet the Team",
+          url: "/about/team"
+        }
+      }
+    : {
+        primary: {
+          text: "Read our Blog",
+          url: "/blog",
+          tracking: {
+            eventName: "blog_click",
+            eventData: { location: "hero_primary" }
+          }
+        },
+        secondary: {
+          text: "Meet the Team",
+          url: "/about/team"
+        }
+      }
 
   return (
     <>
@@ -60,20 +100,7 @@ export default async function HomePage() {
                 />
               )
             }
-            buttons={{
-              primary: {
-                text: "Join Armada",
-                url: "/student/recruitment",
-                tracking: {
-                  eventName: "student_signup_click",
-                  eventData: { location: "hero_primary" }
-                }
-              },
-              secondary: {
-                text: "About Armada",
-                url: "/about"
-              }
-            }}
+            buttons={heroButtons}
           />
         </Page.Boundary>
         <Page.Boundary className="p-6 pt-12">
