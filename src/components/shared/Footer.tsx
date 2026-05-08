@@ -183,27 +183,6 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          {/* About */}
-          <AccordionItem value="about">
-            <AccordionTrigger className="text-snow bg-licorice">
-              About
-            </AccordionTrigger>
-            <AccordionContent className="bg-licorice">
-              <div className="flex flex-col gap-2">
-                <a href="/about">About Armada</a>
-                <a href="/about/team">Team</a>
-                <a
-                  href="/blog"
-                  onClick={() =>
-                    track("blog_click", {
-                      location: "footer_blog_mobile"
-                    })
-                  }>
-                  Blog
-                </a>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
           {/* Exhibitors */}
           <AccordionItem value="exhibitors">
             <AccordionTrigger className="text-snow bg-licorice">
@@ -224,6 +203,27 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                 <a href="/exhibitor">Why Armada</a>
                 <a href="/exhibitor/timeline">Timeline</a>
                 <a href="/exhibitor/events">Events</a>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          {/* About */}
+          <AccordionItem value="about">
+            <AccordionTrigger className="text-snow bg-licorice">
+              About
+            </AccordionTrigger>
+            <AccordionContent className="bg-licorice">
+              <div className="flex flex-col gap-2">
+                <a href="/about">About Armada</a>
+                <a href="/about/team">Team</a>
+                <a
+                  href="/blog"
+                  onClick={() =>
+                    track("blog_click", {
+                      location: "footer_blog_mobile"
+                    })
+                  }>
+                  Blog
+                </a>
               </div>
             </AccordionContent>
           </AccordionItem>
