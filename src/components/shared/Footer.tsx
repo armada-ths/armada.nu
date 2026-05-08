@@ -100,6 +100,29 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           </div>
         </div>
 
+        {/* About */}
+        <div className="space-y-1">
+          <p className="font-semibold">ABOUT</p>
+          <div className="flex flex-col gap-1">
+            <a href="/about" className="hover:text-melon">
+              About Armada
+            </a>
+            <a href="/about/team" className="hover:text-melon">
+              Team
+            </a>
+            <a
+              href="/blog"
+              className="hover:text-melon"
+              onClick={() =>
+                track("blog_click", {
+                  location: "footer_blog_desktop"
+                })
+              }>
+              Blog
+            </a>
+          </div>
+        </div>
+
         {/* Partner */}
         <div className="flex flex-col items-center gap-2">
           <p className="font-semibold">In Partnership With:</p>
@@ -157,6 +180,27 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                 <a href="/student/events">Events</a>
                 <a href="/student/exhibitors">Exhibitors</a>
                 <a href="/student/map">Map</a>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          {/* About */}
+          <AccordionItem value="about">
+            <AccordionTrigger className="text-snow bg-licorice">
+              About
+            </AccordionTrigger>
+            <AccordionContent className="bg-licorice">
+              <div className="flex flex-col gap-2">
+                <a href="/about">About Armada</a>
+                <a href="/about/team">Team</a>
+                <a
+                  href="/blog"
+                  onClick={() =>
+                    track("blog_click", {
+                      location: "footer_blog_mobile"
+                    })
+                  }>
+                  Blog
+                </a>
               </div>
             </AccordionContent>
           </AccordionItem>

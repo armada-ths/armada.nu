@@ -185,6 +185,10 @@ export function NavigationMenuClient({
           url: "/blog",
           description: "News, stories and insights from Armada",
           icon: <NotebookPenIcon className="size-5 shrink-0" />,
+          tracking: {
+            eventName: "blog_click",
+            eventData: { location: "topnav_blog" }
+          },
           disabled: !blogEnabled
         }
       ]
