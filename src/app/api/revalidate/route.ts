@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   if (!configuredSecret) {
     return NextResponse.json(
       { message: "Revalidation is not configured" },
-      { status: 500 },
+      { status: 500 }
     )
   }
 
