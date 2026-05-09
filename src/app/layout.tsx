@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/screenshots/homepage_screenshot.png",
+        url: "/public/screenshots/homepage_screenshot.png",
         width: 2531,
         height: 1395,
         alt: "Armada homepage"
