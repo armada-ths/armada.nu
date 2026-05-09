@@ -30,7 +30,7 @@ export default async function RecruitmentPage() {
 
   const data = await fetchRecruitment({
     next: {
-      revalidate: 60 // 60 seconds – reflect CMS updates quickly
+      revalidate: 86400
     }
   })
 

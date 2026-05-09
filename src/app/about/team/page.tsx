@@ -18,7 +18,7 @@ export default async function TeamPage() {
 
   const organization = await fetchOrganization({
     next: {
-      revalidate: 60 // 60 seconds – keep profile data fresh
+      revalidate: 86400
     }
   })
 

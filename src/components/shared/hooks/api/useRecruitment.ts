@@ -17,10 +17,10 @@ export interface Recruitment {
 export async function fetchRecruitment(
   options?: RequestInit
 ): Promise<Recruitment | null> {
-  const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/v1/recruitment`,
-    options ?? {}
-  )
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/recruitment`, {
+    ...options,
+    next: { revalidate: 86400, tags: ["recruitment"], ...options?.next }
+  })
 
   if (!res.ok) {
     throw new Error(

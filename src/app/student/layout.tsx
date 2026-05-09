@@ -9,7 +9,7 @@ export default async function ExhibitorLayout({
 }>) {
   const data = await fetchRecruitment({
     next: {
-      revalidate: 10800 // 3 hours
+      revalidate: 86400
     }
   })
 

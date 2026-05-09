@@ -18,10 +18,10 @@ export interface Person {
 }
 
 export async function fetchOrganization(options?: RequestInit) {
-  const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/v1/organization`,
-    options ?? {}
-  )
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/organization`, {
+    ...options,
+    next: { revalidate: 86400, tags: ["organization"], ...options?.next }
+  })
   if (!res.ok) {
     throw new Error(`Failed to fetch organization: ${res.status}`)
   }

@@ -9,5 +9,7 @@ export const env = {
   NEXT_PUBLIC_RECAPTCHA_SITE_KEY: getEnvVar("NEXT_PUBLIC_RECAPTCHA_SITE_KEY"),
   // Server-side secret for verifying reCAPTCHA tokens
   RECAPTCHA_SECRET_KEY: getEnvVar("RECAPTCHA_SECRET_KEY"),
-  RECAPTCHA_PROJECT_ID: getEnvVar("RECAPTCHA_PROJECT_ID")
+  RECAPTCHA_PROJECT_ID: getEnvVar("RECAPTCHA_PROJECT_ID"),
+  // Shared secret for on-demand revalidation webhook from CMS
+  REVALIDATION_SECRET: getEnvVar("REVALIDATION_SECRET")
 }

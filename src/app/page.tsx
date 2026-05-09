@@ -24,7 +24,7 @@ export default async function HomePage() {
       fetchDates(),
       feature("EXHIBITOR_PACKAGES"),
       fetchHighlightCards(),
-      fetchRecruitment({ next: { revalidate: 3600 } })
+      fetchRecruitment({ next: { revalidate: 86400 } })
     ])
 
   const now = DateTime.now()

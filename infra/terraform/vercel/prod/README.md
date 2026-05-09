@@ -49,6 +49,6 @@ Any drift on those attributes will surface in `terraform plan`.
 
 1. Add the variable in the **Vercel dashboard** with its real value.
 2. Get its ID from the Vercel API or dashboard network tab (or `vercel env ls`).
-3. Add a `vercel_project_environment_variable` resource in `env_vars.tf` (use `value = ""` + `lifecycle { ignore_changes = [value, sensitive] }`) and an `import {}` block with the variable ID.
+3. Add a `vercel_project_environment_variable` resource in `env_vars.tf` (use `value = ""` + `lifecycle { ignore_changes = [value] }`) and an `import {}` block with the variable ID.
 4. Run `terraform apply` to import it into state, then remove the `import {}` block.
 5. Register the key in `src/env.ts` if the app code needs to read it.

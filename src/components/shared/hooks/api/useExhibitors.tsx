@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query"
 import { normalizeExternalUrl } from "@/lib/externalUrl"
+import { useQuery } from "@tanstack/react-query"
 
 export interface Exhibitor {
   id: number
@@ -103,6 +103,7 @@ export async function fetchExhibitors(
   const res = await fetch(url.toString(), {
     cache: options?.cache,
     next: {
+      revalidate: 86400,
       ...options?.next,
       tags: options?.next?.tags ?? ["exhibitors"]
     }
@@ -148,6 +149,7 @@ export async function fetchEmployments(
   const res = await fetch(url.toString(), {
     cache: options?.cache,
     next: {
+      revalidate: 86400,
       ...options?.next,
       tags: options?.next?.tags ?? ["employments"]
     }
@@ -190,6 +192,7 @@ export async function fetchIndustries(
   const res = await fetch(url.toString(), {
     cache: options?.cache,
     next: {
+      revalidate: 86400,
       ...options?.next,
       tags: options?.next?.tags ?? ["industries"]
     }
@@ -232,6 +235,7 @@ export async function fetchPrograms(
   const res = await fetch(url.toString(), {
     cache: options?.cache,
     next: {
+      revalidate: 86400,
       ...options?.next,
       tags: options?.next?.tags ?? ["programs"]
     }
