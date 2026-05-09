@@ -41,33 +41,33 @@ export default async function HomePage() {
 
   const heroButtons = recruitmentOpen
     ? {
-      primary: {
-        text: "Join Armada",
-        url: "/student/recruitment",
-        tracking: {
-          eventName: "student_signup_click",
-          eventData: { location: "hero_primary" }
+        primary: {
+          text: "Join Armada",
+          url: "/student/recruitment",
+          tracking: {
+            eventName: "student_signup_click",
+            eventData: { location: "hero_primary" }
+          }
+        },
+        secondary: {
+          text: "Meet the Team",
+          url: "/about/team"
         }
-      },
-      secondary: {
-        text: "Meet the Team",
-        url: "/about/team"
       }
-    }
     : {
-      primary: {
-        text: "Read our Blog",
-        url: "/blog",
-        tracking: {
-          eventName: "blog_click",
-          eventData: { location: "hero_primary" }
+        primary: {
+          text: "Read our Blog",
+          url: "/blog",
+          tracking: {
+            eventName: "blog_click",
+            eventData: { location: "hero_primary" }
+          }
+        },
+        secondary: {
+          text: "Meet the Team",
+          url: "/about/team"
         }
-      },
-      secondary: {
-        text: "Meet the Team",
-        url: "/about/team"
       }
-    }
 
   return (
     <>
@@ -92,9 +92,9 @@ export default async function HomePage() {
                   ctaTracking={
                     highlightCard.linkUrl && highlightCard.ctaEventName
                       ? {
-                        eventName: highlightCard.ctaEventName,
-                        eventData: { location: "highlight_card" }
-                      }
+                          eventName: highlightCard.ctaEventName,
+                          eventData: { location: "highlight_card" }
+                        }
                       : undefined
                   }
                 />
