@@ -3,10 +3,29 @@ import { revalidateTag } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-  const body = (await request.json()) as { tag?: string; secret?: string }
-  const { tag, secret } = body
+  let body: { tag?: string; secret?: string }
 
-  if (secret !== env.REVALIDATION_SECRET) {
+  try {
+    body = (await request.json()) as { tag?: string; secret?: string }
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON body" }, { status: 400 })
+  }
+
+  const { tag, secret } = body
+  const configuredSecret = env.REVALIDATION_SECRET.trim()
+
+  if (!configuredSecret) {
+    return NextResponse.json(
+      { message: "Revalidation is not configured" },
+      { status: 500 },
+    )
+  }
+
+  if (
+    typeof secret !== "string" ||
+    !secret.trim() ||
+    secret !== configuredSecret
+  ) {
     return NextResponse.json({ message: "Invalid secret" }, { status: 401 })
   }
 
