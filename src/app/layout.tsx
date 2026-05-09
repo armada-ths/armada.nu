@@ -13,6 +13,25 @@ import { HEX_COLORS } from "@/lib/colors"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
+const resolveMetadataBase = () => {
+  if (process.env.VERCEL_ENV === "production") {
+    return new URL("https://armada.nu")
+  }
+
+  if (process.env.VERCEL_BRANCH_URL) {
+    return new URL(`https://${process.env.VERCEL_BRANCH_URL}`)
+  }
+
+  if (process.env.VERCEL_URL) {
+    return new URL(`https://${process.env.VERCEL_URL}`)
+  }
+
+  return new URL("http://localhost:8000")
+}
+
+const metadataBase = resolveMetadataBase()
+const currentYear = DateTime.now().year
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -38,7 +57,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://armada.nu"),
+  metadataBase,
   icons: {
     icon: [
       { url: "/icons/favicon.ico", sizes: "48x48" },
@@ -47,24 +66,24 @@ export const metadata: Metadata = {
     apple: "/icons/apple-touch-icon-180x180.png"
   },
   title: "THS Armada",
-  description: `Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
+  description: `Armada is KTH's and Sweden's largest student career fair, ${currentYear} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
   keywords: [
     "student",
     "career",
     "fair",
     "companies",
     "exhibitors",
-    `${DateTime.now().year}`,
+    `${currentYear}`,
     "kth",
     "ths armada",
     "ths",
     "armada"
   ],
   openGraph: {
-    title: `THS Armada ${DateTime.now().year} Career Fair`,
-    description: `Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
+    title: `THS Armada ${currentYear} Career Fair`,
+    description: `Armada is KTH's and Sweden's largest student career fair, ${currentYear} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
     siteName: "THS Armada",
-    url: "https://armada.nu",
+    url: metadataBase.toString(),
     type: "website",
     images: [
       {
