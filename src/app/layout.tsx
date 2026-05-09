@@ -13,6 +13,8 @@ import { HEX_COLORS } from "@/lib/colors"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
+const currentYear = DateTime.now().year
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -47,27 +49,28 @@ export const metadata: Metadata = {
     apple: "/icons/apple-touch-icon-180x180.png"
   },
   title: "THS Armada",
-  description: `Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
+  description: `Armada is KTH's and Sweden's largest student career fair, ${currentYear} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
   keywords: [
     "student",
     "career",
     "fair",
     "companies",
     "exhibitors",
-    `${DateTime.now().year}`,
+    `${currentYear}`,
     "kth",
     "ths armada",
     "ths",
     "armada"
   ],
   openGraph: {
-    title: `THS Armada ${DateTime.now().year} Career Fair`,
-    description: `Armada is KTH's and Sweden's largest student career fair, ${DateTime.now().year} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
+    title: `THS Armada ${currentYear} Career Fair`,
+    description: `Armada is KTH's and Sweden's largest student career fair, ${currentYear} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
+    siteName: "THS Armada",
     url: "https://armada.nu",
     type: "website",
     images: [
       {
-        url: "/screenshots/homepage_screenshot.jpeg",
+        url: "/screenshots/homepage_screenshot.png",
         width: 2531,
         height: 1395,
         alt: "Armada homepage"
