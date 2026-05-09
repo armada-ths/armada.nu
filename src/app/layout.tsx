@@ -13,23 +13,6 @@ import { HEX_COLORS } from "@/lib/colors"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
-const resolveMetadataBase = () => {
-  if (process.env.VERCEL_ENV === "production") {
-    return new URL("https://armada.nu")
-  }
-
-  if (process.env.VERCEL_BRANCH_URL) {
-    return new URL(`https://${process.env.VERCEL_BRANCH_URL}`)
-  }
-
-  if (process.env.VERCEL_URL) {
-    return new URL(`https://${process.env.VERCEL_URL}`)
-  }
-
-  return new URL("http://localhost:8000")
-}
-
-const metadataBase = resolveMetadataBase()
 const currentYear = DateTime.now().year
 
 const inter = Inter({
@@ -57,7 +40,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase,
+  metadataBase: new URL("https://armada.nu"),
   icons: {
     icon: [
       { url: "/icons/favicon.ico", sizes: "48x48" },
@@ -83,7 +66,7 @@ export const metadata: Metadata = {
     title: `THS Armada ${currentYear} Career Fair`,
     description: `Armada is KTH's and Sweden's largest student career fair, ${currentYear} edition. Armada is a two-day event that takes place in November and is the perfect opportunity for students to meet and network with some of the Sweden's most attractive employers.`,
     siteName: "THS Armada",
-    url: metadataBase.toString(),
+    url: "https://armada.nu",
     type: "website",
     images: [
       {
