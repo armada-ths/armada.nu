@@ -16,4 +16,6 @@ resource "vercel_project" "armada_nu" {
   }
 
   skew_protection = "12 hours"
+
+  protection_bypass_for_automation = true
 }
