@@ -5,7 +5,7 @@ import { DateTime } from "luxon"
 export async function RecruitmentBanner() {
   const recruitment = await fetchRecruitment({
     next: {
-      revalidate: 3600 * 3 // 3 hours
+      revalidate: 86400
     }
   })
 

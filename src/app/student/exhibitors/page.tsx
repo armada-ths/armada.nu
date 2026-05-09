@@ -17,19 +17,19 @@ export default async function ExhibitorsPage() {
   }
 
   const exhibitors = await fetchExhibitors({
-    next: { revalidate: 3600 / 2 /* 30 min */ }
+    next: { revalidate: 86400 }
   })
 
   const employments = await fetchEmployments({
-    next: { revalidate: 3600 / 2 /* 30 min */ }
+    next: { revalidate: 86400 }
   })
 
   const industries = await fetchIndustries({
-    next: { revalidate: 3600 / 2 /* 30 min */ }
+    next: { revalidate: 86400 }
   })
 
   const programs = await fetchPrograms({
-    next: { revalidate: 3600 / 2 /* 30 min */ }
+    next: { revalidate: 86400 }
   })
   return (
     <Page.Background withIndents>

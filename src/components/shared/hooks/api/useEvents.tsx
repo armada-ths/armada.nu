@@ -36,7 +36,10 @@ export interface SignupQuestion {
 export async function fetchEvents(options?: RequestInit) {
   const res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/v1/events?public=true`,
-    options ?? {}
+    {
+      ...options,
+      next: { revalidate: 86400, tags: ["events"], ...options?.next }
+    }
   )
   try {
     const result = await res.json()

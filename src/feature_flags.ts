@@ -106,7 +106,7 @@ type FeatureFlagFetchOptions = RequestInit & {
   }
 }
 
-const FEATURE_FLAGS_REVALIDATE_SECONDS = 60
+const FEATURE_FLAGS_REVALIDATE_SECONDS = 300
 
 const createFallbackFlags = (): FeatureFlags => {
   return (Object.keys(FEATURE_FLAG_DEFINITIONS) as FeatureFlagKey[]).reduce(
@@ -129,6 +129,7 @@ export async function fetchFeatureFlags(
     ...options,
     next: {
       revalidate: FEATURE_FLAGS_REVALIDATE_SECONDS,
+      tags: ["feature-flags"],
       ...options?.next
     },
     headers: {

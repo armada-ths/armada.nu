@@ -5,7 +5,7 @@ import Link from "next/link"
 export async function RecruitmentDescription() {
   const organization = await fetchOrganization({
     next: {
-      revalidate: 60 // 60 seconds – keep profile data fresh
+      revalidate: 86400
     }
   })
 

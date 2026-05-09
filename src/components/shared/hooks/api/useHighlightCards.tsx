@@ -14,7 +14,7 @@ export interface HighlightCardData {
 
 export async function fetchHighlightCards(): Promise<HighlightCardData[]> {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/highlightcards`, {
-    next: { revalidate: 60 } // 60 seconds – reflect CMS updates quickly
+    next: { revalidate: 86400, tags: ["highlight-cards"] }
   })
   if (!res.ok) return []
   return res.json() as Promise<HighlightCardData[]>

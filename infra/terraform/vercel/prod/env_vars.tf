@@ -228,3 +228,18 @@ resource "vercel_project_environment_variable" "recaptcha_secret_key_preview" {
     ignore_changes = [value]
   }
 }
+
+# ── REVALIDATION_SECRET ───────────────────────────────────────────────────────
+
+resource "vercel_project_environment_variable" "revalidation_secret" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "REVALIDATION_SECRET"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["production", "preview"]
+  sensitive  = true
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}

@@ -19,7 +19,10 @@ export async function fetchRecruitment(
 ): Promise<Recruitment | null> {
   const res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/v1/recruitment`,
-    options ?? {}
+    {
+      ...options,
+      next: { revalidate: 86400, tags: ["recruitment"], ...options?.next }
+    }
   )
 
   if (!res.ok) {

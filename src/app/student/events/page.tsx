@@ -56,7 +56,7 @@ export default async function EventPage() {
   try {
     const response = await fetchEvents({
       next: {
-        revalidate: 60 * 10 // every 10 minutes
+        revalidate: 86400
       }
     })
 
