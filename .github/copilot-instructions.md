@@ -25,18 +25,47 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
   - `pnpm type-check`
 - There is no automated test suite configured; validate changes with the relevant command plus manual page checks.
 
+## Cache revalidation
+
+The site uses **ISR + on-demand revalidation** to keep content fresh without full rebuilds:
+
+- **Baseline**: the root layout sets `revalidate: 86400` (24 h). Individual data hooks inherit this.
+- **Cache tags**: every `fetch*()` call in `src/components/shared/hooks/api/` includes a `tags` array (e.g. `tags: ["events"]`). These tags are the revalidation unit.
+- **On-demand purge**: `POST /api/revalidate` (`src/app/api/revalidate/route.ts`) accepts `{ tag, secret }`, validates `REVALIDATION_SECRET`, and calls `revalidateTag(tag, { expire: 0 })`. The CMS fires this automatically after write operations.
+- **Tag inventory** (must stay in sync between Next.js hooks and Go controllers):
+
+  | Tag               | Next.js hook                         | CMS controller              |
+  | ----------------- | ------------------------------------ | --------------------------- |
+  | `blog-posts`      | `useBlogPosts`                       | `BlogpostController`        |
+  | `events`          | `useEvents`                          | `EventController`           |
+  | `exhibitors`      | `useExhibitors`                      | `ExhibitorController`       |
+  | `highlight-cards` | `useHighlightCards`                  | `HighlightCardController`   |
+  | `dates`           | `useDates`                           | — (no CMS revalidation yet) |
+  | `organization`    | `useOrganization`                    | —                           |
+  | `recruitment`     | `useRecruitment`                     | —                           |
+  | `employments`     | `useExhibitors` (`fetchEmployments`) | —                           |
+  | `industries`      | `useExhibitors` (`fetchIndustries`)  | —                           |
+  | `programs`        | `useExhibitors` (`fetchPrograms`)    | —                           |
+
+- When adding a new data hook, include a `tags` array. When adding CMS revalidation for that resource, pass the same tag string to the audit helper's `revalidateTags` variadic argument.
+
 ## Conventions
 
 - **Env vars:** every frontend env var must be registered in `src/env.ts`. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
 - **Routing/layout:** routes live under `src/app/`. Prefer colocated route-specific components in `_components/`; shared UI belongs in `src/components/ui/` or `src/components/shared/`.
 - **Shared layout primitives:** use `Page.Boundary`, `Page.Header`, and `Page.Background` from `src/components/shared/Page.tsx` for consistent page structure.
-- **Data fetching:** API hooks in `src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components.
-- **Feature flags:** definitions live in `src/feature_flags.ts`; read flags with `await feature("FLAG_NAME")` from `src/components/shared/feature.ts`. Defined flags: `EVENT_PAGE`, `MAP_PAGE`, `AT_FAIR_PAGE`, `EXHIBITOR_PACKAGES`, `EXHIBITOR_EVENTS`. Flag overrides come from Vercel flag cookies (`vercel-flag-overrides`). `FLAGS_SECRET` is required for Vercel's flag evaluation infrastructure (managed in Vercel dashboard, not `src/env.ts`).
+- **Data fetching:** API hooks in `src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components. Each hook sets `next: { revalidate: 86400, tags: ["<tag>"] }` for ISR and on-demand revalidation (see _Cache revalidation_ above). Hooks accept an `options?: RequestInit` parameter that allows callers to merge or override `next` settings.
+- **Client-side state:** React Query (`@tanstack/react-query`) is configured in `src/app/providers.tsx` with `staleTime: 60_000` (1 min). Client-side `use*()` hooks wrap the server-side `fetch*()` in `useQuery`.
+- **Feature flags:** definitions live in `src/feature_flags.ts`; read flags with `await feature("FLAG_NAME")` from `src/components/shared/feature.ts`. Defined flags: `EVENT_PAGE`, `MAP_PAGE`, `AT_FAIR_PAGE`, `EXHIBITOR_PACKAGES`, `EXHIBITOR_EVENTS`, `EXHIBITOR_PAGE`, `STUDENT_RECRUITMENT_PAGE`, `EXHIBITOR_MAIN_PAGE`, `EXHIBITOR_TIMELINE_PAGE`, `EXHIBITOR_SIGNUP_PAGE`, `ABOUT_PAGE`, `ABOUT_TEAM_PAGE`, `ARMADA_BLOG_PAGE`. Flag overrides come from Vercel flag cookies (`vercel-flag-overrides`). `FLAGS_SECRET` is required for Vercel's flag evaluation infrastructure (managed in Vercel dashboard, not `src/env.ts`). All flags default to `true` if the CMS fetch fails.
+- **Sitemap and flags:** `src/app/sitemap.ts` conditionally includes routes based on their feature flag — if a flag is `false`, the route is omitted from the sitemap.
 - **Dates/times:** use Luxon helpers from `src/lib/utils.ts`; event times are normalized to `Europe/Stockholm`.
-- **SVGs/images:** `next.config.mjs` enables SVG component imports and whitelists remote image hosts. Update that file when adding new remote image domains.
+- **SVGs/images:** `next.config.mjs` enables SVG component imports (`@svgr/webpack`) and whitelists remote image hosts. `*.svg?url` imports as a static asset URL; bare `*.svg` imports as a React component. Update that file when adding new remote image domains.
 - **Site metadata:** if you add or remove public pages, update `src/app/sitemap.ts`.
 - **Server-side actions:** form submissions and external integrations use `actions.ts` files colocated with routes (e.g., `src/app/exhibitor/actions.ts`). Pattern: Zod validation → reCAPTCHA verification via `RECAPTCHA_SECRET_KEY` → Slack webhook via `SLACK_*_HOOK_URL`. Follow this pattern when adding form-to-server flows.
 - **Routes:** main sections are `about/` (with `team/`), `blog/`, `exhibitor/` (with `events/`, `order/`, `packages/`, `signup/`, `timeline/`), and `student/` (with `at-the-fair/`, `events/`, `exhibitors/`, `map/`, `recruitment/`). Legacy paths redirect 301 to these locations.
+- **Analytics/tracking:** Vercel Analytics (`@vercel/analytics`) and Speed Insights are loaded in the root layout. Use `TrackedLink` from `src/components/shared/TrackedLink.tsx` (wraps Next.js `Link` + calls `track()`) for user-interaction tracking. CMS-driven tracking via `HighlightCard.ctaEventName`.
+- **Exhibitor order flow:** the `/exhibitor/order/*` route is gated by `src/proxy.ts` — a cookie-based access check using `EXPO_ACCESS_TOKEN`. See that file for details.
+- **URL normalization:** use `normalizeExternalUrl()` from `src/lib/externalUrl.ts` when rendering user-supplied URLs (adds `https://` if missing, rejects non-http schemes).
 
 ## UI and styling notes
 
