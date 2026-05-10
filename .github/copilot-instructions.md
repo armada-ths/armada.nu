@@ -34,18 +34,18 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - **On-demand purge**: `POST /api/revalidate` (`src/app/api/revalidate/route.ts`) accepts `{ tag, secret }`, validates `REVALIDATION_SECRET`, and calls `revalidateTag(tag, { expire: 0 })`. The CMS fires this automatically after write operations.
 - **Tag inventory** (must stay in sync between Next.js hooks and Go controllers):
 
-  | Tag | Next.js hook | CMS controller |
-  |-----|-------------|---------------|
-  | `blog-posts` | `useBlogPosts` | `BlogpostController` |
-  | `events` | `useEvents` | `EventController` |
-  | `exhibitors` | `useExhibitors` | `ExhibitorController` |
-  | `highlight-cards` | `useHighlightCards` | `HighlightCardController` |
-  | `dates` | `useDates` | — (no CMS revalidation yet) |
-  | `organization` | `useOrganization` | — |
-  | `recruitment` | `useRecruitment` | — |
-  | `employments` | `useExhibitors` (`fetchEmployments`) | — |
-  | `industries` | `useExhibitors` (`fetchIndustries`) | — |
-  | `programs` | `useExhibitors` (`fetchPrograms`) | — |
+  | Tag               | Next.js hook                         | CMS controller              |
+  | ----------------- | ------------------------------------ | --------------------------- |
+  | `blog-posts`      | `useBlogPosts`                       | `BlogpostController`        |
+  | `events`          | `useEvents`                          | `EventController`           |
+  | `exhibitors`      | `useExhibitors`                      | `ExhibitorController`       |
+  | `highlight-cards` | `useHighlightCards`                  | `HighlightCardController`   |
+  | `dates`           | `useDates`                           | — (no CMS revalidation yet) |
+  | `organization`    | `useOrganization`                    | —                           |
+  | `recruitment`     | `useRecruitment`                     | —                           |
+  | `employments`     | `useExhibitors` (`fetchEmployments`) | —                           |
+  | `industries`      | `useExhibitors` (`fetchIndustries`)  | —                           |
+  | `programs`        | `useExhibitors` (`fetchPrograms`)    | —                           |
 
 - When adding a new data hook, include a `tags` array. When adding CMS revalidation for that resource, pass the same tag string to the audit helper's `revalidateTags` variadic argument.
 
@@ -54,7 +54,7 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - **Env vars:** every frontend env var must be registered in `src/env.ts`. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
 - **Routing/layout:** routes live under `src/app/`. Prefer colocated route-specific components in `_components/`; shared UI belongs in `src/components/ui/` or `src/components/shared/`.
 - **Shared layout primitives:** use `Page.Boundary`, `Page.Header`, and `Page.Background` from `src/components/shared/Page.tsx` for consistent page structure.
-- **Data fetching:** API hooks in `src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components. Each hook sets `next: { revalidate: 86400, tags: ["<tag>"] }` for ISR and on-demand revalidation (see *Cache revalidation* above). Hooks accept an `options?: RequestInit` parameter that allows callers to merge or override `next` settings.
+- **Data fetching:** API hooks in `src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components. Each hook sets `next: { revalidate: 86400, tags: ["<tag>"] }` for ISR and on-demand revalidation (see _Cache revalidation_ above). Hooks accept an `options?: RequestInit` parameter that allows callers to merge or override `next` settings.
 - **Client-side state:** React Query (`@tanstack/react-query`) is configured in `src/app/providers.tsx` with `staleTime: 60_000` (1 min). Client-side `use*()` hooks wrap the server-side `fetch*()` in `useQuery`.
 - **Feature flags:** definitions live in `src/feature_flags.ts`; read flags with `await feature("FLAG_NAME")` from `src/components/shared/feature.ts`. Defined flags: `EVENT_PAGE`, `MAP_PAGE`, `AT_FAIR_PAGE`, `EXHIBITOR_PACKAGES`, `EXHIBITOR_EVENTS`, `EXHIBITOR_PAGE`, `STUDENT_RECRUITMENT_PAGE`, `EXHIBITOR_MAIN_PAGE`, `EXHIBITOR_TIMELINE_PAGE`, `EXHIBITOR_SIGNUP_PAGE`, `ABOUT_PAGE`, `ABOUT_TEAM_PAGE`, `ARMADA_BLOG_PAGE`. Flag overrides come from Vercel flag cookies (`vercel-flag-overrides`). `FLAGS_SECRET` is required for Vercel's flag evaluation infrastructure (managed in Vercel dashboard, not `src/env.ts`). All flags default to `true` if the CMS fetch fails.
 - **Sitemap and flags:** `src/app/sitemap.ts` conditionally includes routes based on their feature flag — if a flag is `false`, the route is omitted from the sitemap.
