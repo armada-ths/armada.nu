@@ -2,6 +2,19 @@
 
 The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's largest student career fair.
 
+## Table of Contents
+
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [VS Code workspace and launches](#vs-code-workspace-and-launches)
+- [Scripts](#scripts)
+- [Project Structure](#project-structure)
+- [Key Conventions](#key-conventions)
+- [CI / CD](#ci--cd)
+- [Infrastructure as code](#infrastructure-as-code)
+- [Backend environments](#backend-environments)
+
 ## Tech Stack
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
@@ -79,12 +92,15 @@ This requires you to have both repos checked out in the same parent directory.
 
 ## Scripts
 
-| Command      | Description                  |
-| ------------ | ---------------------------- |
-| `pnpm dev`   | Start dev server (port 8000) |
-| `pnpm build` | Production build             |
-| `pnpm start` | Start production server      |
-| `pnpm lint`  | Run ESLint                   |
+| Command             | Description                  |
+| ------------------- | ---------------------------- |
+| `pnpm dev`          | Start dev server (port 8000) |
+| `pnpm build`        | Production build             |
+| `pnpm start`        | Start production server      |
+| `pnpm lint`         | Run ESLint                   |
+| `pnpm type-check`   | Run TypeScript type checking |
+| `pnpm format`       | Format code with Prettier    |
+| `pnpm format:check` | Check formatting             |
 
 ## Project Structure
 
@@ -113,12 +129,23 @@ src/
 - **Data fetching**: Use the dual-export pattern in `src/components/shared/hooks/api/` — `fetch*()` for server components, `use*()` hooks for client components.
 - **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel flag cookie overrides applied.
 - **Adding shadcn components**: `npx shadcn@latest add <component>`
-- **Adding pages**: Add an entry to `src/app/sitemap.ts`.
+- **Adding pages**: Add an entry to `src/app/sitemap.ts`. If the page is gated by a feature flag, the sitemap conditionally includes it.
+- **Cache revalidation**: The site uses ISR with on-demand revalidation. Each data hook sets `next: { revalidate: 86400, tags: ["<tag>"] }`. The CMS triggers `POST /api/revalidate` after write operations to purge specific cache tags instantly. See the [tag inventory in copilot-instructions.md](.github/copilot-instructions.md#cache-revalidation) for the full list.
+- **Analytics**: Vercel Analytics and Speed Insights are loaded in the root layout. Use `TrackedLink` from `src/components/shared/TrackedLink.tsx` for user-interaction tracking.
 - **Brand colors**:
   - Prefer semantic Tailwind classes like `text-melon`, `bg-coconut`, `text-licorice` (from `src/app/globals.css`).
   - Runtime JS/TS color values live in `src/lib/colors.ts` (`HEX_COLORS`).
   - `src/app/globals.css` and `src/lib/colors.ts` are a paired source of truth and must be kept in sync when adding/changing color values.
   - Avoid hardcoded hex values in `src/**/*.{ts,tsx,js,jsx}`; add/reuse constants in `src/lib/colors.ts`.
+
+## CI / CD
+
+GitHub Actions workflows in `.github/workflows/`:
+
+| Workflow     | Trigger                                        | What it does                                        |
+| ------------ | ---------------------------------------------- | --------------------------------------------------- |
+| `ci.yml`     | Push to `main`/`staging`, PRs                  | `pnpm lint`, `pnpm type-check`, `pnpm format:check` |
+| `codeql.yml` | Push to `main`/`staging`, PRs, weekly schedule | CodeQL security analysis (JS/TS + Actions)          |
 
 ## Infrastructure as code
 
