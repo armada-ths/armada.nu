@@ -1,0 +1,38 @@
+{
+  "servers": {
+    "storybook-mcp": {
+      "type": "http",
+      "url": "http://localhost:6006/mcp"
+    },
+    "Chromatic": {
+      "type": "stdio",
+      "command": "node",
+      "cwd": "${workspaceFolder}",
+      "args": [".vscode/mcp/chromatic-branch-proxy.mjs"],
+      "env": {
+        "CHROMATIC_MCP_PROJECT_ID": "6a03536f317199e55901df86"
+      }
+    },
+    "ESLint": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@eslint/mcp@latest"]
+    },
+    "Context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@1.0.25"],
+      "env": {
+        "CONTEXT7_API_KEY": "${input:CONTEXT7_API_KEY}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "CONTEXT7_API_KEY",
+      "type": "promptString",
+      "description": "API key for Context7 authentication",
+      "password": true
+    }
+  ]
+}
