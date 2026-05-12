@@ -107,29 +107,19 @@ This requires you to have both repos checked out in the same parent directory.
 
 ## Storybook
 
-This repo uses Storybook to build and review UI components in isolation.
+This repo uses [Storybook](https://storybook.js.org/) to build and review UI components in isolation.
 
 - Run Storybook: `pnpm storybook` (opens on `http://localhost:6006`)
 - Build static Storybook: `pnpm build-storybook` (outputs to `storybook-static/`)
-- VS Code tasks are available in `.vscode/tasks.json` as `storybook` and `build-storybook`
+- Story files live next to components and use the `*.stories.tsx` naming convention
+- Prefer multiple story variants and `play` functions for interactive states
 
-### Creating components with Storybook
+It also uses [Chromatic](https://www.chromatic.com/) for visual regression testing in pull requests.
 
-Recommended workflow:
-
-1. Create your component in `src/components/...` (or `src/components/ui/...` for shared primitives).
-2. Add a story file next to it or in `src/stories/` using `*.stories.tsx`.
-3. Define args/controls so designers and developers can test variants without editing code.
-4. Use multiple stories for component states (default, loading, disabled, error, etc.).
-5. Keep stories focused on one component and mock required props/data.
-
-Basic story pattern (CSF):
-
-- Export a default meta object (`title`, `component`, `args`)
-- Export named stories with variant args
-- Keep props serializable for better controls/docs experience
-
-Tip: Start from an existing story in `src/stories/` and adapt it for your new component to stay consistent.
+- Every push runs `.github/workflows/chromatic.yml`
+- The workflow builds Storybook and uploads it to Chromatic
+- PRs get a Chromatic check with visual diffs for review
+- `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret and should not be committed
 
 ## Project Structure
 
