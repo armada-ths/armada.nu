@@ -9,6 +9,7 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 - [Getting Started](#getting-started)
 - [VS Code workspace and launches](#vs-code-workspace-and-launches)
 - [Scripts](#scripts)
+- [Storybook](#storybook)
 - [Project Structure](#project-structure)
 - [Key Conventions](#key-conventions)
 - [CI / CD](#ci--cd)
@@ -92,15 +93,43 @@ This requires you to have both repos checked out in the same parent directory.
 
 ## Scripts
 
-| Command             | Description                  |
-| ------------------- | ---------------------------- |
-| `pnpm dev`          | Start dev server (port 8000) |
-| `pnpm build`        | Production build             |
-| `pnpm start`        | Start production server      |
-| `pnpm lint`         | Run ESLint                   |
-| `pnpm type-check`   | Run TypeScript type checking |
-| `pnpm format`       | Format code with Prettier    |
-| `pnpm format:check` | Check formatting             |
+| Command                | Description                   |
+| ---------------------- | ----------------------------- |
+| `pnpm dev`             | Start dev server (port 8000)  |
+| `pnpm build`           | Production build              |
+| `pnpm start`           | Start production server       |
+| `pnpm storybook`       | Run Storybook (port 6006)     |
+| `pnpm build-storybook` | Build static Storybook output |
+| `pnpm lint`            | Run ESLint                    |
+| `pnpm type-check`      | Run TypeScript type checking  |
+| `pnpm format`          | Format code with Prettier     |
+| `pnpm format:check`    | Check formatting              |
+
+## Storybook
+
+This repo uses Storybook to build and review UI components in isolation.
+
+- Run Storybook: `pnpm storybook` (opens on `http://localhost:6006`)
+- Build static Storybook: `pnpm build-storybook` (outputs to `storybook-static/`)
+- VS Code tasks are available in `.vscode/tasks.json` as `storybook` and `build-storybook`
+
+### Creating components with Storybook
+
+Recommended workflow:
+
+1. Create your component in `src/components/...` (or `src/components/ui/...` for shared primitives).
+2. Add a story file next to it or in `src/stories/` using `*.stories.tsx`.
+3. Define args/controls so designers and developers can test variants without editing code.
+4. Use multiple stories for component states (default, loading, disabled, error, etc.).
+5. Keep stories focused on one component and mock required props/data.
+
+Basic story pattern (CSF):
+
+- Export a default meta object (`title`, `component`, `args`)
+- Export named stories with variant args
+- Keep props serializable for better controls/docs experience
+
+Tip: Start from an existing story in `src/stories/` and adapt it for your new component to stay consistent.
 
 ## Project Structure
 

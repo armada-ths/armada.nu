@@ -27,19 +27,23 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             <a
               href="https://linkedin.com/company/armada"
               className="hover:text-melon flex items-center gap-2">
-              <LinkedInIcon className="h-4.5 w-4.5" />
+              <LinkedInIcon
+                className="h-4.5 w-4.5"
+                aria-hidden="true"
+                focusable="false"
+              />
               <span>LinkedIn</span>
             </a>
             <a
               href="https://instagram.com/thsarmada"
               className="hover:text-melon flex items-center gap-2">
-              <SiInstagram size={18} />
+              <SiInstagram size={18} aria-hidden="true" focusable="false" />
               <span>Instagram</span>
             </a>
             <a
               href="https://tiktok.com/@ths.armada"
               className="hover:text-melon flex items-center gap-2">
-              <SiTiktok size={18} />
+              <SiTiktok size={18} aria-hidden="true" focusable="false" />
               <span>TikTok</span>
             </a>
           </div>
@@ -144,18 +148,25 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           <div className="flex items-center gap-6">
             <a
               href="https://linkedin.com/company/armada"
+              aria-label="LinkedIn"
               className="hover:text-melon transition-colors">
-              <LinkedInIcon className="h-6 w-6" />
+              <LinkedInIcon
+                className="h-6 w-6"
+                aria-hidden="true"
+                focusable="false"
+              />
             </a>
             <a
               href="https://instagram.com/thsarmada"
+              aria-label="Instagram"
               className="hover:text-melon transition-colors">
-              <SiInstagram size={24} />
+              <SiInstagram size={24} aria-hidden="true" focusable="false" />
             </a>
             <a
               href="https://tiktok.com/@ths.armada"
+              aria-label="TikTok"
               className="hover:text-melon transition-colors">
-              <SiTiktok size={24} />
+              <SiTiktok size={24} aria-hidden="true" focusable="false" />
             </a>
           </div>
         </div>
