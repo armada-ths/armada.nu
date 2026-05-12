@@ -12,13 +12,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
 
@@ -27,13 +27,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
       - run: pnpm type-check
 
@@ -42,12 +42,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
