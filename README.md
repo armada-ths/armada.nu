@@ -9,6 +9,7 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 - [Getting Started](#getting-started)
 - [VS Code workspace and launches](#vs-code-workspace-and-launches)
 - [Scripts](#scripts)
+- [Storybook](#storybook)
 - [Project Structure](#project-structure)
 - [Key Conventions](#key-conventions)
 - [CI / CD](#ci--cd)
@@ -92,15 +93,33 @@ This requires you to have both repos checked out in the same parent directory.
 
 ## Scripts
 
-| Command             | Description                  |
-| ------------------- | ---------------------------- |
-| `pnpm dev`          | Start dev server (port 8000) |
-| `pnpm build`        | Production build             |
-| `pnpm start`        | Start production server      |
-| `pnpm lint`         | Run ESLint                   |
-| `pnpm type-check`   | Run TypeScript type checking |
-| `pnpm format`       | Format code with Prettier    |
-| `pnpm format:check` | Check formatting             |
+| Command                | Description                   |
+| ---------------------- | ----------------------------- |
+| `pnpm dev`             | Start dev server (port 8000)  |
+| `pnpm build`           | Production build              |
+| `pnpm start`           | Start production server       |
+| `pnpm storybook`       | Run Storybook (port 6006)     |
+| `pnpm build-storybook` | Build static Storybook output |
+| `pnpm lint`            | Run ESLint                    |
+| `pnpm type-check`      | Run TypeScript type checking  |
+| `pnpm format`          | Format code with Prettier     |
+| `pnpm format:check`    | Check formatting              |
+
+## Storybook
+
+This repo uses [Storybook](https://storybook.js.org/) to build and review UI components in isolation.
+
+- Run Storybook: `pnpm storybook` (opens on `http://localhost:6006`)
+- Build static Storybook: `pnpm build-storybook` (outputs to `storybook-static/`)
+- Story files live next to components and use the `*.stories.tsx` naming convention
+- Prefer multiple story variants and `play` functions for interactive states
+
+It also uses [Chromatic](https://www.chromatic.com/) for visual regression testing in pull requests.
+
+- Every push runs `.github/workflows/chromatic.yml`
+- The workflow builds Storybook and uploads it to Chromatic
+- PRs get a Chromatic check with visual diffs for review
+- `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret and should not be committed
 
 ## Project Structure
 

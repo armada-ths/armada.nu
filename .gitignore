@@ -52,3 +52,6 @@ terraform.tfvars
 terraform.tfvars.json
 infra/terraform/**/backend.tf
 infra/terraform/**/backend.hcl
+
+*storybook.log
+storybook-static

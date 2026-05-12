@@ -5,45 +5,49 @@ on:
       - main
       - staging
   pull_request:
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
+        uses: actions/checkout@v6
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-      - run: pnpm install
+        uses: pnpm/action-setup@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - run: pnpm lint
 
   type-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
+        uses: actions/checkout@v6
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-      - run: pnpm install
+        uses: pnpm/action-setup@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - run: pnpm type-check
 
   format:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
+        uses: actions/checkout@v6
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-      - run: pnpm install
+        uses: pnpm/action-setup@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - run: pnpm format:check

@@ -79,6 +79,38 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - Fonts are defined in `src/app/layout.tsx` and `src/app/globals.css`; use the existing font utility classes (`font-bebas-neue`, `font-lato`, `font-inter`).
 - `shadcn/ui` is configured via `components.json`, with utilities such as `cn()` in `src/lib/utils.ts`. Some pages also use `@mui/material`; match the surrounding pattern rather than mixing UI approaches unnecessarily.
 
+## Storybook and Chromatic
+
+**When writing or modifying UI components:**
+
+1. Always create or update a corresponding story file (`ComponentName.stories.tsx`).
+2. Use imports from `@storybook/nextjs-vite` for `Meta` and `StoryObj`; use `storybook/test` for `fn`, `expect`, `userEvent`.
+3. Write interaction tests in the `play` function to cover key user flows (clicks, form inputs, assertions).
+4. Add multiple story variants to cover different states (default, disabled, loading, error, etc.).
+5. Use `tags: ["autodocs"]` to auto-generate documentation.
+6. Validate changes locally first with Storybook and the relevant local checks before relying on CI.
+
+**Preferred validation flow:**
+
+- Use local Storybook (`pnpm storybook`) while developing to review the component quickly.
+- Use local Storybook builds/tests first; this is faster for iteration than pushing changes just to inspect Chromatic output.
+- Treat Chromatic as the PR/CI visual regression gate, not the primary feedback loop during development.
+
+**Chromatic checks on pull requests:**
+
+- Every push triggers `chromatic.yml`, which builds Storybook and uploads to Chromatic for visual regression testing.
+- PR checks will show a Chromatic status (pass/fail). Click the link to view visual diffs in the Chromatic dashboard.
+- If visual changes are intentional, approve them in Chromatic; if not, fix the component and re-push.
+- The Chromatic project token (`CHROMATIC_PROJECT_TOKEN`) is a GitHub secret — do not add it to the repo.
+
+**Story guidelines:**
+
+- Keep stories focused on single components and their variants.
+- Mock external dependencies (data fetching, navigation, external libs) using Storybook mocks.
+- Use realistic prop values and meaningful labels so behaviors are observable.
+- Avoid redundant stories that show the same logic — cover distinct states and business logic instead.
+- If a story test fails, fix it immediately — do not commit failing tests.
+
 ## Integration boundaries and pitfalls
 
 - Keep public-site changes in this repo. If a task requires changing API contracts, CMS models, admin resources, or backend auth/upload behavior, make the corresponding update in `ArmadaCMS/` and follow its instruction file.
