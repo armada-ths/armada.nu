@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build --stats-json",
     "test": "vitest run",
     "chromatic": "chromatic"
   },
@@ -48,7 +48,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^1.7.0",
     "luxon": "^3.7.2",
-    "next": "16.2.3",
+    "next": "16.2.6",
     "react": "^19.2.4",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.4",
@@ -65,7 +65,7 @@
     "zod": "^4.3.6"
   },
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.1.2",
@@ -103,5 +103,5 @@
     "vite": "^8.0.12",
     "vitest": "^4.1.6"
   },
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@11.1.2"
 }

@@ -10,7 +10,7 @@ Also check:
 ## Must-follow rules
 
 - This repo owns the public Next.js site; backend/admin changes belong in `../ArmadaCMS` as well.
-- Use `pnpm` only, with Node 22.x.
+- Use `pnpm` only, with Node 24.x.
 - Validate with `pnpm lint`, `pnpm type-check`, and `pnpm build`; for UI or story work also run `pnpm test` and the relevant Storybook check when practical.
 - Add frontend env vars to `src/env.ts`.
 - Reuse `src/components/shared/Page.tsx` for full-page layout structure.

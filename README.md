@@ -28,7 +28,7 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 
 ## Prerequisites
 
-- [Node.js 22.x](https://nodejs.org/)
+- [Node.js 24.x](https://nodejs.org/)
 - [pnpm](https://pnpm.io/) (pinned version via `packageManager` in `package.json`)
 
 ## Getting Started

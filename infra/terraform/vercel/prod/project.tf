@@ -3,7 +3,7 @@ resource "vercel_project" "armada_nu" {
   team_id = var.vercel_team_id
 
   framework    = "nextjs"
-  node_version = "22.x"
+  node_version = "24.x"
 
   git_repository = {
     type              = "github"

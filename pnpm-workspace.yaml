@@ -1,8 +1,8 @@
-onlyBuiltDependencies:
-  - core-js
-  - sharp
-  - unrs-resolver
-  - esbuild
+allowBuilds:
+  core-js: true
+  sharp: true
+  unrs-resolver: true
+  esbuild: true
 
 overrides:
   path-to-regexp@>=4.0.0 <6.3.0: ">=6.3.0"

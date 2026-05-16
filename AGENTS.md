@@ -15,7 +15,7 @@ If a task changes API contracts, CMS models, admin resources, or backend auth/up
 
 ## Fast path
 
-- Use `pnpm` only and target Node 22.x.
+- Use `pnpm` only and target Node 24.x.
 - Validate with `pnpm lint`, `pnpm type-check`, and `pnpm build`; for UI or story changes also run `pnpm test` and the relevant Storybook check when practical.
 - Register every frontend environment variable in `src/env.ts`.
 - Use the existing page primitives in `src/components/shared/Page.tsx` for full-page layouts instead of inventing new wrappers.
