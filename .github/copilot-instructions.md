@@ -17,7 +17,7 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
 
 ## Build and validation
 
-- Use **pnpm** only (`packageManager` is pinned in `package.json`), with **Node 22.x**.
+- Use **pnpm** only (`packageManager` is pinned in `package.json`), with **Node 24.x**.
 - Main commands:
   - `pnpm dev` — Next.js dev server on port `8000`
   - `pnpm build`
