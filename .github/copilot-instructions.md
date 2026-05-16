@@ -23,7 +23,7 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
   - `pnpm build`
   - `pnpm lint`
   - `pnpm type-check`
-- There is no automated test suite configured; validate changes with the relevant command plus manual page checks.
+- Use the relevant validation for the change: `pnpm lint`, `pnpm type-check`, `pnpm build`, and for UI or Storybook work also `pnpm test` / `pnpm build-storybook` as needed. Manual page checks are still expected.
 
 ## Cache revalidation
 
