@@ -13,7 +13,6 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 - [Project Structure](#project-structure)
 - [Key Conventions](#key-conventions)
 - [CI / CD](#ci--cd)
-- [Infrastructure as code](#infrastructure-as-code)
 - [Backend environments](#backend-environments)
 
 ## Tech Stack
@@ -107,19 +106,7 @@ This requires you to have both repos checked out in the same parent directory.
 
 ## Storybook
 
-This repo uses [Storybook](https://storybook.js.org/) to build and review UI components in isolation.
-
-- Run Storybook: `pnpm storybook` (opens on `http://localhost:6006`)
-- Build static Storybook: `pnpm build-storybook` (outputs to `storybook-static/`)
-- Story files live next to components and use the `*.stories.tsx` naming convention
-- Prefer multiple story variants and `play` functions for interactive states
-
-It also uses [Chromatic](https://www.chromatic.com/) for visual regression testing in pull requests.
-
-- Every push runs `.github/workflows/chromatic.yml`
-- The workflow builds Storybook and uploads it to Chromatic
-- PRs get a Chromatic check with visual diffs for review
-- `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret and should not be committed
+This repo uses [Storybook](https://storybook.js.org/) to build and review UI components in isolation. Story files live next to components and use the `*.stories.tsx` naming convention. Prefer multiple story variants and `play` functions for interactive states. The repo also integrates with [Chromatic](https://www.chromatic.com/) for visual regression testing via CI — see the [CI / CD](#ci--cd) section.
 
 ## Project Structure
 
@@ -159,28 +146,32 @@ src/
 
 ## CI / CD
 
-GitHub Actions workflows in `.github/workflows/`:
+CI is handled by GitHub Actions and CD by Vercel's GitHub integration.
 
-| Workflow     | Trigger                                        | What it does                                        |
-| ------------ | ---------------------------------------------- | --------------------------------------------------- |
-| `ci.yml`     | Push to `main`/`staging`, PRs                  | `pnpm lint`, `pnpm type-check`, `pnpm format:check` |
-| `codeql.yml` | Push to `main`/`staging`, PRs, weekly schedule | CodeQL security analysis (JS/TS + Actions)          |
+### GitHub Actions (CI)
 
-## Infrastructure as code
+Repository checks live in `.github/workflows/`:
 
-Vercel project configuration is managed with Terraform:
+- `ci.yml` — runs on push to `main`/`staging` and on pull requests; runs `pnpm lint`, `pnpm type-check`, and `pnpm format:check` as separate jobs.
+- `chromatic.yml` — runs on every push; builds Storybook and uploads it to Chromatic for visual regression testing. PRs get a Chromatic status check with visual diffs. `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret — do not commit it to the repo. The `autoAcceptChanges: main` option auto-approves baseline updates on the `main` branch.
+- `codeql.yml` — runs on push to `main`/`staging`, PRs, and on a weekly schedule; CodeQL security analysis covering JavaScript/TypeScript and Actions workflows.
 
-- [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) — workspace setup, import bootstrap, and env var lifecycle
+### Vercel (CD)
 
-Use that document as the canonical source for infrastructure specifics rather than duplicating them here.
+Deployments are handled automatically by Vercel's GitHub integration:
+
+- Every push to `main` triggers a **production deployment** to [armada.nu](https://armada.nu).
+- Every push to `staging` triggers a **preview deployment** to [staging.armada.nu](https://staging.armada.nu).
+- Pull requests from branches other than `main`/`staging` trigger **preview deployments** with unique Vercel URLs.
+- Preview deployments are protected by Vercel Deployment Protection; `VERCEL_AUTOMATION_BYPASS_SECRET` is used by the CMS to send cache revalidation requests to preview/staging deployments.
+- Vercel project configuration (env vars, domain settings, etc.) is managed with Terraform — see [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) for details.
 
 ## Backend environments
 
-| Environment | API base URL                           | Admin UI                               |
-| ----------- | -------------------------------------- | -------------------------------------- |
-| Local dev   | `http://localhost:8080/api/v1`         | `http://localhost:5173`                |
-| Staging     | `https://staging.cms.armada.nu/api/v1` | `https://staging.cms.armada.nu/admin/` |
-| Production  | `https://cms.armada.nu/api/v1`         | `https://cms.armada.nu/admin/`         |
+Set `NEXT_PUBLIC_API_URL` in `.env.local` to point the dev server at a different backend:
 
-To point the local Next.js dev server at one of these environments, set
-`NEXT_PUBLIC_API_URL` in `.env.local`.
+| Environment | API base URL                           |
+| ----------- | -------------------------------------- |
+| Local dev   | `http://localhost:8080/api/v1`         |
+| Staging     | `https://staging.cms.armada.nu/api/v1` |
+| Production  | `https://cms.armada.nu/api/v1`         |
