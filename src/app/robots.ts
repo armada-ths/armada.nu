@@ -5,9 +5,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        disallow: "/about/team",
-      },
+        disallow: "/about/team"
+      }
     ],
-    sitemap: "https://armada.nu/sitemap.xml",
+    sitemap: "https://armada.nu/sitemap.xml"
   }
 }
