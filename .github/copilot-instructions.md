@@ -111,6 +111,10 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - Avoid redundant stories that show the same logic — cover distinct states and business logic instead.
 - If a story test fails, fix it immediately — do not commit failing tests.
 
+## Cleanup discipline
+
+- When an approach fails, remove every artifact it produced — files created, config keys added, lockfile edits — before finishing the prompt. Do not leave dead configs, unused files, or failed workarounds in the codebase.
+
 ## Integration boundaries and pitfalls
 
 - Keep public-site changes in this repo. If a task requires changing API contracts, CMS models, admin resources, or backend auth/upload behavior, make the corresponding update in `ArmadaCMS/` and follow its instruction file.

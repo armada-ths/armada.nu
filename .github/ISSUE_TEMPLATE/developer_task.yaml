@@ -8,13 +8,10 @@ body:
         ## Developer Task Details
         Please provide the details for this development task.
 
-  - type: checkboxes
-    id: checks
+  - type: markdown
     attributes:
-      label: Before submitting
-      options:
-        - label: I have searched the existing issues to avoid creating a duplicate.
-          required: true
+      value: |
+        > **Before submitting:** search the existing issues to avoid creating a duplicate.
 
   - type: input
     id: related-user-story
