@@ -9,9 +9,6 @@ body:
         ## User Story Details
         Please provide the details for this user story.
 
-  - type: markdown
-    attributes:
-      value: |
         > **Before submitting:** search the existing issues to avoid creating a duplicate and ensure this issue describes user or business value rather than implementation details.
 
   - type: textarea

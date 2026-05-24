@@ -8,9 +8,6 @@ body:
         ## Developer Task Details
         Please provide the details for this development task.
 
-  - type: markdown
-    attributes:
-      value: |
         > **Before submitting:** search the existing issues to avoid creating a duplicate.
 
   - type: input
