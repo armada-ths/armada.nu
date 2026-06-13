@@ -180,7 +180,7 @@ export default async function ExhibitorEventsPage() {
                     controls
                     preload="metadata">
                     <source
-                      src="/videos/collaborative-events-marketing.mp4"
+                      src="https://rsdjnixgxqauonaofrwr.supabase.co/storage/v1/object/public/armada.nu-files/collaborative-events-marketing.mp4"
                       type="video/mp4"
                     />
                     Your browser does not support the video tag.
