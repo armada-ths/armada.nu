@@ -40,7 +40,10 @@ export default async function ExhibitorEventsPage() {
           </div>
         </div>
         <div className="mx-auto mt-10 w-full max-w-150">
-          <Accordion type="multiple" className="space-y-6">
+          <Accordion
+            type="multiple"
+            defaultValue={["event-collaborative"]}
+            className="space-y-6">
             {/* Lunch Lecture */}
             <AccordionItem value="event-lunch-lecture">
               <AccordionTrigger>
@@ -168,6 +171,21 @@ export default async function ExhibitorEventsPage() {
                   and the people; we handle the logistics and can arrange
                   catering if needed.
                 </p>
+                <div className="mt-4">
+                  <video
+                    className="w-full rounded-base border-2 border-border"
+                    poster="/videos/collaborative-events-thumbnail.png"
+                    playsInline
+                    loop
+                    controls
+                    preload="metadata">
+                    <source
+                      src="/videos/collaborative-events-marketing.mp4"
+                      type="video/mp4"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
                 <p className="mt-2 text-sm">
                   Contact our events team for a quotation:{" "}
                   <Link

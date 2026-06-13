@@ -55,3 +55,6 @@ infra/terraform/**/backend.hcl
 
 *storybook.log
 storybook-static
+
+# large local media assets (keep out of git; host externally or compress before commit)
+public/videos/collaborative-events-marketing.mp4
