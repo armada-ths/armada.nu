@@ -173,10 +173,9 @@ export default async function ExhibitorEventsPage() {
                 </p>
                 <div className="mt-4">
                   <video
-                    className="w-full rounded-base border-2 border-border"
+                    className="rounded-base border-border w-full border-2"
                     poster="/thumbnails/collaborative-events-thumbnail.png"
                     playsInline
-                    loop
                     controls
                     preload="metadata">
                     <source
