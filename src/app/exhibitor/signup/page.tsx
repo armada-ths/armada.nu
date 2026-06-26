@@ -44,7 +44,7 @@ export default async function SignupPage() {
     heading = "Registration Hasn't Opened Yet"
     body = (
       <p className="mt-4">
-        Exhibitor registration for {year} isn't open yet. Initial Registration
+        Exhibitor registration for {year} isn't open yet. Priority Registration
         opens{" "}
         <strong>
           {DateTime.fromISO(dates?.ir.start ?? "", {
@@ -61,10 +61,10 @@ export default async function SignupPage() {
       </p>
     )
   } else if (phase === "between") {
-    heading = "Initial Registration Has Closed"
+    heading = "Priority Registration Has Closed"
     body = (
       <p className="mt-4">
-        Thank you to everyone who signed up during Initial Registration! Final
+        Thank you to everyone who signed up during Priority Registration! Standard
         Registration opens{" "}
         <strong>
           {DateTime.fromISO(dates?.fr.start ?? "", {
