@@ -64,8 +64,8 @@ export default async function SignupPage() {
     heading = "Priority Registration Has Closed"
     body = (
       <p className="mt-4">
-        Thank you to everyone who signed up during Priority Registration! Standard
-        Registration opens{" "}
+        Thank you to everyone who signed up during Priority Registration!
+        Standard Registration opens{" "}
         <strong>
           {DateTime.fromISO(dates?.fr.start ?? "", {
             zone: "Europe/Stockholm"
