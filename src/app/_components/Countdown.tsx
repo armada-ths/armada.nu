@@ -10,6 +10,13 @@ interface CountdownProps {
   fairDays: string[]
 }
 
+type CountdownDisplayTime = {
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+}
+
 export function Countdown({ fairDays }: CountdownProps) {
   if (fairDays.length === 0) return null
 
@@ -33,20 +40,37 @@ export function Countdown({ fairDays }: CountdownProps) {
       </p>
 
       {animationStage === "celebration" ? (
-        <p className="font-bebas-neue text-melon animate-pulse text-xl tracking-wide">
-          The Fair Is Live!
-        </p>
-      ) : (
-        <div className="flex items-end justify-center gap-0 lg:justify-start">
-          <Unit value={displayTime.days} label="Days" />
-          <Divider />
-          <Unit value={displayTime.hours} label="Hours" />
-          <Divider />
-          <Unit value={displayTime.minutes} label="Mins" />
-          <Divider />
-          <Unit value={displayTime.seconds} label="Secs" />
+        <div className="relative">
+          <div aria-hidden className="invisible">
+            <CountdownUnits
+              displayTime={{ days: 0, hours: 0, minutes: 0, seconds: 0 }}
+            />
+          </div>
+          <p className="font-bebas-neue text-melon animate-pulse absolute inset-x-0 top-0 flex items-start justify-center text-xl tracking-wide lg:justify-start">
+            The Fair Is Live!
+          </p>
         </div>
+      ) : (
+        <CountdownUnits displayTime={displayTime} />
       )}
+    </div>
+  )
+}
+
+function CountdownUnits({
+  displayTime
+}: {
+  displayTime: CountdownDisplayTime
+}) {
+  return (
+    <div className="flex items-end justify-center gap-0 lg:justify-start">
+      <Unit value={displayTime.days} label="Days" />
+      <Divider />
+      <Unit value={displayTime.hours} label="Hours" />
+      <Divider />
+      <Unit value={displayTime.minutes} label="Mins" />
+      <Divider />
+      <Unit value={displayTime.seconds} label="Secs" />
     </div>
   )
 }
