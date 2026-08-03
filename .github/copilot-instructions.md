@@ -111,6 +111,12 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - Avoid redundant stories that show the same logic — cover distinct states and business logic instead.
 - If a story test fails, fix it immediately — do not commit failing tests.
 
+## MCP configuration (`.vscode/mcp.json`)
+
+- This repo and `ArmadaCMS/` are often opened together in one multi-root workspace. VS Code merges MCP servers from **all active scopes** (user `mcp.json`, the `.code-workspace` file, and every folder's `.vscode/mcp.json`). If the **same server name** appears in more than one active scope, VS Code logs `WARN Overwriting mcp server '<name>'` and re-collects on every change, which can spin into an **infinite collection loop** that freezes the renderer (~1 Hz whole-window stutter).
+- **Every MCP server name must be unique across all simultaneously-open scopes.** Suffix folder-scoped servers with the repo, e.g. `ESLint (armada.nu)` / `ESLint (ArmadaCMS)`, `markitdown (armada.nu)` / `markitdown (ArmadaCMS)`. Do not reuse a bare name (`ESLint`, `microsoft/markitdown`, `Chromatic`) that also exists in the other repo, the user config, or the workspace file.
+- Diagnose suspected loops via `Developer: Toggle Developer Tools` → Console: a line repeating roughly once per second is the tell.
+
 ## Cleanup discipline
 
 - When an approach fails, remove every artifact it produced — files created, config keys added, lockfile edits — before finishing the prompt. Do not leave dead configs, unused files, or failed workarounds in the codebase.
@@ -119,3 +125,12 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 
 - Keep public-site changes in this repo. If a task requires changing API contracts, CMS models, admin resources, or backend auth/upload behavior, make the corresponding update in `ArmadaCMS/` and follow its instruction file.
 - On Windows, if the folder was moved or renamed and installed packages suddenly fail with `MODULE_NOT_FOUND`, delete `node_modules` and run `pnpm install` again; pnpm junctions can retain old absolute paths.
+
+<!-- mermaid-ai-skills:start -->
+
+## Mermaid Diagrams
+
+When the user asks to create, edit, or visualize a diagram, follow the
+instructions in `.github/instructions/mermaid.instructions.md`.
+
+<!-- mermaid-ai-skills:end -->

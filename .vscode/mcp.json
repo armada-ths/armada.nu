@@ -13,7 +13,7 @@
         "CHROMATIC_MCP_PROJECT_ID": "6a03536f317199e55901df86"
       }
     },
-    "ESLint": {
+    "ESLint (armada.nu)": {
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@eslint/mcp@latest"]
@@ -26,10 +26,14 @@
         "CONTEXT7_API_KEY": "${input:CONTEXT7_API_KEY}"
       }
     },
-    "microsoft/markitdown": {
+    "markitdown (armada.nu)": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["markitdown-mcp@0.0.1a4"]
+      "args": ["markitdown-mcp@0.0.1a4"],
+      "env": {
+        "UV_HTTP_TIMEOUT": "600",
+        "UV_HTTP_MAX_RETRIES": "5"
+      }
     }
   },
   "inputs": [
