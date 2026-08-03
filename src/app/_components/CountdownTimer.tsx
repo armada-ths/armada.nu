@@ -3,33 +3,49 @@
 import { COUNTDOWN_CONFETTI_COLORS } from "@/lib/colors"
 import { useEffect, useState } from "react"
 
-interface CountdownTimerProps {
-  targetDate: Date
-}
-
 const FINAL_COUNTDOWN_START_SECONDS = 30
 const FINAL_COUNTDOWN_DURATION = 1750
 
-export function CountdownTimer({ targetDate }: CountdownTimerProps) {
+export function getTimeLeft(targetDate: Date) {
+  const now = new Date().getTime()
+  const distance = targetDate.getTime() - now
+
+  if (distance <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24)
+  const minutes = Math.floor((distance / (1000 * 60)) % 60)
+  const seconds = Math.floor((distance / 1000) % 60)
+
+  return { days, hours, minutes, seconds }
+}
+
+type AnimationStage = "counting" | "final-countdown" | "celebration"
+type TimeLeft = { days: number; hours: number; minutes: number; seconds: number }
+
+export function useCountdownAnimation(targetDate: Date): {
+  displayTime: TimeLeft
+  animationStage: AnimationStage
+} {
   const initialLeft = getTimeLeft(targetDate)
-  const [timeLeft, setTimeLeft] = useState(initialLeft)
   const initialIsOver =
     initialLeft.days === 0 &&
     initialLeft.hours === 0 &&
     initialLeft.minutes === 0 &&
     initialLeft.seconds === 0
 
-  const [animationStage, setAnimationStage] = useState<
-    "counting" | "final-countdown" | "celebration"
-  >(initialIsOver ? "final-countdown" : "counting")
+  const [timeLeft, setTimeLeft] = useState(initialLeft)
+  const [animationStage, setAnimationStage] = useState<AnimationStage>(
+    initialIsOver ? "final-countdown" : "counting"
+  )
   const [finalCountdown, setFinalCountdown] = useState(
     FINAL_COUNTDOWN_START_SECONDS
   )
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(getTimeLeft(targetDate))
-    }, 1000)
+    const timer = setInterval(() => setTimeLeft(getTimeLeft(targetDate)), 1000)
     return () => clearInterval(timer)
   }, [targetDate])
 
@@ -40,58 +56,78 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
     timeLeft.seconds === 0
 
   useEffect(() => {
-    if (isOver && animationStage === "counting") {
-      setAnimationStage("final-countdown")
-    }
+    if (isOver && animationStage === "counting") setAnimationStage("final-countdown")
   }, [isOver, animationStage])
 
   useEffect(() => {
-    if (animationStage === "final-countdown") {
-      const startSeconds = FINAL_COUNTDOWN_START_SECONDS
-      const totalDurationMs = FINAL_COUNTDOWN_DURATION
-      const startTime = Date.now()
-      setFinalCountdown(startSeconds)
+    if (animationStage !== "final-countdown") return
+    const startSeconds = FINAL_COUNTDOWN_START_SECONDS
+    const totalDurationMs = FINAL_COUNTDOWN_DURATION
+    const startTime = Date.now()
+    setFinalCountdown(startSeconds)
 
-      const countdownInterval = setInterval(() => {
-        const elapsed = Date.now() - startTime
-        if (elapsed >= totalDurationMs) {
-          setFinalCountdown(0)
-          clearInterval(countdownInterval)
-          setAnimationStage("celebration")
-          return
-        }
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime
+      if (elapsed >= totalDurationMs) {
+        setFinalCountdown(0)
+        clearInterval(interval)
+        setAnimationStage("celebration")
+        return
+      }
+      const progress = elapsed / totalDurationMs
+      setFinalCountdown(
+        Math.max(0, startSeconds - Math.floor(progress * startSeconds))
+      )
+    }, 30)
 
-        const progress = elapsed / totalDurationMs
-        const remaining = Math.max(
-          0,
-          startSeconds - Math.floor(progress * startSeconds)
-        )
-        setFinalCountdown(remaining)
-      }, 30)
-
-      return () => clearInterval(countdownInterval)
-    }
+    return () => clearInterval(interval)
   }, [animationStage])
+
+  const displayTime: TimeLeft =
+    animationStage === "final-countdown"
+      ? {
+          days: 0,
+          hours: 0,
+          minutes: Math.floor(finalCountdown / 60),
+          seconds: finalCountdown % 60
+        }
+      : animationStage === "celebration"
+        ? { days: 0, hours: 0, minutes: 0, seconds: 0 }
+        : timeLeft
+
+  return { displayTime, animationStage }
+}
+
+interface CountdownTimerProps {
+  targetDate: Date
+}
+
+export function CountdownTimer({ targetDate }: CountdownTimerProps) {
+  const { displayTime, animationStage } = useCountdownAnimation(targetDate)
 
   return (
     <div className="relative w-full flex-1 overflow-visible rounded-sm pb-2 text-center text-2xl font-medium">
       {animationStage === "celebration" && <ConfettiBurst />}
       {animationStage === "final-countdown" ? (
-        <FinalCountdown count={finalCountdown} />
+        <>
+          <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
+          <div className="flex justify-center">
+            <TimeBox value={0} label="Days" />
+            <TimeBox value={0} label="Hours" />
+            <TimeBox value={displayTime.minutes} label="Minutes" />
+            <TimeBox value={displayTime.seconds} label="Seconds" />
+          </div>
+        </>
       ) : animationStage === "celebration" ? (
         <Celebration />
-      ) : isOver ? (
-        <p className="text-melon animate-pulse p-2 text-3xl font-bold">
-          The Armada Fair is Live!
-        </p>
       ) : (
         <>
           <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
           <div className="flex justify-center">
-            <TimeBox value={timeLeft.days} label="Days" />
-            <TimeBox value={timeLeft.hours} label="Hours" />
-            <TimeBox value={timeLeft.minutes} label="Minutes" />
-            <TimeBox value={timeLeft.seconds} label="Seconds" />
+            <TimeBox value={displayTime.days} label="Days" />
+            <TimeBox value={displayTime.hours} label="Hours" />
+            <TimeBox value={displayTime.minutes} label="Minutes" />
+            <TimeBox value={displayTime.seconds} label="Seconds" />
           </div>
         </>
       )}
@@ -106,22 +142,6 @@ function TimeBox({ value, label }: { value: number; label: string }) {
       <br />
       {label}
     </p>
-  )
-}
-
-function FinalCountdown({ count }: { count: number }) {
-  const minutes = Math.floor(count / 60)
-  const seconds = count % 60
-  return (
-    <>
-      <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
-      <div key={count} className="flex justify-center">
-        <TimeBox value={0} label="Days" />
-        <TimeBox value={0} label="Hours" />
-        <TimeBox value={minutes} label="Minutes" />
-        <TimeBox value={seconds} label="Seconds" />
-      </div>
-    </>
   )
 }
 
@@ -165,7 +185,7 @@ function Celebration() {
 const CONFETTI_COLORS = [...COUNTDOWN_CONFETTI_COLORS]
 const CONFETTI_COUNT = 30
 
-function ConfettiBurst() {
+export function ConfettiBurst() {
   return (
     <div className="pointer-events-none absolute top-1/2 left-1/2 z-9999 h-75 w-full max-w-100 -translate-x-1/2 -translate-y-1/2 overflow-visible">
       {Array.from({ length: CONFETTI_COUNT }).map((_, i) => {
@@ -218,18 +238,3 @@ function ConfettiBurst() {
   )
 }
 
-function getTimeLeft(targetDate: Date) {
-  const now = new Date().getTime()
-  const distance = targetDate.getTime() - now
-
-  if (distance <= 0) {
-    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
-  }
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24)
-  const minutes = Math.floor((distance / (1000 * 60)) % 60)
-  const seconds = Math.floor((distance / 1000) % 60)
-
-  return { days, hours, minutes, seconds }
-}

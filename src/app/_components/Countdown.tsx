@@ -1,64 +1,71 @@
 "use client"
 
-import { useDates } from "@/components/shared/hooks/api/useDates"
+import {
+  ConfettiBurst,
+  useCountdownAnimation
+} from "@/app/_components/CountdownTimer"
 import { DateTime } from "luxon"
-import { useEffect, useState } from "react"
 
-export function Countdown() {
-  const { data, isLoading } = useDates()
+interface CountdownProps {
+  fairDays: string[]
+}
 
-  const fairDate = DateTime.fromObject({
-    year: 2024,
-    month: 5,
-    day: 12,
-    hour: 10
+export function Countdown({ fairDays }: CountdownProps) {
+  if (fairDays.length === 0) return null
+
+  const startDt = DateTime.fromISO(fairDays[0], { zone: "Europe/Stockholm" })
+  const endDt = DateTime.fromISO(fairDays[fairDays.length - 1], {
+    zone: "Europe/Stockholm"
   })
-  const [duration, setDuration] = useState(
-    fairDate.diffNow(["days", "hour", "minutes", "seconds"])
-  )
+  const showYear = endDt.year !== DateTime.now().year
+  const targetDate = startDt.set({ hour: 10 }).toJSDate()
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDuration(fairDate.diffNow(["days", "hour", "minutes", "seconds"]))
-    }, 1000)
+  const { displayTime, animationStage } = useCountdownAnimation(targetDate)
 
-    return () => clearInterval(interval)
-  }, [fairDate])
-
-  const startDate = data?.fair.days[0]
-  const endDate = data?.fair.days[data.fair.days.length - 1]
-  if (isLoading || !data || startDate == null || endDate == null) return null
+  const dateLabel = `${startDt.toFormat("d")}–${endDt.toFormat(`d MMM${showYear ? " yyyy" : ""}`)}`
 
   return (
-    <>
-      <p
-        role="heading"
-        aria-level={2}
-        aria-label="fair-date"
-        className="font-bebas-neue text-melon text-3xl">
-        {DateTime.fromISO(startDate).toFormat("d")}-
-        {DateTime.fromISO(endDate).toFormat(
-          `d MMM${DateTime.fromISO(endDate).year !== DateTime.now().year ? " yyyy" : ""}`
-        )}
+    <div className="relative mt-6 overflow-visible">
+      {animationStage === "celebration" && <ConfettiBurst />}
+
+      <p className="font-bebas-neue text-melon mb-1 text-2xl lg:text-3xl">
+        {dateLabel}
       </p>
-      <div className="text-licorice font-bebas-neue flex gap-x-4 text-lg opacity-70 md:text-xl">
-        <div>
-          <h3>Days</h3>
-          <p>{duration.days}</p>
+
+      {animationStage === "celebration" ? (
+        <p className="font-bebas-neue text-melon animate-pulse text-xl tracking-wide">
+          The Fair Is Live!
+        </p>
+      ) : (
+        <div className="flex items-end justify-center gap-0 lg:justify-start">
+          <Unit value={displayTime.days} label="Days" />
+          <Divider />
+          <Unit value={displayTime.hours} label="Hours" />
+          <Divider />
+          <Unit value={displayTime.minutes} label="Mins" />
+          <Divider />
+          <Unit value={displayTime.seconds} label="Secs" />
         </div>
-        <div>
-          <h3>Hours</h3>
-          <p>{duration.hours}</p>
-        </div>
-        <div>
-          <h3>Minutes</h3>
-          <p>{duration.minutes}</p>
-        </div>
-        <div>
-          <h3>Seconds</h3>
-          <p>{Math.floor(duration.seconds)}</p>
-        </div>
-      </div>
-    </>
+      )}
+    </div>
   )
+}
+
+function Unit({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="px-3 text-center first:pl-0 lg:text-left">
+      <p
+        suppressHydrationWarning
+        className="font-bebas-neue text-licorice text-3xl leading-none lg:text-4xl">
+        {value}
+      </p>
+      <p className="font-bebas-neue text-licorice/50 text-xs tracking-widest uppercase">
+        {label}
+      </p>
+    </div>
+  )
+}
+
+function Divider() {
+  return <span className="border-licorice/25 mb-4 h-7 border-l" />
 }
