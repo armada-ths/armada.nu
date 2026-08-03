@@ -46,7 +46,7 @@ export function Countdown({ fairDays }: CountdownProps) {
               displayTime={{ days: 0, hours: 0, minutes: 0, seconds: 0 }}
             />
           </div>
-          <p className="font-bebas-neue text-melon animate-pulse absolute inset-x-0 top-0 flex items-start justify-center text-xl tracking-wide lg:justify-start">
+          <p className="font-bebas-neue text-melon absolute inset-x-0 top-0 flex animate-pulse items-start justify-center text-xl tracking-wide lg:justify-start">
             The Fair Is Live!
           </p>
         </div>

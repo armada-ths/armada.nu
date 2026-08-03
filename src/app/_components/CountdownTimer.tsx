@@ -23,7 +23,12 @@ export function getTimeLeft(targetDate: Date) {
 }
 
 type AnimationStage = "counting" | "final-countdown" | "celebration"
-type TimeLeft = { days: number; hours: number; minutes: number; seconds: number }
+type TimeLeft = {
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+}
 
 export function useCountdownAnimation(targetDate: Date): {
   displayTime: TimeLeft
@@ -56,7 +61,8 @@ export function useCountdownAnimation(targetDate: Date): {
     timeLeft.seconds === 0
 
   useEffect(() => {
-    if (isOver && animationStage === "counting") setAnimationStage("final-countdown")
+    if (isOver && animationStage === "counting")
+      setAnimationStage("final-countdown")
   }, [isOver, animationStage])
 
   useEffect(() => {
@@ -237,4 +243,3 @@ export function ConfettiBurst() {
     </div>
   )
 }
-
