@@ -127,8 +127,10 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - On Windows, if the folder was moved or renamed and installed packages suddenly fail with `MODULE_NOT_FOUND`, delete `node_modules` and run `pnpm install` again; pnpm junctions can retain old absolute paths.
 
 <!-- mermaid-ai-skills:start -->
+
 ## Mermaid Diagrams
 
 When the user asks to create, edit, or visualize a diagram, follow the
 instructions in `.github/instructions/mermaid.instructions.md`.
+
 <!-- mermaid-ai-skills:end -->
