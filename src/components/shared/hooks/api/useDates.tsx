@@ -44,11 +44,7 @@ export function useDates() {
 }
 
 export type ExhibitorSignupPhase =
-  | "before-ir"
-  | "ir-open"
-  | "between"
-  | "fr-open"
-  | "closed"
+  "before-ir" | "ir-open" | "between" | "fr-open" | "closed"
 
 export function getExhibitorSignupPhase(
   dates: FairDate | null
