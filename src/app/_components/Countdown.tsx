@@ -36,7 +36,7 @@ export function Countdown({ fairDays }: CountdownProps) {
       {animationStage === "celebration" && <ConfettiBurst />}
 
       <p className="font-bebas-neue text-melon mb-1 text-2xl lg:text-3xl">
-        {dateLabel}
+        {dateLabel} | Nymble, KTH
       </p>
 
       {animationStage === "celebration" ? (
