@@ -9,6 +9,7 @@ interface Hero1Props {
   heading: string
   description: string
   sideContent?: ReactNode
+  bottomContent?: ReactNode
   buttons?: {
     primary?: {
       text: string
@@ -27,6 +28,7 @@ const Hero1 = ({
   heading = "Blocks Built With Shadcn & Tailwind",
   description = "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
   sideContent,
+  bottomContent,
   buttons = {
     primary: {
       text: "Discover all components",
@@ -81,6 +83,7 @@ const Hero1 = ({
                 </Button>
               )}
             </div>
+            {bottomContent}
           </div>
           {sideContent}
         </div>
