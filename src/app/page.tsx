@@ -1,3 +1,4 @@
+import { Countdown } from "@/app/_components/Countdown"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { Hero1 } from "@/components/hero7"
@@ -100,6 +101,11 @@ export default async function HomePage() {
                 />
               )
             }
+            bottomContent={
+              dates?.fair.days && dates.fair.days.length > 0 ? (
+                <Countdown fairDays={dates.fair.days} />
+              ) : undefined
+            }
             buttons={heroButtons}
           />
         </Page.Boundary>
@@ -120,14 +126,14 @@ export default async function HomePage() {
                 </h2>
                 <P>
                   Armada 2025 was a huge success because of your energy, innovation, and commitment.
-                  We’re grateful to every company and student who made this fair possible and memorable.
-                  Together, we’re shaping the future of talent and industry!
-                  See you next year - let’s keep building!
+                  We're grateful to every company and student who made this fair possible and memorable.
+                  Together, we're shaping the future of talent and industry!
+                  See you next year - let's keep building!
                 </P>
               </div>
             )}
           </div> */}
-          <section className="relative right-1/2 left-1/2 -mx-[50vw] mt-5 w-screen max-w-none overflow-y-visible">
+          <section className="relative right-1/2 left-1/2 mx-[-50vw] mt-5 w-screen max-w-none overflow-y-visible">
             <VisitorNumberBar />
           </section>
 
