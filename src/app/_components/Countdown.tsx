@@ -4,10 +4,13 @@ import {
   ConfettiBurst,
   useCountdownAnimation
 } from "@/app/_components/CountdownTimer"
+import { NauticalCard } from "@/components/ui/nautical-card"
+import { cn } from "@/lib/utils"
 import { DateTime } from "luxon"
 
 interface CountdownProps {
   fairDays: string[]
+  centered?: boolean
 }
 
 type CountdownDisplayTime = {
@@ -17,7 +20,7 @@ type CountdownDisplayTime = {
   seconds: number
 }
 
-export function Countdown({ fairDays }: CountdownProps) {
+export function Countdown({ fairDays, centered }: CountdownProps) {
   if (fairDays.length === 0) return null
 
   const startDt = DateTime.fromISO(fairDays[0], { zone: "Europe/Stockholm" })
@@ -32,10 +35,15 @@ export function Countdown({ fairDays }: CountdownProps) {
   const dateLabel = `${startDt.toFormat("d")}–${endDt.toFormat(`d MMM${showYear ? " yyyy" : ""}`)}`
 
   return (
-    <div className="relative mt-6 overflow-visible">
+    <div
+      className={cn("relative overflow-visible", centered ? "w-full" : "mt-6")}>
       {animationStage === "celebration" && <ConfettiBurst />}
 
-      <p className="font-bebas-neue text-melon mb-1 text-2xl lg:text-3xl">
+      <p
+        className={cn(
+          "font-bebas-neue text-melon mb-1 text-center",
+          centered ? "text-2xl sm:text-3xl md:text-4xl" : "text-2xl lg:text-3xl"
+        )}>
         {dateLabel} | Nymble, KTH
       </p>
 
@@ -44,52 +52,101 @@ export function Countdown({ fairDays }: CountdownProps) {
           <div aria-hidden className="invisible">
             <CountdownUnits
               displayTime={{ days: 0, hours: 0, minutes: 0, seconds: 0 }}
+              centered={centered}
             />
           </div>
-          <p className="font-bebas-neue text-melon absolute inset-x-0 top-0 flex animate-pulse items-start justify-center text-xl tracking-wide lg:justify-start">
+          <p
+            className={cn(
+              "font-bebas-neue text-melon absolute inset-x-0 top-0 flex animate-pulse items-start justify-center tracking-wide",
+              centered
+                ? "text-2xl sm:text-3xl md:text-4xl"
+                : "text-xl lg:justify-start"
+            )}>
             The Fair Is Live!
           </p>
         </div>
       ) : (
-        <CountdownUnits displayTime={displayTime} />
+        <CountdownUnits displayTime={displayTime} centered={centered} />
       )}
     </div>
   )
 }
 
 function CountdownUnits({
-  displayTime
+  displayTime,
+  centered
 }: {
   displayTime: CountdownDisplayTime
+  centered?: boolean
 }) {
   return (
-    <div className="flex items-end justify-center gap-0 lg:justify-start">
-      <Unit value={displayTime.days} label="Days" />
-      <Divider />
-      <Unit value={displayTime.hours} label="Hours" />
-      <Divider />
-      <Unit value={displayTime.minutes} label="Mins" />
-      <Divider />
-      <Unit value={displayTime.seconds} label="Secs" />
+    <div
+      className={cn(
+        "flex items-end justify-center",
+        centered ? "w-full" : "gap-0 lg:justify-start"
+      )}>
+      <Unit value={displayTime.days} label="Days" centered={centered} />
+      <Divider centered={centered} />
+      <Unit value={displayTime.hours} label="Hours" centered={centered} />
+      <Divider centered={centered} />
+      <Unit value={displayTime.minutes} label="Mins" centered={centered} />
+      <Divider centered={centered} />
+      <Unit value={displayTime.seconds} label="Secs" centered={centered} />
     </div>
   )
 }
 
-function Unit({ value, label }: { value: number; label: string }) {
+function Unit({
+  value,
+  label,
+  centered
+}: {
+  value: number
+  label: string
+  centered?: boolean
+}) {
   return (
-    <div className="px-3 text-center first:pl-0 lg:text-left">
+    <div
+      className={cn(
+        "text-center",
+        centered ? "flex-1" : "px-3 first:pl-0 lg:text-left"
+      )}>
       <p
         suppressHydrationWarning
-        className="font-bebas-neue text-licorice text-3xl leading-none lg:text-4xl">
+        className={cn(
+          "font-bebas-neue text-licorice leading-none",
+          centered ? "text-4xl sm:text-5xl md:text-6xl" : "text-3xl lg:text-4xl"
+        )}>
         {value}
       </p>
-      <p className="font-bebas-neue text-licorice/50 text-xs tracking-widest uppercase">
+      <p
+        className={cn(
+          "font-bebas-neue text-licorice/50 tracking-widest uppercase",
+          centered ? "text-xs sm:text-sm" : "text-xs"
+        )}>
         {label}
       </p>
     </div>
   )
 }
 
-function Divider() {
-  return <span className="border-licorice/25 mb-4 h-7 border-l" />
+function Divider({ centered }: { centered?: boolean }) {
+  return (
+    <span
+      className={cn(
+        "border-licorice/25 border-l",
+        centered ? "mb-4 h-9 sm:h-11 md:h-13" : "mb-4 h-7"
+      )}
+    />
+  )
+}
+
+// Countdown wrapped in the same nautical-card shell as HighlightCard,
+// used as sideContent in the hero when no highlight card is available.
+export function CountdownCard({ fairDays }: CountdownProps) {
+  return (
+    <NauticalCard>
+      <Countdown fairDays={fairDays} centered />
+    </NauticalCard>
+  )
 }
