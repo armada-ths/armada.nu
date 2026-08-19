@@ -65,12 +65,14 @@ export default async function ExhibitorPackagesPage() {
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
               <div className="absolute bottom-4">
-                <p className="text-sm font-bold">
+                {/* <p className="text-sm font-bold">
                   Priority registration price:
                 </p>
-                <p className="font-bold">45 000 SEK</p>
-                <p className="text-sm">Standard registration price:</p>
-                <p>48 000 SEK</p>
+                <p className="font-bold">45 000 SEK</p> */}
+                <p className="text-sm font-bold">
+                  Standard registration price:
+                </p>
+                <p className="font-bold">48 000 SEK</p>
               </div>
               {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
             </Card>
@@ -97,12 +99,14 @@ export default async function ExhibitorPackagesPage() {
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
               <div className="absolute bottom-4">
-                <p className="text-sm font-bold">
+                {/* <p className="text-sm font-bold">
                   Priority registration price:
                 </p>
-                <p className="font-bold">69 000 SEK</p>
-                <p className="text-sm">Standard registration price:</p>
-                <p>78 000 SEK</p>
+                <p className="font-bold">69 000 SEK</p> */}
+                <p className="text-sm font-bold">
+                  Standard registration price:
+                </p>
+                <p className="font-bold">78 000 SEK</p>
               </div>
               {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
             </Card>
@@ -138,12 +142,14 @@ export default async function ExhibitorPackagesPage() {
                 <li className="my-2">Wardrobe & access to lounge</li>
               </ul>
               <div className="absolute bottom-4">
-                <p className="text-sm font-bold">
+                {/* <p className="text-sm font-bold">
                   Priority registration price:
                 </p>
-                <p className="font-bold">105 000 SEK</p>
-                <p className="text-sm">Standard registration price:</p>
-                <p>120 000 SEK</p>
+                <p className="font-bold">105 000 SEK</p> */}
+                <p className="text-sm font-bold">
+                  Standard registration price:
+                </p>
+                <p className="font-bold">120 000 SEK</p>
               </div>
               {/* 							<p className="absolute bottom-4">108 500 SEK*</p> */}
             </Card>
