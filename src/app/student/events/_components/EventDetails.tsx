@@ -57,7 +57,7 @@ export default function EventDetails({
         "mx-auto flex max-w-150 flex-col gap-6 lg:grid lg:max-w-250 lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-10 lg:gap-y-0",
         className
       )}>
-      <Page.Header className="lg:col-start-1 lg:row-start-1 lg:pb-6">
+      <Page.Header className="text-licorice lg:col-start-1 lg:row-start-1 lg:pb-6">
         {event.name}
       </Page.Header>
 

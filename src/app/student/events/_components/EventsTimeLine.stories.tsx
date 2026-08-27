@@ -99,7 +99,7 @@ export const Default: Story = {
     ).toBeInTheDocument()
 
     await userEvent.click(within(dialog).getByRole("link", { name: "Sign up" }))
-    await expect(track).toHaveBeenCalledWith("student_event_click", {
+    await expect(track).toHaveBeenCalledWith("student_event_signup_click", {
       event_name: "Women in Tech Evening"
     })
   }
