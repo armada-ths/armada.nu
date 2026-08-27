@@ -52,13 +52,19 @@ function AccordionTrigger({
 
 function AccordionContent({
   className,
+  containerClassName,
   children,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+}: React.ComponentProps<typeof AccordionPrimitive.Content> & {
+  containerClassName?: string
+}) {
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="rounded-b-base bg-secondary-background font-base data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm transition-all"
+      className={cn(
+        "rounded-b-base bg-secondary-background font-base data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm transition-all",
+        containerClassName
+      )}
       {...props}>
       <div className={cn("p-4", className)}>{children}</div>
     </AccordionPrimitive.Content>
