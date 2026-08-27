@@ -79,7 +79,7 @@ export async function ExhibitorTimeline() {
                 location: "exhibitor_timeline_priority_registration"
               }
             }}>
-            <Button className="bg-grapefruit text-snow">
+            <Button className="bg-grapefruit text-snow cursor-pointer">
               Signup to Armada
             </Button>
           </TrackedLink>
@@ -135,7 +135,7 @@ export async function ExhibitorTimeline() {
                 location: "exhibitor_timeline_standard_registration"
               }
             }}>
-            <Button className="bg-grapefruit text-snow">
+            <Button className="bg-grapefruit text-snow cursor-pointer">
               Signup to Armada
             </Button>
           </TrackedLink>
