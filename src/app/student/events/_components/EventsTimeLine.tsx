@@ -1,54 +1,47 @@
 import { EventItem } from "@/app/student/events/_components/EventItem"
 import { Event } from "@/components/shared/hooks/api/useEvents"
-import { HEX_COLORS } from "@/lib/colors"
 import { Suspense } from "react"
 
 import { formatTimestampAsDate } from "@/lib/utils"
-import Timeline from "@mui/lab/Timeline"
-import TimelineConnector from "@mui/lab/TimelineConnector"
-import TimelineContent from "@mui/lab/TimelineContent"
-import TimelineDot from "@mui/lab/TimelineDot"
-import TimelineItem from "@mui/lab/TimelineItem"
-import TimelineOppositeContent, {
-  timelineOppositeContentClasses
-} from "@mui/lab/TimelineOppositeContent"
-import TimelineSeparator from "@mui/lab/TimelineSeparator"
 
 export function EventsTimeline({ events }: { events: Event[] }) {
   return (
-    <Timeline
-      position="right"
-      className="mt-10 w-full px-2 sm:px-0"
-      sx={{
-        [`& .${timelineOppositeContentClasses.root}`]: {
-          flex: { xs: 0, sm: 0.2 }
-        },
-        "& .MuiTimelineItem-root:before": {
-          padding: 0,
-          flex: { xs: 0, sm: "auto" }
-        }
-      }}>
+    <ol className="w-full space-y-8">
       {events.map((event, idx) => (
-        <TimelineItem key={event.id}>
-          <TimelineOppositeContent
-            className="hidden text-stone-300 sm:block"
-            sx={{
-              display: { xs: "none", sm: "block" }
-            }}>
+        <li key={event.id} className="relative">
+          <time
+            dateTime={String(event.eventStart)}
+            className="text-licorice absolute top-8 right-[calc(50%+23.5rem)] hidden w-28 -translate-y-1/2 pr-3 text-right text-sm font-bold lg:block">
             {formatTimestampAsDate(event.eventStart)}
-          </TimelineOppositeContent>
-          <TimelineSeparator>
-            <TimelineDot sx={{ bgcolor: HEX_COLORS.emeraldAccent }} />
-            {idx < events.length - 1 && <TimelineConnector />}
-          </TimelineSeparator>
-          <TimelineContent>
+          </time>
+
+          {idx > 0 && (
+            <span
+              className="bg-licorice absolute top-0 left-[calc(50%-22.375rem)] hidden h-8 w-1 lg:block"
+              aria-hidden="true"
+            />
+          )}
+          {idx < events.length - 1 && (
+            <span
+              className="bg-licorice absolute top-8 -bottom-8 left-[calc(50%-22.375rem)] hidden w-1 lg:block"
+              aria-hidden="true"
+            />
+          )}
+
+          <div
+            className="absolute top-3 left-[calc(50%-23.5rem)] z-10 hidden size-10 items-center justify-center lg:flex"
+            aria-hidden="true">
+            <span className="border-licorice bg-melon size-5 rounded-full border-4" />
+          </div>
+
+          <div className="mx-auto max-w-2xl">
             {/* EventItem uses useSearchParams, so needs to have a Suspense boundary */}
             <Suspense>
               <EventItem event={event} />
             </Suspense>
-          </TimelineContent>
-        </TimelineItem>
+          </div>
+        </li>
       ))}
-    </Timeline>
+    </ol>
   )
 }
