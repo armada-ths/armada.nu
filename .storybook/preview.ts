@@ -23,7 +23,7 @@ const preview: Preview = {
 
     // Viewport presets matching the site's Tailwind breakpoints
     viewport: {
-      viewports: {
+      options: {
         mobile: {
           name: "Mobile (390px)",
           styles: { width: "390px", height: "844px" }

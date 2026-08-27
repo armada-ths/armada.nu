@@ -117,9 +117,10 @@ export const SingleEvent: Story = {
 
 export const Mobile: Story = {
   args: { events },
-  parameters: {
+  globals: {
     viewport: {
-      defaultViewport: "mobile"
+      value: "mobile",
+      isRotated: false
     }
   },
   play: async ({ canvas }) => {
