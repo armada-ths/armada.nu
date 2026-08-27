@@ -55,36 +55,41 @@ export function TimelineItem({
       <div
         aria-hidden="true"
         className={cn(
-          "border-licorice bg-snow absolute top-6 left-[-1.25rem] z-10 flex h-4 w-4 items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)] sm:left-[-1.875rem] sm:h-5 sm:w-5",
+          "border-licorice bg-snow absolute top-6 -left-5 z-10 flex h-4 w-4 items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)] sm:-left-7.5 sm:h-5 sm:w-5",
           expandable && "bg-melon"
         )}>
         <span className="bg-licorice h-1.5 w-1.5 rounded-full sm:h-2 sm:w-2" />
       </div>
 
-      <AccordionTrigger
-        className={cn(
-          headerClasses,
-          expandable
-            ? "cursor-pointer [&>svg]:mr-4"
-            : "cursor-default [&>svg]:invisible [&>svg]:mr-4"
+      <div className="group hover:translate-x-boxShadowX hover:translate-y-boxShadowY transition-all">
+        <AccordionTrigger
+          className={cn(
+            headerClasses,
+            expandable
+              ? "cursor-pointer [&>svg]:mr-4"
+              : "cursor-default [&>svg]:invisible [&>svg]:mr-4",
+            "group-hover:shadow-none"
+          )}
+          disabled={!expandable}>
+          <div className="flex min-w-0 flex-1 flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <span className="rounded-base border-licorice bg-melon text-licorice w-fit shrink-0 border px-2.5 py-1 text-xs font-bold uppercase sm:order-2 sm:w-36 sm:text-center">
+              {dateStringHuman}
+            </span>
+
+            <h3 className="font-bebas-neue text-licorice min-w-0 text-3xl leading-none wrap-break-word sm:text-4xl">
+              {title}
+            </h3>
+          </div>
+        </AccordionTrigger>
+
+        {expandable && (
+          <AccordionContent
+            className="bg-snow text-licorice px-4 pt-0 pb-4 text-base sm:px-5 [&>*:last-child]:mb-0"
+            containerClassName="rounded-b-base border-licorice bg-snow shadow-shadow border-x-2 border-b-2 group-hover:shadow-none">
+            {children}
+          </AccordionContent>
         )}
-        disabled={!expandable}>
-        <div className="flex min-w-0 flex-1 flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
-          <span className="rounded-base border-licorice bg-melon text-licorice w-fit shrink-0 border px-2.5 py-1 text-xs font-bold uppercase sm:order-2 sm:w-36 sm:text-center">
-            {dateStringHuman}
-          </span>
-
-          <h3 className="font-bebas-neue text-licorice min-w-0 text-3xl leading-none break-words sm:text-4xl">
-            {title}
-          </h3>
-        </div>
-      </AccordionTrigger>
-
-      {expandable && (
-        <AccordionContent className="rounded-b-base border-licorice bg-snow text-licorice shadow-shadow border-x-2 border-b-2 px-4 pt-1 pb-4 text-base sm:px-5 [&>*:last-child]:mb-0">
-          {children}
-        </AccordionContent>
-      )}
+      </div>
     </AccordionItem>
   )
 }
