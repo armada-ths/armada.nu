@@ -55,7 +55,7 @@ export default function Modal({
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
-          {children}
+          <div className="h-full min-h-0 overflow-hidden">{children}</div>
         </DialogContent>
       </Dialog>
     )
@@ -65,11 +65,12 @@ export default function Modal({
       <DrawerContent
         className={cn(
           "max-h-[85%] pt-0 focus-visible:outline-hidden",
-          className
+          className,
+          "w-full max-w-none"
         )}>
         <DrawerTitle className="sr-only">{title}</DrawerTitle>
         <DrawerDescription className="sr-only">{description}</DrawerDescription>
-        {children}
+        <div className="pb-4">{children}</div>
       </DrawerContent>
     </Drawer>
   )
