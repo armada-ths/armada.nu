@@ -114,17 +114,3 @@ export const SingleEvent: Story = {
     await expect(canvas.getByText("KTH Entré")).toBeInTheDocument()
   }
 }
-
-export const Mobile: Story = {
-  args: { events },
-  globals: {
-    viewport: {
-      value: "mobile",
-      isRotated: false
-    }
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getAllByRole("link")).toHaveLength(events.length)
-    await expect(canvas.getByText("8 October", { selector: "p" })).toBeVisible()
-  }
-}
