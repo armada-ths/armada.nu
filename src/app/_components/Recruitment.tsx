@@ -2,6 +2,8 @@ import { RecruitmentRollingBanner } from "@/app/_components/RecruitmentRollingBa
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { DateTime } from "luxon"
 
+const RECRUITMENT_BANNER_VISIBILITY_WINDOW_DAYS = 7
+
 export async function RecruitmentBanner() {
   const recruitment = await fetchRecruitment({
     next: {
@@ -10,18 +12,27 @@ export async function RecruitmentBanner() {
   })
 
   const now = DateTime.now()
+  const recruitmentStart =
+    recruitment != null ? DateTime.fromISO(recruitment.start_date) : null
+  const recruitmentEnd =
+    recruitment != null ? DateTime.fromISO(recruitment.end_date) : null
   const recruitmentNotStarted =
-    recruitment != null && DateTime.fromISO(recruitment.start_date) > now
+    recruitmentStart != null && recruitmentStart > now
 
   const recruitmentClosed =
     recruitment == null ||
     recruitmentNotStarted ||
-    DateTime.fromISO(recruitment.end_date) < now
+    (recruitmentEnd != null && recruitmentEnd < now)
+  const recruitmentClosingSoon =
+    recruitmentEnd != null &&
+    recruitmentEnd > now &&
+    recruitmentEnd.diff(now).as("days") <
+      RECRUITMENT_BANNER_VISIBILITY_WINDOW_DAYS
 
   return (
     <RecruitmentRollingBanner
       endDate={recruitment?.end_date ?? ""}
-      defaultVisible={!recruitmentClosed}
+      defaultVisible={!recruitmentClosed && recruitmentClosingSoon}
     />
   )
 }

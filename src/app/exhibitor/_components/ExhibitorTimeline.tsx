@@ -1,8 +1,10 @@
 import { P } from "@/app/_components/Paragraph"
-import { TimelineItem } from "@/app/exhibitor/_components/TimelineItem"
+import {
+  TimelineItem,
+  TimelineList
+} from "@/app/exhibitor/_components/TimelineItem"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { TrackedLink } from "@/components/shared/TrackedLink"
-import { Accordion } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { formatHumanDate } from "@/lib/utils"
 
@@ -17,10 +19,7 @@ export async function ExhibitorTimeline() {
 
   //ASSUMPTION: the start date will be first for fair dates
   return (
-    <Accordion
-      type="single"
-      collapsible={true}
-      className="relative mt-10 space-y-8">
+    <TimelineList>
       <TimelineItem
         dateStringISO={dates.ir.start}
         dateStringHuman={`Before ${DateTime.fromISO(dates.ir.start).toFormat("MMMM")}`}
@@ -80,7 +79,7 @@ export async function ExhibitorTimeline() {
                 location: "exhibitor_timeline_priority_registration"
               }
             }}>
-            <Button className="bg-grapefruit text-snow">
+            <Button className="bg-grapefruit text-snow cursor-pointer">
               Signup to Armada
             </Button>
           </TrackedLink>
@@ -136,7 +135,7 @@ export async function ExhibitorTimeline() {
                 location: "exhibitor_timeline_standard_registration"
               }
             }}>
-            <Button className="bg-grapefruit text-snow">
+            <Button className="bg-grapefruit text-snow cursor-pointer">
               Signup to Armada
             </Button>
           </TrackedLink>
@@ -244,6 +243,6 @@ export async function ExhibitorTimeline() {
         dateStringISO={dates.fair.days[1]}
         dateStringHuman={formatHumanDate(dates.fair.days[1])}
         title="Armada fair ends"></TimelineItem>
-    </Accordion>
+    </TimelineList>
   )
 }

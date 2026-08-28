@@ -7,9 +7,6 @@ export interface FairDate {
     description: string
     days: string[]
   }
-  ticket: {
-    end: string | null
-  }
   ir: {
     start: string
     end: string
@@ -21,7 +18,6 @@ export interface FairDate {
   }
   events: {
     start: string
-    end: string
   }
 }
 

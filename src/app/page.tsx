@@ -1,4 +1,4 @@
-import { Countdown } from "@/app/_components/Countdown"
+import { Countdown, CountdownCard } from "@/app/_components/Countdown"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { Hero1 } from "@/components/hero7"
@@ -82,7 +82,7 @@ export default async function HomePage() {
               "The No. 1 career fair at KTH Royal Institute of Technology"
             }
             sideContent={
-              highlightCard && (
+              highlightCard ? (
                 <HighlightCard
                   title={highlightCard.title}
                   subtitle={highlightCard.subtitle}
@@ -99,10 +99,14 @@ export default async function HomePage() {
                       : undefined
                   }
                 />
-              )
+              ) : dates?.fair.days && dates.fair.days.length > 0 ? (
+                <CountdownCard fairDays={dates.fair.days} />
+              ) : undefined
             }
             bottomContent={
-              dates?.fair.days && dates.fair.days.length > 0 ? (
+              highlightCard &&
+              dates?.fair.days &&
+              dates.fair.days.length > 0 ? (
                 <Countdown fairDays={dates.fair.days} />
               ) : undefined
             }

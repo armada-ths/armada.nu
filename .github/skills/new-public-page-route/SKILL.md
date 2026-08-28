@@ -86,7 +86,7 @@ If the page submits forms or talks to external services:
    - `src/app/globals.css`
    - `src/lib/colors.ts`
 3. Avoid raw hex values in TS/TSX files.
-4. Match the existing choice between shadcn/ui and MUI based on surrounding code instead of mixing both arbitrarily.
+4. Reuse existing shadcn/ui primitives and surrounding Tailwind patterns instead of introducing another UI system.
 
 ### 7. Add stories for UI work
 

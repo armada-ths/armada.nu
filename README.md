@@ -19,7 +19,7 @@ The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's la
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Language**: TypeScript
-- **UI**: React 19, [shadcn/ui](https://ui.shadcn.com/) (Radix + CVA), some MUI components
+- **UI**: React 19, [shadcn/ui](https://ui.shadcn.com/) (Radix + CVA)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first config)
 - **Data fetching**: [TanStack React Query](https://tanstack.com/query), server components with async `fetch*` functions
 - **Backend API**: [ArmadaCMS](https://github.com/armada-ths/ArmadaCMS) (Go REST API)
