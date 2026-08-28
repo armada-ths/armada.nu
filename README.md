@@ -92,17 +92,19 @@ This requires you to have both repos checked out in the same parent directory.
 
 ## Scripts
 
-| Command                | Description                   |
-| ---------------------- | ----------------------------- |
-| `pnpm dev`             | Start dev server (port 8000)  |
-| `pnpm build`           | Production build              |
-| `pnpm start`           | Start production server       |
-| `pnpm storybook`       | Run Storybook (port 6006)     |
-| `pnpm build-storybook` | Build static Storybook output |
-| `pnpm lint`            | Run ESLint                    |
-| `pnpm type-check`      | Run TypeScript type checking  |
-| `pnpm format`          | Format code with Prettier     |
-| `pnpm format:check`    | Check formatting              |
+| Command                | Description                                |
+| ---------------------- | ------------------------------------------ |
+| `pnpm dev`             | Start dev server (port 8000)               |
+| `pnpm build`           | Production build                           |
+| `pnpm start`           | Start production server                    |
+| `pnpm storybook`       | Run Storybook (port 6006)                  |
+| `pnpm build-storybook` | Build static Storybook output              |
+| `pnpm test`            | Run Storybook tests with Vitest/Playwright |
+| `pnpm chromatic`       | Publish Storybook to Chromatic             |
+| `pnpm lint`            | Run ESLint                                 |
+| `pnpm type-check`      | Run TypeScript type checking               |
+| `pnpm format`          | Format code with Prettier                  |
+| `pnpm format:check`    | Check formatting                           |
 
 ## Storybook
 
@@ -125,16 +127,16 @@ src/
 │   └── ui/               # shadcn/ui primitives
 ├── lib/
 │   └── utils.ts          # cn(), date helpers (Luxon)
-├── env.ts                # All env vars — add new ones here
+├── env.ts                # Shared application environment-variable helper
 └── feature_flags.ts      # Feature flag definitions & CMS-backed defaults
 ```
 
 ## Key Conventions
 
-- **Adding env vars**: Always register them in `src/env.ts`. Use `NEXT_PUBLIC_` prefix for client-safe vars.
+- **Adding env vars**: Register application variables in `src/env.ts` unless they must be read directly by framework entry points. `EXPO_ACCESS_TOKEN` is currently read directly by `src/proxy.ts` and the order page, while `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` are consumed by their respective tooling. Use the `NEXT_PUBLIC_` prefix only for client-safe values.
 - **Data fetching**: Use the dual-export pattern in `src/components/shared/hooks/api/` — `fetch*()` for server components, `use*()` hooks for client components.
 - **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel flag cookie overrides applied.
-- **Adding shadcn components**: `npx shadcn@latest add <component>`
+- **Adding shadcn components**: `pnpm dlx shadcn@latest add <component>`
 - **Adding pages**: Add an entry to `src/app/sitemap.ts`. If the page is gated by a feature flag, the sitemap conditionally includes it.
 - **Cache revalidation**: The site uses ISR with on-demand revalidation. Each data hook sets `next: { revalidate: 86400, tags: ["<tag>"] }`. The CMS triggers `POST /api/revalidate` after write operations to purge specific cache tags instantly. See the [tag inventory in copilot-instructions.md](.github/copilot-instructions.md#cache-revalidation) for the full list.
 - **Analytics**: Vercel Analytics and Speed Insights are loaded in the root layout. Use `TrackedLink` from `src/components/shared/TrackedLink.tsx` for user-interaction tracking.
@@ -154,7 +156,6 @@ Repository checks live in `.github/workflows/`:
 
 - `ci.yml` — runs on push to `main`/`staging` and on pull requests; runs `pnpm lint`, `pnpm type-check`, and `pnpm format:check` as separate jobs.
 - `chromatic.yml` — runs on every push; builds Storybook and uploads it to Chromatic for visual regression testing. PRs get a Chromatic status check with visual diffs. `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret — do not commit it to the repo. The `autoAcceptChanges: main` option auto-approves baseline updates on the `main` branch.
-- `codeql.yml` — runs on push to `main`/`staging`, PRs, and on a weekly schedule; CodeQL security analysis covering JavaScript/TypeScript and Actions workflows.
 
 ### Vercel (CD)
 
@@ -163,15 +164,18 @@ Deployments are handled automatically by Vercel's GitHub integration:
 - Every push to `main` triggers a **production deployment** to [armada.nu](https://armada.nu).
 - Every push to `staging` triggers a **preview deployment** to [staging.armada.nu](https://staging.armada.nu).
 - Pull requests from branches other than `main`/`staging` trigger **preview deployments** with unique Vercel URLs.
-- Preview deployments are protected by Vercel Deployment Protection; `VERCEL_AUTOMATION_BYPASS_SECRET` is used by the CMS to send cache revalidation requests to preview/staging deployments.
-- Vercel project configuration (env vars, domain settings, etc.) is managed with Terraform — see [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) for details.
+- Preview deployments are protected by Vercel Deployment Protection. The staging CMS sends `VERCEL_AUTOMATION_BYPASS_SECRET` when it calls the staging/preview revalidation endpoint.
+- Core Vercel project settings and application-specific environment-variable definitions are managed with Terraform. Domains and deployments are not — see [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) for details.
 
 ## Backend environments
 
 Set `NEXT_PUBLIC_API_URL` in `.env.local` to point the dev server at a different backend:
 
-| Environment | API base URL                           |
-| ----------- | -------------------------------------- |
-| Local dev   | `http://localhost:8080/api/v1`         |
-| Staging     | `https://staging.cms.armada.nu/api/v1` |
-| Production  | `https://cms.armada.nu/api/v1`         |
+`NEXT_PUBLIC_API_URL` is the backend origin. Do not append `/api/v1`; the data
+hooks add that path themselves.
+
+| Environment | API origin                      |
+| ----------- | ------------------------------- |
+| Local dev   | `http://localhost:8080`         |
+| Staging     | `https://staging.cms.armada.nu` |
+| Production  | `https://cms.armada.nu`         |

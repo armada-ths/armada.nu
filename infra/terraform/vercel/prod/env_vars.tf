@@ -7,7 +7,8 @@
 # placeholder satisfies the provider schema, and `lifecycle { ignore_changes =
 # [value] }` ensures Terraform never overwrites a value set in Vercel.
 #
-# Terraform DOES enforce: key name, target environments, and sensitive flag.
+# Terraform DOES enforce: key name, target environments, branch scope, and
+# sensitive flag.
 # Any drift on those attributes will appear in `terraform plan`.
 
 locals {

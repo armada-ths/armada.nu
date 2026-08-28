@@ -34,24 +34,25 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - **On-demand purge**: `POST /api/revalidate` (`src/app/api/revalidate/route.ts`) accepts `{ tag, secret }`, validates `REVALIDATION_SECRET`, and calls `revalidateTag(tag, { expire: 0 })`. The CMS fires this automatically after write operations.
 - **Tag inventory** (must stay in sync between Next.js hooks and Go controllers):
 
-  | Tag               | Next.js hook                         | CMS controller              |
-  | ----------------- | ------------------------------------ | --------------------------- |
-  | `blog-posts`      | `useBlogPosts`                       | `BlogpostController`        |
-  | `events`          | `useEvents`                          | `EventController`           |
-  | `exhibitors`      | `useExhibitors`                      | `ExhibitorController`       |
-  | `highlight-cards` | `useHighlightCards`                  | `HighlightCardController`   |
-  | `dates`           | `useDates`                           | — (no CMS revalidation yet) |
-  | `organization`    | `useOrganization`                    | —                           |
-  | `recruitment`     | `useRecruitment`                     | —                           |
-  | `employments`     | `useExhibitors` (`fetchEmployments`) | —                           |
-  | `industries`      | `useExhibitors` (`fetchIndustries`)  | —                           |
-  | `programs`        | `useExhibitors` (`fetchPrograms`)    | —                           |
+  | Tag               | Next.js hook                         | CMS controller                          |
+  | ----------------- | ------------------------------------ | --------------------------------------- |
+  | `blog-posts`      | `useBlogPosts`                       | `BlogpostController`                    |
+  | `events`          | `useEvents`                          | `EventController`                       |
+  | `exhibitors`      | `useExhibitors`                      | `ExhibitorController`                   |
+  | `highlight-cards` | `useHighlightCards`                  | `HighlightCardController`               |
+  | `dates`           | `useDates`                           | `FairDateController` / Eventro sync     |
+  | `organization`    | `useOrganization`                    | Team/profile/Eventro member controllers |
+  | `recruitment`     | `useRecruitment`                     | Recruitment controllers / Eventro sync  |
+  | `employments`     | `useExhibitors` (`fetchEmployments`) | `EmploymentController` / Eventro sync   |
+  | `industries`      | `useExhibitors` (`fetchIndustries`)  | `IndustryController` / Eventro sync     |
+  | `programs`        | `useExhibitors` (`fetchPrograms`)    | `ProgramController` / Eventro sync      |
+  | `feature-flags`   | `fetchFeatureFlags`                  | `FeatureFlagController`                 |
 
 - When adding a new data hook, include a `tags` array. When adding CMS revalidation for that resource, pass the same tag string to the audit helper's `revalidateTags` variadic argument.
 
 ## Conventions
 
-- **Env vars:** every frontend env var must be registered in `src/env.ts`. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
+- **Env vars:** application env vars should be registered in `src/env.ts`. `EXPO_ACCESS_TOKEN` is currently read directly by `src/proxy.ts` and `src/app/exhibitor/order/page.tsx`; framework/tooling variables such as `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` also stay outside the helper. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
 - **Routing/layout:** routes live under `src/app/`. Prefer colocated route-specific components in `_components/`; shared UI belongs in `src/components/ui/` or `src/components/shared/`.
 - **Shared layout primitives:** use `Page.Boundary`, `Page.Header`, and `Page.Background` from `src/components/shared/Page.tsx` for consistent page structure.
 - **Data fetching:** API hooks in `src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components. Each hook sets `next: { revalidate: 86400, tags: ["<tag>"] }` for ISR and on-demand revalidation (see _Cache revalidation_ above). Hooks accept an `options?: RequestInit` parameter that allows callers to merge or override `next` settings.

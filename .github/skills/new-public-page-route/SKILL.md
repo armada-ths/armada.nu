@@ -76,7 +76,7 @@ If the page submits forms or talks to external services:
    - Zod schema validation
    - reCAPTCHA verification
    - Slack webhook or other external integration
-3. Register any new frontend environment variables in `src/env.ts`.
+3. Register new application environment variables in `src/env.ts` unless a framework entry point must read them directly; document any such exception.
 4. If the route requires new secrets and no local env file exists, create the local env file with placeholders before asking the user to wire real values.
 
 ### 6. Keep shared branding and safety rules intact
@@ -130,7 +130,7 @@ Do not consider the route done until you have checked all relevant items:
 - Feature flags are wired when the route is gated.
 - `src/app/sitemap.ts` is updated for public routes.
 - `actions.ts` follows the Zod → reCAPTCHA → integration pattern when forms are involved.
-- New environment variables are registered in `src/env.ts`.
+- New application environment variables are registered in `src/env.ts`, or a required framework-entry-point exception is documented.
 - Shared UI stories exist for reusable components.
 - Cross-repo changes are made in `../ArmadaCMS` when API contracts changed, if practical in the same task.
 
@@ -149,7 +149,7 @@ Also do a manual page check in the browser.
 
 - Adding a public page and forgetting `src/app/sitemap.ts`.
 - Creating a new CMS-backed fetch without a `tags` array.
-- Adding frontend env vars without registering them in `src/env.ts`.
+- Adding application env vars without registering them in `src/env.ts` or documenting a required framework-entry-point exception.
 - Updating only `src/app/globals.css` or only `src/lib/colors.ts` when changing brand colors.
 - Mixing UI systems inconsistently instead of matching nearby code.
 - Putting route-specific implementation details into shared components too early, or shared logic into route-local folders too late.

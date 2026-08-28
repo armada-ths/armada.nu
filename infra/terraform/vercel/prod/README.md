@@ -8,7 +8,10 @@ Vercel GitHub integration on every push to `main`.
 ## What it manages
 
 - Vercel project settings (framework, Node version, Git repository, serverless region)
-- All project environment variables
+- Application-specific project environment-variable definitions in `env_vars.tf`
+
+It does not manage domains, DNS, deployments, GitHub secrets, or environment
+variable values. Vercel-managed system variables are also outside this root.
 
 ## Files
 

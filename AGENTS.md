@@ -17,7 +17,7 @@ If a task changes API contracts, CMS models, admin resources, or backend auth/up
 
 - Use `pnpm` only and target Node 24.x.
 - Validate with `pnpm lint`, `pnpm type-check`, and `pnpm build`; for UI or story changes also run `pnpm test` and the relevant Storybook check when practical.
-- Register every frontend environment variable in `src/env.ts`.
+- Register application environment variables in `src/env.ts`; keep framework/tooling variables and the existing `EXPO_ACCESS_TOKEN` proxy entry-point exception documented.
 - Use the existing page primitives in `src/components/shared/Page.tsx` for full-page layouts instead of inventing new wrappers.
 - Keep shared layout consistent by using the existing page/layout primitives and surrounding patterns instead of inventing new ones.
 - When adding or changing API hooks in `src/components/shared/hooks/api/`, include the correct cache `tags` so ISR and on-demand revalidation keep working.

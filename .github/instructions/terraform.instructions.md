@@ -10,9 +10,10 @@ Reference: [`infra/terraform/vercel/prod/README.md`](../../infra/terraform/verce
 ## What this root manages
 
 - Vercel project settings (`project.tf`): framework, Node version, Git repository, serverless region, skew protection
-- All project environment variables (`env_vars.tf`)
+- Application-specific project environment-variable definitions (`env_vars.tf`)
 
 It does **not** manage deployments — those are triggered by the Vercel GitHub integration on every push to `main`.
+It also does not manage domains, DNS, GitHub secrets, Vercel-managed system variables, or environment-variable values.
 
 ## HCP Terraform — prefer remote plans
 
@@ -25,8 +26,8 @@ Local commands that are always safe: `terraform validate`, `terraform fmt`, `ter
 Values for `vercel_project_environment_variable` resources are **managed in the Vercel dashboard**, not in Terraform.
 
 - Every resource uses `value = ""` as a placeholder.
-- `lifecycle { ignore_changes = [value, sensitive] }` ensures Terraform never overwrites a value set in Vercel.
-- Terraform **does** enforce: key name, target environments, and `sensitive` flag. Drift on those will appear in `terraform plan`.
+- `lifecycle { ignore_changes = [value] }` ensures Terraform never overwrites a value set in Vercel.
+- Terraform **does** enforce: key name, target environments, branch scope, and `sensitive` flag. Drift on those will appear in `terraform plan`.
 
 **Never** remove the `lifecycle` block or populate `value` with a real secret — that would store the secret in HCP Terraform state.
 
@@ -46,7 +47,7 @@ Values for `vercel_project_environment_variable` resources are **managed in the 
      sensitive  = true
 
      lifecycle {
-       ignore_changes = [value, sensitive]
+      ignore_changes = [value]
      }
    }
    ```

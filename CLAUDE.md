@@ -12,7 +12,7 @@ Also check:
 - This repo owns the public Next.js site; backend/admin changes belong in `../ArmadaCMS` as well.
 - Use `pnpm` only, with Node 24.x.
 - Validate with `pnpm lint`, `pnpm type-check`, and `pnpm build`; for UI or story work also run `pnpm test` and the relevant Storybook check when practical.
-- Add frontend env vars to `src/env.ts`.
+- Add application env vars to `src/env.ts`; preserve and document framework/tooling variables and the existing `EXPO_ACCESS_TOKEN` proxy entry-point exception.
 - Reuse `src/components/shared/Page.tsx` for full-page layout structure.
 - Preserve ISR/revalidation by keeping API hook cache tags in sync.
 - Update `src/app/sitemap.ts` when public routes change.
