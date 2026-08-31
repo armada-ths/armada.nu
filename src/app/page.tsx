@@ -200,9 +200,9 @@ export default async function HomePage() {
           </P>
 
           {/* Links */}
-          <div className="my-6 grid gap-6 text-center md:grid-cols-2 md:items-stretch md:justify-items-center md:gap-8">
+          <div className="my-6 grid justify-items-center gap-6 text-center lg:grid-cols-2 lg:items-stretch lg:gap-8">
             {/* Card 1 */}
-            <Card className="bg-melon/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
+            <Card className="bg-melon/90! flex h-full w-full flex-col items-center rounded-md p-6 md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Exhibitors
               </h2>
@@ -232,7 +232,7 @@ export default async function HomePage() {
             </Card>
 
             {/* Card 2 */}
-            <Card className="bg-melon/90! flex h-full w-[90vw] max-w-sm flex-col items-center rounded-md p-6 md:max-w-md md:p-8">
+            <Card className="bg-melon/90! flex h-full w-full flex-col items-center rounded-md p-6 md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
                 For Students
               </h2>
