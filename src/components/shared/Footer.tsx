@@ -29,7 +29,7 @@ function FooterAffiliations() {
         </a>
       </div>
       <div className="flex w-40 flex-col items-center gap-2 text-center">
-        <p className="font-semibold">Part of:</p>
+        <p className="font-semibold">Member of:</p>
         <a href="https://diversitycharter.se/">
           <Image
             src="/LogoDCS-300dpi.png"

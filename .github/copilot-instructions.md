@@ -17,7 +17,7 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
 
 ## Build and validation
 
-- Do not run time-consuming scripts such as builds, full test suites, linters, or type checks after every prompt. Run them only when the scope or risk of the changes creates a realistic chance that the scripts will fail and reveal an error; otherwise use targeted, lightweight checks or inspection.
+- Run time-consuming scripts such as builds, full test suites, linters, or type checks only when the scope or risk of the changes creates a realistic chance that they will fail and reveal an error; otherwise use targeted, lightweight checks or inspection.
 - Use **pnpm** only (`packageManager` is pinned in `package.json`), with **Node 24.x**.
 - Main commands:
   - `pnpm dev` — Next.js dev server on port `8000`

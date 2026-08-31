@@ -37,7 +37,7 @@ export const Default: Story = {
         name: "Sture Logo"
       })
     ).toBeInTheDocument()
-    await expect(canvas.getAllByText("Part of:")).toHaveLength(2)
+    await expect(canvas.getAllByText("Member of:")).toHaveLength(2)
     await expect(
       canvas.getByRole("img", {
         name: "Diversity Charter Sweden logo"
