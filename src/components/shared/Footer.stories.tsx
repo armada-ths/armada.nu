@@ -37,6 +37,22 @@ export const Default: Story = {
         name: "Sture Logo"
       })
     ).toBeInTheDocument()
+    await expect(canvas.getAllByText("Member of:")).toHaveLength(2)
+    await expect(
+      canvas.getByRole("img", {
+        name: "Diversity Charter Sweden logo"
+      })
+    ).toBeInTheDocument()
+    await expect(
+      canvas.getByRole("link", {
+        name: /Sture Logo/
+      })
+    ).toHaveAttribute("href", "https://sture.se/")
+    await expect(
+      canvas.getByRole("link", {
+        name: /Diversity Charter Sweden logo/
+      })
+    ).toHaveAttribute("href", "https://diversitycharter.se/")
   }
 }
 

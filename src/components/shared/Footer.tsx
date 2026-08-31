@@ -12,6 +12,39 @@ import {
 } from "@/components/ui/accordion"
 import Image from "next/image"
 
+function FooterAffiliations() {
+  return (
+    <div className="flex items-start justify-center gap-6">
+      <div className="flex w-28 flex-col items-center gap-2 text-center">
+        <p className="font-semibold">In Partnership With:</p>
+        <a href="https://sture.se/">
+          <Image
+            src="/sture-logo-up.png"
+            alt="Sture Logo"
+            width={70}
+            height={70}
+            className="object-contain"
+            style={{ height: "auto" }}
+          />
+        </a>
+      </div>
+      <div className="flex w-40 flex-col items-center gap-2 text-center">
+        <p className="font-semibold">Member of:</p>
+        <a href="https://diversitycharter.se/">
+          <Image
+            src="/LogoDCS-300dpi.png"
+            alt="Diversity Charter Sweden logo"
+            width={150}
+            height={103}
+            className="object-contain"
+            style={{ height: "auto" }}
+          />
+        </a>
+      </div>
+    </div>
+  )
+}
+
 export function Footer({ signupUrl }: { signupUrl: string }) {
   return (
     <footer className="bg-licorice text-snow flex w-full flex-col items-center py-8">
@@ -127,18 +160,8 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           </div>
         </div>
 
-        {/* Partner */}
-        <div className="flex flex-col items-center gap-2">
-          <p className="font-semibold">In Partnership With:</p>
-          <Image
-            src="/sture-logo-up.png"
-            alt="Sture Logo"
-            width={70}
-            height={70}
-            className="object-contain"
-            style={{ height: "auto" }}
-          />
-        </div>
+        {/* Partnerships and affiliations */}
+        <FooterAffiliations />
       </div>
       {/* Mobile accordion footer */}
       <div className="w-full max-w-6xl px-6 md:hidden">
@@ -239,17 +262,9 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        {/* Partner */}
-        <div className="mt-6 flex w-full flex-col items-center gap-2">
-          <p className="font-semibold">In Partnership With:</p>
-          <Image
-            src="/sture-logo-up.png"
-            alt="Sture Logo"
-            width={70}
-            height={70}
-            className="object-contain"
-            style={{ height: "auto" }}
-          />
+        {/* Partnerships and affiliations */}
+        <div className="mt-6 w-full">
+          <FooterAffiliations />
         </div>
       </div>
     </footer>

@@ -1,5 +1,8 @@
 # armada.nu
 
+[![Checks](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml)
+[![Chromatic](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml)
+
 The public website for [THS Armada](https://armada.nu) — KTH's and Sweden's largest student career fair.
 
 ## Table of Contents
@@ -156,6 +159,9 @@ Repository checks live in `.github/workflows/`:
 
 - `ci.yml` — runs on push to `main`/`staging` and on pull requests; runs `pnpm lint`, `pnpm type-check`, and `pnpm format:check` as separate jobs.
 - `chromatic.yml` — runs on every push; builds Storybook and uploads it to Chromatic for visual regression testing. PRs get a Chromatic status check with visual diffs. `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret — do not commit it to the repo. The `autoAcceptChanges: main` option auto-approves baseline updates on the `main` branch.
+
+Both workflows cancel superseded runs for the same branch or pull request and use
+job timeouts so stale checks do not consume runner capacity indefinitely.
 
 ### Vercel (CD)
 
