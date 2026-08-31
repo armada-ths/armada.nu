@@ -17,13 +17,14 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
 
 ## Build and validation
 
+- Do not run time-consuming scripts such as builds, full test suites, linters, or type checks after every prompt. Run them only when the scope or risk of the changes creates a realistic chance that the scripts will fail and reveal an error; otherwise use targeted, lightweight checks or inspection.
 - Use **pnpm** only (`packageManager` is pinned in `package.json`), with **Node 24.x**.
 - Main commands:
   - `pnpm dev` — Next.js dev server on port `8000`
   - `pnpm build`
   - `pnpm lint`
   - `pnpm type-check`
-- Use the relevant validation for the change: `pnpm lint`, `pnpm type-check`, `pnpm build`, and for UI or Storybook work also `pnpm test` / `pnpm build-storybook` as needed. Manual page checks are still expected.
+- When warranted by the validation policy above, use the relevant validation for the change: `pnpm lint`, `pnpm type-check`, `pnpm build`, and for UI or Storybook work also `pnpm test` / `pnpm build-storybook` as needed. Use manual page checks when they have a realistic chance of revealing an error.
 
 ## Cache revalidation
 
@@ -89,7 +90,7 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 3. Write interaction tests in the `play` function to cover key user flows (clicks, form inputs, assertions).
 4. Add multiple story variants to cover different states (default, disabled, loading, error, etc.).
 5. Use `tags: ["autodocs"]` to auto-generate documentation.
-6. Validate changes locally first with Storybook and the relevant local checks before relying on CI.
+6. When warranted by the scope or risk of the changes, validate locally with Storybook and the relevant local checks before relying on CI.
 
 **Preferred validation flow:**
 

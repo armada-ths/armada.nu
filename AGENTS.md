@@ -15,8 +15,9 @@ If a task changes API contracts, CMS models, admin resources, or backend auth/up
 
 ## Fast path
 
+- Do not run time-consuming scripts such as builds, full test suites, linters, or type checks after every prompt. Run them only when the scope or risk of the changes creates a realistic chance that the scripts will fail and reveal an error; otherwise use targeted, lightweight checks or inspection.
 - Use `pnpm` only and target Node 24.x.
-- Validate with `pnpm lint`, `pnpm type-check`, and `pnpm build`; for UI or story changes also run `pnpm test` and the relevant Storybook check when practical.
+- When the validation policy above warrants it, validate with `pnpm lint`, `pnpm type-check`, and `pnpm build`; for UI or story changes also run `pnpm test` and the relevant Storybook check when practical.
 - Register application environment variables in `src/env.ts`; keep framework/tooling variables and the existing `EXPO_ACCESS_TOKEN` proxy entry-point exception documented.
 - Use the existing page primitives in `src/components/shared/Page.tsx` for full-page layouts instead of inventing new wrappers.
 - Keep shared layout consistent by using the existing page/layout primitives and surrounding patterns instead of inventing new ones.
