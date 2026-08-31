@@ -52,11 +52,11 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
       <hr className="mb-6 h-px w-2/3 bg-slate-600 opacity-40" />
 
       {/* Desktop footer */}
-      <div className="hidden w-full max-w-6xl md:flex md:flex-row md:items-start md:justify-between md:gap-12 md:px-24 md:text-left">
+      <div className="hidden w-full max-w-6xl lg:flex lg:flex-row lg:items-start lg:justify-center lg:gap-[clamp(1.5rem,3vw,3rem)] lg:px-[clamp(2rem,6vw,6rem)] lg:text-left">
         {/* Social media */}
         <div className="space-y-1">
           <p className="font-semibold">Follow us on:</p>
-          <div className="flex flex-col items-center gap-1 md:items-start">
+          <div className="flex flex-col items-center gap-1 lg:items-start">
             <a
               href="https://linkedin.com/company/armada"
               className="hover:text-melon flex items-center gap-2">
@@ -164,7 +164,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
         <FooterAffiliations />
       </div>
       {/* Mobile accordion footer */}
-      <div className="w-full max-w-6xl px-6 md:hidden">
+      <div className="w-full max-w-6xl px-6 lg:hidden">
         {/* Social media */}
         <div className="mb-6 flex w-full flex-col gap-3 pl-4">
           <p className="font-semibold">Follow us on:</p>
