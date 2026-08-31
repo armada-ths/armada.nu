@@ -16,7 +16,7 @@ function FooterAffiliations() {
   return (
     <div className="flex items-start justify-center gap-6">
       <div className="flex w-28 flex-col items-center gap-2 text-center">
-        <p className="font-semibold">In Partnership With:</p>
+        <p className="font-semibold">In partnership with:</p>
         <a href="https://sture.se/">
           <Image
             src="/sture-logo-up.png"
