@@ -52,7 +52,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
       <hr className="mb-6 h-px w-2/3 bg-slate-600 opacity-40" />
 
       {/* Desktop footer */}
-      <div className="hidden w-full max-w-6xl lg:flex lg:flex-row lg:items-start lg:justify-center lg:gap-[clamp(1.5rem,3vw,3rem)] lg:px-[clamp(2rem,6vw,6rem)] lg:text-left">
+      <div className="hidden w-full max-w-7xl lg:flex lg:flex-row lg:items-start lg:justify-between lg:gap-6 lg:px-12 lg:text-left">
         {/* Social media */}
         <div className="space-y-1">
           <p className="font-semibold">Follow us on:</p>
@@ -164,7 +164,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
         <FooterAffiliations />
       </div>
       {/* Mobile accordion footer */}
-      <div className="w-full max-w-6xl px-6 lg:hidden">
+      <div className="w-full max-w-7xl px-6 lg:hidden">
         {/* Social media */}
         <div className="mb-6 flex w-full flex-col gap-3 pl-4">
           <p className="font-semibold">Follow us on:</p>
