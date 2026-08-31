@@ -4,7 +4,6 @@
 [![Chromatic](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml)
 [![Production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production?label=production&logo=vercel)](https://github.com/armada-ths/armada.nu/deployments/Production)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Farmada.nu&label=armada.nu)](https://armada.nu)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/armada-ths/armada.nu/badge)](https://securityscorecards.dev/viewer/?uri=github.com/armada-ths/armada.nu)
 [![Last commit](https://img.shields.io/github/last-commit/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/commits)
 [![Open issues](https://img.shields.io/github/issues/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/issues)
 [![License: MIT](https://img.shields.io/github/license/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/blob/main/license.txt)
