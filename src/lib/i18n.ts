@@ -90,6 +90,11 @@ export const pageTranslations: Record<
     home: {
       heroHeading: string
       heroDescription: string
+      visitorLabels: {
+        visits: string
+        students: string
+        networking: string
+      }
       aboutHeading: string
       aboutBody: string
       thsLinkLabel: string
@@ -125,6 +130,11 @@ export const pageTranslations: Record<
       heroHeading: "Set Sail For Success",
       heroDescription:
         "The No. 1 career fair at KTH Royal Institute of Technology",
+      visitorLabels: {
+        visits: "visits",
+        students: "Students",
+        networking: "of networking"
+      },
       aboutHeading: "About Armada",
       aboutBody:
         "Armada was founded in 1981 and has since then organized a career fair that has grown to become one of the largest in Scandinavia. We exist to connect students to their dream employer and have since come up with different events and happenings to create personal connections between students and employers. As Armada is fully owned by",
@@ -172,8 +182,12 @@ export const pageTranslations: Record<
   sv: {
     home: {
       heroHeading: "Sätt kurs mot framgång",
-      heroDescription:
-        "Den främsta arbetsmarknadsmässan på KTH Kungliga Tekniska högskolan",
+      heroDescription: "Sveriges främsta arbetsmarknadsmässa",
+      visitorLabels: {
+        visits: "besök",
+        students: "Studenter",
+        networking: "dagar med nätverkande"
+      },
       aboutHeading: "Om Armada",
       aboutBody:
         "Armada grundades 1981 och har sedan dess arrangerat en arbetsmarknadsmässa som har vuxit till en av de största i Skandinavien. Vi finns till för att koppla samman studenter med deras drömarbetsgivare och har utvecklat olika event och aktiviteter som skapar personliga möten mellan studenter och arbetsgivare. Eftersom Armada ägs helt av",
