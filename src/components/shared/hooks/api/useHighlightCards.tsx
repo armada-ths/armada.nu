@@ -1,5 +1,4 @@
 import { env } from "@/env"
-import { fetchWithTimeout } from "@/lib/api-fetch"
 import { useQuery } from "@tanstack/react-query"
 
 export interface HighlightCardData {
@@ -14,18 +13,11 @@ export interface HighlightCardData {
 }
 
 export async function fetchHighlightCards(): Promise<HighlightCardData[]> {
-  try {
-    const res = await fetchWithTimeout(
-      `${env.NEXT_PUBLIC_API_URL}/api/v1/highlightcards`,
-      {
-        next: { revalidate: 86400, tags: ["highlight-cards"] }
-      }
-    )
-    if (!res.ok) return []
-    return res.json() as Promise<HighlightCardData[]>
-  } catch {
-    return []
-  }
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/highlightcards`, {
+    next: { revalidate: 86400, tags: ["highlight-cards"] }
+  })
+  if (!res.ok) return []
+  return res.json() as Promise<HighlightCardData[]>
 }
 
 export function useHighlightCards() {

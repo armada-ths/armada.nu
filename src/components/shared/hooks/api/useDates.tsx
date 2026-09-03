@@ -1,5 +1,4 @@
 import { env } from "@/env"
-import { fetchWithTimeout } from "@/lib/api-fetch"
 import { useQuery } from "@tanstack/react-query"
 import { DateTime } from "luxon"
 
@@ -23,21 +22,14 @@ export interface FairDate {
 }
 
 export async function fetchDates(): Promise<FairDate | null> {
-  try {
-    const res = await fetchWithTimeout(
-      `${env.NEXT_PUBLIC_API_URL}/api/v1/dates`,
-      {
-        next: {
-          revalidate: 86400,
-          tags: ["dates"]
-        }
-      }
-    )
-    if (!res.ok) return null
-    return res.json() as Promise<FairDate>
-  } catch {
-    return null
-  }
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`, {
+    next: {
+      revalidate: 86400,
+      tags: ["dates"]
+    }
+  })
+  if (!res.ok) return null
+  return res.json() as Promise<FairDate>
 }
 
 export function useDates() {
