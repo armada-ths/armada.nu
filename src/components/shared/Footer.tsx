@@ -12,7 +12,6 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import Image from "next/image"
-import Link from "next/link"
 
 import {
   createLocalePath,
@@ -63,12 +62,12 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
   return (
     <footer className="bg-licorice text-snow flex w-full flex-col items-center py-8">
       <div className="mb-6 flex items-center gap-3">
-        <Link
+        <a
           href={createLocalePath(pathname, nextLocale)}
           className="text-snow border-snow hover:bg-snow hover:text-licorice rounded-full border px-3 py-1 text-sm font-semibold transition-colors"
           aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
           {dict.switchLanguage}
-        </Link>
+        </a>
       </div>
 
       {/* Divider */}

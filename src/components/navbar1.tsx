@@ -180,12 +180,12 @@ const Navbar1 = ({
             </div>
 
             <div className="flex flex-1 items-center justify-end">
-              <Link
+              <a
                 href={createLocalePath(pathname, nextLocale)}
                 className="text-licorice border-licorice hover:bg-licorice hover:text-snow rounded-full border px-3 py-1 text-sm font-semibold transition-colors"
                 aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
                 {languageToggleLabel}
-              </Link>
+              </a>
             </div>
           </div>
         </nav>
@@ -196,12 +196,12 @@ const Navbar1 = ({
             {/* Logo */}
             <LogoLink logo={logo} />
             <div className="flex items-center gap-2">
-              <Link
+              <a
                 href={createLocalePath(pathname, nextLocale)}
                 className="text-licorice border-licorice rounded-full border px-2 py-1 text-xs font-semibold"
                 aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
                 {languageToggleLabel}
-              </Link>
+              </a>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
