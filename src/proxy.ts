@@ -1,10 +1,12 @@
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 
+import { defaultLocale, normalizeLocale } from "@/lib/i18n"
+
 export function proxy(req: NextRequest) {
   const url = req.nextUrl.clone()
+  const { pathname, search } = req.nextUrl
   const token = url.searchParams.get("access")
-  const cookie = req.cookies.get("_ea")?.value
   const SECRET = process.env.EXPO_ACCESS_TOKEN
 
   if (token && token === SECRET) {
@@ -20,11 +22,48 @@ export function proxy(req: NextRequest) {
     return res
   }
 
-  if (cookie === SECRET) return NextResponse.next()
+  const localeMatch = pathname.match(/^\/(en|sv)(?:\/|$)/i)
+  const localeFromPath = localeMatch ? localeMatch[1].toLowerCase() : null
+  const locale = normalizeLocale(
+    localeFromPath ?? req.cookies.get("locale")?.value ?? defaultLocale
+  )
 
-  return NextResponse.next()
+  if (!localeFromPath) {
+    const targetPath = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`
+    const response = NextResponse.redirect(
+      new URL(`${targetPath}${search}`, req.url)
+    )
+    response.cookies.set("locale", locale, {
+      path: "/",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365
+    })
+    return response
+  }
+
+  if (locale !== localeFromPath) {
+    const correctedPath = pathname.replace(
+      new RegExp(`^/${localeFromPath}`),
+      `/${locale}`
+    )
+    return NextResponse.redirect(new URL(`${correctedPath}${search}`, req.url))
+  }
+
+  const strippedPath =
+    pathname.replace(new RegExp(`^/${locale}(?=/|$)`), "") || "/"
+  const response = NextResponse.rewrite(
+    new URL(strippedPath === "/" ? "/" : strippedPath, req.url)
+  )
+
+  response.cookies.set("locale", locale, {
+    path: "/",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365
+  })
+
+  return response
 }
 
 export const config = {
-  matcher: ["/exhibitor/order", "/exhibitor/order/:path*"]
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*$).*)"]
 }
