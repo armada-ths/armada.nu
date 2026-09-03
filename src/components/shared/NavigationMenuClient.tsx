@@ -18,6 +18,13 @@ import {
   UsersRoundIcon
 } from "lucide-react"
 import { DateTime } from "luxon"
+import { usePathname } from "next/navigation"
+
+import {
+  createLocalePath,
+  getLocaleFromPathname,
+  translations
+} from "@/lib/i18n"
 
 interface NavigationMenuClientProps {
   signupUrl: string
@@ -65,13 +72,18 @@ export function NavigationMenuClient({
   aboutTeamEnabled,
   blogEnabled
 }: NavigationMenuClientProps) {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
+  const dict = translations[locale]
+  const withLocale = (path: string) => createLocalePath(path, locale)
+
   const companyLinks: MenuItem[] = [
     {
-      title: "For Exhibitors",
-      url: "/exhibitor",
+      title: dict.forExhibitors,
+      url: withLocale("/exhibitor"),
       items: [
         {
-          title: "Registration",
+          title: dict.registration,
           url: signupUrl,
           description: `Signup as an exhibitor for Armada ${DateTime.now().year}`,
           icon: <ClipboardPenIcon className="size-5 shrink-0" />,
@@ -82,29 +94,29 @@ export function NavigationMenuClient({
           disabled: !exhibitorSignupEnabled
         },
         {
-          title: "Kits",
-          url: "/exhibitor/packages",
+          title: dict.kits,
+          url: withLocale("/exhibitor/packages"),
           description: "Choose the kit that suits your needs",
           icon: <PackageIcon className="size-5 shrink-0" />,
           disabled: !exhibitorPackagesEnabled
         },
         {
-          title: "Why Armada",
-          url: "/exhibitor",
+          title: dict.whyArmada,
+          url: withLocale("/exhibitor"),
           description: "The industry's top engineers come from KTH",
           icon: <HandshakeIcon className="size-5 shrink-0" />,
           disabled: !exhibitorMainEnabled
         },
         {
-          title: "Timeline",
-          url: "/exhibitor/timeline",
+          title: dict.timeline,
+          url: withLocale("/exhibitor/timeline"),
           description: "Your guide to the fair - step by step",
           icon: <ClockIcon className="size-5 shrink-0" />,
           disabled: !exhibitorTimelineEnabled
         },
         {
-          title: "Events",
-          url: "/exhibitor/events",
+          title: dict.events,
+          url: withLocale("/exhibitor/events"),
           description: "Interested in having an event with us?",
           icon: <CalendarSearchIcon className="size-5 shrink-0" />,
           disabled: !exhibitorEventsEnabled
@@ -115,26 +127,26 @@ export function NavigationMenuClient({
 
   const studentLinks: MenuItem[] = [
     {
-      title: "For Students",
-      url: "/student/exhibitors",
+      title: dict.forStudents,
+      url: withLocale("/student/exhibitors"),
       items: [
         {
-          title: "Exhibitors",
-          url: "/student/exhibitors",
+          title: dict.exhibitorsList,
+          url: withLocale("/student/exhibitors"),
           description: `Look at the companies attending the fair`,
           icon: <Building2Icon className="size-5 shrink-0" />,
           disabled: !exhibitorPageEnabled
         },
         {
-          title: "Events",
-          url: "/student/events",
+          title: dict.events,
+          url: withLocale("/student/events"),
           description: "See the events leading up to the fair",
           icon: <CalendarDaysIcon className="size-5 shrink-0" />,
           disabled: !eventsEnabled
         },
         {
-          title: "Recruitment",
-          url: "/student/recruitment",
+          title: dict.recruitment,
+          url: withLocale("/student/recruitment"),
           description: `Join Armada ${DateTime.now().year}. See which roles are available`,
           icon: <BriefcaseIcon className="size-5 shrink-0" />,
           tracking: {
@@ -144,15 +156,15 @@ export function NavigationMenuClient({
           disabled: !studentRecruitmentEnabled
         },
         {
-          title: "Map",
-          url: "/student/map",
+          title: dict.map,
+          url: withLocale("/student/map"),
           description: "Find your way around the fair",
           icon: <MapPinnedIcon className="size-5 shrink-0" />,
           disabled: !mapEnabled
         },
         {
           title: "At the Fair",
-          url: "/student/at-the-fair",
+          url: withLocale("/student/at-the-fair"),
           description: "Make the most out of your visit",
           icon: <CompassIcon className="size-5 shrink-0" />,
           disabled: !atFairEnabled
@@ -163,26 +175,26 @@ export function NavigationMenuClient({
 
   const aboutLinks: MenuItem[] = [
     {
-      title: "About us",
-      url: "/about",
+      title: dict.aboutUs,
+      url: withLocale("/about"),
       items: [
         {
-          title: "About Armada",
-          url: "/about",
+          title: dict.aboutArmada,
+          url: withLocale("/about"),
           description: `Get to know the Armada organization`,
           icon: <SparklesIcon className="size-5 shrink-0" />,
           disabled: !aboutPageEnabled
         },
         {
-          title: "Team",
-          url: "/about/team",
+          title: dict.team,
+          url: withLocale("/about/team"),
           description: `Get to know the team working on Armada ${DateTime.now().year}`,
           icon: <UsersRoundIcon className="size-5 shrink-0" />,
           disabled: !aboutTeamEnabled
         },
         {
-          title: "The Armada Blog",
-          url: "/blog",
+          title: dict.blog,
+          url: withLocale("/blog"),
           description: "News, stories and insights from Armada",
           icon: <NotebookPenIcon className="size-5 shrink-0" />,
           tracking: {
