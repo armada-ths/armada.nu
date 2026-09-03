@@ -10,11 +10,13 @@ import { Card } from "@/components/ui/card"
 import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
-import { useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const [modalOpen, setModalOpen] = useState(false)
   const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
   const shouldBypassLogoOptimization =
@@ -36,6 +38,15 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         setOpen={setModalOpen}
         onClose={() => {
           setModalOpen(false)
+          // Drop the "id" param so a reload or re-render doesn't reopen this modal
+          if (searchParams.get("id") === exhibitor.id.toString()) {
+            const params = new URLSearchParams(searchParams)
+            params.delete("id")
+            const query = params.toString()
+            router.replace(`${pathname}${query ? `?${query}` : ""}`, {
+              scroll: false
+            })
+          }
         }}
         className={` ${exhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${exhibitor.tier === "Silver" ? "bg-silver" : ""} ${exhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
         <div

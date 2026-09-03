@@ -4,7 +4,8 @@ import {
   Industry,
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
-import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select" // Adjust path as needed
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
+import { SingleSelect, SingleSelectOption } from "@/components/ui/single-select"
 import { useEffect, useMemo, useState } from "react"
 
 interface Props {
@@ -14,6 +15,10 @@ interface Props {
   programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
+  sortBy?: "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
+  onSortChange?: (
+    sortBy: "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
+  ) => void
 }
 
 export default function ExhibitorFilterItem({
@@ -22,7 +27,9 @@ export default function ExhibitorFilterItem({
   industries,
   programs,
   searchQueryName,
-  onFilterChange
+  onFilterChange,
+  sortBy = "tier-gold",
+  onSortChange
 }: Props) {
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
   const [selectedEmploymentIds, setSelectedEmploymentIds] = useState<string[]>(
@@ -32,6 +39,16 @@ export default function ExhibitorFilterItem({
     []
   )
   const [selectedProgramsIds, setSelectedProgramsIds] = useState<string[]>([])
+
+  const sortOptions: SingleSelectOption[] = useMemo(
+    () => [
+      { value: "name-asc", label: "A-Z" },
+      { value: "name-desc", label: "Z-A" },
+      { value: "tier-gold", label: "Tiers Ascending" },
+      { value: "tier-bronze", label: "Tiers Descending" }
+    ],
+    []
+  )
 
   // 2. DATA TRANSFORMATION: Prepare the employments data for the MultiSelect component
   const employmentOptions: MultiSelectOption[] = useMemo(() => {
@@ -133,45 +150,69 @@ export default function ExhibitorFilterItem({
   }, [filtered, onFilterChange])
 
   return (
-    <div className="space-y-2 p-4">
-      {/* Employment Filter */}
-      <MultiSelect
-        options={employmentOptions}
-        onValueChange={setSelectedEmploymentIds}
-        placeholder="Filter by Employment"
-        popoverClassName="
-      w-(--radix-popover-trigger-width)
-      min-w-full
-      sm:w-(--radix-popover-trigger-width)
-      max-w-[95vw]
-      "
-        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
-      />
+    <div className="border-licorice border-t pt-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        {/* Sort By Filter */}
+        <div className="min-w-48 flex-1">
+          <SingleSelect
+            options={sortOptions}
+            value={sortBy}
+            onValueChange={value => onSortChange?.(value as typeof sortBy)}
+            searchable={false}
+            modalPopover
+            className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
+          />
+        </div>
 
-      <MultiSelect
-        options={industriesOptions}
-        onValueChange={setSelectedIndustriesIds}
-        placeholder="Filter by Industry"
-        popoverClassName="
-            w-(--radix-popover-trigger-width) 
-            min-w-full 
-            sm:w-(--radix-popover-trigger-width)
-            max-w-[95vw]
+        {/* Employment Filter */}
+        <div className="min-w-48 flex-1">
+          <MultiSelect
+            options={employmentOptions}
+            onValueChange={setSelectedEmploymentIds}
+            placeholder="Filter by Employment"
+            popoverClassName="
+          w-(--radix-popover-trigger-width)
+          min-w-full
+          sm:w-(--radix-popover-trigger-width)
+          max-w-[95vw]
           "
-        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
-      />
+            modalPopover
+            className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
+          />
+        </div>
 
-      {/* Program Filter */}
-      <MultiSelect
-        options={programOptions}
-        onValueChange={setSelectedProgramsIds}
-        placeholder="Filter by Program"
-        popoverClassName="
-            w-(--radix-popover-trigger-width) 
-            min-w-full
-          "
-        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
-      />
+        {/* Industries Filter */}
+        <div className="min-w-48 flex-1">
+          <MultiSelect
+            options={industriesOptions}
+            onValueChange={setSelectedIndustriesIds}
+            placeholder="Filter by Industry"
+            popoverClassName="
+              w-(--radix-popover-trigger-width) 
+              min-w-full 
+              sm:w-(--radix-popover-trigger-width)
+              max-w-[95vw]
+            "
+            modalPopover
+            className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
+          />
+        </div>
+
+        {/* Program Filter */}
+        <div className="min-w-48 flex-1">
+          <MultiSelect
+            options={programOptions}
+            onValueChange={setSelectedProgramsIds}
+            placeholder="Filter by Program"
+            popoverClassName="
+              w-(--radix-popover-trigger-width) 
+              min-w-full
+            "
+            modalPopover
+            className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
+          />
+        </div>
+      </div>
     </div>
   )
 }
