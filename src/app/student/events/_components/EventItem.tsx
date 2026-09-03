@@ -9,13 +9,16 @@ import {
   formatTimestampAsTime,
   shouldBypassNextImageOptimization
 } from "@/lib/utils"
+import { createLocalePath, getLocaleFromPathname } from "@/lib/i18n"
 import { CalendarDays, Clock, MapPin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export function EventItem({ event }: { event: Event }) {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
   const {
     id,
     name,
@@ -40,9 +43,17 @@ export function EventItem({ event }: { event: Event }) {
       <Modal
         open={modalOpen}
         setOpen={setModalOpen}
-        onClose={() => router.push("/student/events", { scroll: false })}
+        onClose={() =>
+          router.push(createLocalePath("/student/events", locale), {
+            scroll: false
+          })
+        }
         title={name}
-        description={`Details and registration information for ${name}`}
+        description={
+          locale === "sv"
+            ? `Detaljer och anmälningsinformation för ${name}`
+            : `Details and registration information for ${name}`
+        }
         className="border-licorice bg-coconut shadow-shadow h-[80vh] w-[92vw] max-w-none overflow-hidden border-2 p-0 sm:max-w-6xl">
         <EventDetails
           event={event}
@@ -51,7 +62,7 @@ export function EventItem({ event }: { event: Event }) {
       </Modal>
 
       <Link
-        href={`/student/events?id=${id}`}
+        href={`${createLocalePath("/student/events", locale)}?id=${id}`}
         scroll={false}
         onClick={() => setModalOpen(true)}
         className={cn(
@@ -94,7 +105,8 @@ export function EventItem({ event }: { event: Event }) {
 
           {registration_end && (
             <p className="rounded-base bg-coconut text-licorice w-fit px-2.5 py-1 text-xs font-bold">
-              Registration closes {formatTimestampAsDate(registration_end)}
+              {locale === "sv" ? "Anmälan stänger" : "Registration closes"}{" "}
+              {formatTimestampAsDate(registration_end)}
             </p>
           )}
         </div>
