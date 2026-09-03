@@ -5,13 +5,51 @@ import { Page } from "@/components/shared/Page"
 import { feature } from "@/components/shared/feature"
 import { Event, fetchEvents } from "@/components/shared/hooks/api/useEvents"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { translations, type Locale } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { eventDateTimeToEpochSeconds } from "@/lib/utils"
 import { Metadata } from "next"
 import Link from "next/link"
 
-export const metadata: Metadata = {
-  title: `Events - Armada`,
-  description: "All of our events leading up to the career fair."
+const eventsText: Record<
+  Locale,
+  {
+    title: string
+    description: string
+    intro: string
+    emptyTitle: string
+    emptyPrefix: string
+    emptySuffix: string
+  }
+> = {
+  en: {
+    title: "Events - Armada",
+    description: "All of our events leading up to the career fair.",
+    intro:
+      "Besides the career fair, Armada hosts a variety of events to help you prepare, network, and learn. Browse through our upcoming events below.",
+    emptyTitle: "No events available at the moment",
+    emptyPrefix: "Follow us on",
+    emptySuffix: "for latest news!"
+  },
+  sv: {
+    title: "Event - Armada",
+    description: "Alla våra event inför arbetsmarknadsmässan.",
+    intro:
+      "Utöver arbetsmarknadsmässan arrangerar Armada flera event som hjälper dig att förbereda dig, nätverka och lära dig mer. Utforska våra kommande event nedan.",
+    emptyTitle: "Inga event tillgängliga just nu",
+    emptyPrefix: "Följ oss på",
+    emptySuffix: "för de senaste nyheterna!"
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  const dict = eventsText[locale]
+
+  return {
+    title: dict.title,
+    description: dict.description
+  }
 }
 
 function toSeconds(date: Event["eventStart"]) {
@@ -46,9 +84,11 @@ function orderEvents(events: Event[], nowInSeconds: number) {
 }
 
 export default async function EventPage() {
+  const locale = await getRequestLocale()
+  const dict = eventsText[locale]
   const showEvents = await feature("EVENT_PAGE")
   if (!showEvents) {
-    return <ComingSoonPage title="Events" />
+    return <ComingSoonPage title={translations[locale].events} />
   }
 
   let events: Event[] = []
@@ -76,12 +116,8 @@ export default async function EventPage() {
     <Page.Background withIndents>
       <Page.Boundary className="items-center pb-20">
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-          <Page.Header>Events</Page.Header>
-          <P className="mt-4 max-w-2xl">
-            Besides the career fair, Armada hosts a variety of events to help
-            you prepare, network, and learn. Browse through our upcoming events
-            below.
-          </P>
+          <Page.Header>{translations[locale].events}</Page.Header>
+          <P className="mt-4 max-w-2xl">{dict.intro}</P>
           {orderedEvents.length > 0 ? (
             <div className="mt-10 w-full text-left">
               <EventsTimeline events={orderedEvents} />
@@ -89,15 +125,15 @@ export default async function EventPage() {
           ) : (
             <div className="mx-auto flex w-full flex-col items-center pl-1 text-center">
               <Alert className="my-5">
-                <AlertTitle>No events available at the moment</AlertTitle>
+                <AlertTitle>{dict.emptyTitle}</AlertTitle>
                 <AlertDescription className="flex justify-center">
-                  Follow us on{" "}
+                  {dict.emptyPrefix}{" "}
                   <Link
                     className="text-snow underline hover:no-underline"
                     href={"https://www.instagram.com/thsarmada/"}>
                     instagram
                   </Link>{" "}
-                  for latest news!
+                  {dict.emptySuffix}
                 </AlertDescription>
               </Alert>
             </div>

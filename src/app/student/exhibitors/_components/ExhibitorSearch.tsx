@@ -9,9 +9,40 @@ import {
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
 import { Input } from "@/components/ui/input"
+import { getLocaleFromPathname, type Locale } from "@/lib/i18n"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { ExhibitorCard } from "./ExhibitorCard"
 // Import the MultiSelect component and the Option interface
+
+const exhibitorSearchText: Record<
+  Locale,
+  {
+    searchPlaceholder: string
+    filter: string
+    close: string
+    filterEmployment: string
+    filterIndustry: string
+    filterProgram: string
+  }
+> = {
+  en: {
+    searchPlaceholder: "Search by company name",
+    filter: "FILTER",
+    close: "CLOSE",
+    filterEmployment: "Filter by Employment",
+    filterIndustry: "Filter by Industry",
+    filterProgram: "Filter by Program"
+  },
+  sv: {
+    searchPlaceholder: "Sök efter företagsnamn",
+    filter: "FILTER",
+    close: "STÄNG",
+    filterEmployment: "Filtrera på anställningsform",
+    filterIndustry: "Filtrera på bransch",
+    filterProgram: "Filtrera på program"
+  }
+}
 
 interface Props {
   exhibitors: Exhibitor[]
@@ -26,6 +57,8 @@ export default function ExhibitorSearch({
   industries,
   programs
 }: Props) {
+  const locale = getLocaleFromPathname(usePathname())
+  const dict = exhibitorSearchText[locale]
   const [modalOpen, setModalOpen] = useState(false)
 
   const [searchQueryName, setSearchQueryName] = useState("")
@@ -39,7 +72,7 @@ export default function ExhibitorSearch({
           type="text"
           value={searchQueryName}
           onChange={e => setSearchQueryName(e.target.value)}
-          placeholder="Search by company name"
+          placeholder={dict.searchPlaceholder}
           className="grow rounded-sm border p-2"
         />
 
@@ -61,7 +94,7 @@ export default function ExhibitorSearch({
                 />
               </svg>
               <span className="text-sm font-semibold tracking-widest">
-                FILTER
+                {dict.filter}
               </span>
             </div>
           </div>
@@ -76,6 +109,7 @@ export default function ExhibitorSearch({
           programs={programs}
           searchQueryName={searchQueryName}
           onFilterChange={setFilteredExhibitors}
+          labels={dict}
         />
       </div>
 

@@ -20,6 +20,12 @@ interface FilterOverlayProps {
   programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
+  labels: {
+    close: string
+    filterEmployment: string
+    filterIndustry: string
+    filterProgram: string
+  }
 }
 
 export const FilterOverlay: React.FC<FilterOverlayProps> = ({
@@ -31,7 +37,8 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
   industries,
   programs,
   searchQueryName,
-  onFilterChange
+  onFilterChange,
+  labels
 }) => {
   React.useEffect(() => {
     if (isOpen) {
@@ -73,7 +80,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
             <button
               className="bg-licorice border-snow text-snow w-[92%] rounded-md border py-3 font-medium tracking-widest transition duration-150 hover:bg-gray-800"
               onClick={onClose}>
-              CLOSE
+              {labels.close}
             </button>
           </div>
 
@@ -84,6 +91,7 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
             programs={programs}
             searchQueryName={searchQueryName}
             onFilterChange={onFilterChange}
+            labels={labels}
           />
         </div>
       </div>

@@ -25,11 +25,30 @@ export const translations: Record<
     recruitment: string
     blog: string
     team: string
+    atTheFair: string
+    companies: string
     aboutArmada: string
     joinArmada: string
     meetTheTeam: string
     readOurBlog: string
     languageToggle: string
+    inPartnershipWith: string
+    memberOf: string
+    navDescriptions: {
+      exhibitorSignup: string
+      kits: string
+      whyArmada: string
+      timeline: string
+      exhibitorEvents: string
+      exhibitorsList: string
+      studentEvents: string
+      recruitment: string
+      map: string
+      atTheFair: string
+      aboutArmada: string
+      team: string
+      blog: string
+    }
   }
 > = {
   en: {
@@ -51,11 +70,30 @@ export const translations: Record<
     recruitment: "Recruitment",
     blog: "Blog",
     team: "Team",
+    atTheFair: "At the Fair",
+    companies: "Companies",
     aboutArmada: "About Armada",
     joinArmada: "Join Armada",
     meetTheTeam: "Meet the Team",
     readOurBlog: "Read our Blog",
-    languageToggle: "SV"
+    languageToggle: "SV",
+    inPartnershipWith: "In partnership with:",
+    memberOf: "Member of:",
+    navDescriptions: {
+      exhibitorSignup: "Signup as an exhibitor for Armada",
+      kits: "Choose the kit that suits your needs",
+      whyArmada: "The industry's top engineers come from KTH",
+      timeline: "Your guide to the fair - step by step",
+      exhibitorEvents: "Interested in having an event with us?",
+      exhibitorsList: "Look at the companies attending the fair",
+      studentEvents: "See the events leading up to the fair",
+      recruitment: "Join Armada. See which roles are available",
+      map: "Find your way around the fair",
+      atTheFair: "Make the most out of your visit",
+      aboutArmada: "Get to know the Armada organization",
+      team: "Get to know the team working on Armada",
+      blog: "News, stories and insights from Armada"
+    }
   },
   sv: {
     switchLanguage: "English",
@@ -76,11 +114,30 @@ export const translations: Record<
     recruitment: "Rekrytering",
     blog: "Blogg",
     team: "Team",
+    atTheFair: "På mässan",
+    companies: "Företag",
     aboutArmada: "Om Armada",
     joinArmada: "Gå med i Armada",
     meetTheTeam: "Träffa teamet",
     readOurBlog: "Läs vår blogg",
-    languageToggle: "EN"
+    languageToggle: "EN",
+    inPartnershipWith: "I samarbete med:",
+    memberOf: "Medlem i:",
+    navDescriptions: {
+      exhibitorSignup: "Anmäl er som utställare till Armada",
+      kits: "Välj det kit som passar era behov",
+      whyArmada: "Branschens främsta ingenjörer kommer från KTH",
+      timeline: "Er guide till mässan - steg för steg",
+      exhibitorEvents: "Intresserade av att arrangera ett event med oss?",
+      exhibitorsList: "Se företagen som deltar på mässan",
+      studentEvents: "Se eventen inför mässan",
+      recruitment: "Gå med i Armada. Se vilka roller som är öppna",
+      map: "Hitta rätt på mässan",
+      atTheFair: "Få ut så mycket som möjligt av ditt besök",
+      aboutArmada: "Lär känna Armada-organisationen",
+      team: "Lär känna teamet bakom Armada",
+      blog: "Nyheter, berättelser och insikter från Armada"
+    }
   }
 }
 

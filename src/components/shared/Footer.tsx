@@ -19,11 +19,17 @@ import {
   translations
 } from "@/lib/i18n"
 
-function FooterAffiliations() {
+function FooterAffiliations({
+  inPartnershipWith,
+  memberOf
+}: {
+  inPartnershipWith: string
+  memberOf: string
+}) {
   return (
     <div className="flex items-start justify-center gap-6">
       <div className="flex w-28 flex-col items-center gap-2 text-center">
-        <p className="font-semibold">In partnership with:</p>
+        <p className="font-semibold">{inPartnershipWith}</p>
         <a href="https://sture.se/">
           <Image
             src="/sture-logo-up.png"
@@ -36,7 +42,7 @@ function FooterAffiliations() {
         </a>
       </div>
       <div className="flex w-40 flex-col items-center gap-2 text-center">
-        <p className="font-semibold">Member of:</p>
+        <p className="font-semibold">{memberOf}</p>
         <a href="https://diversitycharter.se/">
           <Image
             src="/LogoDCS-300dpi.png"
@@ -193,7 +199,10 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
         </div>
 
         {/* Partnerships and affiliations */}
-        <FooterAffiliations />
+        <FooterAffiliations
+          inPartnershipWith={dict.inPartnershipWith}
+          memberOf={dict.memberOf}
+        />
       </div>
       {/* Mobile accordion footer */}
       <div className="w-full max-w-7xl px-6 lg:hidden">
@@ -298,7 +307,10 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
         </Accordion>
         {/* Partnerships and affiliations */}
         <div className="mt-6 w-full">
-          <FooterAffiliations />
+          <FooterAffiliations
+            inPartnershipWith={dict.inPartnershipWith}
+            memberOf={dict.memberOf}
+          />
         </div>
       </div>
     </footer>
