@@ -1,4 +1,5 @@
 import { env } from "@/env"
+import { fetchWithTimeout } from "@/lib/api-fetch"
 import { useQuery } from "@tanstack/react-query"
 
 export interface Event {
@@ -34,14 +35,14 @@ export interface SignupQuestion {
 }
 
 export async function fetchEvents(options?: RequestInit) {
-  const res = await fetch(
-    `${env.NEXT_PUBLIC_API_URL}/api/v1/events?public=true`,
-    {
-      ...options,
-      next: { revalidate: 86400, tags: ["events"], ...options?.next }
-    }
-  )
   try {
+    const res = await fetchWithTimeout(
+      `${env.NEXT_PUBLIC_API_URL}/api/v1/events?public=true`,
+      {
+        ...options,
+        next: { revalidate: 86400, tags: ["events"], ...options?.next }
+      }
+    )
     const result = await res.json()
     return result as Event[]
   } catch (error) {

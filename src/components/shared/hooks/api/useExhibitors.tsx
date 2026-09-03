@@ -1,4 +1,5 @@
 import { normalizeExternalUrl } from "@/lib/externalUrl"
+import { fetchWithTimeout } from "@/lib/api-fetch"
 import { useQuery } from "@tanstack/react-query"
 
 export interface Exhibitor {
@@ -90,7 +91,7 @@ export async function fetchExhibitors(
   filters?: ExhibitorFilters
 ): Promise<Exhibitor[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
-  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+  if (!baseUrl) return []
 
   const url = new URL("api/v1/exhibitors", baseUrl)
   url.searchParams.set("all", "true")
@@ -100,29 +101,28 @@ export async function fetchExhibitors(
     url.searchParams.set("filter", jsonFilter)
   }
 
-  const res = await fetch(url.toString(), {
-    cache: options?.cache,
-    next: {
-      revalidate: 86400,
-      ...options?.next,
-      tags: options?.next?.tags ?? ["exhibitors"]
-    }
-  })
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch exhibitors: ${res.status} ${res.statusText}`
-    )
-  }
+  try {
+    const res = await fetchWithTimeout(url.toString(), {
+      cache: options?.cache,
+      next: {
+        revalidate: 86400,
+        ...options?.next,
+        tags: options?.next?.tags ?? ["exhibitors"]
+      }
+    })
+    if (!res.ok) return []
 
-  const data = await res.json()
-  if (!Array.isArray(data)) {
-    throw new Error("Invalid response format: expected an array")
-  }
+    const data = await res.json()
+    if (!Array.isArray(data)) return []
 
-  return (data as Exhibitor[]).map(exhibitor => ({
-    ...exhibitor,
-    companyWebsite: normalizeExternalUrl(exhibitor.companyWebsite) ?? undefined
-  }))
+    return (data as Exhibitor[]).map(exhibitor => ({
+      ...exhibitor,
+      companyWebsite:
+        normalizeExternalUrl(exhibitor.companyWebsite) ?? undefined
+    }))
+  } catch {
+    return []
+  }
 }
 
 export function useExhibitors(filters?: ExhibitorFilters) {
@@ -137,7 +137,7 @@ export async function fetchEmployments(
   filters?: IndustryFilters
 ): Promise<Employment[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
-  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+  if (!baseUrl) return []
 
   const url = new URL("api/v1/employments", baseUrl)
 
@@ -146,26 +146,22 @@ export async function fetchEmployments(
     url.searchParams.set("filter", jsonFilter)
   }
 
-  const res = await fetch(url.toString(), {
-    cache: options?.cache,
-    next: {
-      revalidate: 86400,
-      ...options?.next,
-      tags: options?.next?.tags ?? ["employments"]
-    }
-  })
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch employments: ${res.status} ${res.statusText}`
-    )
-  }
+  try {
+    const res = await fetchWithTimeout(url.toString(), {
+      cache: options?.cache,
+      next: {
+        revalidate: 86400,
+        ...options?.next,
+        tags: options?.next?.tags ?? ["employments"]
+      }
+    })
+    if (!res.ok) return []
 
-  const data = await res.json()
-  if (!Array.isArray(data)) {
-    throw new Error("Invalid response format: expected an array")
+    const data = await res.json()
+    return Array.isArray(data) ? (data as Employment[]) : []
+  } catch {
+    return []
   }
-
-  return data as Employment[]
 }
 
 export function useEmployments(filters?: ExhibitorFilters) {
@@ -180,7 +176,7 @@ export async function fetchIndustries(
   filters?: IndustryFilters
 ): Promise<Industry[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
-  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+  if (!baseUrl) return []
 
   const url = new URL("api/v1/industries", baseUrl)
 
@@ -189,26 +185,22 @@ export async function fetchIndustries(
     url.searchParams.set("filter", jsonFilter)
   }
 
-  const res = await fetch(url.toString(), {
-    cache: options?.cache,
-    next: {
-      revalidate: 86400,
-      ...options?.next,
-      tags: options?.next?.tags ?? ["industries"]
-    }
-  })
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch industries: ${res.status} ${res.statusText}`
-    )
-  }
+  try {
+    const res = await fetchWithTimeout(url.toString(), {
+      cache: options?.cache,
+      next: {
+        revalidate: 86400,
+        ...options?.next,
+        tags: options?.next?.tags ?? ["industries"]
+      }
+    })
+    if (!res.ok) return []
 
-  const data = await res.json()
-  if (!Array.isArray(data)) {
-    throw new Error("Invalid response format: expected an array")
+    const data = await res.json()
+    return Array.isArray(data) ? (data as Industry[]) : []
+  } catch {
+    return []
   }
-
-  return data as Industry[]
 }
 
 export function useIndustries(filters?: IndustryFilters) {
@@ -223,7 +215,7 @@ export async function fetchPrograms(
   filters?: ProgramFilters
 ): Promise<Program[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL
-  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not defined")
+  if (!baseUrl) return []
 
   const url = new URL("api/v1/programs", baseUrl)
 
@@ -232,24 +224,22 @@ export async function fetchPrograms(
     url.searchParams.set("filter", jsonFilter)
   }
 
-  const res = await fetch(url.toString(), {
-    cache: options?.cache,
-    next: {
-      revalidate: 86400,
-      ...options?.next,
-      tags: options?.next?.tags ?? ["programs"]
-    }
-  })
-  if (!res.ok) {
-    throw new Error(`Failed to fetch programs: ${res.status} ${res.statusText}`)
-  }
+  try {
+    const res = await fetchWithTimeout(url.toString(), {
+      cache: options?.cache,
+      next: {
+        revalidate: 86400,
+        ...options?.next,
+        tags: options?.next?.tags ?? ["programs"]
+      }
+    })
+    if (!res.ok) return []
 
-  const data = await res.json()
-  if (!Array.isArray(data)) {
-    throw new Error("Invalid response format: expected an array")
+    const data = await res.json()
+    return Array.isArray(data) ? (data as Program[]) : []
+  } catch {
+    return []
   }
-
-  return data as Program[]
 }
 
 export function usePrograms(filters?: ProgramFilters) {
