@@ -16,10 +16,17 @@ import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { createLocalePath, pageTranslations, translations } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
+  const locale = await getRequestLocale()
+  const pageDict = pageTranslations[locale].home
+  const sharedDict = translations[locale]
+  const withLocale = (path: string) => createLocalePath(path, locale)
+
   const [dates, exhibitorPackagesEnabled, highlightCards, recruitment] =
     await Promise.all([
       fetchDates(),
@@ -43,30 +50,30 @@ export default async function HomePage() {
   const heroButtons = recruitmentOpen
     ? {
         primary: {
-          text: "Join Armada",
-          url: "/student/recruitment",
+          text: sharedDict.joinArmada,
+          url: withLocale("/student/recruitment"),
           tracking: {
             eventName: "student_signup_click",
             eventData: { location: "hero_primary" }
           }
         },
         secondary: {
-          text: "Meet the Team",
-          url: "/about/team"
+          text: sharedDict.meetTheTeam,
+          url: withLocale("/about/team")
         }
       }
     : {
         primary: {
-          text: "Read our Blog",
-          url: "/blog",
+          text: sharedDict.readOurBlog,
+          url: withLocale("/blog"),
           tracking: {
             eventName: "blog_click",
             eventData: { location: "hero_primary" }
           }
         },
         secondary: {
-          text: "Meet the Team",
-          url: "/about/team"
+          text: sharedDict.meetTheTeam,
+          url: withLocale("/about/team")
         }
       }
 
@@ -77,10 +84,8 @@ export default async function HomePage() {
         <RecruitmentBanner />
         <Page.Boundary className="">
           <Hero1
-            heading={"Set Sail For Success"}
-            description={
-              "The No. 1 career fair at KTH Royal Institute of Technology"
-            }
+            heading={pageDict.heroHeading}
+            description={pageDict.heroDescription}
             sideContent={
               highlightCard ? (
                 <HighlightCard
@@ -166,21 +171,15 @@ export default async function HomePage() {
             {/* <MapWrapper /> */}
           </div>
           {/* About section */}
-          <Page.Header className="mt-8">About Armada</Page.Header>
+          <Page.Header className="mt-8">{pageDict.aboutHeading}</Page.Header>
           <P className="mt-4">
-            Armada was founded in 1981 and has since then organized a career
-            fair that has grown to become one of the largest in scandinavia. We
-            exist to connect students to their dream employer and have since
-            come up with different events and happenings to create personal
-            connections between students and employers. As Armada is fully owned
-            by{" "}
+            {pageDict.aboutBody}{" "}
             <Link
               className="underline hover:no-underline"
               href="https://thskth.se/en/">
-              THS
+              {pageDict.thsLinkLabel}
             </Link>
-            , the student union at KTH, any profit Armada makes goes back to the
-            students, funding THS initiatives for a better student life.
+            {pageDict.aboutSuffix}
           </P>
 
           {/* <div className="flex w-full justify-center">
@@ -189,22 +188,16 @@ export default async function HomePage() {
 
           {/* Why Armada */}
           <Page.Header tier="secondary" className="text-melon mt-4 font-medium">
-            New students, every year!
+            {pageDict.newStudentsHeading}
           </Page.Header>
-          <P>
-            Every year, around 4000 new students come to KTH. Almost as many
-            students get their first full time job or internship. Participating
-            in Armada means you get access to all of them, and can both build
-            awareness among younger students and be top of mind when the older
-            students start looking for a job. Welcome!
-          </P>
+          <P>{pageDict.newStudentsBody}</P>
 
           {/* Links */}
           <div className="my-6 grid justify-items-center gap-6 text-center lg:grid-cols-2 lg:items-stretch lg:gap-8">
             {/* Card 1 */}
             <Card className="bg-melon/90! flex h-full w-full flex-col items-center rounded-md p-6 md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
-                For Exhibitors
+                {sharedDict.forExhibitors}
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
                 {exhibitorSignupEnabled ? (
@@ -215,17 +208,21 @@ export default async function HomePage() {
                         eventName: "exhibitor_signup_click",
                         eventData: { location: "exhibitor_landing_card" }
                       }}>
-                      Exhibitor Signup
+                      {pageDict.exhibitorSignup}
                     </TrackedLink>
                   </Button>
                 ) : (
                   <Button asChild className="bg-grapefruit text-snow">
-                    <Link href="/exhibitor">Why Armada?</Link>
+                    <Link href={withLocale("/exhibitor")}>
+                      {sharedDict.whyArmada}
+                    </Link>
                   </Button>
                 )}
                 {exhibitorPackagesEnabled && (
                   <Button asChild variant="neutral">
-                    <Link href="/exhibitor/packages">Kits</Link>
+                    <Link href={withLocale("/exhibitor/packages")}>
+                      {sharedDict.kits}
+                    </Link>
                   </Button>
                 )}
               </div>
@@ -234,17 +231,17 @@ export default async function HomePage() {
             {/* Card 2 */}
             <Card className="bg-melon/90! flex h-full w-full flex-col items-center rounded-md p-6 md:p-8">
               <h2 className="font-bebas-neue text-2xl font-medium md:text-3xl">
-                For Students
+                {sharedDict.forStudents}
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild className="bg-grapefruit text-snow">
                   <TrackedLink
-                    href="/student/recruitment"
+                    href={withLocale("/student/recruitment")}
                     tracking={{
                       eventName: "student_signup_click",
                       eventData: { location: "for_students_card" }
                     }}>
-                    Join Us!
+                    {pageDict.joinUs}
                   </TrackedLink>
                 </Button>
               </div>

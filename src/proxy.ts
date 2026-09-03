@@ -27,6 +27,8 @@ export function proxy(req: NextRequest) {
   const locale = normalizeLocale(
     localeFromPath ?? req.cookies.get("locale")?.value ?? defaultLocale
   )
+  const requestHeaders = new Headers(req.headers)
+  requestHeaders.set("x-armada-locale", locale)
 
   if (!localeFromPath) {
     const targetPath = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`
@@ -52,7 +54,12 @@ export function proxy(req: NextRequest) {
   const strippedPath =
     pathname.replace(new RegExp(`^/${locale}(?=/|$)`), "") || "/"
   const response = NextResponse.rewrite(
-    new URL(strippedPath === "/" ? "/" : strippedPath, req.url)
+    new URL(strippedPath === "/" ? "/" : strippedPath, req.url),
+    {
+      request: {
+        headers: requestHeaders
+      }
+    }
   )
 
   response.cookies.set("locale", locale, {
