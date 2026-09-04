@@ -3,6 +3,7 @@ import { TrackedLink } from "@/components/shared/TrackedLink"
 import { Event } from "@/components/shared/hooks/api/useEvents"
 import { Button } from "@/components/ui/button"
 import { normalizeExternalUrl } from "@/lib/externalUrl"
+import { getLocaleFromPathname } from "@/lib/i18n"
 import {
   cn,
   eventDateTimeToEpochSeconds,
@@ -13,6 +14,7 @@ import {
 
 import { Calendar, Clock, Coins, MapPin, User, Utensils } from "lucide-react"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { ReactNode } from "react"
 
 function InfoBoxItem({
@@ -43,6 +45,37 @@ export default function EventDetails({
   event: Event
   className?: string
 }) {
+  const locale = getLocaleFromPathname(usePathname())
+  const labels =
+    locale === "sv"
+      ? {
+          location: "Plats",
+          date: "Datum",
+          time: "Tid",
+          capacity: "Kapacitet",
+          participants: "deltagare",
+          food: "Mat",
+          fee: "Avgift",
+          registrationCloses: "Anmälan stänger",
+          signUp: "Anmäl dig",
+          signupComingSoon: "Anmälan öppnar snart!",
+          registrationClosed: "Anmälan stängd",
+          noRegistrationRequired: "Ingen anmälan krävs"
+        }
+      : {
+          location: "Location",
+          date: "Date",
+          time: "Time",
+          capacity: "Capacity",
+          participants: "participants",
+          food: "Food",
+          fee: "Fee",
+          registrationCloses: "Registration closes",
+          signUp: "Sign up",
+          signupComingSoon: "Signup coming soon!",
+          registrationClosed: "Registration closed",
+          noRegistrationRequired: "No registration required"
+        }
   const shouldBypassImageOptimization = shouldBypassNextImageOptimization(
     event.imageUrl
   )
@@ -83,15 +116,15 @@ export default function EventDetails({
       <aside className="rounded-base border-licorice bg-snow shadow-shadow flex h-fit flex-col gap-4 border-2 p-5 lg:col-start-2 lg:row-start-2 lg:max-h-full lg:overflow-y-auto">
         {/* Top row */}
         <InfoBoxItem
-          label="Location"
+          label={labels.location}
           value={event.location}
           icon={<MapPin size={16} />}></InfoBoxItem>
         <InfoBoxItem
-          label="Date"
+          label={labels.date}
           value={formatTimestampAsDate(event.eventStart)}
           icon={<Calendar size={16} />}></InfoBoxItem>
         <InfoBoxItem
-          label="Time"
+          label={labels.time}
           value={`${formatTimestampAsTime(event.eventStart)} - ${formatTimestampAsTime(event.eventEnd)}`}
           icon={<Clock size={16} />}></InfoBoxItem>
         {/* Separator */}
@@ -99,21 +132,22 @@ export default function EventDetails({
         {/* Bottom row */}
         {event.eventMaxCapacity > 0 && (
           <InfoBoxItem
-            label="Capacity"
-            value={`${event.eventMaxCapacity} participants`}
+            label={labels.capacity}
+            value={`${event.eventMaxCapacity} ${labels.participants}`}
             icon={<User size={16} />}></InfoBoxItem>
         )}
         <InfoBoxItem
-          label="Food"
+          label={labels.food}
           value={event.food}
           icon={<Utensils size={16} />}></InfoBoxItem>
         <InfoBoxItem
-          label="Fee"
+          label={labels.fee}
           value={event.fee}
           icon={<Coins size={16} />}></InfoBoxItem>
         {event.openForSignupStudent && registrationClose && (
           <p className="text-licorice/65 mt-3 -mb-1 text-xs">
-            Registration closes {formatTimestampAsDate(event.registrationEnd)}
+            {labels.registrationCloses}{" "}
+            {formatTimestampAsDate(event.registrationEnd)}
           </p>
         )}
         {/* Signup */}
@@ -128,19 +162,19 @@ export default function EventDetails({
                   eventName: "student_event_signup_click",
                   eventData: { event_name: event.name }
                 }}>
-                Sign up
+                {labels.signUp}
               </TrackedLink>
             </Button>
           ) : (
             <Button disabled>
               {today < registrationCutoff
-                ? "Signup coming soon!"
-                : "Registration closed"}
+                ? labels.signupComingSoon
+                : labels.registrationClosed}
             </Button>
           )
         ) : (
           <p className="text-licorice/65 mt-2 text-center text-sm">
-            No registration required
+            {labels.noRegistrationRequired}
           </p>
         )}
       </aside>

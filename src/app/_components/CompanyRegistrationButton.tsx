@@ -3,8 +3,10 @@
 import type { FairDate } from "@/components/shared/hooks/api/useDates"
 import { isExhibitorSignupOpen } from "@/components/shared/hooks/api/useDates"
 import { Button } from "@/components/ui/button"
+import { getLocaleFromPathname } from "@/lib/i18n"
 import { track } from "@vercel/analytics"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 export function CompanyRegistrationButton({
   signupUrl,
@@ -13,6 +15,8 @@ export function CompanyRegistrationButton({
   signupUrl: string
   dates: FairDate
 }) {
+  const locale = getLocaleFromPathname(usePathname())
+
   if (!isExhibitorSignupOpen(dates)) {
     return null
   }
@@ -25,7 +29,9 @@ export function CompanyRegistrationButton({
           location: "exhibitor_page_registration"
         })
       }>
-      <Button>Exhibitor Signup</Button>
+      <Button>
+        {locale === "sv" ? "Anmälan för utställare" : "Exhibitor Signup"}
+      </Button>
     </Link>
   )
 }

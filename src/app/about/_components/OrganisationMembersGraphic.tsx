@@ -1,8 +1,39 @@
 /* eslint-disable no-useless-assignment */
 "use client"
 import { OrganisationMembersInfo } from "@/app/about/_components/OrganisationMemberInfo"
+import { getLocaleFromPathname, type Locale } from "@/lib/i18n"
 import { CircleDashed } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+
+const organisationMembersGraphicText: Record<
+  Locale,
+  {
+    title: string
+    body: string
+    hosts: string
+    operationsTeam: string
+    projectGroup: string
+    projectManager: string
+  }
+> = {
+  en: {
+    title: "Infographics guide",
+    body: "Each year, more than 200 students join Armada to make the fair happen! Every circle in the graphic represents one of our members, and the color their ranks.",
+    hosts: "Hosts",
+    operationsTeam: "Operations team",
+    projectGroup: "Project group",
+    projectManager: "Project manager"
+  },
+  sv: {
+    title: "Guide till infografiken",
+    body: "Varje år går fler än 200 studenter med i Armada för att göra mässan möjlig! Varje cirkel i grafiken representerar en av våra medlemmar, och färgen visar deras roll.",
+    hosts: "Värdar",
+    operationsTeam: "Operations team",
+    projectGroup: "Projektgruppen",
+    projectManager: "Projektledare"
+  }
+}
 
 /*
 POSSIBLE IMPROVEMENTS:
@@ -11,6 +42,8 @@ better way of disabling circles - currently by opacity
 */
 
 export function OrganisationMembersGraphic() {
+  const locale = getLocaleFromPathname(usePathname())
+  const dict = organisationMembersGraphicText[locale]
   const memberRadius = 4
   const layerRadius = 10
   const updateSpeed = 50 //animation speed in milliseconds
@@ -282,38 +315,36 @@ export function OrganisationMembersGraphic() {
         {hostCircles}
       </svg>
       <figcaption className="bottom-0 opacity-90 md:absolute">
-        <OrganisationMembersInfo title="Infographics guide">
-          Each year, more than 200 students join Armada to make the fair happen!
-          Every circle in the graphic represents one of our members, and the
-          color their ranks.
+        <OrganisationMembersInfo title={dict.title}>
+          {dict.body}
           <ul>
             <li>
               <CircleDashed
                 size={20}
                 className="mr-1 inline-block text-green-700"
               />
-              Hosts
+              {dict.hosts}
             </li>
             <li>
               <CircleDashed
                 size={20}
                 className="mr-1 inline-block text-green-300"
               />
-              Operation team
+              {dict.operationsTeam}
             </li>
             <li>
               <CircleDashed
                 size={20}
                 className="mr-1 inline-block text-red-500"
               />
-              Project group
+              {dict.projectGroup}
             </li>
             <li>
               <CircleDashed
                 size={20}
                 className="mr-1 inline-block text-orange-400"
               />
-              Project manager
+              {dict.projectManager}
             </li>
           </ul>
         </OrganisationMembersInfo>

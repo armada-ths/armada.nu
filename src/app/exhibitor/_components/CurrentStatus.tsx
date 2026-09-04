@@ -1,18 +1,83 @@
 import { StatusModuleItem } from "@/app/exhibitor/_components/StatusModuleItem"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
+import { createLocalePath, type Locale } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import Link from "next/link"
+
+const currentStatusText: Record<
+  Locale,
+  {
+    openingSoonTitle: string
+    openingSoonBody: string
+    priorityOpenTitle: string
+    priorityOpenPrefix: string
+    priorityOpenLink: string
+    priorityOpenSuffix: string
+    registrationOverTitle: string
+    registrationOverPrefix: string
+    contactSales: string
+    registrationOverSuffix: string
+    standardOpenTitle: string
+    standardOpenPrefix: string
+    standardOpenLink: string
+    standardOpenSuffix: string
+  }
+> = {
+  en: {
+    openingSoonTitle: "Registration is opening soon!",
+    openingSoonBody:
+      "We are preparing the registration for next year's Armada.",
+    priorityOpenTitle: "Priority Registration open",
+    priorityOpenPrefix:
+      "During the Priority Registration, you can apply to become an exhibitor at Armada. By doing so, you do not commit to participating, yet you'll be eligible for a discount. Learn more about each stage",
+    priorityOpenLink: "here",
+    priorityOpenSuffix: ".",
+    registrationOverTitle: "Registration Period is over",
+    registrationOverPrefix:
+      "Registration is over for now, but there might be spots left. Please",
+    contactSales: "contact sales",
+    registrationOverSuffix: "if you are interested!",
+    standardOpenTitle: "Standard Registration is open",
+    standardOpenPrefix:
+      "In the Standard Registration, you choose your kit and finalize your order. Once that is done it is time to prepare the practicalities of exhibiting. All of this is done on the Armada registration dashboard. Read more about how registration works",
+    standardOpenLink: "here",
+    standardOpenSuffix: "if you are interested!"
+  },
+  sv: {
+    openingSoonTitle: "Registreringen öppnar snart!",
+    openingSoonBody: "Vi förbereder registreringen inför nästa års Armada.",
+    priorityOpenTitle: "Prioritetsregistreringen är öppen",
+    priorityOpenPrefix:
+      "Under prioritetsregistreringen kan ni ansöka om att bli utställare på Armada. Ansökan innebär inte att ni förbinder er att delta, men ni blir berättigade till rabatt. Läs mer om varje steg",
+    priorityOpenLink: "här",
+    priorityOpenSuffix: ".",
+    registrationOverTitle: "Registreringsperioden är över",
+    registrationOverPrefix:
+      "Registreringen är stängd för tillfället, men det kan finnas platser kvar. Vänligen",
+    contactSales: "kontakta sales",
+    registrationOverSuffix: "om ni är intresserade!",
+    standardOpenTitle: "Standardregistreringen är öppen",
+    standardOpenPrefix:
+      "Under standardregistreringen väljer ni kit och slutför er beställning. När det är klart är det dags att förbereda det praktiska inför ert deltagande. Allt görs i Armadas registreringsportal. Läs mer om hur registreringen fungerar",
+    standardOpenLink: "här",
+    standardOpenSuffix: "om ni är intresserade!"
+  }
+}
 
 //ASSUMPTION: the start date will be first for fair dates
 export async function CurrentStatus() {
+  const locale = await getRequestLocale()
+  const dict = currentStatusText[locale]
+  const withLocale = (path: string) => createLocalePath(path, locale)
   const dates = await fetchDates()
   if (!dates) return null
   const today = Date.now() //.toISOString();
 
   if (today < new Date(dates.ir.start).getTime()) {
     return (
-      <StatusModuleItem title="Registration is opening soon!">
+      <StatusModuleItem title={dict.openingSoonTitle}>
         <p>
-          We are preparing the registration for next year&apos;s Armada.
+          {dict.openingSoonBody}
           {/*  In the
           meanwhile, you are very welcome to report interest in this{" "}
           <Link
@@ -29,17 +94,16 @@ export async function CurrentStatus() {
     today < new Date(dates.ir.end).getTime()
   ) {
     return (
-      <StatusModuleItem title="Priority Registration open">
+      <StatusModuleItem title={dict.priorityOpenTitle}>
         <p>
-          During the Priority Registration, you can apply to become an exhibitor
-          at Armada. By doing so, you do not commit to participating, yet you'll
-          be eligible for a discount. Learn more about each stage{"\u00A0"}
+          {dict.priorityOpenPrefix}
+          {"\u00A0"}
           <Link
             className="whitespace-nowrap underline hover:no-underline"
-            href="/exhibitor/timeline">
-            here
+            href={withLocale("/exhibitor/timeline")}>
+            {dict.priorityOpenLink}
           </Link>
-          .
+          {dict.priorityOpenSuffix}
         </p>
       </StatusModuleItem>
     )
@@ -48,15 +112,15 @@ export async function CurrentStatus() {
     today < new Date(dates.fr.start).getTime()
   ) {
     return (
-      <StatusModuleItem title="Registration Period is over">
+      <StatusModuleItem title={dict.registrationOverTitle}>
         <p>
-          Registration is over for now, but there might be spots left. Please{" "}
+          {dict.registrationOverPrefix}{" "}
           <Link
             className="text-snow underline hover:no-underline"
             href="mailto:sales@armada.nu">
-            contact sales
+            {dict.contactSales}
           </Link>{" "}
-          if you are interested!
+          {dict.registrationOverSuffix}
         </p>
       </StatusModuleItem>
     )
@@ -65,18 +129,16 @@ export async function CurrentStatus() {
     today < new Date(dates.fr.end).getTime()
   ) {
     return (
-      <StatusModuleItem title="Standard Registration is open">
+      <StatusModuleItem title={dict.standardOpenTitle}>
         <p>
-          In the Standard Registration, you choose your kit and finalize your
-          order. Once that is done it is time to prepare the practicalities of
-          exhibiting. All of this is done on the Armada registration dashboard.
-          Read more about how registration works{"\u00A0"}
+          {dict.standardOpenPrefix}
+          {"\u00A0"}
           <Link
             className="text-snow whitespace-nowrap underline hover:no-underline"
-            href="/exhibitor/timeline">
-            here
+            href={withLocale("/exhibitor/timeline")}>
+            {dict.standardOpenLink}
           </Link>{" "}
-          if you are interested!
+          {dict.standardOpenSuffix}
         </p>
       </StatusModuleItem>
     )

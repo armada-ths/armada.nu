@@ -10,6 +10,7 @@ import { Bebas_Neue, Inter, Lato } from "next/font/google"
 import { FooterGuard } from "@/components/shared/FooterGuard"
 import { DevToolbar } from "@/components/shared/VercelToolbar"
 import { HEX_COLORS } from "@/lib/colors"
+import { getRequestLocale } from "@/lib/i18n-server"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
@@ -86,11 +87,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getRequestLocale()
   const signupUrl = await getSignupUrl()
 
   return (
     <html
-      lang="en"
+      lang={locale}
       style={{
         colorScheme: "light"
       }}>
