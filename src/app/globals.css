@@ -48,6 +48,8 @@
   /* Pineapple */
   --chart-5: var(--color-coconut);
   /* Coconut (light) */
+  --chart-6: var(--color-melon-light);
+  /* Melon */
 
   /* Active Dot */
   --chart-active-dot: var(--color-licorice);
@@ -80,6 +82,7 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
 
   --spacing-boxShadowX: 4px;
   --spacing-boxShadowY: 4px;
@@ -101,6 +104,7 @@
   --breakpoint-2xl: 1536px;
 
   --color-melon: #48bc8e;
+  --color-melon-light: #50d29e;
 
   --color-grapefruit: #e73953;
   --color-licorice: #2d2d2c;
