@@ -8,12 +8,16 @@ import {
   fetchPrograms
 } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
+import { translations } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { Suspense } from "react"
 
 export default async function ExhibitorsPage() {
+  const locale = await getRequestLocale()
+  const dict = translations[locale]
   const showExhibitors = await feature("EXHIBITOR_PAGE")
   if (!showExhibitors) {
-    return <ComingSoonPage title="Companies" />
+    return <ComingSoonPage title={dict.companies} />
   }
 
   const exhibitors = await fetchExhibitors({
@@ -34,7 +38,11 @@ export default async function ExhibitorsPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary>
-        <Page.Header>Companies at the Fair 2025</Page.Header>{" "}
+        <Page.Header>
+          {locale === "sv"
+            ? "Företag på mässan 2025"
+            : "Companies at the Fair 2025"}
+        </Page.Header>{" "}
         {/* Remember to change/remove year when updated! */}
         <Suspense>
           <ExhibitorSearch

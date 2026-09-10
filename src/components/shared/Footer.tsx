@@ -1,6 +1,7 @@
 "use client"
 
 import { track } from "@vercel/analytics"
+import { usePathname } from "next/navigation"
 import { SiInstagram, SiTiktok } from "react-icons/si"
 
 import { LinkedInIcon } from "@/components/shared/icons/LinkedInIcon"
@@ -12,11 +13,23 @@ import {
 } from "@/components/ui/accordion"
 import Image from "next/image"
 
-function FooterAffiliations() {
+import {
+  createLocalePath,
+  getLocaleFromPathname,
+  translations
+} from "@/lib/i18n"
+
+function FooterAffiliations({
+  inPartnershipWith,
+  memberOf
+}: {
+  inPartnershipWith: string
+  memberOf: string
+}) {
   return (
     <div className="flex items-start justify-center gap-6">
       <div className="flex w-28 flex-col items-center gap-2 text-center">
-        <p className="font-semibold">In partnership with:</p>
+        <p className="font-semibold">{inPartnershipWith}</p>
         <a href="https://sture.se/">
           <Image
             src="/sture-logo-up.png"
@@ -29,7 +42,7 @@ function FooterAffiliations() {
         </a>
       </div>
       <div className="flex w-40 flex-col items-center gap-2 text-center">
-        <p className="font-semibold">Member of:</p>
+        <p className="font-semibold">{memberOf}</p>
         <a href="https://diversitycharter.se/">
           <Image
             src="/LogoDCS-300dpi.png"
@@ -46,8 +59,23 @@ function FooterAffiliations() {
 }
 
 export function Footer({ signupUrl }: { signupUrl: string }) {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
+  const dict = translations[locale]
+  const nextLocale = locale === "en" ? "sv" : "en"
+  const withLocale = (path: string) => createLocalePath(path, locale)
+
   return (
     <footer className="bg-licorice text-snow flex w-full flex-col items-center py-8">
+      <div className="mb-6 flex items-center gap-3">
+        <a
+          href={createLocalePath(pathname, nextLocale)}
+          className="text-snow border-snow hover:bg-snow hover:text-licorice rounded-full border px-3 py-1 text-sm font-semibold transition-colors"
+          aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
+          {dict.switchLanguage}
+        </a>
+      </div>
+
       {/* Divider */}
       <hr className="mb-6 h-px w-2/3 bg-slate-600 opacity-40" />
 
@@ -55,7 +83,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
       <div className="hidden w-full max-w-7xl lg:flex lg:flex-row lg:items-start lg:justify-between lg:gap-6 lg:px-12 lg:text-left">
         {/* Social media */}
         <div className="space-y-1">
-          <p className="font-semibold">Follow us on:</p>
+          <p className="font-semibold">{dict.followUs}</p>
           <div className="flex flex-col items-center gap-1 lg:items-start">
             <a
               href="https://linkedin.com/company/armada"
@@ -84,33 +112,37 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
 
         {/* Students */}
         <div className="space-y-1">
-          <p className="font-semibold">STUDENTS</p>
+          <p className="font-semibold">{dict.students}</p>
           <div className="flex flex-col gap-1">
             <a
-              href="/student/recruitment"
+              href={withLocale("/student/recruitment")}
               className="hover:text-melon"
               onClick={() =>
                 track("student_signup_click", {
                   location: "footer_student_recruitment_desktop"
                 })
               }>
-              Recruitment
+              {dict.recruitment}
             </a>
-            <a href="/student/events" className="hover:text-melon">
-              Events
+            <a
+              href={withLocale("/student/events")}
+              className="hover:text-melon">
+              {dict.events}
             </a>
-            <a href="/student/exhibitors" className="hover:text-melon">
-              Exhibitors
+            <a
+              href={withLocale("/student/exhibitors")}
+              className="hover:text-melon">
+              {dict.exhibitorsList}
             </a>
-            <a href="/student/map" className="hover:text-melon">
-              Map
+            <a href={withLocale("/student/map")} className="hover:text-melon">
+              {dict.map}
             </a>
           </div>
         </div>
 
         {/* Exhibitors */}
         <div className="space-y-1">
-          <p className="font-semibold">EXHIBITORS</p>
+          <p className="font-semibold">{dict.exhibitors}</p>
           <div className="flex flex-col gap-1">
             <a
               href={signupUrl}
@@ -120,54 +152,63 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                   location: "footer_exhibitor_desktop"
                 })
               }>
-              Registration
+              {dict.registration}
             </a>
-            <a href="/exhibitor/packages" className="hover:text-melon">
-              Kits
+            <a
+              href={withLocale("/exhibitor/packages")}
+              className="hover:text-melon">
+              {dict.kits}
             </a>
-            <a href="/exhibitor" className="hover:text-melon">
-              Why Armada
+            <a href={withLocale("/exhibitor")} className="hover:text-melon">
+              {dict.whyArmada}
             </a>
-            <a href="/exhibitor/timeline" className="hover:text-melon">
-              Timeline
+            <a
+              href={withLocale("/exhibitor/timeline")}
+              className="hover:text-melon">
+              {dict.timeline}
             </a>
-            <a href="/exhibitor/events" className="hover:text-melon">
-              Events
+            <a
+              href={withLocale("/exhibitor/events")}
+              className="hover:text-melon">
+              {dict.events}
             </a>
           </div>
         </div>
 
         {/* About */}
         <div className="space-y-1">
-          <p className="font-semibold">ABOUT</p>
+          <p className="font-semibold">{dict.about}</p>
           <div className="flex flex-col gap-1">
-            <a href="/about" className="hover:text-melon">
-              About Armada
+            <a href={withLocale("/about")} className="hover:text-melon">
+              {dict.aboutArmada}
             </a>
-            <a href="/about/team" className="hover:text-melon">
-              Team
+            <a href={withLocale("/about/team")} className="hover:text-melon">
+              {dict.team}
             </a>
             <a
-              href="/blog"
+              href={withLocale("/blog")}
               className="hover:text-melon"
               onClick={() =>
                 track("blog_click", {
                   location: "footer_blog_desktop"
                 })
               }>
-              Blog
+              {dict.blog}
             </a>
           </div>
         </div>
 
         {/* Partnerships and affiliations */}
-        <FooterAffiliations />
+        <FooterAffiliations
+          inPartnershipWith={dict.inPartnershipWith}
+          memberOf={dict.memberOf}
+        />
       </div>
       {/* Mobile accordion footer */}
       <div className="w-full max-w-7xl px-6 lg:hidden">
         {/* Social media */}
         <div className="mb-6 flex w-full flex-col gap-3 pl-4">
-          <p className="font-semibold">Follow us on:</p>
+          <p className="font-semibold">{dict.followUs}</p>
           <div className="flex items-center gap-6">
             <a
               href="https://linkedin.com/company/armada"
@@ -198,29 +239,31 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           {/* Students */}
           <AccordionItem value="students">
             <AccordionTrigger className="text-snow bg-licorice">
-              Students
+              {dict.students}
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
                 <a
-                  href="/student/recruitment"
+                  href={withLocale("/student/recruitment")}
                   onClick={() =>
                     track("student_signup_click", {
                       location: "footer_student_recruitment_mobile"
                     })
                   }>
-                  Recruitment
+                  {dict.recruitment}
                 </a>
-                <a href="/student/events">Events</a>
-                <a href="/student/exhibitors">Exhibitors</a>
-                <a href="/student/map">Map</a>
+                <a href={withLocale("/student/events")}>{dict.events}</a>
+                <a href={withLocale("/student/exhibitors")}>
+                  {dict.exhibitorsList}
+                </a>
+                <a href={withLocale("/student/map")}>{dict.map}</a>
               </div>
             </AccordionContent>
           </AccordionItem>
           {/* Exhibitors */}
           <AccordionItem value="exhibitors">
             <AccordionTrigger className="text-snow bg-licorice">
-              Exhibitors
+              {dict.exhibitors}
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
@@ -231,32 +274,32 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                       location: "footer_exhibitor_mobile"
                     })
                   }>
-                  Registration
+                  {dict.registration}
                 </a>
-                <a href="/exhibitor/packages">Kits</a>
-                <a href="/exhibitor">Why Armada</a>
-                <a href="/exhibitor/timeline">Timeline</a>
-                <a href="/exhibitor/events">Events</a>
+                <a href={withLocale("/exhibitor/packages")}>{dict.kits}</a>
+                <a href={withLocale("/exhibitor")}>{dict.whyArmada}</a>
+                <a href={withLocale("/exhibitor/timeline")}>{dict.timeline}</a>
+                <a href={withLocale("/exhibitor/events")}>{dict.events}</a>
               </div>
             </AccordionContent>
           </AccordionItem>
           {/* About */}
           <AccordionItem value="about">
             <AccordionTrigger className="text-snow bg-licorice">
-              About
+              {dict.about}
             </AccordionTrigger>
             <AccordionContent className="bg-licorice">
               <div className="flex flex-col gap-2">
-                <a href="/about">About Armada</a>
-                <a href="/about/team">Team</a>
+                <a href={withLocale("/about")}>{dict.aboutArmada}</a>
+                <a href={withLocale("/about/team")}>{dict.team}</a>
                 <a
-                  href="/blog"
+                  href={withLocale("/blog")}
                   onClick={() =>
                     track("blog_click", {
                       location: "footer_blog_mobile"
                     })
                   }>
-                  Blog
+                  {dict.blog}
                 </a>
               </div>
             </AccordionContent>
@@ -264,7 +307,10 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
         </Accordion>
         {/* Partnerships and affiliations */}
         <div className="mt-6 w-full">
-          <FooterAffiliations />
+          <FooterAffiliations
+            inPartnershipWith={dict.inPartnershipWith}
+            memberOf={dict.memberOf}
+          />
         </div>
       </div>
     </footer>

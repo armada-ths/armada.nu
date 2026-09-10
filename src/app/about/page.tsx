@@ -4,62 +4,62 @@ import { OrganisationMembersGraphic } from "@/app/about/_components/Organisation
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
+import { pageTranslations } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { Metadata } from "next"
 import Link from "next/link"
 
-export const metadata: Metadata = {
-  title: `About Armada`,
-  description: "Learn more about Armada"
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  const dict = pageTranslations[locale].aboutPage
+
+  return {
+    title: dict.metadataTitle,
+    description: dict.metadataDescription
+  }
 }
 
 export default async function RecruitmentPage() {
+  const locale = await getRequestLocale()
+  const dict = pageTranslations[locale].aboutPage
   const showAboutPage = await feature("ABOUT_PAGE")
   if (!showAboutPage) {
-    return <ComingSoonPage title="About Armada" />
+    return <ComingSoonPage title={dict.comingSoonTitle} />
   }
 
   const photoSrc: { source: string; altText: string }[] = [
     {
       source: "/fair_pictures/23031965122_efd3a80707_c.jpg",
-      altText: "Students laying down carpet"
+      altText: dict.photos[0]
     },
     {
       source: "/fair_pictures/53396499463_86ddb61379_k.jpg",
-      altText: "Student talking with company representative"
+      altText: dict.photos[1]
     },
     {
       source: "/fair_pictures/49121988801_f0b111943f_k.jpg",
-      altText: "Crowd walking around the Armada fair"
+      altText: dict.photos[2]
     },
     {
       source: "/fair_pictures/49122130686_297ea7d00a_o.jpg",
-      altText: "Student interacting with robot"
+      altText: dict.photos[3]
     }
   ]
 
   return (
     <Page.Background withIndents>
       <Page.Boundary maxWidth={750}>
-        <Page.Header>About Armada</Page.Header>
+        <Page.Header>{dict.heading}</Page.Header>
         <PhotoSlideCarousel photoSrc={photoSrc} />
+        <P className="mt-4">{dict.intro}</P>
         <P className="mt-4">
-          Armada was founded in 1981 and has since then organized a career fair
-          that has grown to become one of the largest in scandinavia. We exist
-          to connect students to their dream employer and have since come up
-          with different events and happenings to create personal connections
-          between students and employers.
-        </P>
-        <P className="mt-4">
-          Each year, Armada goes from 1 student, the Project Manager, to over
-          200 student volunteers managing a fair over two days, in several
-          locations and 20 000 visitors. As Armada is fully owned by{" "}
+          {dict.ownershipPrefix}{" "}
           <Link
             className="underline hover:no-underline"
             href="https://thskth.se/en/">
-            THS
+            {dict.thsLinkLabel}
           </Link>
-          , the student union at KTH, any profit Armada makes goes back to the
-          students, funding THS initiatives for a better student life.
+          {dict.ownershipSuffix}
         </P>
 
         <div className="flex w-full justify-center">
@@ -67,48 +67,22 @@ export default async function RecruitmentPage() {
         </div>
 
         <div className="mt-8">
-          <Page.Header tier="secondary">PM</Page.Header>
-          <P>
-            The Project Manager (PM) is elected by the THS board in november.
-            The PM is working full time with Armada and is responsible for the
-            entire project. They usually have been part of Armada before taking
-            up this role.
-          </P>
+          <Page.Header tier="secondary">{dict.pmHeading}</Page.Header>
+          <P>{dict.pmBody}</P>
         </div>
         <div className="mt-8">
-          <Page.Header tier="secondary">Project group</Page.Header>
-          <P>
-            The Project Group (PG) is chosen by the Project Manager in
-            December/January. They then work with Armada the whole calendar
-            year. These are students who dedicate around 10 hours per week to
-            making each Armada the best fair yet. The PG really gets close
-            learning to work together, get to try to shoulder big
-            responsibilities in a supportive and collaborative environment and
-            most of all, have really fun together. Everyone who’s been a PG
-            knows, there is a before and an after Armada.
-          </P>
+          <Page.Header tier="secondary">{dict.projectGroupHeading}</Page.Header>
+          <P>{dict.projectGroupBody}</P>
         </div>
         <div className="mt-8">
-          <Page.Header tier="secondary">Operations team</Page.Header>
-          <P>
-            The operations team are volunteers recruited in the spring, around
-            April/May. They are Coordinators, responsible for a specific issue
-            or process, Team Leaders, responsible for a team of Hosts and
-            Developers, working with the Armada IT suite. Being an OT gives a
-            good understanding of how Armada works within, and is the perfect
-            first leadership experience. It is a lot of fun, and gives a lot of
-            learning opportunities, for a medium amount of work.
-          </P>
+          <Page.Header tier="secondary">
+            {dict.operationsTeamHeading}
+          </Page.Header>
+          <P>{dict.operationsTeamBody}</P>
         </div>
         <div className="mt-8">
-          <Page.Header tier="secondary">Hosts</Page.Header>
-          <P>
-            The Hosts join Armada in the autumn, and being a Hosts is a special
-            experience. Most hosts are career fair hosts, helping a couple of
-            exhibitors to the fair and building the fair. You get to know your
-            team, attend team buildings together and be a part of the Armada
-            Grand Banquet - the most fancy party at KTH.{" "}
-          </P>
+          <Page.Header tier="secondary">{dict.hostsHeading}</Page.Header>
+          <P>{dict.hostsBody}</P>
         </div>
       </Page.Boundary>
     </Page.Background>

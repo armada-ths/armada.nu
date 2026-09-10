@@ -8,6 +8,7 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover"
 import { Textarea } from "@/components/ui/textarea"
+import { getLocaleFromPathname, type Locale } from "@/lib/i18n"
 import { Headset, X } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Script from "next/script"
@@ -18,8 +19,74 @@ function isRecaptchaAllowedHostname(hostname: string) {
   return hostname === "armada.nu" || hostname === "staging.armada.nu"
 }
 
+const contactSalesText: Record<
+  Locale,
+  {
+    trigger: string
+    title: string
+    name: string
+    namePlaceholder: string
+    email: string
+    emailPlaceholder: string
+    phone: string
+    company: string
+    companyPlaceholder: string
+    message: string
+    messagePlaceholder: string
+    send: string
+    sending: string
+    missingRecaptcha: string
+    invalidDomain: string
+    recaptchaNotReady: string
+    submitted: string
+    submitFailed: string
+  }
+> = {
+  en: {
+    trigger: "Contact Sales",
+    title: "Contact",
+    name: "Name",
+    namePlaceholder: "Your name",
+    email: "Email",
+    emailPlaceholder: "Your email",
+    phone: "Phone",
+    company: "Company",
+    companyPlaceholder: "Your company",
+    message: "Message",
+    messagePlaceholder: "Enter your message",
+    send: "Send",
+    sending: "Sending...",
+    missingRecaptcha: "reCAPTCHA site key is missing.",
+    invalidDomain: "reCAPTCHA is not configured for this domain.",
+    recaptchaNotReady: "reCAPTCHA is not ready yet. Please try again.",
+    submitted: "Submitted! Our sales person will get in touch with you soon!",
+    submitFailed: "Submit failed. Please try again."
+  },
+  sv: {
+    trigger: "Kontakta sales",
+    title: "Kontakt",
+    name: "Namn",
+    namePlaceholder: "Ditt namn",
+    email: "E-post",
+    emailPlaceholder: "Din e-post",
+    phone: "Telefon",
+    company: "Företag",
+    companyPlaceholder: "Ditt företag",
+    message: "Meddelande",
+    messagePlaceholder: "Skriv ditt meddelande",
+    send: "Skicka",
+    sending: "Skickar...",
+    missingRecaptcha: "reCAPTCHA site key saknas.",
+    invalidDomain: "reCAPTCHA är inte konfigurerat för den här domänen.",
+    recaptchaNotReady: "reCAPTCHA är inte redo ännu. Försök igen.",
+    submitted: "Skickat! Vår salesansvariga kontaktar er snart.",
+    submitFailed: "Det gick inte att skicka. Försök igen."
+  }
+}
+
 export function CompanySubmissionPopover() {
   const pathname = usePathname()
+  const dict = contactSalesText[getLocaleFromPathname(pathname)]
 
   // Don't show on the order page
   if (pathname === "/exhibitor/order") {
@@ -64,18 +131,18 @@ export function CompanySubmissionPopover() {
 
   async function sendMessage() {
     if (!siteKey) {
-      toast.error("reCAPTCHA site key is missing.")
+      toast.error(dict.missingRecaptcha)
       return
     }
 
     if (!isAllowedHost) {
-      toast.error("reCAPTCHA is not configured for this domain.")
+      toast.error(dict.invalidDomain)
       return
     }
 
     const grecaptchaEnterprise = window.grecaptcha?.enterprise
     if (!grecaptchaEnterprise) {
-      toast.error("reCAPTCHA is not ready yet. Please try again.")
+      toast.error(dict.recaptchaNotReady)
       return
     }
 
@@ -103,15 +170,13 @@ export function CompanySubmissionPopover() {
           company: "",
           message: ""
         })
-        toast.success(
-          "Submitted! Our sales person will get in touch with you soon!"
-        )
+        toast.success(dict.submitted)
         setIsOpen(false)
       } else {
-        toast.error("Submit failed. Please try again.")
+        toast.error(dict.submitFailed)
       }
     } catch {
-      toast.error("Submit failed. Please try again.")
+      toast.error(dict.submitFailed)
     } finally {
       setIsSubmitting(false)
     }
@@ -131,29 +196,29 @@ export function CompanySubmissionPopover() {
             className="bg-snow text-licorice flex flex-row rounded-md p-2"
             onClick={() => setIsOpen(!isOpen)}>
             <Headset className="mr-1" />
-            Contact Sales
+            {dict.trigger}
           </div>
         </PopoverTrigger>
         <PopoverContent side="top" className="bg-licorice z-10 ml-4 w-auto">
           <div className="bg-licorice p-4 shadow-md filter">
             <div className="flex flex-col gap-2">
-              <p className="text-l font-semibold">Contact</p>
+              <p className="text-l font-semibold">{dict.title}</p>
               <fieldset className="flex flex-col">
                 <label className="mb-1 text-sm" htmlFor="name">
-                  Name
+                  {dict.name}
                 </label>
                 <Input
                   id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleFieldChange}
-                  placeholder="Your name"
+                  placeholder={dict.namePlaceholder}
                 />
               </fieldset>
 
               <fieldset className="flex flex-col">
                 <label className="mb-1 text-sm" htmlFor="email">
-                  Email
+                  {dict.email}
                 </label>
                 <Input
                   id="email"
@@ -161,13 +226,13 @@ export function CompanySubmissionPopover() {
                   type="email"
                   value={formData.email}
                   onChange={handleFieldChange}
-                  placeholder="Your email"
+                  placeholder={dict.emailPlaceholder}
                 />
               </fieldset>
 
               <fieldset className="flex flex-col">
                 <label className="mb-1 text-sm" htmlFor="phone">
-                  Phone
+                  {dict.phone}
                 </label>
                 <Input
                   id="phone"
@@ -181,20 +246,20 @@ export function CompanySubmissionPopover() {
 
               <fieldset className="flex flex-col">
                 <label className="mb-1 text-sm" htmlFor="company">
-                  Company
+                  {dict.company}
                 </label>
                 <Input
                   id="company"
                   name="company"
                   value={formData.company}
                   onChange={handleFieldChange}
-                  placeholder="Your company"
+                  placeholder={dict.companyPlaceholder}
                 />
               </fieldset>
 
               <fieldset className="flex flex-col">
                 <label className="mb-1 text-sm" htmlFor="message">
-                  Message
+                  {dict.message}
                 </label>
                 <Textarea
                   id="message"
@@ -202,7 +267,7 @@ export function CompanySubmissionPopover() {
                   value={formData.message}
                   onChange={handleFieldChange}
                   className="bg-snow text-licorice placeholder:text-licorice/50"
-                  placeholder="Enter your message"
+                  placeholder={dict.messagePlaceholder}
                 />
               </fieldset>
 
@@ -211,7 +276,7 @@ export function CompanySubmissionPopover() {
                   className="bg-grapefruit text-snow mt-2"
                   onClick={sendMessage}
                   disabled={!formFilled || isSubmitting}>
-                  {isSubmitting ? "Sending..." : "Send"}
+                  {isSubmitting ? dict.sending : dict.send}
                 </Button>
               </div>
 

@@ -2,10 +2,34 @@ import { OrderForm } from "@/components/order/OrderForm"
 import { Page } from "@/components/shared/Page"
 import { fetchDates } from "@/components/shared/hooks/api/useDates"
 import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
+import { type Locale } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { DateTime } from "luxon"
 import { cookies } from "next/headers"
 
+const orderText: Record<
+  Locale,
+  { heading: string; noAccess: string; closed: string }
+> = {
+  en: {
+    heading: "Order Form (Exhibitors)",
+    noAccess:
+      "Form has been closed due to a high volume of orders. Sorry for the inconvenience! Feel free to still drop by the Exhibitor Lounge.",
+    closed:
+      "The order form is currently closed. You can place orders during the fair opening hours, but no later than 30 minutes before the end of each day."
+  },
+  sv: {
+    heading: "Beställningsformulär (utställare)",
+    noAccess:
+      "Formuläret har stängts på grund av en hög mängd beställningar. Vi beklagar besväret! Kom gärna förbi Exhibitor Lounge ändå.",
+    closed:
+      "Beställningsformuläret är stängt just nu. Ni kan lägga beställningar under mässans öppettider, men senast 30 minuter före slutet av varje dag."
+  }
+}
+
 export default async function OrderPage() {
+  const locale = await getRequestLocale()
+  const dict = orderText[locale]
   const cookieStore = await cookies()
   const accessCookie = cookieStore.get("_ea")?.value
   const secret = process.env.EXPO_ACCESS_TOKEN
@@ -61,24 +85,13 @@ export default async function OrderPage() {
         <OrderForm exhibitors={exhibitors} />
       ) : !hasAccess ? (
         <div className="flex flex-col items-center justify-center p-8 text-center">
-          <h1 className="mb-4 text-2xl font-semibold">
-            Order Form (Exhibitors)
-          </h1>
-          <p>
-            Form has been closed due to a high volume of orders. Sorry for the
-            inconvenience! Feel free to still drop by the Exhibitor Lounge.
-          </p>
+          <h1 className="mb-4 text-2xl font-semibold">{dict.heading}</h1>
+          <p>{dict.noAccess}</p>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center p-8 text-center">
-          <h1 className="mb-4 text-2xl font-semibold">
-            Order Form (Exhibitors)
-          </h1>
-          <p>
-            The order form is currently closed. You can place orders during the
-            fair opening hours, but no later than 30 minutes before the end of
-            each day.
-          </p>
+          <h1 className="mb-4 text-2xl font-semibold">{dict.heading}</h1>
+          <p>{dict.closed}</p>
         </div>
       )}
     </Page.Background>

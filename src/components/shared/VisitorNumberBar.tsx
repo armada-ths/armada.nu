@@ -1,9 +1,19 @@
 import { NumberCountUp } from "@/app/exhibitor/_components/NumberCountUp"
 
 export function VisitorNumberBar({
-  disableAnimation = false
+  disableAnimation = false,
+  labels = {
+    visits: "visits",
+    students: "Students",
+    networking: "of networking"
+  }
 }: {
   disableAnimation?: boolean
+  labels?: {
+    visits: string
+    students: string
+    networking: string
+  }
 }) {
   return (
     <div className="bg-melon border-licorice w-full border-y-2 p-6">
@@ -15,7 +25,7 @@ export function VisitorNumberBar({
             duration={disableAnimation ? 0 : 1.2}
             isVisit
           />
-          <p>visits</p>
+          <p>{labels.visits}</p>
         </div>
         <div className="font-bebas-neue w-3/12 font-medium text-stone-900">
           <NumberCountUp
@@ -23,7 +33,7 @@ export function VisitorNumberBar({
             end={15000}
             duration={disableAnimation ? 0 : 1.2}
           />
-          <p>Students</p>
+          <p>{labels.students}</p>
         </div>
         <div className="font-bebas-neue w-3/12 font-medium text-stone-900">
           <NumberCountUp
@@ -32,7 +42,7 @@ export function VisitorNumberBar({
             duration={disableAnimation ? 0 : 1.2}
             isDays
           />
-          <p>of networking</p>
+          <p>{labels.networking}</p>
         </div>
       </div>
     </div>

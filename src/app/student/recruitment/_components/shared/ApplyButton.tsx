@@ -2,8 +2,10 @@
 
 import { TrackingConfig } from "@/components/shared/TrackedLink"
 import { Button } from "@/components/ui/button"
+import { getLocaleFromPathname, type Locale } from "@/lib/i18n"
 import { track } from "@vercel/analytics"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 interface ApplyButtonProps {
@@ -17,7 +19,7 @@ interface ApplyButtonProps {
   tracking?: TrackingConfig
 }
 
-function formatDeadlineCountdown(endDate: Date): string {
+function formatDeadlineCountdown(endDate: Date, locale: Locale): string {
   const msLeft = endDate.getTime() - Date.now()
   if (msLeft <= 0) return ""
   const totalSeconds = Math.floor(msLeft / 1000)
@@ -25,11 +27,15 @@ function formatDeadlineCountdown(endDate: Date): string {
   const hours = Math.floor((totalSeconds % 86400) / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
-  if (days > 3) return `${days} days left to apply`
-  if (days > 0) return `${days}d ${hours}h ${minutes}m left to apply`
-  if (hours > 0) return `${hours}h ${minutes}m left to apply`
-  if (minutes > 0) return `${minutes}m ${seconds}s left to apply`
-  return `${seconds}s left to apply`
+  const suffix = locale === "sv" ? "kvar att ansöka" : "left to apply"
+  if (days > 3)
+    return locale === "sv"
+      ? `${days} dagar ${suffix}`
+      : `${days} days ${suffix}`
+  if (days > 0) return `${days}d ${hours}h ${minutes}m ${suffix}`
+  if (hours > 0) return `${hours}h ${minutes}m ${suffix}`
+  if (minutes > 0) return `${minutes}m ${seconds}s ${suffix}`
+  return `${seconds}s ${suffix}`
 }
 
 export function ApplyButton({
@@ -42,8 +48,11 @@ export function ApplyButton({
   endDate,
   tracking
 }: ApplyButtonProps) {
+  const locale = getLocaleFromPathname(usePathname())
   const [isDisabled, setIsDisabled] = useState(false)
-  const [disabledText, setDisabledText] = useState("Recruitment is closed")
+  const [disabledText, setDisabledText] = useState(
+    locale === "sv" ? "Rekryteringen är stängd" : "Recruitment is closed"
+  )
   const [countdown, setCountdown] = useState<string | null>(null)
 
   useEffect(() => {
@@ -66,14 +75,20 @@ export function ApplyButton({
           month: "long",
           year: "numeric"
         })
-        setDisabledText(`Application opens on ${formattedStartDate}`)
+        setDisabledText(
+          locale === "sv"
+            ? `Ansökan öppnar ${formattedStartDate}`
+            : `Application opens on ${formattedStartDate}`
+        )
         setIsDisabled(true)
         setCountdown(null)
         return
       }
 
       if (isAfterEnd) {
-        setDisabledText("Recruitment is closed")
+        setDisabledText(
+          locale === "sv" ? "Rekryteringen är stängd" : "Recruitment is closed"
+        )
         setIsDisabled(true)
         setCountdown(null)
         return
@@ -81,14 +96,14 @@ export function ApplyButton({
 
       setIsDisabled(false)
       setCountdown(
-        hasValidEndDate ? formatDeadlineCountdown(parsedEndDate!) : null
+        hasValidEndDate ? formatDeadlineCountdown(parsedEndDate!, locale) : null
       )
     }
 
     update()
     const interval = setInterval(update, 1000)
     return () => clearInterval(interval)
-  }, [startDate, endDate])
+  }, [startDate, endDate, locale])
 
   if (isDisabled) {
     return (
@@ -108,7 +123,7 @@ export function ApplyButton({
               ? () => track(tracking.eventName, tracking.eventData)
               : undefined
           }>
-          Apply to Armada!
+          {locale === "sv" ? "Ansök till Armada!" : "Apply to Armada!"}
         </Link>
       </Button>
       {countdown && (

@@ -4,11 +4,13 @@ import { P } from "@/app/_components/Paragraph"
 import BadgeCollection from "@/app/student/exhibitors/_components/BadgeCollection"
 import { Page } from "@/components/shared/Page"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { getLocaleFromPathname } from "@/lib/i18n"
 import { cn, shouldBypassNextImageOptimization } from "@/lib/utils"
 
 import { Globe } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function ExhibitorDetails({
@@ -16,6 +18,7 @@ export default function ExhibitorDetails({
 }: {
   exhibitor: Exhibitor
 }) {
+  const locale = getLocaleFromPathname(usePathname())
   const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
   const shouldBypassLogoOptimization =
     shouldBypassNextImageOptimization(logoSrc)
@@ -85,7 +88,11 @@ export default function ExhibitorDetails({
             <Image
               className="h-80 w-auto rounded-lg object-contain"
               src={exhibitor.mapImg ?? ""}
-              alt="Failed to load image"
+              alt={
+                locale === "sv"
+                  ? "Karta över utställarens plats"
+                  : "Map of exhibitor location"
+              }
               unoptimized={shouldBypassMapOptimization}
               width={300}
               height={300}
@@ -102,7 +109,7 @@ export default function ExhibitorDetails({
         {hasIndustries && (
           <div>
             <Page.Header tier="secondary" className="mt-2 pl-1">
-              Industries
+              {locale === "sv" ? "Branscher" : "Industries"}
             </Page.Header>
             <BadgeCollection
               className="mt-2 flex-wrap gap-2"
@@ -115,7 +122,7 @@ export default function ExhibitorDetails({
         {hasEmployments && (
           <div>
             <Page.Header tier="secondary" className="mt-2 pl-1">
-              Employments
+              {locale === "sv" ? "Anställningsformer" : "Employments"}
             </Page.Header>
             <BadgeCollection
               className="mt-2 gap-2"
@@ -128,7 +135,7 @@ export default function ExhibitorDetails({
         {hasPrograms && (
           <div>
             <Page.Header tier="secondary" className="mt-2 pl-1">
-              Programs
+              {locale === "sv" ? "Program" : "Programs"}
             </Page.Header>
             <BadgeCollection
               className="mt-2 gap-2"

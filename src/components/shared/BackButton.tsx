@@ -1,13 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
+import { getLocaleFromPathname } from "@/lib/i18n"
+import { usePathname, useRouter } from "next/navigation"
 
 export function BackButton() {
   const router = useRouter()
+  const locale = getLocaleFromPathname(usePathname())
   return (
     <Button variant="neutral" onClick={() => router.back()}>
-      Go Back
+      {locale === "sv" ? "Gå tillbaka" : "Go Back"}
     </Button>
   )
 }

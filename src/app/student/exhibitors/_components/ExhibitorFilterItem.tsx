@@ -14,6 +14,11 @@ interface Props {
   programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
+  labels: {
+    filterEmployment: string
+    filterIndustry: string
+    filterProgram: string
+  }
 }
 
 export default function ExhibitorFilterItem({
@@ -22,7 +27,8 @@ export default function ExhibitorFilterItem({
   industries,
   programs,
   searchQueryName,
-  onFilterChange
+  onFilterChange,
+  labels
 }: Props) {
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
   const [selectedEmploymentIds, setSelectedEmploymentIds] = useState<string[]>(
@@ -138,7 +144,7 @@ export default function ExhibitorFilterItem({
       <MultiSelect
         options={employmentOptions}
         onValueChange={setSelectedEmploymentIds}
-        placeholder="Filter by Employment"
+        placeholder={labels.filterEmployment}
         popoverClassName="
       w-(--radix-popover-trigger-width)
       min-w-full
@@ -151,7 +157,7 @@ export default function ExhibitorFilterItem({
       <MultiSelect
         options={industriesOptions}
         onValueChange={setSelectedIndustriesIds}
-        placeholder="Filter by Industry"
+        placeholder={labels.filterIndustry}
         popoverClassName="
             w-(--radix-popover-trigger-width) 
             min-w-full 
@@ -165,7 +171,7 @@ export default function ExhibitorFilterItem({
       <MultiSelect
         options={programOptions}
         onValueChange={setSelectedProgramsIds}
-        placeholder="Filter by Program"
+        placeholder={labels.filterProgram}
         popoverClassName="
             w-(--radix-popover-trigger-width) 
             min-w-full

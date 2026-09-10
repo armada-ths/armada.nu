@@ -1,8 +1,10 @@
 import { getSignupUrl } from "@/components/shared/feature"
 import { Button } from "@/components/ui/button"
+import { getRequestLocale } from "@/lib/i18n-server"
 import Link from "next/link"
 
 export async function RegisterBanner() {
+  const locale = await getRequestLocale()
   const signupUrl = await getSignupUrl()
   return (
     <div
@@ -11,7 +13,9 @@ export async function RegisterBanner() {
       className="bg-melon fixed inset-s-0 bottom-0 z-50 flex w-full justify-between">
       <div className="p-4">
         <Link href={signupUrl}>
-          <Button>Signup to armada</Button>
+          <Button>
+            {locale === "sv" ? "Anmäl er till Armada" : "Signup to Armada"}
+          </Button>
         </Link>
       </div>
     </div>
