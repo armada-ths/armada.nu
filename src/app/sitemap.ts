@@ -95,6 +95,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.4,
       flag: "ARMADA_BLOG_PAGE"
+    },
+    {
+      url: "https://armada.nu/timeline",
+      changeFrequency: "monthly",
+      priority: 0.5,
+      flag: "ARMADA_TIMELINE_PAGE"
     }
   ]
 
