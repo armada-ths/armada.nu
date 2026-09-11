@@ -12,23 +12,26 @@ interface HistoryTimelineProps {
 function EntryLeft({ entry }: { entry: TimelineEntry }) {
   return (
     <div className="relative flex flex-row pb-8">
-      {/* Left half: content */}
-      <div className="relative w-1/2 pr-8">
-        {/* Title badge */}
-        <div className="absolute top-0 right-8 z-10 translate-x-0">
-          <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice rounded border-2 px-4 py-3 text-3xl">
-            {entry.title}
+      {/* Left half */}
+      <div className="relative w-1/2">
+        {/* Dashed connector: from center line (right-0) extending left, w-8 leaves a gap before the info box (mr-12) */}
+        <div className="border-licorice absolute top-[2.875rem] right-0 w-8 border-t-2 border-dashed" />
+        {/* Entry wrapper: mr-12 creates the gap from center, mt-11 gives space for the badge overhang */}
+        <div className="relative mt-11 mr-12">
+          {/* Title badge: centered horizontally, overhanging above the info box by ~half its height */}
+          <div className="absolute -top-11 left-1/2 z-10 w-fit -translate-x-1/2">
+            <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice rounded border-2 px-10 py-3 text-center text-3xl whitespace-nowrap">
+              {entry.title}
+            </div>
+          </div>
+          {/* Information box: pt-14 clears the 48px badge overlap with an 8px buffer */}
+          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-11 pb-5 text-base">
+            {entry.body}
           </div>
         </div>
-        {/* Dashed connector */}
-        <div className="border-licorice absolute top-[1.875rem] right-0 w-8 border-t-2 border-dashed" />
-        {/* Body card */}
-        <div className="border-licorice font-lato text-licorice mt-14 rounded border-2 bg-white px-4 pt-4 pb-4 text-base">
-          {entry.body}
-        </div>
       </div>
-      {/* Center dot */}
-      <div className="bg-melon border-licorice absolute top-4 left-1/2 z-10 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border-2">
+      {/* Center dot: top-9 → center at 46px, matching badge center and connector top */}
+      <div className="bg-melon border-licorice absolute top-9 left-1/2 z-10 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border-2">
         <div className="h-2.5 w-2.5 rounded-full bg-white" />
       </div>
       {/* Right half: empty */}
@@ -42,23 +45,26 @@ function EntryRight({ entry }: { entry: TimelineEntry }) {
     <div className="relative flex flex-row pb-8">
       {/* Left half: empty */}
       <div className="w-1/2" />
-      {/* Center dot */}
-      <div className="bg-melon border-licorice absolute top-4 left-1/2 z-10 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border-2">
+      {/* Center dot: top-9 → center at 46px, matching badge center and connector top */}
+      <div className="bg-melon border-licorice absolute top-9 left-1/2 z-10 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border-2">
         <div className="h-2.5 w-2.5 rounded-full bg-white" />
       </div>
-      {/* Right half: content */}
-      <div className="relative w-1/2 pl-8">
-        {/* Title badge */}
-        <div className="absolute top-0 left-8 z-10">
-          <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice rounded border-2 px-4 py-3 text-3xl">
-            {entry.title}
+      {/* Right half */}
+      <div className="relative w-1/2">
+        {/* Dashed connector: from center line (left-0) extending right, w-8 leaves a gap before the info box (ml-12) */}
+        <div className="border-licorice absolute top-[2.875rem] left-0 w-8 border-t-2 border-dashed" />
+        {/* Entry wrapper: ml-12 creates the gap from center, mt-11 gives space for the badge overhang */}
+        <div className="relative mt-11 ml-12">
+          {/* Title badge: centered horizontally, overhanging above the info box by ~half its height */}
+          <div className="absolute -top-11 left-1/2 z-10 w-fit -translate-x-1/2">
+            <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice rounded border-2 px-5 py-3 text-center text-3xl whitespace-nowrap">
+              {entry.title}
+            </div>
           </div>
-        </div>
-        {/* Dashed connector */}
-        <div className="border-licorice absolute top-[1.875rem] left-0 w-8 border-t-2 border-dashed" />
-        {/* Body card */}
-        <div className="border-licorice font-lato text-licorice mt-14 rounded border-2 bg-white px-4 pt-4 pb-4 text-base">
-          {entry.body}
+          {/* Information box: pt-14 clears the 48px badge overlap with an 8px buffer */}
+          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-11 pb-5 text-base">
+            {entry.body}
+          </div>
         </div>
       </div>
     </div>
@@ -88,7 +94,7 @@ function EntryMobile({ entry }: { entry: TimelineEntry }) {
 
 export function HistoryTimeline({ eras }: HistoryTimelineProps) {
   return (
-    <div className="mt-10">
+    <div className="mt-10 px-4 md:px-14">
       {eras.map(era => (
         <div key={era.eraTitle}>
           {/* Era divider: keep mobile margin; on desktop the spacing lives inside the block below */}
