@@ -9,9 +9,19 @@ interface HistoryTimelineProps {
   eras: Era[]
 }
 
-function EntryLeft({ entry }: { entry: TimelineEntry }) {
+function EntryLeft({
+  entry,
+  isLast = false
+}: {
+  entry: TimelineEntry
+  isLast?: boolean
+}) {
   return (
     <div className="relative flex flex-row pb-4">
+      {/* Center line segment: stops at dot center (18 px) for the last entry */}
+      <div
+        className={`bg-licorice absolute left-1/2 w-0.5 -translate-x-1/2 ${isLast ? "top-0 h-[18px]" : "top-0 bottom-0"}`}
+      />
       {/* Left half */}
       <div className="relative w-1/2">
         {/* Dashed connector: melon, spans full width from center line (right-0) to the far left edge of the info box */}
@@ -40,9 +50,19 @@ function EntryLeft({ entry }: { entry: TimelineEntry }) {
   )
 }
 
-function EntryRight({ entry }: { entry: TimelineEntry }) {
+function EntryRight({
+  entry,
+  isLast = false
+}: {
+  entry: TimelineEntry
+  isLast?: boolean
+}) {
   return (
     <div className="relative flex flex-row pb-4">
+      {/* Center line segment: stops at dot center (18 px) for the last entry */}
+      <div
+        className={`bg-licorice absolute left-1/2 w-0.5 -translate-x-1/2 ${isLast ? "top-0 h-[18px]" : "top-0 bottom-0"}`}
+      />
       {/* Left half: empty */}
       <div className="w-1/2" />
       {/* Center dot: top-2 places it slightly above the title badge; connected at its vertical center (8px + 10px = 18px) */}
@@ -138,15 +158,25 @@ export function HistoryTimeline({ eras }: HistoryTimelineProps) {
 
           {/* Desktop layout */}
           <div className="relative hidden pt-4 pb-6 md:block">
-            {/* Center vertical line */}
-            <div className="bg-licorice absolute top-0 bottom-0 left-1/2 w-0.5 -translate-x-1/2" />
-            {era.entries.map((entry, index) =>
-              index % 2 === 0 ? (
-                <EntryLeft key={entry.id} entry={entry} />
-              ) : (
-                <EntryRight key={entry.id} entry={entry} />
-              )
+            {/* Restore the line through the pt-4 top gap (16 px) so it connects
+                seamlessly with whatever is above the container. */}
+            <div className="bg-licorice absolute top-0 left-1/2 h-4 w-0.5 -translate-x-1/2" />
+            {/* Restore the line through the pb-6 bottom gap (24 px) for every
+                era except the last, so it connects down to the next era divider. */}
+            {eraIndex !== lastEraIndex && (
+              <div className="bg-licorice absolute bottom-0 left-1/2 h-6 w-0.5 -translate-x-1/2" />
             )}
+            {/* Line is rendered per-entry so the last entry's segment can stop
+                exactly at the dot centre (18 px from entry top). */}
+            {era.entries.map((entry, index) => {
+              const isLastEntry =
+                eraIndex === lastEraIndex && index === era.entries.length - 1
+              return index % 2 === 0 ? (
+                <EntryLeft key={entry.id} entry={entry} isLast={isLastEntry} />
+              ) : (
+                <EntryRight key={entry.id} entry={entry} isLast={isLastEntry} />
+              )
+            })}
           </div>
 
           {/* Mobile layout */}
