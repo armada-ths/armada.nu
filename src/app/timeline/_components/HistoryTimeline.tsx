@@ -26,16 +26,16 @@ function EntryLeft({
       <div className="relative w-1/2">
         {/* Dashed connector: melon, spans full width from center line (right-0) to the far left edge of the info box */}
         <div className="border-melon absolute top-[18px] right-0 w-full border-t-2 border-dashed" />
-        {/* Entry wrapper: mr-12 creates the gap from center, mt-[69px] shifts the badge below the dot */}
-        <div className="relative mt-[69px] mr-12">
-          {/* Title badge: centered horizontally, overhanging above the info box */}
-          <div className="absolute -top-11 left-1/2 z-10 w-fit -translate-x-1/2">
-            <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice rounded border-2 px-10 py-3 text-center text-3xl whitespace-nowrap">
+        {/* Entry wrapper: mr-12 creates the gap from center, mt-[25px] positions badge near the dot */}
+        <div className="relative mt-[25px] mr-12">
+          {/* Title badge: in flow, centered, -mb-4 overlaps 16px into info box regardless of badge height */}
+          <div className="relative z-10 -mb-3 flex justify-center">
+            <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice max-w-full rounded border-2 px-10 py-3 text-center text-3xl">
               {entry.title}
             </div>
           </div>
           {/* Information box */}
-          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-11 pb-5 text-base">
+          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-6 pb-5 text-base">
             {entry.body}
           </div>
         </div>
@@ -73,16 +73,16 @@ function EntryRight({
       <div className="relative w-1/2">
         {/* Dashed connector: melon, spans full width from center line (left-0) to the far right edge of the info box */}
         <div className="border-melon absolute top-[18px] left-0 w-full border-t-2 border-dashed" />
-        {/* Entry wrapper: ml-12 creates the gap from center, mt-[69px] shifts the badge below the dot */}
-        <div className="relative mt-[69px] ml-12">
-          {/* Title badge: centered horizontally, overhanging above the info box */}
-          <div className="absolute -top-11 left-1/2 z-10 w-fit -translate-x-1/2">
-            <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice rounded border-2 px-5 py-3 text-center text-3xl whitespace-nowrap">
+        {/* Entry wrapper: ml-12 creates the gap from center, mt-[25px] positions badge near the dot */}
+        <div className="relative mt-[25px] ml-12">
+          {/* Title badge: in flow, centered, -mb-4 overlaps 16px into info box regardless of badge height */}
+          <div className="relative z-10 -mb-3 flex justify-center">
+            <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice max-w-full rounded border-2 px-5 py-3 text-center text-3xl">
               {entry.title}
             </div>
           </div>
           {/* Information box */}
-          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-11 pb-5 text-base">
+          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-6 pb-5 text-base">
             {entry.body}
           </div>
         </div>
@@ -141,15 +141,15 @@ export function HistoryTimeline({ eras }: HistoryTimelineProps) {
           {/* Era divider: py-10 (not my-10) on mobile so the connecting line
               can be absolutely positioned through the full padded height.
               On desktop spacing lives inside the block below so py is 0. */}
-          <div className="relative flex justify-center py-10 md:py-0">
+          <div className="relative flex justify-center py-5 pl-2 md:py-0 md:pl-0">
             {/* Vertical connecting line through the era divider gap (mobile only,
                 only between eras — not above the very first era) */}
             {eraIndex > 0 && (
               <div className="bg-licorice absolute inset-y-0 left-2 w-0.5 md:hidden" />
             )}
-            <div className="flex flex-col">
+            <div className="flex w-full flex-col md:w-auto">
               <div className="border-licorice border-t-2" />
-              <p className="font-bebas-neue text-licorice text-3xl whitespace-nowrap">
+              <p className="font-bebas-neue text-licorice text-center text-3xl md:whitespace-nowrap">
                 {era.eraTitle}
               </p>
               <div className="border-licorice border-t-2" />
