@@ -42,7 +42,7 @@ function EntryLeft({
       </div>
       {/* Center dot: top-2 places it slightly above the title badge; connected at its vertical center (8px + 10px = 18px) */}
       <div className="bg-melon border-licorice absolute top-2 left-1/2 z-10 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
-        <div className="bg-licorice h-2.5 w-2.5 rounded-full" />
+        <div className="bg-licorice h-2 w-2 rounded-full" />
       </div>
       {/* Right half: empty */}
       <div className="w-1/2" />
@@ -67,7 +67,7 @@ function EntryRight({
       <div className="w-1/2" />
       {/* Center dot: top-2 places it slightly above the title badge; connected at its vertical center (8px + 10px = 18px) */}
       <div className="bg-melon border-licorice absolute top-2 left-1/2 z-10 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
-        <div className="bg-licorice h-2.5 w-2.5 rounded-full" />
+        <div className="bg-licorice h-2 w-2 rounded-full" />
       </div>
       {/* Right half */}
       <div className="relative w-1/2">
@@ -118,7 +118,7 @@ function EntryMobile({
       )}
       {/* Dot */}
       <div className="bg-melon border-licorice absolute top-4 left-0 z-10 flex h-5 w-5 -translate-x-[0.125rem] items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
-        <div className="bg-licorice h-2.5 w-2.5 rounded-full" />
+        <div className="bg-licorice h-2 w-2 rounded-full" />
       </div>
       {/* Title badge */}
       <div className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice mb-3 inline-block rounded border-2 px-4 py-2 text-2xl">
