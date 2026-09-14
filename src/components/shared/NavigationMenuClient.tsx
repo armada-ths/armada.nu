@@ -196,7 +196,7 @@ export function NavigationMenuClient({
         },
         {
           title: "History",
-          url: "/timeline",
+          url: "/about/history",
           description: "45 years of Scandinavia's largest student-run job fair",
           icon: <BookOpenIcon className="size-5 shrink-0" />,
           disabled: !historyTimelineEnabled
