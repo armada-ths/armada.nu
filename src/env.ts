@@ -11,5 +11,11 @@ export const env = {
   RECAPTCHA_SECRET_KEY: getEnvVar("RECAPTCHA_SECRET_KEY"),
   RECAPTCHA_PROJECT_ID: getEnvVar("RECAPTCHA_PROJECT_ID"),
   // Shared secret for on-demand revalidation webhook from CMS
-  REVALIDATION_SECRET: getEnvVar("REVALIDATION_SECRET")
+  REVALIDATION_SECRET: getEnvVar("REVALIDATION_SECRET"),
+  // Eventro API credentials for the recruitment email list signup
+  EVENTRO_API: getEnvVar("EVENTRO_API"),
+  EVENTRO_ORG: getEnvVar("EVENTRO_ORG"),
+  EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID: getEnvVar(
+    "EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
+  )
 }
