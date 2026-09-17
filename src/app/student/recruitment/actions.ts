@@ -15,20 +15,22 @@ type SubscribeToEmailListResponse =
 const RECAPTCHA_MIN_SCORE = 0.5
 const RECAPTCHA_EXPECTED_ACTION = "recruitment_email_signup"
 
+type RecaptchaVerification = { valid: true } | { valid: false; reason: string }
+
 async function verifyRecaptchaToken(
   token: string,
   siteKey: string
-): Promise<boolean> {
+): Promise<RecaptchaVerification> {
   const secretKey = env.RECAPTCHA_SECRET_KEY
   const projectId = env.RECAPTCHA_PROJECT_ID
 
   if (!secretKey) {
     console.warn("RECAPTCHA_SECRET_KEY is missing")
-    return false
+    return { valid: false, reason: "RECAPTCHA_SECRET_KEY is missing" }
   }
   if (!projectId) {
     console.warn("RECAPTCHA_PROJECT_ID is missing")
-    return false
+    return { valid: false, reason: "RECAPTCHA_PROJECT_ID is missing" }
   }
 
   const assessmentUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/assessments?key=${secretKey}`
@@ -49,8 +51,9 @@ async function verifyRecaptchaToken(
 
   if (!response.ok) {
     const body = await response.text().catch(() => "")
-    console.warn(`reCAPTCHA assessment failed: ${response.status} ${body}`)
-    return false
+    const reason = `assessment request failed: ${response.status} ${body}`
+    console.warn(`reCAPTCHA ${reason}`)
+    return { valid: false, reason }
   }
 
   const assessment = (await response.json()) as {
@@ -71,20 +74,19 @@ async function verifyRecaptchaToken(
   const score = assessment.riskAnalysis?.score ?? 0
 
   if (!validToken || !validAction || score < RECAPTCHA_MIN_SCORE) {
-    console.warn(
-      "reCAPTCHA assessment rejected:",
-      JSON.stringify({
-        validToken,
-        invalidReason: assessment.tokenProperties?.invalidReason,
-        expectedAction: RECAPTCHA_EXPECTED_ACTION,
-        actualAction: assessment.tokenProperties?.action,
-        score,
-        reasons: assessment.riskAnalysis?.reasons
-      })
-    )
+    const details = {
+      validToken,
+      invalidReason: assessment.tokenProperties?.invalidReason,
+      expectedAction: RECAPTCHA_EXPECTED_ACTION,
+      actualAction: assessment.tokenProperties?.action,
+      score,
+      reasons: assessment.riskAnalysis?.reasons
+    }
+    console.warn("reCAPTCHA assessment rejected:", JSON.stringify(details))
+    return { valid: false, reason: JSON.stringify(details) }
   }
 
-  return validToken && validAction && score >= RECAPTCHA_MIN_SCORE
+  return { valid: true }
 }
 
 // Signs a user up to Armada's "next opening" recruitment email list in Eventro.
@@ -106,12 +108,17 @@ export async function subscribeToRecruitmentEmailList(
     return { success: false, error: "recaptcha_not_configured" }
   }
 
-  const recaptchaValid = await verifyRecaptchaToken(
+  const recaptchaResult = await verifyRecaptchaToken(
     args.recaptchaToken,
     siteKey
   )
-  if (!recaptchaValid) {
-    return { success: false, error: "recaptcha_validation_failed" }
+  if (!recaptchaResult.valid) {
+    // TEMPORARY: return the raw reason for preview-environment debugging.
+    // Revert to a generic "recaptcha_validation_failed" before merging.
+    return {
+      success: false,
+      error: `recaptcha_validation_failed: ${recaptchaResult.reason}`
+    }
   }
 
   const campaignId = env.EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID
@@ -143,12 +150,20 @@ export async function subscribeToRecruitmentEmailList(
       console.warn(
         `Eventro email campaign signup failed: ${res.status} ${body}`
       )
-      return { success: false, error: "eventro_signup_failed" }
+      // TEMPORARY: surface the raw Eventro response for preview debugging.
+      // Revert to a generic "eventro_signup_failed" before merging.
+      return {
+        success: false,
+        error: `eventro_signup_failed: ${res.status} ${body}`
+      }
     }
 
     return { success: true }
   } catch (e) {
     console.warn("Failed to sign up to Eventro email campaign:", e)
-    return { success: false, error: "eventro_request_error" }
+    return {
+      success: false,
+      error: `eventro_request_error: ${e instanceof Error ? e.message : String(e)}`
+    }
   }
 }
