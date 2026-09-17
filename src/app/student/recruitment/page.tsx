@@ -3,6 +3,7 @@ import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { FAQSection } from "@/app/student/recruitment/_components/host/FAQSection"
 import { ApplyButton } from "@/app/student/recruitment/_components/shared/ApplyButton"
+import { EmailListSignup } from "@/app/student/recruitment/_components/shared/EmailListSignup"
 import { RecruitmentDescription } from "@/app/student/recruitment/_components/shared/RecruitmentDescription"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
@@ -90,6 +91,9 @@ export default async function RecruitmentPage() {
                 be really proud of!
               </AlertDescription>
             </Alert>
+            <div className="mt-4">
+              <EmailListSignup />
+            </div>
             <PhotoSlideCarousel photoSrc={promotionalPhotos} />
             <RecruitmentDescription />
             <FAQSection />
