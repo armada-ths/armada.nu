@@ -55,26 +55,31 @@ function CommandDialog({
   )
 }
 
-function CommandInput({
-  className,
-  ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
-  return (
-    <div
-      data-slot="command-input-wrapper"
-      className="flex h-9 items-center gap-2 border-b-2 border-stone-800 px-3">
-      <Search className="size-4 shrink-0" />
-      <CommandPrimitive.Input
-        data-slot="command-input"
-        className={cn(
-          "rounded-base placeholder:text-main-foreground flex h-10 w-full bg-transparent py-3 text-sm outline-hidden placeholder:opacity-50 disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
-        {...props}
-      />
-    </div>
-  )
-}
+const CommandInput = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Input>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
+    wrapperClassName?: string
+  }
+>(({ className, wrapperClassName, ...props }, ref) => (
+  <div
+    data-slot="command-input-wrapper"
+    className={cn(
+      "flex h-9 items-center gap-2 border-b-2 border-stone-800 px-3",
+      wrapperClassName
+    )}>
+    <Search className="size-4 shrink-0" />
+    <CommandPrimitive.Input
+      ref={ref}
+      data-slot="command-input"
+      className={cn(
+        "rounded-base placeholder:text-main-foreground flex h-10 w-full bg-transparent py-3 text-sm outline-hidden placeholder:opacity-50 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    />
+  </div>
+))
+CommandInput.displayName = CommandPrimitive.Input.displayName
 
 function CommandList({
   className,

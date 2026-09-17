@@ -26,13 +26,15 @@ export default function ExhibitorSearch({
 }: Props) {
   const [searchQueryName, setSearchQueryName] = useState("")
   const [sortBy, setSortBy] = useState<
-    "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
+    "none" | "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
   >("tier-gold")
   const [filteredExhibitors, setFilteredExhibitors] =
     useState<Exhibitor[]>(exhibitors)
 
   const sortedExhibitors = [...filteredExhibitors].sort((a, b) => {
     switch (sortBy) {
+      case "none":
+        return 0
       case "name-asc":
         return a.name.localeCompare(b.name)
       case "name-desc":

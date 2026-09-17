@@ -815,7 +815,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 <div className="flex w-full items-center justify-between">
                   <div
                     className={cn(
-                      "flex items-center gap-1",
+                      "flex min-w-0 items-center gap-1",
                       singleLine
                         ? "multiselect-singleline-scroll overflow-x-auto"
                         : "flex-wrap",
@@ -857,9 +857,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 "text-snow border-transparent",
                               responsiveSettings.compactMode &&
                                 "px-1.5 py-0.5 text-xs",
-                              screenSize === "mobile" && "max-w-30 truncate",
-                              screenSize === "tablet" && "max-w-40 truncate",
-                              screenSize === "desktop" && "max-w-50 truncate",
+                              screenSize === "mobile" && "max-w-28 truncate",
+                              screenSize === "tablet" && "max-w-32 truncate",
+                              screenSize === "desktop" && "max-w-40 truncate",
                               singleLine && "shrink-0 whitespace-nowrap",
                               "[&>svg]:pointer-events-auto",
                               "bg-snow"
@@ -886,10 +886,10 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             )}
                             <span
                               className={cn(
-                                "max-w-45 truncate",
-                                screenSize === "mobile" && "max-w-30",
-                                screenSize === "tablet" && "max-w-40",
-                                screenSize === "desktop" && "max-w-50"
+                                "max-w-24 truncate",
+                                screenSize === "mobile" && "max-w-24",
+                                screenSize === "tablet" && "max-w-26",
+                                screenSize === "desktop" && "max-w-38"
                               )}>
                               {option.label}
                             </span>
@@ -911,7 +911,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 }
                               }}
                               aria-label={`Remove ${option.label} from selection`}
-                              className="-m-0.5 ml-2 h-4 w-4 cursor-pointer rounded-xs p-0.5 hover:bg-white/20 focus:ring-1 focus:ring-white/50 focus:outline-hidden">
+                              className="-m-0.5 ml-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-xs p-0.5 hover:bg-white/20 focus:ring-1 focus:ring-white/50 focus:outline-hidden">
                               <XCircle
                                 className={cn(
                                   "h-3 w-3",
@@ -1108,7 +1108,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             {option.icon && (
                               <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
                             )}
-                            <span>{option.label}</span>
+                            <span className="min-w-0 truncate">
+                              {option.label}
+                            </span>
                           </CommandItem>
                         )
                       })}
@@ -1145,7 +1147,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           {option.icon && (
                             <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
                           )}
-                          <span>{option.label}</span>
+                          <span className="min-w-0 truncate">
+                            {option.label}
+                          </span>
                         </CommandItem>
                       )
                     })}

@@ -15,9 +15,9 @@ interface Props {
   programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
-  sortBy?: "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
+  sortBy?: "none" | "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
   onSortChange?: (
-    sortBy: "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
+    sortBy: "none" | "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
   ) => void
 }
 
@@ -42,6 +42,7 @@ export default function ExhibitorFilterItem({
 
   const sortOptions: SingleSelectOption[] = useMemo(
     () => [
+      { value: "none", label: "No sorting" },
       { value: "name-asc", label: "A-Z" },
       { value: "name-desc", label: "Z-A" },
       { value: "tier-gold", label: "Tiers Ascending" },
@@ -153,19 +154,19 @@ export default function ExhibitorFilterItem({
     <div className="border-licorice border-t pt-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         {/* Sort By Filter */}
-        <div className="min-w-48 flex-1">
+        <div className="min-w-0 flex-1 sm:min-w-48">
           <SingleSelect
             options={sortOptions}
             value={sortBy}
             onValueChange={value => onSortChange?.(value as typeof sortBy)}
+            aria-label="Sort exhibitors by"
             searchable={false}
-            modalPopover
             className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
           />
         </div>
 
         {/* Employment Filter */}
-        <div className="min-w-48 flex-1">
+        <div className="min-w-0 flex-1 sm:min-w-48">
           <MultiSelect
             options={employmentOptions}
             onValueChange={setSelectedEmploymentIds}
@@ -176,13 +177,12 @@ export default function ExhibitorFilterItem({
           sm:w-(--radix-popover-trigger-width)
           max-w-[95vw]
           "
-            modalPopover
             className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
           />
         </div>
 
         {/* Industries Filter */}
-        <div className="min-w-48 flex-1">
+        <div className="min-w-0 flex-1 sm:min-w-48">
           <MultiSelect
             options={industriesOptions}
             onValueChange={setSelectedIndustriesIds}
@@ -193,13 +193,12 @@ export default function ExhibitorFilterItem({
               sm:w-(--radix-popover-trigger-width)
               max-w-[95vw]
             "
-            modalPopover
             className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
           />
         </div>
 
         {/* Program Filter */}
-        <div className="min-w-48 flex-1">
+        <div className="min-w-0 flex-1 sm:min-w-48">
           <MultiSelect
             options={programOptions}
             onValueChange={setSelectedProgramsIds}
@@ -208,7 +207,6 @@ export default function ExhibitorFilterItem({
               w-(--radix-popover-trigger-width) 
               min-w-full
             "
-            modalPopover
             className="bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2"
           />
         </div>

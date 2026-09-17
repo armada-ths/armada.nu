@@ -95,6 +95,8 @@ export const SingleSelect = React.forwardRef<
   ) => {
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
     const [searchValue, setSearchValue] = React.useState("")
+    const [highlightedIndex, setHighlightedIndex] = React.useState(0)
+    const navigationInputRef = React.useRef<HTMLInputElement>(null)
 
     const selectedOption = React.useMemo(
       () => options.find(option => option.value === value),
@@ -122,11 +124,76 @@ export const SingleSelect = React.forwardRef<
       setIsPopoverOpen(prev => !prev)
     }
 
+    const handleNavigationKeyDown = (
+      event: React.KeyboardEvent<HTMLElement>
+    ) => {
+      if (searchable || filteredOptions.length === 0) return
+
+      const enabledIndexes = filteredOptions.reduce<number[]>(
+        (indexes, option, index) => {
+          if (!option.disabled) indexes.push(index)
+          return indexes
+        },
+        []
+      )
+      if (enabledIndexes.length === 0) return
+
+      const currentPosition = Math.max(
+        enabledIndexes.indexOf(highlightedIndex),
+        0
+      )
+
+      switch (event.key) {
+        case "ArrowDown":
+          event.preventDefault()
+          setHighlightedIndex(
+            enabledIndexes[(currentPosition + 1) % enabledIndexes.length]
+          )
+          break
+        case "ArrowUp":
+          event.preventDefault()
+          setHighlightedIndex(
+            enabledIndexes[
+              (currentPosition - 1 + enabledIndexes.length) %
+                enabledIndexes.length
+            ]
+          )
+          break
+        case "Home":
+          event.preventDefault()
+          setHighlightedIndex(enabledIndexes[0])
+          break
+        case "End":
+          event.preventDefault()
+          setHighlightedIndex(enabledIndexes[enabledIndexes.length - 1])
+          break
+        case "Enter":
+          event.preventDefault()
+          handleSelect(filteredOptions[highlightedIndex].value)
+          break
+        default:
+          break
+      }
+    }
+
     React.useEffect(() => {
       if (!isPopoverOpen) {
         setSearchValue("")
+        return
       }
-    }, [isPopoverOpen])
+      const selectedIndex = filteredOptions.findIndex(
+        option => option.value === value && !option.disabled
+      )
+      const firstEnabledIndex = filteredOptions.findIndex(
+        option => !option.disabled
+      )
+      setHighlightedIndex(
+        selectedIndex >= 0 ? selectedIndex : Math.max(firstEnabledIndex, 0)
+      )
+      if (!searchable) {
+        requestAnimationFrame(() => navigationInputRef.current?.focus())
+      }
+    }, [filteredOptions, isPopoverOpen, value])
 
     const SelectedIcon = selectedOption?.icon
 
@@ -150,8 +217,8 @@ export const SingleSelect = React.forwardRef<
               disabled && "cursor-not-allowed opacity-50",
               className
             )}>
-            <div className="mx-auto flex w-full items-center justify-between">
-              <span className="mx-3 flex items-center gap-2 truncate text-sm">
+            <div className="mx-auto flex w-full min-w-0 items-center justify-between">
+              <span className="mx-3 flex min-w-0 flex-1 items-center gap-2 truncate text-sm">
                 {SelectedIcon && <SelectedIcon className="h-4 w-4" />}
                 {selectedOption ? (
                   selectedOption.label
@@ -169,6 +236,10 @@ export const SingleSelect = React.forwardRef<
             popoverClassName
           )}
           align="start"
+          onOpenAutoFocus={event => {
+            event.preventDefault()
+          }}
+          onKeyDown={handleNavigationKeyDown}
           onEscapeKeyDown={() => setIsPopoverOpen(false)}>
           <Command className="bg-snow">
             {searchable && (
@@ -178,12 +249,20 @@ export const SingleSelect = React.forwardRef<
                 onValueChange={setSearchValue}
               />
             )}
+            {!searchable && (
+              <CommandInput
+                ref={navigationInputRef}
+                tabIndex={-1}
+                aria-label="Navigate options"
+                wrapperClassName="sr-only"
+              />
+            )}
             <CommandList className="max-h-[40vh] overflow-y-auto">
               <CommandEmpty>
                 {emptyIndicator || "No results found."}
               </CommandEmpty>
               <CommandGroup>
-                {filteredOptions.map(option => {
+                {filteredOptions.map((option, index) => {
                   const isSelected = option.value === value
                   return (
                     <CommandItem
@@ -194,8 +273,11 @@ export const SingleSelect = React.forwardRef<
                       aria-disabled={option.disabled}
                       className={cn(
                         "cursor-pointer",
+                        highlightedIndex === index &&
+                          "bg-accent text-accent-foreground",
                         option.disabled && "cursor-not-allowed opacity-50"
                       )}
+                      onMouseMove={() => setHighlightedIndex(index)}
                       disabled={option.disabled}>
                       <div
                         className={cn(
@@ -209,7 +291,7 @@ export const SingleSelect = React.forwardRef<
                       {option.icon && (
                         <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
                       )}
-                      <span>{option.label}</span>
+                      <span className="min-w-0 truncate">{option.label}</span>
                     </CommandItem>
                   )
                 })}
