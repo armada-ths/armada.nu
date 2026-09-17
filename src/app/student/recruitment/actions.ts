@@ -57,9 +57,11 @@ async function verifyRecaptchaToken(
     tokenProperties?: {
       valid?: boolean
       action?: string
+      invalidReason?: string
     }
     riskAnalysis?: {
       score?: number
+      reasons?: string[]
     }
   }
 
@@ -67,6 +69,20 @@ async function verifyRecaptchaToken(
   const validAction =
     assessment.tokenProperties?.action === RECAPTCHA_EXPECTED_ACTION
   const score = assessment.riskAnalysis?.score ?? 0
+
+  if (!validToken || !validAction || score < RECAPTCHA_MIN_SCORE) {
+    console.warn(
+      "reCAPTCHA assessment rejected:",
+      JSON.stringify({
+        validToken,
+        invalidReason: assessment.tokenProperties?.invalidReason,
+        expectedAction: RECAPTCHA_EXPECTED_ACTION,
+        actualAction: assessment.tokenProperties?.action,
+        score,
+        reasons: assessment.riskAnalysis?.reasons
+      })
+    )
+  }
 
   return validToken && validAction && score >= RECAPTCHA_MIN_SCORE
 }
