@@ -13,7 +13,10 @@ const options = [
 const meta = {
   title: "UI/MultiSelect",
   component: MultiSelect,
-  parameters: { layout: "centered" },
+  parameters: {
+    layout: "centered",
+    a11y: { test: "error" }
+  },
   tags: ["autodocs"],
   decorators: [
     Story => (

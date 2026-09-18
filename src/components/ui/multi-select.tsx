@@ -989,9 +989,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           <PopoverContent
             avoidCollisions={screenSize == "mobile" ? false : true}
             id={listboxId}
-            role="listbox"
-            aria-multiselectable="true"
-            aria-label="Available options"
+            aria-label={`${placeholder} options`}
             className={cn(
               "w-auto p-0",
               getPopoverAnimationClass(),
@@ -1026,6 +1024,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 </div>
               )}
               <CommandList
+                label="Available options"
+                aria-multiselectable="true"
                 className={cn(
                   "multiselect-scrollbar max-h-[40vh] overflow-y-auto",
                   screenSize === "mobile" && "max-h-[50vh]",
@@ -1147,30 +1147,30 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     })}
                   </CommandGroup>
                 )}
-                <CommandSeparator />
-                <CommandGroup>
-                  <div className="flex items-center justify-between">
-                    {selectedValues.length > 0 && (
-                      <>
-                        <CommandItem
-                          onSelect={handleClear}
-                          className="flex-1 cursor-pointer justify-center">
-                          Clear
-                        </CommandItem>
-                        <Separator
-                          orientation="vertical"
-                          className="flex h-full min-h-6"
-                        />
-                      </>
-                    )}
-                    <CommandItem
-                      onSelect={() => setIsPopoverOpen(false)}
-                      className="max-w-full flex-1 cursor-pointer justify-center">
-                      Close
-                    </CommandItem>
-                  </div>
-                </CommandGroup>
               </CommandList>
+              <CommandSeparator />
+              <div className="flex items-center justify-between p-1">
+                {selectedValues.length > 0 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleClear}
+                      className="rounded-base flex-1 cursor-pointer px-2 py-1.5 text-sm outline-0 hover:outline-2 focus-visible:outline-2">
+                      Clear
+                    </button>
+                    <Separator
+                      orientation="vertical"
+                      className="flex h-full min-h-6"
+                    />
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setIsPopoverOpen(false)}
+                  className="rounded-base max-w-full flex-1 cursor-pointer px-2 py-1.5 text-sm outline-0 hover:outline-2 focus-visible:outline-2">
+                  Close
+                </button>
+              </div>
             </Command>
           </PopoverContent>
           {animation > 0 && selectedValues.length > 0 && (
