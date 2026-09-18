@@ -58,7 +58,7 @@ const multiSelectVariants = cva("transition-all duration-300 ease-in-out", {
       inverted: "inverted"
     },
     badgeAnimation: {
-      bounce: "hover:-translate-y-1 hover:scale-110",
+      bounce: "hover:-translate-y-0.5 hover:scale-105",
       pulse: "hover:animate-pulse",
       wiggle: "hover:animate-wiggle",
       fade: "hover:opacity-80",
@@ -68,7 +68,7 @@ const multiSelectVariants = cva("transition-all duration-300 ease-in-out", {
   },
   defaultVariants: {
     variant: "default",
-    badgeAnimation: "bounce"
+    badgeAnimation: "none"
   }
 })
 
@@ -487,7 +487,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           case "bounce":
             return isAnimating
               ? "animate-bounce"
-              : "hover:-translate-y-1 hover:scale-110"
+              : "hover:-translate-y-0.5 hover:scale-105"
           case "pulse":
             return "hover:animate-pulse"
           case "wiggle":

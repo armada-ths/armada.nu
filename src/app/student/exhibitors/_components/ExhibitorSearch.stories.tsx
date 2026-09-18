@@ -81,12 +81,20 @@ type Story = StoryObj<typeof meta>
 
 export const FilteringAndSorting: Story = {
   play: async ({ canvas }) => {
+    const searchInput = canvas.getByPlaceholderText("Search by company name")
     const companyHeadings = canvas.getAllByRole("heading", { level: 3 })
     await expect(companyHeadings[0]).toHaveTextContent("Beta Industries")
 
-    await userEvent.click(
-      canvas.getByRole("combobox", { name: "Sort exhibitors by" })
-    )
+    const sortTrigger = canvas.getByRole("combobox", {
+      name: "Sort exhibitors by"
+    })
+    await userEvent.click(sortTrigger)
+
+    await userEvent.click(searchInput)
+    await expect(searchInput).toHaveFocus()
+    await expect(sortTrigger).toHaveAttribute("aria-expanded", "false")
+
+    await userEvent.click(sortTrigger)
     await userEvent.click(
       await within(document.body).findByRole("option", { name: "Name: A-Z" })
     )
@@ -97,10 +105,7 @@ export const FilteringAndSorting: Story = {
       )
     })
 
-    await userEvent.type(
-      canvas.getByPlaceholderText("Search by company name"),
-      "Gamma"
-    )
+    await userEvent.type(searchInput, "Gamma")
     await expect(canvas.getByText("Gamma Group")).toBeInTheDocument()
     await expect(canvas.queryByText("Alpha Systems")).not.toBeInTheDocument()
   }

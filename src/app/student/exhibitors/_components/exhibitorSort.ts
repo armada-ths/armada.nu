@@ -9,10 +9,6 @@ export const EXHIBITOR_SORT_OPTIONS = [
 
 export type ExhibitorSort = (typeof EXHIBITOR_SORT_OPTIONS)[number]["value"]
 
-export function isExhibitorSort(value: string): value is ExhibitorSort {
-  return EXHIBITOR_SORT_OPTIONS.some(option => option.value === value)
-}
-
 const TIER_RANK = {
   Gold: 0,
   Silver: 1,

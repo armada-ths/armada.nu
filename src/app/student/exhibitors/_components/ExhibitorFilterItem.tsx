@@ -5,20 +5,9 @@ import {
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
 import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
 import { useEffect, useMemo, useState } from "react"
-import {
-  EXHIBITOR_SORT_OPTIONS,
-  isExhibitorSort,
-  type ExhibitorSort
-} from "./exhibitorSort"
+import ExhibitorSortMenu from "./ExhibitorSortMenu"
+import type { ExhibitorSort } from "./exhibitorSort"
 
 const filterTriggerClassName =
   "bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2 shadow-shadow transition-all hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
@@ -159,26 +148,11 @@ export default function ExhibitorFilterItem({
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         {/* Sort By Filter */}
         <div className="min-w-0 flex-1 sm:min-w-48">
-          <Select
+          <ExhibitorSortMenu
             value={sortBy}
-            onValueChange={value => {
-              if (isExhibitorSort(value)) onSortChange?.(value)
-            }}>
-            <SelectTrigger
-              aria-label="Sort exhibitors by"
-              className={filterTriggerClassName}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent align="start" className="bg-snow text-licorice">
-              <SelectGroup>
-                {EXHIBITOR_SORT_OPTIONS.map(option => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            onValueChange={onSortChange}
+            triggerClassName={filterTriggerClassName}
+          />
         </div>
 
         {/* Employment Filter */}

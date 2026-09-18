@@ -59,6 +59,22 @@ export const LongSelectedValues: Story = {
   args: {
     defaultValue: ["tech", "engineering", "sustainability"],
     maxCount: 3
+  },
+  play: async ({ canvas }) => {
+    const label = canvas.getByText("Technology & Software Development")
+    const badge = label.closest<HTMLElement>("[data-slot='badge']")
+    const trigger = canvas.getByRole("combobox", {
+      name: /Filter by Industry/
+    })
+
+    await expect(badge).not.toBeNull()
+    if (!badge) return
+
+    await userEvent.hover(badge)
+    await expect(getComputedStyle(badge).transform).toBe("none")
+    await expect(badge.getBoundingClientRect().right).toBeLessThanOrEqual(
+      trigger.getBoundingClientRect().right
+    )
   }
 }
 
