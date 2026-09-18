@@ -1,32 +1,40 @@
 "use client"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Mail } from "lucide-react"
+import { CircleAlert, CircleCheck, Mail } from "lucide-react"
 import { type SubmitEvent, useState } from "react"
 
-export type EmailListSignupResult =
-  { success: true } | { success: false; error: string }
+export interface EmailListSignupFields {
+  email: string
+  name?: string
+}
 
 export interface EmailListSignupFormProps {
-  onSubmit: (name: string, email: string) => Promise<EmailListSignupResult>
+  onSubmit: (fields: EmailListSignupFields) => Promise<boolean>
+  title?: string
+  description?: string
 }
 
 const GENERIC_ERROR_MESSAGE =
-  "Something went wrong. Please try again in a moment."
+  "We couldn't subscribe you right now. Please try again in a moment."
 
 /**
  * Presentational signup form for the "notify me about future recruitments"
- * email list. All Eventro/reCAPTCHA integration lives in the parent
- * component; this component only handles input state and submit feedback so
- * it stays easy to exercise in Storybook.
+ * email list. The Eventro integration lives in the parent component; this
+ * component only handles input state and submit feedback so it stays easy to
+ * exercise in Storybook.
  */
-export function EmailListSignupForm({ onSubmit }: EmailListSignupFormProps) {
+export function EmailListSignupForm({
+  onSubmit,
+  title = "Get notified when applications open",
+  description = "Enter your email to receive updates about upcoming Armada volunteer recruitment."
+}: EmailListSignupFormProps) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle")
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -35,83 +43,105 @@ export function EmailListSignupForm({ onSubmit }: EmailListSignupFormProps) {
     }
 
     setStatus("submitting")
-    setErrorMessage(null)
 
     try {
-      const result = await onSubmit(name, email)
-      if (result.success) {
+      const trimmedName = name.trim()
+      const success = await onSubmit({
+        email: email.trim(),
+        ...(trimmedName ? { name: trimmedName } : {})
+      })
+      if (success) {
         setStatus("success")
         setName("")
         setEmail("")
       } else {
         setStatus("error")
-        setErrorMessage(result.error || GENERIC_ERROR_MESSAGE)
       }
     } catch {
       setStatus("error")
-      setErrorMessage(GENERIC_ERROR_MESSAGE)
     }
   }
 
   if (status === "success") {
     return (
-      <div className="bg-coconut rounded-md p-4 text-sm">
-        <p className="font-semibold">You&apos;re on the list! 🎉</p>
-        <p className="text-licorice/70 mt-1">
-          We&apos;ll email you as soon as our next recruitment opens.
-        </p>
-      </div>
+      <Card
+        className="bg-melon gap-0 p-5 text-sm sm:p-6"
+        role="status"
+        aria-live="polite">
+        <div className="flex items-center gap-3">
+          <div className="bg-grapefruit text-snow border-border rounded-base flex size-10 shrink-0 items-center justify-center border-2">
+            <CircleCheck size={20} aria-hidden="true" />
+          </div>
+          <div>
+            <p className="font-heading">You&apos;re subscribed.</p>
+            <p className="mt-1">We&apos;ll email you when applications open.</p>
+          </div>
+        </div>
+      </Card>
     )
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-coconut flex flex-col gap-3 rounded-md p-4 sm:flex-row sm:items-start">
-      <div className="flex flex-1 flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <Mail size={18} />
-          <p className="text-sm font-semibold">
-            Get notified about future recruitments
-          </p>
+    <Card className="bg-melon gap-0 p-0">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-5 sm:p-6">
+        <div className="flex items-center gap-3">
+          <div className="bg-grapefruit text-snow border-border rounded-base flex size-10 shrink-0 items-center justify-center border-2">
+            <Mail size={20} aria-hidden="true" />
+          </div>
+          <div>
+            <h2 className="font-heading text-base">{title}</h2>
+            <p className="mt-1 text-sm">{description}</p>
+          </div>
         </div>
-        <p className="text-licorice/70 text-xs">
-          Leave your email and we&apos;ll let you know as soon as our next Host,
-          OT or PG recruitment opens.
-        </p>
-        <Input
-          type="text"
-          maxLength={255}
-          autoComplete="name"
-          placeholder="Your name (optional)"
-          aria-label="Name (optional)"
-          value={name}
-          onChange={event => setName(event.target.value)}
-          disabled={status === "submitting"}
-        />
-        <Input
-          type="email"
-          required
-          maxLength={255}
-          autoComplete="email"
-          placeholder="you@example.com"
-          aria-label="Email address"
-          value={email}
-          onChange={event => setEmail(event.target.value)}
-          disabled={status === "submitting"}
-        />
+        <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm" htmlFor="recruitment-signup-name">
+              Name (optional)
+            </label>
+            <Input
+              id="recruitment-signup-name"
+              type="text"
+              maxLength={255}
+              autoComplete="name"
+              value={name}
+              onChange={event => setName(event.target.value)}
+              disabled={status === "submitting"}
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm" htmlFor="recruitment-signup-email">
+              Email
+            </label>
+            <Input
+              id="recruitment-signup-email"
+              type="email"
+              required
+              maxLength={255}
+              autoComplete="email"
+              value={email}
+              onChange={event => setEmail(event.target.value.trim())}
+              disabled={status === "submitting"}
+            />
+          </div>
+          <Button
+            type="submit"
+            className="bg-grapefruit text-snow"
+            disabled={status === "submitting" || email === ""}>
+            {status === "submitting" ? "Subscribing..." : "Notify me"}
+          </Button>
+        </div>
         {status === "error" ? (
-          <p className="text-sm text-red-600">
-            {errorMessage || GENERIC_ERROR_MESSAGE}
-          </p>
+          <div
+            className="bg-licorice text-snow border-border rounded-base flex items-start gap-2 border-2 px-3 py-2 text-sm"
+            role="alert">
+            <CircleAlert
+              className="mt-0.5 size-4 shrink-0"
+              aria-hidden="true"
+            />
+            <p>{GENERIC_ERROR_MESSAGE}</p>
+          </div>
         ) : null}
-      </div>
-      <Button
-        type="submit"
-        className="bg-grapefruit text-snow sm:mt-6"
-        disabled={status === "submitting" || email === ""}>
-        {status === "submitting" ? "Signing up..." : "Notify me"}
-      </Button>
-    </form>
+      </form>
+    </Card>
   )
 }

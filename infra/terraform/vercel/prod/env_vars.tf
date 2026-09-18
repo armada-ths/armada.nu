@@ -230,44 +230,41 @@ resource "vercel_project_environment_variable" "recaptcha_secret_key_preview" {
   }
 }
 
-# ── EVENTRO_API ───────────────────────────────────────────────────────────────
+# ── NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID ─────────────────────────
 
-resource "vercel_project_environment_variable" "eventro_api" {
+resource "vercel_project_environment_variable" "eventro_recruitment_email_campaign_id_production" {
   project_id = local.project_id
   team_id    = local.team_id
-  key        = "EVENTRO_API"
+  key        = "NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview"]
-  sensitive  = true
+  target     = ["production"]
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value]
   }
 }
 
-# ── EVENTRO_ORG ───────────────────────────────────────────────────────────────
-
-resource "vercel_project_environment_variable" "eventro_org" {
+resource "vercel_project_environment_variable" "eventro_recruitment_email_campaign_id_staging_branch" {
   project_id = local.project_id
   team_id    = local.team_id
-  key        = "EVENTRO_ORG"
+  key        = "NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview"]
-  sensitive  = true
+  target     = ["preview"]
+  git_branch = "staging"
+  sensitive  = false
 
   lifecycle {
     ignore_changes = [value]
   }
 }
 
-# ── EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID ─────────────────────────────────────
-
-resource "vercel_project_environment_variable" "eventro_recruitment_email_campaign_id" {
+resource "vercel_project_environment_variable" "eventro_recruitment_email_campaign_id_preview_development" {
   project_id = local.project_id
   team_id    = local.team_id
-  key        = "EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
+  key        = "NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
   value      = "" # Managed in Vercel dashboard.
-  target     = ["production", "preview"]
+  target     = ["preview", "development"]
   sensitive  = false
 
   lifecycle {

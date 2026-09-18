@@ -1,86 +1,51 @@
 "use client"
-import { subscribeToRecruitmentEmailList } from "@/app/student/recruitment/actions"
 import {
   EmailListSignupForm,
-  EmailListSignupResult
+  type EmailListSignupFields
 } from "@/app/student/recruitment/_components/shared/EmailListSignupForm"
-import Script from "next/script"
-import { useEffect, useState } from "react"
 
-const RECAPTCHA_ACTION = "recruitment_email_signup"
+const EVENTRO_SIGNUP_URL =
+  "https://app.eventro.se/api/v1/register-email-campaign-user/"
 
-function isRecaptchaAllowedHostname(hostname: string) {
-  return (
-    hostname === "armada.nu" ||
-    hostname === "staging.armada.nu" ||
-    hostname.endsWith(".vercel.app") // Vercel PR preview deployments
-  )
+interface EmailListSignupProps {
+  campaignId?: string
+  title?: string
+  description?: string
 }
 
 /**
- * Wires the presentational EmailListSignupForm up to reCAPTCHA Enterprise and
- * the subscribeToRecruitmentEmailList server action, which forwards signups
- * to Eventro's email campaign feature.
+ * Wires the presentational form to Eventro's public email campaign endpoint.
+ * Calling Eventro from the browser preserves the request Origin and client IP,
+ * which Eventro uses for its allowlist and rate limiting.
  */
-export function EmailListSignup() {
-  const [isAllowedHost, setIsAllowedHost] = useState(false)
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+export function EmailListSignup({
+  campaignId = process.env.NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID,
+  title,
+  description
+}: EmailListSignupProps) {
+  async function handleSubmit(fields: EmailListSignupFields): Promise<boolean> {
+    if (!campaignId) return false
 
-  useEffect(() => {
-    setIsAllowedHost(isRecaptchaAllowedHostname(window.location.hostname))
-  }, [])
+    try {
+      const response = await fetch(EVENTRO_SIGNUP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ campaignId, ...fields })
+      })
 
-  const shouldLoadRecaptcha = Boolean(siteKey) && isAllowedHost
-
-  async function handleSubmit(
-    name: string,
-    email: string
-  ): Promise<EmailListSignupResult> {
-    if (!siteKey || !isAllowedHost) {
-      return {
-        success: false,
-        error: "Signups aren't available on this domain right now."
-      }
+      return response.ok
+    } catch {
+      return false
     }
-
-    const grecaptchaEnterprise = window.grecaptcha?.enterprise
-    if (!grecaptchaEnterprise) {
-      return {
-        success: false,
-        error: "reCAPTCHA is not ready yet. Please try again."
-      }
-    }
-
-    await new Promise<void>(resolve => {
-      grecaptchaEnterprise.ready(() => resolve())
-    })
-
-    const recaptchaToken = await grecaptchaEnterprise.execute(siteKey, {
-      action: RECAPTCHA_ACTION
-    })
-
-    const result = await subscribeToRecruitmentEmailList({
-      email,
-      ...(name.trim() ? { name } : {}),
-      recaptchaToken
-    })
-
-    if (result.success) {
-      return { success: true }
-    }
-
-    return { success: false, error: "Signup failed. Please try again." }
   }
 
   return (
-    <>
-      {shouldLoadRecaptcha ? (
-        <Script
-          src={`https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`}
-          strategy="afterInteractive"
-        />
-      ) : null}
-      <EmailListSignupForm onSubmit={handleSubmit} />
-    </>
+    <EmailListSignupForm
+      onSubmit={handleSubmit}
+      title={title}
+      description={description}
+    />
   )
 }

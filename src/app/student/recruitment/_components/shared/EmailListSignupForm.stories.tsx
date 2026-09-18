@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, fn, userEvent, waitFor } from "storybook/test"
 
-import {
-  EmailListSignupForm,
-  EmailListSignupResult
-} from "./EmailListSignupForm"
+import { EmailListSignupForm } from "./EmailListSignupForm"
 
 const meta = {
   title: "Recruitment/EmailListSignupForm",
@@ -13,118 +10,79 @@ const meta = {
     layout: "centered"
   },
   tags: ["autodocs"],
+  decorators: [
+    Story => (
+      <div className="w-[min(34rem,90vw)]">
+        <Story />
+      </div>
+    )
+  ],
   args: {
-    onSubmit: fn()
+    onSubmit: fn(async () => false)
   }
 } satisfies Meta<typeof EmailListSignupForm>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => (
-    <div className="w-[min(34rem,90vw)]">
-      <EmailListSignupForm {...args} />
-    </div>
-  )
-}
+export const Default: Story = {}
 
 export const SuccessfulSignup: Story = {
   args: {
-    onSubmit: fn(async (): Promise<EmailListSignupResult> => ({
-      success: true
-    }))
+    onSubmit: fn(async () => true)
   },
-  render: args => (
-    <div className="w-[min(34rem,90vw)]">
-      <EmailListSignupForm {...args} />
-    </div>
-  ),
   play: async ({ canvas, args }) => {
-    await userEvent.type(
-      canvas.getByLabelText(/name \(optional\)/i),
-      "Ada Lovelace"
-    )
-    await userEvent.type(
-      canvas.getByLabelText(/email address/i),
-      "ada@example.com"
-    )
+    await userEvent.type(canvas.getByLabelText(/^name/i), " Ada Lovelace ")
+    await userEvent.type(canvas.getByLabelText(/^email$/i), "ada@example.com")
     await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
 
     await waitFor(() =>
-      expect(args.onSubmit).toHaveBeenCalledWith(
-        "Ada Lovelace",
-        "ada@example.com"
-      )
+      expect(args.onSubmit).toHaveBeenCalledWith({
+        name: "Ada Lovelace",
+        email: "ada@example.com"
+      })
     )
     await expect(
-      await canvas.findByText(/you're on the list/i)
+      await canvas.findByText(/you're subscribed/i)
     ).toBeInTheDocument()
   }
 }
 
 export const SuccessfulSignupWithoutName: Story = {
   args: {
-    onSubmit: fn(async (): Promise<EmailListSignupResult> => ({
-      success: true
-    }))
+    onSubmit: fn(async () => true)
   },
-  render: args => (
-    <div className="w-[min(34rem,90vw)]">
-      <EmailListSignupForm {...args} />
-    </div>
-  ),
   play: async ({ canvas, args }) => {
-    await userEvent.type(
-      canvas.getByLabelText(/email address/i),
-      "ada@example.com"
-    )
+    await userEvent.type(canvas.getByLabelText(/^email$/i), "ada@example.com")
     await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
 
     await waitFor(() =>
-      expect(args.onSubmit).toHaveBeenCalledWith("", "ada@example.com")
+      expect(args.onSubmit).toHaveBeenCalledWith({
+        email: "ada@example.com"
+      })
     )
     await expect(
-      await canvas.findByText(/you're on the list/i)
+      await canvas.findByText(/you're subscribed/i)
     ).toBeInTheDocument()
   }
 }
 
 export const FailedSignup: Story = {
   args: {
-    onSubmit: fn(async (): Promise<EmailListSignupResult> => ({
-      success: false,
-      error: "Signup failed. Please try again."
-    }))
+    onSubmit: fn(async () => false)
   },
-  render: args => (
-    <div className="w-[min(34rem,90vw)]">
-      <EmailListSignupForm {...args} />
-    </div>
-  ),
   play: async ({ canvas }) => {
-    await userEvent.type(
-      canvas.getByLabelText(/name \(optional\)/i),
-      "Ada Lovelace"
-    )
-    await userEvent.type(
-      canvas.getByLabelText(/email address/i),
-      "ada@example.com"
-    )
+    await userEvent.type(canvas.getByLabelText(/^name/i), "Ada Lovelace")
+    await userEvent.type(canvas.getByLabelText(/^email$/i), "ada@example.com")
     await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
 
-    await expect(
-      await canvas.findByText(/signup failed\. please try again\./i)
-    ).toBeInTheDocument()
+    await expect(await canvas.findByRole("alert")).toHaveTextContent(
+      /couldn't subscribe you right now/i
+    )
   }
 }
 
 export const DisabledUntilEmailEntered: Story = {
-  render: args => (
-    <div className="w-[min(34rem,90vw)]">
-      <EmailListSignupForm {...args} />
-    </div>
-  ),
   play: async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", { name: /notify me/i })
