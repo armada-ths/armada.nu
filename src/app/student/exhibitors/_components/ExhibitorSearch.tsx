@@ -8,8 +8,9 @@ import {
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { ExhibitorCard } from "./ExhibitorCard"
+import { sortExhibitors, type ExhibitorSort } from "./exhibitorSort"
 
 interface Props {
   exhibitors: Exhibitor[]
@@ -25,36 +26,14 @@ export default function ExhibitorSearch({
   programs
 }: Props) {
   const [searchQueryName, setSearchQueryName] = useState("")
-  const [sortBy, setSortBy] = useState<
-    "none" | "name-asc" | "name-desc" | "tier-gold" | "tier-bronze"
-  >("tier-gold")
+  const [sortBy, setSortBy] = useState<ExhibitorSort>("tier-gold")
   const [filteredExhibitors, setFilteredExhibitors] =
     useState<Exhibitor[]>(exhibitors)
 
-  const sortedExhibitors = [...filteredExhibitors].sort((a, b) => {
-    switch (sortBy) {
-      case "none":
-        return 0
-      case "name-asc":
-        return a.name.localeCompare(b.name)
-      case "name-desc":
-        return b.name.localeCompare(a.name)
-      case "tier-gold": {
-        const tierOrder = { Gold: 0, Silver: 1, Bronze: 2 }
-        const tierA = tierOrder[a.tier as keyof typeof tierOrder] ?? 999
-        const tierB = tierOrder[b.tier as keyof typeof tierOrder] ?? 999
-        return tierA - tierB
-      }
-      case "tier-bronze": {
-        const tierOrder = { Bronze: 0, Silver: 1, Gold: 2 }
-        const tierA = tierOrder[a.tier as keyof typeof tierOrder] ?? 999
-        const tierB = tierOrder[b.tier as keyof typeof tierOrder] ?? 999
-        return tierA - tierB
-      }
-      default:
-        return 0
-    }
-  })
+  const sortedExhibitors = useMemo(
+    () => sortExhibitors(filteredExhibitors, sortBy),
+    [filteredExhibitors, sortBy]
+  )
 
   return (
     <div className="space-y-4 py-6">
