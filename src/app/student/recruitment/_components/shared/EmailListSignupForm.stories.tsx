@@ -42,13 +42,47 @@ export const SuccessfulSignup: Story = {
   ),
   play: async ({ canvas, args }) => {
     await userEvent.type(
+      canvas.getByLabelText(/name \(optional\)/i),
+      "Ada Lovelace"
+    )
+    await userEvent.type(
       canvas.getByLabelText(/email address/i),
       "ada@example.com"
     )
     await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
 
     await waitFor(() =>
-      expect(args.onSubmit).toHaveBeenCalledWith("ada@example.com")
+      expect(args.onSubmit).toHaveBeenCalledWith(
+        "Ada Lovelace",
+        "ada@example.com"
+      )
+    )
+    await expect(
+      await canvas.findByText(/you're on the list/i)
+    ).toBeInTheDocument()
+  }
+}
+
+export const SuccessfulSignupWithoutName: Story = {
+  args: {
+    onSubmit: fn(async (): Promise<EmailListSignupResult> => ({
+      success: true
+    }))
+  },
+  render: args => (
+    <div className="w-[min(34rem,90vw)]">
+      <EmailListSignupForm {...args} />
+    </div>
+  ),
+  play: async ({ canvas, args }) => {
+    await userEvent.type(
+      canvas.getByLabelText(/email address/i),
+      "ada@example.com"
+    )
+    await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
+
+    await waitFor(() =>
+      expect(args.onSubmit).toHaveBeenCalledWith("", "ada@example.com")
     )
     await expect(
       await canvas.findByText(/you're on the list/i)
@@ -69,6 +103,10 @@ export const FailedSignup: Story = {
     </div>
   ),
   play: async ({ canvas }) => {
+    await userEvent.type(
+      canvas.getByLabelText(/name \(optional\)/i),
+      "Ada Lovelace"
+    )
     await userEvent.type(
       canvas.getByLabelText(/email address/i),
       "ada@example.com"

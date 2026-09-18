@@ -1,10 +1,15 @@
 "use server"
 import { env } from "@/env"
+import { headers } from "next/headers"
 import { z } from "zod"
 
 const SubscribeToEmailListSchema = z.object({
-  email: z.string().email(),
-  name: z.string().optional(),
+  email: z.string().email().max(255),
+  name: z.preprocess(
+    value =>
+      typeof value === "string" && value.trim() === "" ? undefined : value,
+    z.string().trim().min(1).max(255).optional()
+  ),
   recaptchaToken: z.string().min(1)
 })
 
@@ -15,22 +20,20 @@ type SubscribeToEmailListResponse =
 const RECAPTCHA_MIN_SCORE = 0.5
 const RECAPTCHA_EXPECTED_ACTION = "recruitment_email_signup"
 
-type RecaptchaVerification = { valid: true } | { valid: false; reason: string }
-
 async function verifyRecaptchaToken(
   token: string,
   siteKey: string
-): Promise<RecaptchaVerification> {
+): Promise<boolean> {
   const secretKey = env.RECAPTCHA_SECRET_KEY
   const projectId = env.RECAPTCHA_PROJECT_ID
 
   if (!secretKey) {
     console.warn("RECAPTCHA_SECRET_KEY is missing")
-    return { valid: false, reason: "RECAPTCHA_SECRET_KEY is missing" }
+    return false
   }
   if (!projectId) {
     console.warn("RECAPTCHA_PROJECT_ID is missing")
-    return { valid: false, reason: "RECAPTCHA_PROJECT_ID is missing" }
+    return false
   }
 
   const assessmentUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/assessments?key=${secretKey}`
@@ -51,20 +54,17 @@ async function verifyRecaptchaToken(
 
   if (!response.ok) {
     const body = await response.text().catch(() => "")
-    const reason = `assessment request failed: ${response.status} ${body}`
-    console.warn(`reCAPTCHA ${reason}`)
-    return { valid: false, reason }
+    console.warn(`reCAPTCHA assessment failed: ${response.status} ${body}`)
+    return false
   }
 
   const assessment = (await response.json()) as {
     tokenProperties?: {
       valid?: boolean
       action?: string
-      invalidReason?: string
     }
     riskAnalysis?: {
       score?: number
-      reasons?: string[]
     }
   }
 
@@ -73,20 +73,7 @@ async function verifyRecaptchaToken(
     assessment.tokenProperties?.action === RECAPTCHA_EXPECTED_ACTION
   const score = assessment.riskAnalysis?.score ?? 0
 
-  if (!validToken || !validAction || score < RECAPTCHA_MIN_SCORE) {
-    const details = {
-      validToken,
-      invalidReason: assessment.tokenProperties?.invalidReason,
-      expectedAction: RECAPTCHA_EXPECTED_ACTION,
-      actualAction: assessment.tokenProperties?.action,
-      score,
-      reasons: assessment.riskAnalysis?.reasons
-    }
-    console.warn("reCAPTCHA assessment rejected:", JSON.stringify(details))
-    return { valid: false, reason: JSON.stringify(details) }
-  }
-
-  return { valid: true }
+  return validToken && validAction && score >= RECAPTCHA_MIN_SCORE
 }
 
 // Signs a user up to Armada's "next opening" recruitment email list in Eventro.
@@ -108,17 +95,11 @@ export async function subscribeToRecruitmentEmailList(
     return { success: false, error: "recaptcha_not_configured" }
   }
 
-  const recaptchaResult = await verifyRecaptchaToken(
-    args.recaptchaToken,
-    siteKey
-  )
-  if (!recaptchaResult.valid) {
-    // TEMPORARY: return the raw reason for preview-environment debugging.
-    // Revert to a generic "recaptcha_validation_failed" before merging.
-    return {
-      success: false,
-      error: `recaptcha_validation_failed: ${recaptchaResult.reason}`
-    }
+  const { email, name, recaptchaToken } = result.data
+
+  const recaptchaValid = await verifyRecaptchaToken(recaptchaToken, siteKey)
+  if (!recaptchaValid) {
+    return { success: false, error: "recaptcha_validation_failed" }
   }
 
   const campaignId = env.EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID
@@ -127,20 +108,27 @@ export async function subscribeToRecruitmentEmailList(
     return { success: false, error: "eventro_not_configured" }
   }
 
+  const origin = (await headers()).get("origin")
+  if (!origin) {
+    console.warn("Origin header is missing from recruitment email signup")
+    return { success: false, error: "eventro_origin_missing" }
+  }
+
   try {
     const res = await fetch(
-      "https://app.eventro.se/api/v1/register-email-campaign-user",
+      "https://app.eventro.se/api/v1/register-email-campaign-user/",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Origin: origin,
           Authorization: `Bearer ${env.EVENTRO_API}`,
           organization: env.EVENTRO_ORG
         },
         body: JSON.stringify({
           campaignId,
-          email: args.email,
-          name: args.name || ""
+          email,
+          ...(name ? { name } : {})
         })
       }
     )
@@ -150,20 +138,12 @@ export async function subscribeToRecruitmentEmailList(
       console.warn(
         `Eventro email campaign signup failed: ${res.status} ${body}`
       )
-      // TEMPORARY: surface the raw Eventro response for preview debugging.
-      // Revert to a generic "eventro_signup_failed" before merging.
-      return {
-        success: false,
-        error: `eventro_signup_failed: ${res.status} ${body}`
-      }
+      return { success: false, error: "eventro_signup_failed" }
     }
 
     return { success: true }
   } catch (e) {
     console.warn("Failed to sign up to Eventro email campaign:", e)
-    return {
-      success: false,
-      error: `eventro_request_error: ${e instanceof Error ? e.message : String(e)}`
-    }
+    return { success: false, error: "eventro_request_error" }
   }
 }

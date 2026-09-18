@@ -2,13 +2,13 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mail } from "lucide-react"
-import { FormEvent, useState } from "react"
+import { type SubmitEvent, useState } from "react"
 
 export type EmailListSignupResult =
   { success: true } | { success: false; error: string }
 
 export interface EmailListSignupFormProps {
-  onSubmit: (email: string) => Promise<EmailListSignupResult>
+  onSubmit: (name: string, email: string) => Promise<EmailListSignupResult>
 }
 
 const GENERIC_ERROR_MESSAGE =
@@ -21,13 +21,14 @@ const GENERIC_ERROR_MESSAGE =
  * it stays easy to exercise in Storybook.
  */
 export function EmailListSignupForm({ onSubmit }: EmailListSignupFormProps) {
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     if (status === "submitting") {
       return
@@ -37,9 +38,10 @@ export function EmailListSignupForm({ onSubmit }: EmailListSignupFormProps) {
     setErrorMessage(null)
 
     try {
-      const result = await onSubmit(email)
+      const result = await onSubmit(name, email)
       if (result.success) {
         setStatus("success")
+        setName("")
         setEmail("")
       } else {
         setStatus("error")
@@ -75,11 +77,23 @@ export function EmailListSignupForm({ onSubmit }: EmailListSignupFormProps) {
         </div>
         <p className="text-licorice/70 text-xs">
           Leave your email and we&apos;ll let you know as soon as our next Host,
-          OT or PG recruitment opens. No spam, unsubscribe anytime.
+          OT or PG recruitment opens.
         </p>
+        <Input
+          type="text"
+          maxLength={255}
+          autoComplete="name"
+          placeholder="Your name (optional)"
+          aria-label="Name (optional)"
+          value={name}
+          onChange={event => setName(event.target.value)}
+          disabled={status === "submitting"}
+        />
         <Input
           type="email"
           required
+          maxLength={255}
+          autoComplete="email"
           placeholder="you@example.com"
           aria-label="Email address"
           value={email}

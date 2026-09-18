@@ -32,7 +32,10 @@ export function EmailListSignup() {
 
   const shouldLoadRecaptcha = Boolean(siteKey) && isAllowedHost
 
-  async function handleSubmit(email: string): Promise<EmailListSignupResult> {
+  async function handleSubmit(
+    name: string,
+    email: string
+  ): Promise<EmailListSignupResult> {
     if (!siteKey || !isAllowedHost) {
       return {
         success: false,
@@ -58,6 +61,7 @@ export function EmailListSignup() {
 
     const result = await subscribeToRecruitmentEmailList({
       email,
+      ...(name.trim() ? { name } : {}),
       recaptchaToken
     })
 
@@ -65,14 +69,7 @@ export function EmailListSignup() {
       return { success: true }
     }
 
-    // TEMPORARY: surface the raw error code from the server action so we can
-    // diagnose preview-environment signup failures without needing Vercel
-    // runtime logs. Revert to a generic message before merging.
-    const rawError =
-      typeof result.error === "string"
-        ? result.error
-        : JSON.stringify(result.error)
-    return { success: false, error: `Signup failed: ${rawError}` }
+    return { success: false, error: "Signup failed. Please try again." }
   }
 
   return (
