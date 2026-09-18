@@ -5,7 +5,7 @@ import {
 } from "@/app/student/recruitment/_components/shared/EmailListSignupForm"
 
 const EVENTRO_SIGNUP_URL =
-  "https://app.eventro.se/api/v1/register-email-campaign-user/"
+  "https://app.eventro.se/api/v1/register-email-campaign-user"
 
 interface EmailListSignupProps {
   campaignId?: string
