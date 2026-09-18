@@ -11,13 +11,14 @@ import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
   const [modalOpen, setModalOpen] = useState(false)
+  const isClosing = useRef(false)
   const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
   const shouldBypassLogoOptimization =
     shouldBypassNextImageOptimization(logoSrc)
@@ -27,9 +28,13 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
   useEffect(() => {
     const queryId = searchParams.get("id")
-    if (queryId === exhibitor.id.toString()) setModalOpen(true)
-    else setModalOpen(false)
-  }, [exhibitor, searchParams])
+    if (queryId === exhibitor.id.toString()) {
+      if (!isClosing.current) setModalOpen(true)
+    } else {
+      isClosing.current = false
+      setModalOpen(false)
+    }
+  }, [exhibitor.id, searchParams])
 
   return (
     <>
@@ -37,6 +42,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         open={modalOpen}
         setOpen={setModalOpen}
         onClose={() => {
+          isClosing.current = true
           setModalOpen(false)
           // Drop the "id" param so a reload or re-render doesn't reopen this modal
           if (searchParams.get("id") === exhibitor.id.toString()) {

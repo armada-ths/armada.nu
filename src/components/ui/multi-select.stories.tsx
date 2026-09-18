@@ -55,6 +55,23 @@ export const Default: Story = {
     await expect(
       canvas.getByText("Technology & Software Development")
     ).toBeInTheDocument()
+
+    const body = within(document.body)
+    const clearButton = body.getByRole("button", { name: "Clear" })
+    const closeButton = body.getByRole("button", { name: "Close" })
+
+    await userEvent.tab()
+    await expect(clearButton).toHaveFocus()
+    await userEvent.tab()
+    await expect(closeButton).toHaveFocus()
+    await userEvent.tab({ shift: true })
+    await expect(clearButton).toHaveFocus()
+    await userEvent.keyboard("{Enter}")
+    await expect(args.onValueChange).toHaveBeenLastCalledWith([])
+
+    closeButton.focus()
+    await userEvent.keyboard("{Enter}")
+    await expect(trigger).toHaveAttribute("aria-expanded", "false")
   }
 }
 

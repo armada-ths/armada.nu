@@ -633,6 +633,14 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       onValueChange([])
     }
 
+    const handleActionButtonKeyDown = (
+      event: React.KeyboardEvent<HTMLButtonElement>
+    ) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.stopPropagation()
+      }
+    }
+
     const handleTogglePopover = () => {
       if (disabled) return
       setIsPopoverOpen(prev => !prev)
@@ -1156,6 +1164,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     <button
                       type="button"
                       onClick={handleClear}
+                      onKeyDown={handleActionButtonKeyDown}
                       className="rounded-base flex-1 cursor-pointer px-2 py-1.5 text-sm outline-0 hover:outline-2 focus-visible:outline-2">
                       Clear
                     </button>
@@ -1168,6 +1177,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 <button
                   type="button"
                   onClick={() => setIsPopoverOpen(false)}
+                  onKeyDown={handleActionButtonKeyDown}
                   className="rounded-base max-w-full flex-1 cursor-pointer px-2 py-1.5 text-sm outline-0 hover:outline-2 focus-visible:outline-2">
                   Close
                 </button>

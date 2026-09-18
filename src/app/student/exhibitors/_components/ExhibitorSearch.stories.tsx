@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { getRouter } from "@storybook/nextjs-vite/navigation.mock"
 import { expect, userEvent, waitFor, within } from "storybook/test"
 
 import type {
@@ -137,17 +138,47 @@ export const FilteringAndSorting: Story = {
 
     await expect(badgeAfterHover.width).toBe(badgeBeforeHover.width)
     await expect(badgeAfterHover.height).toBe(badgeBeforeHover.height)
-    await expect(
-      Math.abs(badgeAfterHover.x - badgeBeforeHover.x)
-    ).toBeLessThanOrEqual(1.1)
-    await expect(
-      Math.abs(badgeAfterHover.y - badgeBeforeHover.y)
-    ).toBeLessThanOrEqual(1.1)
+    await expect(industryTrigger.className).toContain(
+      "hover:translate-x-boxShadowX"
+    )
+    await expect(industryTrigger.className).toContain(
+      "hover:translate-y-boxShadowY"
+    )
+    await expect(industryTrigger.className).toContain("hover:shadow-none")
 
     await userEvent.click(removeIndustry)
 
     await userEvent.type(searchInput, "Gamma")
     await expect(canvas.getByText("Gamma Group")).toBeInTheDocument()
     await expect(canvas.queryByText("Alpha Systems")).not.toBeInTheDocument()
+  }
+}
+
+export const ClosingCompanyModal: Story = {
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: "/student/exhibitors",
+        query: { id: "1" }
+      }
+    }
+  },
+  play: async () => {
+    const body = within(document.body)
+    const dialog = await body.findByRole("dialog")
+
+    await userEvent.click(within(dialog).getByRole("button", { name: "Close" }))
+
+    await waitFor(() => {
+      expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+    })
+    await expect(getRouter().replace).toHaveBeenCalledWith(
+      "/student/exhibitors",
+      { scroll: false }
+    )
+
+    await new Promise(resolve => setTimeout(resolve, 300))
+    await expect(body.queryByRole("dialog")).not.toBeInTheDocument()
   }
 }
