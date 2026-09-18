@@ -10,7 +10,7 @@ import ExhibitorSortMenu from "./ExhibitorSortMenu"
 import type { ExhibitorSort } from "./exhibitorSort"
 
 const filterTriggerClassName =
-  "bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2 shadow-shadow transition-all hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
+  "bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2 shadow-shadow transition-all hover:translate-x-px hover:translate-y-px hover:shadow-[3px_3px_0_0_var(--border)] data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
 
 const filterPopoverClassName = "w-(--radix-popover-trigger-width) max-w-[95vw]"
 

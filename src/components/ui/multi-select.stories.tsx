@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, fn, userEvent, within } from "storybook/test"
+import { expect, fireEvent, fn, userEvent, within } from "storybook/test"
 
 import { MultiSelect } from "./multi-select"
 
@@ -78,6 +78,34 @@ export const LongSelectedValues: Story = {
     await expect(badge.getBoundingClientRect().right).toBeLessThanOrEqual(
       trigger.getBoundingClientRect().right
     )
+  }
+}
+
+export const ScrollableOptions: Story = {
+  args: {
+    options: Array.from({ length: 30 }, (_, index) => ({
+      value: `option-${index + 1}`,
+      label: `Industry option ${index + 1}`
+    }))
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("combobox", { name: /Filter by Industry/ })
+    )
+
+    const body = within(document.body)
+    const listbox = await body.findByRole("listbox", {
+      name: "Available options"
+    })
+    const actions = body.getByRole("group", { name: "Filter actions" })
+    const actionsTop = actions.getBoundingClientRect().top
+
+    await expect(listbox.scrollHeight).toBeGreaterThan(listbox.clientHeight)
+    listbox.scrollTop = listbox.scrollHeight
+    fireEvent.scroll(listbox)
+
+    await expect(actions.getBoundingClientRect().top).toBe(actionsTop)
+    await expect(body.getByRole("button", { name: "Close" })).toBeVisible()
   }
 }
 

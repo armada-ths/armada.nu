@@ -105,6 +105,47 @@ export const FilteringAndSorting: Story = {
       )
     })
 
+    const industryTrigger = canvas.getByRole("combobox", {
+      name: /Filter by Industry/
+    })
+    await userEvent.click(industryTrigger)
+    const industryListbox = await within(document.body).findByRole("listbox", {
+      name: "Available options"
+    })
+    await userEvent.click(
+      within(industryListbox).getByRole("option", {
+        name: /Technology & Software Development, not selected/
+      })
+    )
+    await userEvent.click(
+      within(document.body).getByRole("button", { name: "Close" })
+    )
+
+    const removeIndustry = canvas.getByRole("button", {
+      name: /Remove Technology & Software Development/
+    })
+    const industryBadge = removeIndustry.closest<HTMLElement>(
+      "[data-slot='badge']"
+    )
+    await expect(industryBadge).not.toBeNull()
+    if (!industryBadge) return
+
+    const badgeBeforeHover = industryBadge.getBoundingClientRect()
+    await userEvent.hover(removeIndustry)
+    await new Promise(resolve => setTimeout(resolve, 350))
+    const badgeAfterHover = industryBadge.getBoundingClientRect()
+
+    await expect(badgeAfterHover.width).toBe(badgeBeforeHover.width)
+    await expect(badgeAfterHover.height).toBe(badgeBeforeHover.height)
+    await expect(
+      Math.abs(badgeAfterHover.x - badgeBeforeHover.x)
+    ).toBeLessThanOrEqual(1.1)
+    await expect(
+      Math.abs(badgeAfterHover.y - badgeBeforeHover.y)
+    ).toBeLessThanOrEqual(1.1)
+
+    await userEvent.click(removeIndustry)
+
     await userEvent.type(searchInput, "Gamma")
     await expect(canvas.getByText("Gamma Group")).toBeInTheDocument()
     await expect(canvas.queryByText("Alpha Systems")).not.toBeInTheDocument()

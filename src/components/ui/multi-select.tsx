@@ -991,7 +991,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             id={listboxId}
             aria-label={`${placeholder} options`}
             className={cn(
-              "w-auto p-0",
+              "flex w-auto flex-col overflow-hidden p-0",
               getPopoverAnimationClass(),
               screenSize === "mobile" && "w-[85vw] max-w-70",
               screenSize === "tablet" && "w-[70vw] max-w-md",
@@ -1007,7 +1007,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             }}
             align="start"
             onEscapeKeyDown={() => setIsPopoverOpen(false)}>
-            <Command className="bg-snow">
+            <Command className="bg-snow min-h-0">
               {searchable && (
                 <CommandInput
                   placeholder="Search options..."
@@ -1027,9 +1027,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 label="Available options"
                 aria-multiselectable="true"
                 className={cn(
-                  "multiselect-scrollbar max-h-[40vh] overflow-y-auto",
-                  screenSize === "mobile" && "max-h-[50vh]",
-                  "overscroll-behavior-y-contain"
+                  "multiselect-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain"
                 )}>
                 <CommandEmpty>
                   {emptyIndicator || "No results found."}
@@ -1148,8 +1146,11 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                   </CommandGroup>
                 )}
               </CommandList>
-              <CommandSeparator />
-              <div className="flex items-center justify-between p-1">
+              <CommandSeparator className="shrink-0" />
+              <div
+                role="group"
+                aria-label="Filter actions"
+                className="bg-snow sticky bottom-0 z-10 flex shrink-0 items-center justify-between p-1">
                 {selectedValues.length > 0 && (
                   <>
                     <button
