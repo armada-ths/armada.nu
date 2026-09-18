@@ -3,6 +3,7 @@ import { TrackedLink } from "@/components/shared/TrackedLink"
 import { Event } from "@/components/shared/hooks/api/useEvents"
 import { Button } from "@/components/ui/button"
 import { normalizeExternalUrl } from "@/lib/externalUrl"
+import { sanitizeEventDescription } from "@/lib/sanitizeHtml"
 import {
   cn,
   eventDateTimeToEpochSeconds,
@@ -51,6 +52,7 @@ export default function EventDetails({
   const registrationClose = eventDateTimeToEpochSeconds(event.registrationEnd)
   const registrationCutoff = registrationClose ?? eventStart ?? today
   const signupUrl = normalizeExternalUrl(event.signupLink)
+  const sanitizedDescription = sanitizeEventDescription(event.description)
   return (
     <div
       className={cn(
@@ -75,8 +77,9 @@ export default function EventDetails({
         )}
 
         <div
+          data-event-description
           className="prose text-licorice/80 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: event.description }}
+          dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
         />
       </div>
 
