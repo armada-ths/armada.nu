@@ -7,7 +7,7 @@ import { type SubmitEvent, useState } from "react"
 
 export interface EmailListSignupFields {
   email: string
-  name?: string
+  firstName?: string
 }
 
 export interface EmailListSignupFormProps {
@@ -30,7 +30,7 @@ export function EmailListSignupForm({
   title = "Get notified when applications open",
   description = "Enter your email to receive updates about upcoming Armada volunteer recruitment."
 }: EmailListSignupFormProps) {
-  const [name, setName] = useState("")
+  const [firstName, setFirstName] = useState("")
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
@@ -45,14 +45,14 @@ export function EmailListSignupForm({
     setStatus("submitting")
 
     try {
-      const trimmedName = name.trim()
+      const trimmedFirstName = firstName.trim()
       const success = await onSubmit({
         email: email.trim(),
-        ...(trimmedName ? { name: trimmedName } : {})
+        ...(trimmedFirstName ? { firstName: trimmedFirstName } : {})
       })
       if (success) {
         setStatus("success")
-        setName("")
+        setFirstName("")
         setEmail("")
       } else {
         setStatus("error")
@@ -95,20 +95,6 @@ export function EmailListSignupForm({
         </div>
         <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           <div className="flex flex-col gap-1">
-            <label className="text-sm" htmlFor="recruitment-signup-name">
-              Name (optional)
-            </label>
-            <Input
-              id="recruitment-signup-name"
-              type="text"
-              maxLength={255}
-              autoComplete="name"
-              value={name}
-              onChange={event => setName(event.target.value)}
-              disabled={status === "submitting"}
-            />
-          </div>
-          <div className="flex flex-col gap-1">
             <label className="text-sm" htmlFor="recruitment-signup-email">
               Email
             </label>
@@ -118,8 +104,24 @@ export function EmailListSignupForm({
               required
               maxLength={255}
               autoComplete="email"
+              placeholder="you@example.com"
               value={email}
               onChange={event => setEmail(event.target.value.trim())}
+              disabled={status === "submitting"}
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm" htmlFor="recruitment-signup-first-name">
+              First name (optional)
+            </label>
+            <Input
+              id="recruitment-signup-first-name"
+              type="text"
+              maxLength={255}
+              autoComplete="given-name"
+              placeholder="Your first name"
+              value={firstName}
+              onChange={event => setFirstName(event.target.value)}
               disabled={status === "submitting"}
             />
           </div>

@@ -32,13 +32,13 @@ export const SuccessfulSignup: Story = {
     onSubmit: fn(async () => true)
   },
   play: async ({ canvas, args }) => {
-    await userEvent.type(canvas.getByLabelText(/^name/i), " Ada Lovelace ")
+    await userEvent.type(canvas.getByLabelText(/^first name/i), " Ada ")
     await userEvent.type(canvas.getByLabelText(/^email$/i), "ada@example.com")
     await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
 
     await waitFor(() =>
       expect(args.onSubmit).toHaveBeenCalledWith({
-        name: "Ada Lovelace",
+        firstName: "Ada",
         email: "ada@example.com"
       })
     )
@@ -48,7 +48,7 @@ export const SuccessfulSignup: Story = {
   }
 }
 
-export const SuccessfulSignupWithoutName: Story = {
+export const SuccessfulSignupWithoutFirstName: Story = {
   args: {
     onSubmit: fn(async () => true)
   },
@@ -72,7 +72,7 @@ export const FailedSignup: Story = {
     onSubmit: fn(async () => false)
   },
   play: async ({ canvas }) => {
-    await userEvent.type(canvas.getByLabelText(/^name/i), "Ada Lovelace")
+    await userEvent.type(canvas.getByLabelText(/^first name/i), "Ada")
     await userEvent.type(canvas.getByLabelText(/^email$/i), "ada@example.com")
     await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
 

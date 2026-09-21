@@ -28,7 +28,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const SendsEventroPayloadWithoutEmptyName: Story = {
+export const SendsEventroPayloadWithoutFirstName: Story = {
   play: async ({ canvas }) => {
     const originalFetch = globalThis.fetch
     const fetchMock = fn(
@@ -51,6 +51,39 @@ export const SendsEventroPayloadWithoutEmptyName: Story = {
         body: JSON.stringify({
           campaignId: CAMPAIGN_ID,
           email: "ada@example.com"
+        })
+      })
+    } finally {
+      globalThis.fetch = originalFetch
+    }
+  }
+}
+
+export const SendsFirstNameToEventro: Story = {
+  play: async ({ canvas }) => {
+    const originalFetch = globalThis.fetch
+    const fetchMock = fn(
+      async () => new Response(JSON.stringify({ success: true }))
+    )
+    globalThis.fetch = fetchMock as typeof fetch
+
+    try {
+      await userEvent.type(canvas.getByLabelText(/^first name/i), " Ada ")
+      await userEvent.type(canvas.getByLabelText(/^email$/i), "ada@example.com")
+      await userEvent.click(canvas.getByRole("button", { name: /notify me/i }))
+
+      await expect(
+        await canvas.findByText(/you're subscribed/i)
+      ).toBeInTheDocument()
+      await expect(fetchMock).toHaveBeenCalledWith(EVENTRO_SIGNUP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          campaignId: CAMPAIGN_ID,
+          email: "ada@example.com",
+          firstName: "Ada"
         })
       })
     } finally {
