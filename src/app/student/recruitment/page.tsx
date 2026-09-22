@@ -3,6 +3,7 @@ import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { FAQSection } from "@/app/student/recruitment/_components/host/FAQSection"
 import { ApplyButton } from "@/app/student/recruitment/_components/shared/ApplyButton"
+import { EmailListSignup } from "@/app/student/recruitment/_components/shared/EmailListSignup"
 import { RecruitmentDescription } from "@/app/student/recruitment/_components/shared/RecruitmentDescription"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Sparkles } from "lucide-react"
+import { DateTime } from "luxon"
 import { Metadata } from "next"
 import ReactMarkdown from "react-markdown"
 export const metadata: Metadata = {
@@ -39,7 +41,30 @@ export default async function RecruitmentPage() {
     b.localeCompare(a)
   )
   const hasAvailableRoles = groupEntries.some(([, group]) => group.length > 0)
+  const now = DateTime.now()
+  const recruitmentOpen =
+    data != null &&
+    DateTime.fromISO(data.start_date) <= now &&
+    DateTime.fromISO(data.end_date) >= now
   const recruitmentName = data?.name || "Armada Recruitment"
+
+  const emailSignupCopy = !hasAvailableRoles
+    ? {
+        title: "No available roles at the moment",
+        description:
+          "Subscribe for updates about future recruitment opportunities."
+      }
+    : recruitmentOpen
+      ? {
+          title: "Applications are open",
+          description:
+            "Apply to one of the available roles above, or subscribe for updates about future recruitment opportunities."
+        }
+      : {
+          title: "Applications are currently closed",
+          description:
+            "The roles above are not accepting applications right now. Subscribe for updates about future recruitment opportunities."
+        }
 
   const promotionalPhotos: { source: string; altText: string }[] = [
     {
@@ -184,15 +209,10 @@ export default async function RecruitmentPage() {
                     ))}
                   </Accordion>
                 </div>
-              ) : (
-                <Alert className="mt-6">
-                  <AlertTitle>No available roles at the moment</AlertTitle>
-                  <AlertDescription>
-                    Keep an eye on this page for future opportunities to join
-                    our volunteer team!
-                  </AlertDescription>
-                </Alert>
-              )}
+              ) : null}
+              <div className="mt-6">
+                <EmailListSignup {...emailSignupCopy} />
+              </div>
             </div>
             <div className="mt-14 hidden justify-center sm:flex">
               {data ? (

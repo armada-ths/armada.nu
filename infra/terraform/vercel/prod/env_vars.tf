@@ -230,6 +230,48 @@ resource "vercel_project_environment_variable" "recaptcha_secret_key_preview" {
   }
 }
 
+# ── NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID ─────────────────────────
+
+resource "vercel_project_environment_variable" "eventro_recruitment_email_campaign_id_production" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["production"]
+  sensitive  = false
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "vercel_project_environment_variable" "eventro_recruitment_email_campaign_id_staging_branch" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["preview"]
+  git_branch = "staging"
+  sensitive  = false
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "vercel_project_environment_variable" "eventro_recruitment_email_campaign_id_preview_development" {
+  project_id = local.project_id
+  team_id    = local.team_id
+  key        = "NEXT_PUBLIC_EVENTRO_RECRUITMENT_EMAIL_CAMPAIGN_ID"
+  value      = "" # Managed in Vercel dashboard.
+  target     = ["preview", "development"]
+  sensitive  = false
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 # ── REVALIDATION_SECRET ───────────────────────────────────────────────────────
 
 resource "vercel_project_environment_variable" "revalidation_secret" {
