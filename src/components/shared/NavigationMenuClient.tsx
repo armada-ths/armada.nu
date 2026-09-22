@@ -195,9 +195,10 @@ export function NavigationMenuClient({
           disabled: !blogEnabled
         },
         {
-          title: "History",
+          title: "History of Armada",
           url: "/about/history",
-          description: "45 years of Scandinavia's largest student-run job fair",
+          description:
+            "45 years of Scandinavia's largest student-run career fair",
           icon: <BookOpenIcon className="size-5 shrink-0" />,
           disabled: !historyTimelineEnabled
         }

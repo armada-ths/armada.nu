@@ -8,7 +8,7 @@ import { HistoryTimeline } from "./_components/HistoryTimeline"
 export const metadata: Metadata = {
   title: "The History of Armada",
   description:
-    "Explore 45 years of Armada — Scandinavia's largest student-run job fair. A timeline of milestones, growth, and community."
+    "Explore 45 years of Armada — Scandinavia's largest student-run career fair. A timeline of milestones, growth, and community."
 }
 
 export default async function TimelinePage() {
@@ -17,20 +17,18 @@ export default async function TimelinePage() {
     return <ComingSoonPage title="The History of Armada" />
   }
 
-  const allEntries = (await fetchTimelineEntries()).sort(
-    (a, b) => a.sortOrder - b.sortOrder
-  )
+  const allEntries = await fetchTimelineEntries()
 
   // Group by era, preserving insertion order
   const eraMap = new Map<
-    string,
+    number,
     { eraTitle: string; entries: typeof allEntries }
   >()
   for (const entry of allEntries) {
-    if (!eraMap.has(entry.era)) {
-      eraMap.set(entry.era, { eraTitle: entry.eraTitle, entries: [] })
+    if (!eraMap.has(entry.eraId)) {
+      eraMap.set(entry.eraId, { eraTitle: entry.eraTitle, entries: [] })
     }
-    eraMap.get(entry.era)!.entries.push(entry)
+    eraMap.get(entry.eraId)!.entries.push(entry)
   }
   const groupedEras = Array.from(eraMap.values())
 
@@ -39,8 +37,8 @@ export default async function TimelinePage() {
       <Page.Boundary maxWidth={1440} className="pb-20">
         <Page.Header className="text-center">The History of Armada</Page.Header>
         <p className="font-lato text-licorice/70 mt-2 text-center text-base">
-          A timeline over 45 years of Scandinavia&apos;s largest student-run job
-          fair
+          A timeline over 45 years of Scandinavia&apos;s largest student-run
+          career fair
         </p>
         <HistoryTimeline eras={groupedEras} />
       </Page.Boundary>

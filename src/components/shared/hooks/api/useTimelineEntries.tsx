@@ -5,7 +5,7 @@ export type TimelineEntry = {
   id: number
   title: string
   body: string
-  era: string
+  eraId: number
   eraTitle: string
   sortOrder: number
 }
