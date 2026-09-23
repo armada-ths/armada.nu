@@ -13,7 +13,7 @@
     "version": "0.2.0",
     "compounds": [
       {
-        "name": "✅ Frontend + Prod CMS",
+        "name": "armada.nu + Prod CMS",
         "configurations": [
           {
             "folder": "armada.nu",
@@ -23,15 +23,25 @@
         "stopAll": true
       },
       {
-        "name": "✅ Full Stack Local (Docker)",
+        "name": "armada.nu + Local CMS",
         "configurations": [
           {
             "folder": "ArmadaCMS",
-            "name": "Docker"
+            "name": "Admin Frontend + Docker"
           },
           {
             "folder": "armada.nu",
             "name": "Frontend (Local CMS)"
+          }
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Local CMS",
+        "configurations": [
+          {
+            "folder": "ArmadaCMS",
+            "name": "Admin Frontend + Docker"
           }
         ],
         "stopAll": true
