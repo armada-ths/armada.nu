@@ -17,7 +17,9 @@ export async function fetchTimelineEntries(): Promise<TimelineEntry[]> {
       next: { revalidate: 86400, tags: ["timeline-entries"] }
     }
   )
-  if (!res.ok) return []
+  if (!res.ok) {
+    throw new Error(`Failed to fetch timeline entries: ${res.status}`)
+  }
   return res.json() as Promise<TimelineEntry[]>
 }
 
