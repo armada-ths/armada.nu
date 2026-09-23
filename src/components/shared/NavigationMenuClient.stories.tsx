@@ -29,7 +29,8 @@ const meta = {
     exhibitorSignupEnabled: true,
     aboutPageEnabled: true,
     aboutTeamEnabled: true,
-    blogEnabled: true
+    blogEnabled: true,
+    historyTimelineEnabled: true
   },
   render: args => (
     <div className="bg-coconut min-h-112 pb-10">
