@@ -1,4 +1,5 @@
 import { TimelineEntry } from "@/components/shared/hooks/api/useTimelineEntries"
+import ReactMarkdown from "react-markdown"
 
 type Era = {
   eraTitle: string
@@ -7,6 +8,45 @@ type Era = {
 
 interface HistoryTimelineProps {
   eras: Era[]
+}
+
+function EntryBody({ body }: { body: string }) {
+  return (
+    <ReactMarkdown
+      components={{
+        p: ({ children }) => <p className="mb-3 last:mb-0">{children}</p>,
+        ul: ({ children }) => (
+          <ul className="mb-3 list-disc pl-5 last:mb-0">{children}</ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="mb-3 list-decimal pl-5 last:mb-0">{children}</ol>
+        ),
+        a: ({ children, href }) => (
+          <a href={href} className="underline">
+            {children}
+          </a>
+        ),
+        h1: ({ children }) => (
+          <h1 className="font-bebas-neue text-2xl">{children}</h1>
+        ),
+        h2: ({ children }) => (
+          <h2 className="font-bebas-neue text-xl">{children}</h2>
+        ),
+        h3: ({ children }) => (
+          <h3 className="font-bebas-neue text-lg">{children}</h3>
+        ),
+        blockquote: ({ children }) => (
+          <blockquote className="border-melon border-l-2 pl-3 italic">
+            {children}
+          </blockquote>
+        ),
+        strong: ({ children }) => (
+          <strong className="font-bold">{children}</strong>
+        )
+      }}>
+      {body}
+    </ReactMarkdown>
+  )
 }
 
 function EntryDesktop({
@@ -51,7 +91,7 @@ function EntryDesktop({
           </div>
           {/* Info box */}
           <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-6 pb-5 text-base">
-            {entry.body}
+            <EntryBody body={entry.body} />
           </div>
         </div>
       </div>
@@ -96,7 +136,7 @@ function EntryMobile({
       </div>
       {/* Body card */}
       <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-4 py-3 text-base">
-        {entry.body}
+        <EntryBody body={entry.body} />
       </div>
     </div>
   )
