@@ -8,9 +8,26 @@ import { NauticalCard } from "@/components/ui/nautical-card"
 import { cn } from "@/lib/utils"
 import { DateTime } from "luxon"
 
+type CountdownLabels = {
+  days: string
+  hours: string
+  minutes: string
+  seconds: string
+  fairIsLive: string
+}
+
+const defaultLabels: CountdownLabels = {
+  days: "Days",
+  hours: "Hours",
+  minutes: "Mins",
+  seconds: "Secs",
+  fairIsLive: "The Fair Is Live!"
+}
+
 interface CountdownProps {
   fairDays: string[]
   centered?: boolean
+  labels?: CountdownLabels
 }
 
 type CountdownDisplayTime = {
@@ -20,7 +37,11 @@ type CountdownDisplayTime = {
   seconds: number
 }
 
-export function Countdown({ fairDays, centered }: CountdownProps) {
+export function Countdown({
+  fairDays,
+  centered,
+  labels = defaultLabels
+}: CountdownProps) {
   if (fairDays.length === 0) return null
 
   const startDt = DateTime.fromISO(fairDays[0], { zone: "Europe/Stockholm" })
@@ -53,6 +74,7 @@ export function Countdown({ fairDays, centered }: CountdownProps) {
             <CountdownUnits
               displayTime={{ days: 0, hours: 0, minutes: 0, seconds: 0 }}
               centered={centered}
+              labels={labels}
             />
           </div>
           <p
@@ -62,11 +84,15 @@ export function Countdown({ fairDays, centered }: CountdownProps) {
                 ? "text-2xl sm:text-3xl md:text-4xl"
                 : "text-xl lg:justify-start"
             )}>
-            The Fair Is Live!
+            {labels.fairIsLive}
           </p>
         </div>
       ) : (
-        <CountdownUnits displayTime={displayTime} centered={centered} />
+        <CountdownUnits
+          displayTime={displayTime}
+          centered={centered}
+          labels={labels}
+        />
       )}
     </div>
   )
@@ -74,10 +100,12 @@ export function Countdown({ fairDays, centered }: CountdownProps) {
 
 function CountdownUnits({
   displayTime,
-  centered
+  centered,
+  labels
 }: {
   displayTime: CountdownDisplayTime
   centered?: boolean
+  labels: CountdownLabels
 }) {
   return (
     <div
@@ -85,13 +113,25 @@ function CountdownUnits({
         "flex items-end justify-center",
         centered ? "w-full" : "gap-0 lg:justify-start"
       )}>
-      <Unit value={displayTime.days} label="Days" centered={centered} />
+      <Unit value={displayTime.days} label={labels.days} centered={centered} />
       <Divider centered={centered} />
-      <Unit value={displayTime.hours} label="Hours" centered={centered} />
+      <Unit
+        value={displayTime.hours}
+        label={labels.hours}
+        centered={centered}
+      />
       <Divider centered={centered} />
-      <Unit value={displayTime.minutes} label="Mins" centered={centered} />
+      <Unit
+        value={displayTime.minutes}
+        label={labels.minutes}
+        centered={centered}
+      />
       <Divider centered={centered} />
-      <Unit value={displayTime.seconds} label="Secs" centered={centered} />
+      <Unit
+        value={displayTime.seconds}
+        label={labels.seconds}
+        centered={centered}
+      />
     </div>
   )
 }
@@ -143,10 +183,10 @@ function Divider({ centered }: { centered?: boolean }) {
 
 // Countdown wrapped in the same nautical-card shell as HighlightCard,
 // used as sideContent in the hero when no highlight card is available.
-export function CountdownCard({ fairDays }: CountdownProps) {
+export function CountdownCard({ fairDays, labels }: CountdownProps) {
   return (
     <NauticalCard>
-      <Countdown fairDays={fairDays} centered />
+      <Countdown fairDays={fairDays} labels={labels} centered />
     </NauticalCard>
   )
 }

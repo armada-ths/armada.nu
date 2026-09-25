@@ -16,7 +16,12 @@ import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { createLocalePath, pageTranslations, translations } from "@/lib/i18n"
+import {
+  createLocalePath,
+  pageTranslations,
+  resolveLocalizedHighlightCardCopy,
+  translations
+} from "@/lib/i18n"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { DateTime } from "luxon"
 import Link from "next/link"
@@ -46,6 +51,22 @@ export default async function HomePage() {
     ? "https://app.eventro.se/register/armada"
     : "/exhibitor/signup"
   const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
+  const localizedHighlight = highlightCard
+    ? resolveLocalizedHighlightCardCopy(locale, highlightCard)
+    : null
+  const localizedHighlightSubtitle =
+    localizedHighlight && locale === "sv"
+      ? (() => {
+          const subtitle = localizedHighlight.subtitle?.trim() ?? ""
+          if (/recruitment.*open/i.test(subtitle)) {
+            return "Värdrekrytering är öppen"
+          }
+          if (/application.*open/i.test(subtitle)) {
+            return "Ansökan är öppen"
+          }
+          return subtitle
+        })()
+      : localizedHighlight?.subtitle
 
   const heroButtons = recruitmentOpen
     ? {
@@ -89,9 +110,15 @@ export default async function HomePage() {
             sideContent={
               highlightCard ? (
                 <HighlightCard
-                  title={highlightCard.title}
-                  subtitle={highlightCard.subtitle}
-                  description={highlightCard.description}
+                  title={localizedHighlight?.title ?? highlightCard.title}
+                  subtitle={
+                    localizedHighlightSubtitle ??
+                    localizedHighlight?.subtitle ??
+                    highlightCard.subtitle
+                  }
+                  description={
+                    localizedHighlight?.description ?? highlightCard.description
+                  }
                   brand={highlightCard.brand}
                   ctaText={highlightCard.linkText}
                   ctaUrl={highlightCard.linkUrl}
@@ -105,14 +132,20 @@ export default async function HomePage() {
                   }
                 />
               ) : dates?.fair.days && dates.fair.days.length > 0 ? (
-                <CountdownCard fairDays={dates.fair.days} />
+                <CountdownCard
+                  fairDays={dates.fair.days}
+                  labels={pageDict.countdownLabels}
+                />
               ) : undefined
             }
             bottomContent={
               highlightCard &&
               dates?.fair.days &&
               dates.fair.days.length > 0 ? (
-                <Countdown fairDays={dates.fair.days} />
+                <Countdown
+                  fairDays={dates.fair.days}
+                  labels={pageDict.countdownLabels}
+                />
               ) : undefined
             }
             buttons={heroButtons}

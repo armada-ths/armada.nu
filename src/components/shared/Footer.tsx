@@ -62,20 +62,10 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const dict = translations[locale]
-  const nextLocale = locale === "en" ? "sv" : "en"
   const withLocale = (path: string) => createLocalePath(path, locale)
 
   return (
     <footer className="bg-licorice text-snow flex w-full flex-col items-center py-8">
-      <div className="mb-6 flex items-center gap-3">
-        <a
-          href={createLocalePath(pathname, nextLocale)}
-          className="text-snow border-snow hover:bg-snow hover:text-licorice rounded-full border px-3 py-1 text-sm font-semibold transition-colors"
-          aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
-          {dict.switchLanguage}
-        </a>
-      </div>
-
       {/* Divider */}
       <hr className="mb-6 h-px w-2/3 bg-slate-600 opacity-40" />
 

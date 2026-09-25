@@ -152,6 +152,13 @@ export const pageTranslations: Record<
         students: string
         networking: string
       }
+      countdownLabels: {
+        days: string
+        hours: string
+        minutes: string
+        seconds: string
+        fairIsLive: string
+      }
       aboutHeading: string
       aboutBody: string
       thsLinkLabel: string
@@ -185,12 +192,18 @@ export const pageTranslations: Record<
   en: {
     home: {
       heroHeading: "Set Sail For Success",
-      heroDescription:
-        "The No. 1 career fair at KTH Royal Institute of Technology",
+      heroDescription: "Scandinavia's largest student-driven career fair",
       visitorLabels: {
         visits: "visits",
         students: "Students",
         networking: "of networking"
+      },
+      countdownLabels: {
+        days: "Days",
+        hours: "Hours",
+        minutes: "Mins",
+        seconds: "Secs",
+        fairIsLive: "The Fair Is Live!"
       },
       aboutHeading: "About Armada",
       aboutBody:
@@ -238,12 +251,19 @@ export const pageTranslations: Record<
   },
   sv: {
     home: {
-      heroHeading: "Sätt kurs mot framgång",
-      heroDescription: "Sveriges främsta arbetsmarknadsmässa",
+      heroHeading: "Ditt nästa kapitel börjar här",
+      heroDescription: "Nordens största studentdrivna arbetsmarknadsmässa",
       visitorLabels: {
-        visits: "besök",
+        visits: "besökare",
         students: "Studenter",
         networking: "dagar med nätverkande"
+      },
+      countdownLabels: {
+        days: "Dagar",
+        hours: "Timmar",
+        minutes: "Min",
+        seconds: "Sek",
+        fairIsLive: "Mässan är live!"
       },
       aboutHeading: "Om Armada",
       aboutBody:
@@ -325,4 +345,73 @@ export function createLocalePath(pathname: string, locale: Locale): string {
   const basePath = withoutLocale === "/" ? "" : withoutLocale
 
   return `/${nextLocale}${basePath}`
+}
+
+export function localizeHighlightCardCopy(
+  locale: Locale,
+  card: {
+    title?: string | null
+    subtitle?: string | null
+    description?: string | null
+  }
+): {
+  title?: string | null
+  subtitle?: string | null
+  description?: string | null
+} {
+  if (locale !== "sv") return card
+
+  const localized = { ...card }
+
+  if (localized.title === "Who will you meet?") {
+    localized.title = "Vem kommer du träffa?"
+  }
+
+  if (
+    localized.subtitle === "The ARMADA 2026 exhibitor lineup is coming soon"
+  ) {
+    localized.subtitle = "Lineupen för 2026 kommer snart"
+  }
+
+  if (
+    localized.description ===
+    "We’re getting ready to reveal this year’s companies. Stay tuned and be among the first to discover who you can meet at ARMADA."
+  ) {
+    localized.description =
+      "Vi kommer snart publicera årets företag. Håll utkik och var bland de första som får se vilka du kan träffa på ARMADA."
+  }
+
+  return localized
+}
+
+// Prefers CMS-provided Swedish fields; falls back to the legacy exact-match
+// translations above for older content that predates the bilingual fields.
+export function resolveLocalizedHighlightCardCopy(
+  locale: Locale,
+  card: {
+    title?: string | null
+    titleSv?: string | null
+    subtitle?: string | null
+    subtitleSv?: string | null
+    description?: string | null
+    descriptionSv?: string | null
+  }
+): {
+  title?: string | null
+  subtitle?: string | null
+  description?: string | null
+} {
+  if (locale !== "sv") {
+    return {
+      title: card.title ?? null,
+      subtitle: card.subtitle ?? null,
+      description: card.description ?? null
+    }
+  }
+
+  return localizeHighlightCardCopy(locale, {
+    title: card.titleSv?.trim() || card.title,
+    subtitle: card.subtitleSv?.trim() || card.subtitle,
+    description: card.descriptionSv?.trim() || card.description
+  })
 }
