@@ -59,7 +59,7 @@ function recaptchaToken(): Promise<string> {
   return new Promise((resolve, reject) => {
     const enterprise = window.grecaptcha?.enterprise
     if (!enterprise || !siteKey) {
-      reject(new Error("Verifieringen kunde inte laddas."))
+      reject(new Error("Verification could not be loaded."))
       return
     }
     enterprise.ready(() =>
@@ -108,7 +108,7 @@ export function PhotoExperience({ token }: { token: string }) {
       { cache: "no-store" }
     )
     if (!response.ok)
-      throw new Error("Eventlänken är ogiltig eller har stängts.")
+      throw new Error("This event link is invalid or has expired.")
     setInfo((await response.json()) as EventInfo)
   }, [base])
 
@@ -122,7 +122,7 @@ export function PhotoExperience({ token }: { token: string }) {
         const response = await fetch(`${base}/gallery${query}`, {
           cache: "no-store"
         })
-        if (!response.ok) throw new Error("Galleriet kunde inte hämtas.")
+        if (!response.ok) throw new Error("The gallery could not be loaded.")
         const page = (await response.json()) as Gallery
         setPhotos(previous => {
           const next = nextCursor ? [...previous, ...page.items] : page.items
@@ -132,7 +132,9 @@ export function PhotoExperience({ token }: { token: string }) {
         setCursor(page.next_cursor)
         setError("")
       } catch (cause) {
-        setError(cause instanceof Error ? cause.message : "Ett fel uppstod.")
+        setError(
+          cause instanceof Error ? cause.message : "Something went wrong."
+        )
       } finally {
         setGalleryBusy(false)
       }
@@ -148,7 +150,7 @@ export function PhotoExperience({ token }: { token: string }) {
           setError(
             cause instanceof Error
               ? cause.message
-              : "Eventet kunde inte laddas."
+              : "The event could not be loaded."
           )
       })
       .finally(() => {
@@ -174,7 +176,7 @@ export function PhotoExperience({ token }: { token: string }) {
             body: JSON.stringify({ ids }),
             cache: "no-store"
           })
-          if (!response.ok) throw new Error("Bildlänkarna kunde inte förnyas.")
+          if (!response.ok) throw new Error("Photo links could not be renewed.")
           Object.assign(
             urls,
             ((await response.json()) as { urls: Record<string, string> }).urls
@@ -190,7 +192,7 @@ export function PhotoExperience({ token }: { token: string }) {
         })
       } catch {
         setError(
-          "Bildlänkarna kunde inte förnyas. Ladda nya bilder för att försöka igen."
+          "Photo links could not be renewed. Refresh the gallery to try again."
         )
       }
     }
@@ -238,12 +240,9 @@ export function PhotoExperience({ token }: { token: string }) {
           request.onload = () =>
             request.status === 201
               ? resolve()
-              : reject(
-                  new Error(
-                    request.responseText || "Uppladdningen misslyckades."
-                  )
-                )
-          request.onerror = () => reject(new Error("Nätverksfel. Försök igen."))
+              : reject(new Error(request.responseText || "The upload failed."))
+          request.onerror = () =>
+            reject(new Error("Network error. Please try again."))
           request.send(form)
         })
         updateUploads(items =>
@@ -264,7 +263,7 @@ export function PhotoExperience({ token }: { token: string }) {
                   error:
                     cause instanceof Error
                       ? cause.message
-                      : "Uppladdningen misslyckades."
+                      : "The upload failed."
                 }
               : candidate
           )
@@ -341,12 +340,12 @@ export function PhotoExperience({ token }: { token: string }) {
     return () => window.clearInterval(timer)
   }, [playing, selected, photos.length])
 
-  if (loading) return <div className="p-8 text-center">Laddar eventet…</div>
+  if (loading) return <div className="p-8 text-center">Loading event…</div>
   if (!info)
     return (
       <div className="mx-auto max-w-lg p-8 text-center">
         <h1 className="text-3xl font-bold">Armada Photos</h1>
-        <p className="mt-4">{error || "Eventet hittades inte."}</p>
+        <p className="mt-4">{error || "Event not found."}</p>
       </div>
     )
 
@@ -366,31 +365,31 @@ export function PhotoExperience({ token }: { token: string }) {
         {info.description && <p className="mt-3 text-lg">{info.description}</p>}
       </header>
       <nav
-        aria-label="Fotoflikar"
+        aria-label="Photo sections"
         className="mb-8 flex gap-2 rounded-2xl bg-white p-2 shadow-sm">
         <button
           type="button"
           onClick={() => setTab("upload")}
           className={`flex-1 rounded-xl px-4 py-3 font-semibold ${tab === "upload" ? "bg-[#b74465] text-white" : "text-[#172b35]"}`}>
-          Ladda upp
+          Upload
         </button>
         <button
           type="button"
           onClick={() => setTab("gallery")}
           className={`flex-1 rounded-xl px-4 py-3 font-semibold ${tab === "gallery" ? "bg-[#b74465] text-white" : "text-[#172b35]"}`}>
-          Galleri
+          Gallery
         </button>
       </nav>
       {tab === "upload" ? (
         <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-bold">Dela dina bilder</h2>
+          <h2 className="text-2xl font-bold">Share your photos</h2>
           <p className="mt-2">
-            Bilder granskas innan de syns i galleriet. Du kan lägga upp{" "}
-            {info.remaining} bilder till från den här enheten.
+            Photos are reviewed before they appear in the gallery. You can
+            upload {info.remaining} more photos from this device.
           </p>
           <p className="mt-2 text-sm">
-            JPEG, PNG, WebP, HEIC eller HEIF. Högst 25 MB och 60 megapixel per
-            bild.
+            JPEG, PNG, WebP, HEIC or HEIF. Up to 25 MB and 60 megapixels per
+            photo.
           </p>
           <label className="mt-6 flex items-start gap-3">
             <input
@@ -400,20 +399,20 @@ export function PhotoExperience({ token }: { token: string }) {
               className="mt-1"
             />
             <span>
-              Jag har läst{" "}
+              I have read the{" "}
               <a
                 className="underline"
                 href={info.privacy_url}
                 target="_blank"
                 rel="noreferrer">
-                integritetsinformationen
+                privacy information
               </a>{" "}
-              och har rätt att dela bilderna.
+              and have the right to share these photos.
             </span>
           </label>
           <label
             className={`mt-6 block rounded-xl border-2 border-dashed p-8 text-center font-semibold ${confirmed && info.uploads_open && info.remaining > 0 ? "cursor-pointer border-[#b74465]" : "border-gray-300 opacity-60"}`}>
-            Välj bilder
+            Choose photos
             <input
               className="sr-only"
               type="file"
@@ -428,7 +427,7 @@ export function PhotoExperience({ token }: { token: string }) {
           </label>
           <label
             className={`mt-3 block rounded-xl bg-[#172b35] p-4 text-center font-semibold text-white ${confirmed && info.uploads_open && info.remaining > 0 ? "cursor-pointer" : "opacity-60"}`}>
-            Ta foto
+            Take a photo
             <input
               className="sr-only"
               type="file"
@@ -441,9 +440,7 @@ export function PhotoExperience({ token }: { token: string }) {
               }}
             />
           </label>
-          {!info.uploads_open && (
-            <p className="mt-4">Uppladdningen är stängd.</p>
-          )}
+          {!info.uploads_open && <p className="mt-4">Uploads are closed.</p>}
           <ul className="mt-6 space-y-3">
             {uploads.map(item => (
               <li
@@ -451,14 +448,14 @@ export function PhotoExperience({ token }: { token: string }) {
                 className="flex items-center gap-3 rounded-lg border p-2">
                 <img
                   src={item.preview}
-                  alt="Förhandsvisning"
+                  alt="Photo preview"
                   className="h-16 w-16 rounded object-cover"
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm">{item.file.name}</p>
                   <p className="text-xs">
                     {item.state === "done"
-                      ? "Väntar på godkännande"
+                      ? "Awaiting approval"
                       : item.state === "error"
                         ? item.error
                         : `${item.progress} %`}
@@ -490,7 +487,7 @@ export function PhotoExperience({ token }: { token: string }) {
                       )
                       window.setTimeout(drain, 0)
                     }}>
-                    Försök igen
+                    Try again
                   </button>
                 )}
               </li>
@@ -500,13 +497,13 @@ export function PhotoExperience({ token }: { token: string }) {
       ) : (
         <section>
           <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Galleri</h2>
+            <h2 className="text-2xl font-bold">Gallery</h2>
             <button
               type="button"
               onClick={() => void fetchGallery()}
               disabled={galleryBusy}
               className="rounded-xl bg-white px-4 py-2 font-semibold shadow-sm">
-              Ladda nya bilder
+              Refresh gallery
             </button>
           </div>
           {error && (
@@ -515,7 +512,7 @@ export function PhotoExperience({ token }: { token: string }) {
             </p>
           )}
           {photos.length === 0 ? (
-            <p>Inga bilder är godkända än.</p>
+            <p>No photos have been approved yet.</p>
           ) : (
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
               {photos.map((photo, index) => (
@@ -526,7 +523,7 @@ export function PhotoExperience({ token }: { token: string }) {
                   className="aspect-square overflow-hidden rounded-lg bg-gray-200">
                   <img
                     src={photo.url}
-                    alt={`Bild ${index + 1} från ${info.name}`}
+                    alt={`Photo ${index + 1} from ${info.name}`}
                     className="h-full w-full object-cover"
                   />
                 </button>
@@ -539,7 +536,7 @@ export function PhotoExperience({ token }: { token: string }) {
               disabled={galleryBusy}
               onClick={() => void fetchGallery(cursor)}
               className="mx-auto mt-8 block rounded-xl bg-[#b74465] px-6 py-3 font-semibold text-white">
-              Ladda fler
+              Load more
             </button>
           )}
         </section>
@@ -548,7 +545,7 @@ export function PhotoExperience({ token }: { token: string }) {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Bildvisning"
+          aria-label="Photo viewer"
           className="fixed inset-0 z-50 flex flex-col bg-black/95 text-white"
           onTouchStart={event => {
             ;(event.currentTarget as HTMLElement).dataset.startX = String(
@@ -569,7 +566,7 @@ export function PhotoExperience({ token }: { token: string }) {
           }}>
           <div className="flex justify-end gap-3 p-4">
             <button type="button" onClick={() => setPlaying(value => !value)}>
-              {playing ? "Pausa" : "Bildspel"}
+              {playing ? "Pause" : "Slideshow"}
             </button>
             <button
               type="button"
@@ -577,13 +574,13 @@ export function PhotoExperience({ token }: { token: string }) {
                 setSelected(null)
                 setPlaying(false)
               }}>
-              Stäng
+              Close
             </button>
           </div>
           <div className="flex min-h-0 flex-1 items-center justify-between">
             <button
               type="button"
-              aria-label="Föregående bild"
+              aria-label="Previous photo"
               className="p-4 text-3xl"
               onClick={() =>
                 setSelected((selected - 1 + photos.length) % photos.length)
@@ -592,12 +589,12 @@ export function PhotoExperience({ token }: { token: string }) {
             </button>
             <img
               src={photos[selected].url}
-              alt={`Bild ${selected + 1}`}
+              alt={`Photo ${selected + 1}`}
               className="max-h-full max-w-[85vw] min-w-0 object-contain"
             />
             <button
               type="button"
-              aria-label="Nästa bild"
+              aria-label="Next photo"
               className="p-4 text-3xl"
               onClick={() => setSelected((selected + 1) % photos.length)}>
               ›

@@ -3,7 +3,7 @@ export default function PhotosHome() {
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-8 text-center">
       <h1 className="text-4xl font-bold">Armada Photos</h1>
       <p className="mt-4">
-        Skanna QR-koden för ditt event för att ladda upp och se bilder.
+        Scan your event's QR code to upload and view photos.
       </p>
     </main>
   )
