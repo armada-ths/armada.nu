@@ -1,13 +1,12 @@
 import Providers from "@/app/providers"
 import { Footer } from "@/components/shared/Footer"
 import { getSignupUrl } from "@/components/shared/feature"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DateTime } from "luxon"
 import type { Metadata, Viewport } from "next"
 import { Bebas_Neue, Inter, Lato } from "next/font/google"
 
 import { FooterGuard } from "@/components/shared/FooterGuard"
+import { SiteTelemetry } from "@/components/shared/SiteTelemetry"
 import { DevToolbar } from "@/components/shared/VercelToolbar"
 import { HEX_COLORS } from "@/lib/colors"
 import "leaflet/dist/leaflet.css"
@@ -98,8 +97,7 @@ export default async function RootLayout({
       <body
         id="root"
         className={`${inter.variable} ${bebasNeue.variable} ${lato.variable}`}>
-        <Analytics />
-        <SpeedInsights />
+        <SiteTelemetry />
         <main>
           <Providers>{children}</Providers>
         </main>
