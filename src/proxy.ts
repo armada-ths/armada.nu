@@ -12,8 +12,22 @@ export function proxy(req: NextRequest) {
     .toLowerCase()
 
   if (host === "photos.armada.nu") {
-    url.pathname = `/photos${url.pathname === "/" ? "" : url.pathname}`
-    return NextResponse.rewrite(url)
+    const alreadyInternal =
+      url.pathname === "/photos" || url.pathname.startsWith("/photos/")
+    if (!alreadyInternal) {
+      url.pathname = `/photos${url.pathname === "/" ? "" : url.pathname}`
+    }
+    const response = alreadyInternal
+      ? NextResponse.next()
+      : NextResponse.rewrite(url)
+    response.headers.set("Referrer-Policy", "no-referrer")
+    return response
+  }
+
+  if (url.pathname === "/photos" || url.pathname.startsWith("/photos/")) {
+    const response = NextResponse.next()
+    response.headers.set("Referrer-Policy", "no-referrer")
+    return response
   }
 
   if (!url.pathname.startsWith("/exhibitor/order")) return NextResponse.next()

@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function PhotosHome() {
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-8 text-center">
@@ -5,6 +7,9 @@ export default function PhotosHome() {
       <p className="mt-4">
         Scan your event's QR code to upload and view photos.
       </p>
+      <Link className="mt-8 text-sm underline" href="/photos/privacy">
+        Photo privacy notice (draft)
+      </Link>
     </main>
   )
 }
