@@ -1,7 +1,34 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, fn, userEvent } from "storybook/test"
+import { HEX_COLORS } from "@/lib/colors"
 
 import { PhotoExperience } from "./photo-experience"
+
+async function cameraPhoto(number: number): Promise<File> {
+  const preview = document.createElement("canvas")
+  preview.width = 320
+  preview.height = 240
+  const context = preview.getContext("2d")
+  if (!context) throw new Error("Canvas is unavailable")
+  context.fillStyle = number === 1 ? HEX_COLORS.grapefruit : HEX_COLORS.licorice
+  context.fillRect(0, 0, preview.width, preview.height)
+  context.fillStyle = HEX_COLORS.snow
+  context.font = "bold 72px sans-serif"
+  context.fillText(String(number), 140, 145)
+  const image = await new Promise<Blob>((resolve, reject) => {
+    preview.toBlob(
+      blob =>
+        blob ? resolve(blob) : reject(new Error("Could not make photo")),
+      "image/jpeg"
+    )
+  })
+  return new File([image], `camera-${number}.jpg`, { type: "image/jpeg" })
+}
+
+async function stageTwoPhotos(input: HTMLElement) {
+  await userEvent.upload(input, await cameraPhoto(1))
+  await userEvent.upload(input, await cameraPhoto(2))
+}
 
 const meta = {
   title: "Photos/PhotoExperience",
@@ -39,26 +66,17 @@ export const UploadReady: Story = {
     await expect(
       canvas.getByRole("heading", { name: "Share your photos" })
     ).toBeInTheDocument()
+    await expect(
+      canvas.getByRole("button", { name: "Open camera" })
+    ).toBeDisabled()
   }
 }
 
-export const CameraPhotosReadyForReview: Story = {
+export const PhotosStaged: Story = {
   play: async ({ canvas }) => {
     await canvas.findByRole("heading", { name: "Banquet test event" })
     await userEvent.click(canvas.getByRole("checkbox"))
-    const input = canvas.getByLabelText("Take photo with camera")
-    await userEvent.upload(
-      input,
-      new File([new Uint8Array([0xff, 0xd8, 0xff])], "camera-1.jpg", {
-        type: "image/jpeg"
-      })
-    )
-    await userEvent.upload(
-      input,
-      new File([new Uint8Array([0xff, 0xd8, 0xff])], "camera-2.jpg", {
-        type: "image/jpeg"
-      })
-    )
+    await stageTwoPhotos(canvas.getByLabelText("Take photo with camera"))
     await expect(
       canvas.getByAltText("Photo 1 ready to upload")
     ).toBeInTheDocument()
@@ -68,6 +86,20 @@ export const CameraPhotosReadyForReview: Story = {
     await expect(
       canvas.getByRole("button", { name: "Upload photos (2)" })
     ).toBeEnabled()
+    await expect(
+      canvas.getByRole("button", { name: "Take another photo" })
+    ).toBeEnabled()
+    await expect(
+      canvas.queryByText("Awaiting approval")
+    ).not.toBeInTheDocument()
+  }
+}
+
+export const PhotoRemoved: Story = {
+  play: async ({ canvas }) => {
+    await canvas.findByRole("heading", { name: "Banquet test event" })
+    await userEvent.click(canvas.getByRole("checkbox"))
+    await stageTwoPhotos(canvas.getByLabelText("Take photo with camera"))
     await userEvent.click(
       canvas.getByRole("button", { name: "Remove photo 1" })
     )
@@ -77,9 +109,7 @@ export const CameraPhotosReadyForReview: Story = {
     await expect(
       canvas.queryByAltText("Photo 2 ready to upload")
     ).not.toBeInTheDocument()
-    await expect(
-      canvas.queryByText("Awaiting approval")
-    ).not.toBeInTheDocument()
+    await expect(canvas.queryByText("Retake photo")).not.toBeInTheDocument()
   }
 }
 
@@ -87,17 +117,10 @@ export const BatchUpload: Story = {
   play: async ({ canvas }) => {
     await canvas.findByRole("heading", { name: "Banquet test event" })
     await userEvent.click(canvas.getByRole("checkbox"))
-    const input = canvas.getByLabelText("Take photo with camera")
-    for (const number of [1, 2]) {
-      await userEvent.upload(
-        input,
-        new File([new Uint8Array([0xff, 0xd8, 0xff])], `camera-${number}.jpg`, {
-          type: "image/jpeg"
-        })
-      )
-    }
+    await stageTwoPhotos(canvas.getByLabelText("Take photo with camera"))
 
     const originalXHR = globalThis.XMLHttpRequest
+    const uploadedNames: string[] = []
     globalThis.XMLHttpRequest = class {
       upload = { onprogress: null }
       status = 201
@@ -105,7 +128,9 @@ export const BatchUpload: Story = {
       onerror: (() => void) | null = null
       responseText = ""
       open() {}
-      send() {
+      send(body: FormData) {
+        const photo = body.get("photo")
+        if (photo instanceof File) uploadedNames.push(photo.name)
         window.setTimeout(() => this.onload?.(), 0)
       }
     } as unknown as typeof XMLHttpRequest
@@ -116,6 +141,10 @@ export const BatchUpload: Story = {
       await expect(
         await canvas.findAllByText("Awaiting approval")
       ).toHaveLength(2)
+      await expect(uploadedNames.sort()).toEqual([
+        "camera-1.jpg",
+        "camera-2.jpg"
+      ])
       await expect(
         canvas.queryByRole("button", { name: /Upload photos \(/ })
       ).not.toBeInTheDocument()
