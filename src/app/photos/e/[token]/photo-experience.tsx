@@ -80,7 +80,13 @@ function recaptchaToken(): Promise<string> {
   })
 }
 
-export function PhotoExperience({ token }: { token: string }) {
+export function PhotoExperience({
+  token,
+  getVerificationToken = recaptchaToken
+}: {
+  token: string
+  getVerificationToken?: () => Promise<string>
+}) {
   const [info, setInfo] = useState<EventInfo | null>(null)
   const [tab, setTab] = useState<"upload" | "gallery">("upload")
   const [uploads, setUploads] = useState<Upload[]>([])
@@ -308,7 +314,7 @@ export function PhotoExperience({ token }: { token: string }) {
   const uploadOne = useCallback(
     async (item: Upload) => {
       try {
-        const captcha = await recaptchaToken()
+        const captcha = await getVerificationToken()
         const form = new FormData()
         form.append("photo", item.file)
         form.append("guest_id", guestID())
@@ -366,7 +372,7 @@ export function PhotoExperience({ token }: { token: string }) {
         window.setTimeout(drain, 0)
       }
     },
-    [base, refreshInfo, updateUploads]
+    [base, getVerificationToken, refreshInfo, updateUploads]
   )
 
   const drain = useCallback(() => {

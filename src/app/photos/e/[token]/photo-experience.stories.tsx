@@ -34,7 +34,10 @@ const meta = {
   title: "Photos/PhotoExperience",
   component: PhotoExperience,
   tags: ["autodocs"],
-  args: { token: "storybook-event" },
+  args: {
+    token: "storybook-event",
+    getVerificationToken: fn(async () => "storybook-verification-token")
+  },
   beforeEach: () => {
     const originalFetch = globalThis.fetch
     globalThis.fetch = fn(async input => {
@@ -114,7 +117,7 @@ export const PhotoRemoved: Story = {
 }
 
 export const BatchUpload: Story = {
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     await canvas.findByRole("heading", { name: "Banquet test event" })
     await userEvent.click(canvas.getByRole("checkbox"))
     await stageTwoPhotos(canvas.getByLabelText("Take photo with camera"))
@@ -141,6 +144,7 @@ export const BatchUpload: Story = {
       await expect(
         await canvas.findAllByText("Awaiting approval")
       ).toHaveLength(2)
+      await expect(args.getVerificationToken).toHaveBeenCalledTimes(2)
       await expect(uploadedNames.sort()).toEqual([
         "camera-1.jpg",
         "camera-2.jpg"
