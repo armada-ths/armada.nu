@@ -1,14 +1,21 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent
+} from "react"
 import Script from "next/script"
+import { X } from "lucide-react"
+import { shouldSkipPhotoRecaptcha } from "@/lib/photoRecaptcha"
 
 type EventInfo = {
   name: string
   description: string
   uploads_open: boolean
   gallery_open: boolean
-  privacy_url: string
   remaining: number
 }
 type Photo = {
@@ -27,6 +34,7 @@ type Upload = {
   state: "queued" | "uploading" | "done" | "error"
   error?: string
 }
+type StagedPhoto = { id: string; file: File; preview: string }
 
 declare global {
   interface Window {
@@ -44,6 +52,7 @@ declare global {
 
 const api = process.env.NEXT_PUBLIC_API_URL ?? ""
 const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""
+const skipLocalRecaptcha = shouldSkipPhotoRecaptcha(api, process.env.NODE_ENV)
 
 function guestID() {
   const key = "armada-photo-guest"
@@ -56,6 +65,7 @@ function guestID() {
 }
 
 function recaptchaToken(): Promise<string> {
+  if (skipLocalRecaptcha) return Promise.resolve("")
   return new Promise((resolve, reject) => {
     const enterprise = window.grecaptcha?.enterprise
     if (!enterprise || !siteKey) {
@@ -82,32 +92,30 @@ export function PhotoExperience({ token }: { token: string }) {
   const [loading, setLoading] = useState(true)
   const [galleryBusy, setGalleryBusy] = useState(false)
   const [error, setError] = useState("")
-  const [cameraState, setCameraState] = useState<
-    "idle" | "requesting" | "ready"
-  >("idle")
+  const [stagedPhotos, setStagedPhotos] = useState<StagedPhoto[]>([])
   const [cameraError, setCameraError] = useState("")
-  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
   const active = useRef(0)
   const uploadsRef = useRef<Upload[]>([])
   const photosRef = useRef<Photo[]>([])
   const galleryBusyRef = useRef(false)
-  const cameraRequestRef = useRef(0)
-  const cameraStreamRef = useRef<MediaStream | null>(null)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const stagedPhotosRef = useRef<StagedPhoto[]>([])
+  const cameraInputRef = useRef<HTMLInputElement | null>(null)
   const base = `${api}/api/v1/photo-events/access/${encodeURIComponent(token)}`
 
   useEffect(
-    () => () =>
-      uploadsRef.current.forEach(item => URL.revokeObjectURL(item.preview)),
+    () => () => {
+      uploadsRef.current.forEach(item => URL.revokeObjectURL(item.preview))
+      stagedPhotosRef.current.forEach(photo =>
+        URL.revokeObjectURL(photo.preview)
+      )
+    },
     []
   )
 
   const updateUploads = useCallback((fn: (items: Upload[]) => Upload[]) => {
-    setUploads(previous => {
-      const next = fn(previous)
-      uploadsRef.current = next
-      return next
-    })
+    const next = fn(uploadsRef.current)
+    uploadsRef.current = next
+    setUploads(next)
   }, [])
 
   const refreshInfo = useCallback(async () => {
@@ -379,154 +387,64 @@ export function PhotoExperience({ token }: { token: string }) {
     }
   }, [updateUploads, uploadOne])
 
-  const stopCamera = useCallback(() => {
-    cameraRequestRef.current++
-    cameraStreamRef.current?.getTracks().forEach(track => track.stop())
-    cameraStreamRef.current = null
-    setCameraStream(null)
-    setCameraState("idle")
-  }, [])
-
-  useEffect(() => {
-    return () => {
-      cameraRequestRef.current++
-      cameraStreamRef.current?.getTracks().forEach(track => track.stop())
-    }
-  }, [])
-
-  useEffect(() => {
-    const onHidden = () => {
-      if (document.visibilityState === "hidden") stopCamera()
-    }
-    document.addEventListener("visibilitychange", onHidden)
-    return () => document.removeEventListener("visibilitychange", onHidden)
-  }, [stopCamera])
-
-  useEffect(() => {
-    if (confirmed && info?.uploads_open && info.remaining > 0) return
-    stopCamera()
-  }, [confirmed, info?.uploads_open, info?.remaining, stopCamera])
-
-  useEffect(() => {
-    if (!cameraStream || !videoRef.current) return
-    const video = videoRef.current
-    const track = cameraStream.getVideoTracks()[0]
-    let cancelled = false
-    const onEnded = () => {
-      if (cancelled) return
-      stopCamera()
-      setCameraError("The camera stopped. Please open it again.")
-    }
-    track?.addEventListener("ended", onEnded)
-    video.srcObject = cameraStream
-    void video.play().then(
-      () => {
-        if (!cancelled) setCameraState("ready")
-      },
-      () => {
-        if (!cancelled) {
-          stopCamera()
-          setCameraError("The camera could not start. Please try again.")
-        }
-      }
-    )
-    return () => {
-      cancelled = true
-      track?.removeEventListener("ended", onEnded)
-      video.srcObject = null
-    }
-  }, [cameraStream, stopCamera])
-
-  const openCamera = async () => {
-    if (!navigator.mediaDevices?.getUserMedia) {
-      setCameraError("This browser does not support camera access.")
+  const onCameraPhoto = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0]
+    event.currentTarget.value = ""
+    if (!file) return
+    if (
+      (file.type && !file.type.startsWith("image/")) ||
+      file.size > 25 * 1024 * 1024
+    ) {
+      setCameraError("Choose a camera photo smaller than 25 MB.")
       return
     }
-    const request = ++cameraRequestRef.current
-    setCameraState("requesting")
-    setCameraError("")
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: {
-          facingMode: { ideal: "environment" },
-          width: { ideal: 2560 },
-          height: { ideal: 1440 }
-        }
-      })
-      if (request !== cameraRequestRef.current) {
-        stream.getTracks().forEach(track => track.stop())
-        return
-      }
-      cameraStreamRef.current = stream
-      setCameraStream(stream)
-    } catch {
-      if (request === cameraRequestRef.current) {
-        setCameraState("idle")
-        setCameraError("Camera access was denied or is unavailable.")
-      }
+    if (stagedPhotosRef.current.length >= (info?.remaining ?? 0)) {
+      setCameraError("You have reached the photo limit for this event.")
+      return
     }
+    const next = {
+      id: crypto.randomUUID(),
+      file,
+      preview: URL.createObjectURL(file)
+    }
+    stagedPhotosRef.current = [...stagedPhotosRef.current, next]
+    setStagedPhotos(stagedPhotosRef.current)
+    setCameraError("")
   }
 
-  const capturePhoto = async () => {
-    const video = videoRef.current
-    if (!video?.videoWidth || !video.videoHeight || video.readyState < 2) {
-      setCameraError("The camera is not ready yet.")
-      return
-    }
-    const scale = Math.min(
-      1,
-      2560 / Math.max(video.videoWidth, video.videoHeight)
+  const removeStagedPhoto = (id: string) => {
+    const photo = stagedPhotosRef.current.find(candidate => candidate.id === id)
+    if (!photo) return
+    URL.revokeObjectURL(photo.preview)
+    stagedPhotosRef.current = stagedPhotosRef.current.filter(
+      candidate => candidate.id !== id
     )
-    const canvas = document.createElement("canvas")
-    canvas.width = Math.round(video.videoWidth * scale)
-    canvas.height = Math.round(video.videoHeight * scale)
-    const context = canvas.getContext("2d")
-    if (!context) {
-      setCameraError("The photo could not be captured.")
+    setStagedPhotos(stagedPhotosRef.current)
+    setCameraError("")
+  }
+
+  const uploadStagedPhotos = () => {
+    const staged = stagedPhotosRef.current
+    if (
+      staged.length === 0 ||
+      !confirmed ||
+      !info?.uploads_open ||
+      staged.length > info.remaining
+    )
       return
-    }
-    context.drawImage(video, 0, 0, canvas.width, canvas.height)
-    try {
-      const blob = await new Promise<Blob>((resolve, reject) =>
-        canvas.toBlob(
-          result =>
-            result
-              ? resolve(result)
-              : reject(new Error("The photo could not be captured.")),
-          "image/jpeg",
-          0.9
-        )
-      )
-      if (blob.type !== "image/jpeg") {
-        throw new Error("JPEG camera capture is not supported by this browser.")
-      }
-      if (blob.size > 25 * 1024 * 1024) {
-        throw new Error("The photo is too large to upload.")
-      }
-      const file = new File([blob], `armada-photo-${Date.now()}.jpg`, {
-        type: "image/jpeg",
-        lastModified: Date.now()
-      })
-      updateUploads(items => [
-        ...items,
-        {
-          id: crypto.randomUUID(),
-          file,
-          preview: URL.createObjectURL(file),
-          progress: 0,
-          state: "queued"
-        }
-      ])
-      setCameraError("")
-      window.setTimeout(drain, 0)
-    } catch (cause) {
-      setCameraError(
-        cause instanceof Error
-          ? cause.message
-          : "The photo could not be captured."
-      )
-    }
+    stagedPhotosRef.current = []
+    setStagedPhotos([])
+    updateUploads(items => [
+      ...items,
+      ...staged.map(photo => ({
+        id: photo.id,
+        file: photo.file,
+        preview: photo.preview,
+        progress: 0,
+        state: "queued" as const
+      }))
+    ])
+    window.setTimeout(drain, 0)
   }
 
   const moveSelection = useCallback((direction: number) => {
@@ -575,7 +493,7 @@ export function PhotoExperience({ token }: { token: string }) {
 
   return (
     <main className="mx-auto min-h-screen max-w-5xl px-4 py-8 sm:px-8">
-      {siteKey && (
+      {siteKey && !skipLocalRecaptcha && (
         <Script
           src={`https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`}
           strategy="afterInteractive"
@@ -600,7 +518,6 @@ export function PhotoExperience({ token }: { token: string }) {
         <button
           type="button"
           onClick={() => {
-            stopCamera()
             setTab("gallery")
           }}
           className={`flex-1 rounded-xl px-4 py-3 font-semibold ${tab === "gallery" ? "bg-[#b74465] text-white" : "text-[#172b35]"}`}>
@@ -615,7 +532,8 @@ export function PhotoExperience({ token }: { token: string }) {
             upload {info.remaining} more photos from this device.
           </p>
           <p className="mt-2 text-sm">
-            Take a new photo with your camera. It will be uploaded as a JPEG.
+            Take photos with your camera, review them here, then upload them
+            together. Your phone may ask you to confirm each photo first.
           </p>
           <label className="mt-6 flex items-start gap-3">
             <input
@@ -623,7 +541,6 @@ export function PhotoExperience({ token }: { token: string }) {
               checked={confirmed}
               onChange={event => {
                 setConfirmed(event.target.checked)
-                if (!event.target.checked) stopCamera()
               }}
               className="mt-1"
             />
@@ -631,7 +548,7 @@ export function PhotoExperience({ token }: { token: string }) {
               I have read the{" "}
               <a
                 className="underline"
-                href={info.privacy_url}
+                href="/photos/privacy"
                 target="_blank"
                 rel="noreferrer">
                 privacy information
@@ -639,41 +556,61 @@ export function PhotoExperience({ token }: { token: string }) {
               and have the right to share these photos.
             </span>
           </label>
-          {cameraState === "idle" ? (
-            <button
-              type="button"
-              className="mt-6 block w-full rounded-xl bg-[#172b35] p-4 text-center font-semibold text-white disabled:opacity-60"
-              disabled={!confirmed || !info.uploads_open || info.remaining < 1}
-              onClick={() => void openCamera()}>
-              Open camera
-            </button>
-          ) : (
-            <div className="mt-6 space-y-3">
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                muted
-                aria-label="Live camera preview"
-                className="aspect-[4/3] w-full rounded-xl bg-black object-cover"
-              />
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  className="flex-1 rounded-xl bg-[#b74465] p-4 font-semibold text-white disabled:opacity-60"
-                  disabled={cameraState !== "ready" || info.remaining < 1}
-                  onClick={() => void capturePhoto()}>
-                  {cameraState === "requesting"
-                    ? "Starting camera…"
-                    : "Take photo and upload"}
-                </button>
-                <button
-                  type="button"
-                  className="rounded-xl border px-4 py-2 font-semibold"
-                  onClick={stopCamera}>
-                  Close camera
-                </button>
-              </div>
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            aria-label="Take photo with camera"
+            className="sr-only"
+            onChange={onCameraPhoto}
+          />
+          <button
+            type="button"
+            className="mt-6 block w-full rounded-xl bg-[#172b35] p-4 text-center font-semibold text-white disabled:opacity-60"
+            disabled={
+              !confirmed ||
+              !info.uploads_open ||
+              stagedPhotos.length >= info.remaining
+            }
+            onClick={() => cameraInputRef.current?.click()}>
+            {stagedPhotos.length > 0 ? "Take another photo" : "Open camera"}
+          </button>
+          {stagedPhotos.length > 0 && (
+            <div className="mt-4">
+              <p className="mb-3 font-semibold">
+                {stagedPhotos.length}{" "}
+                {stagedPhotos.length === 1 ? "photo" : "photos"} ready to upload
+              </p>
+              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {stagedPhotos.map((photo, index) => (
+                  <li key={photo.id} className="relative">
+                    <img
+                      src={photo.preview}
+                      alt={`Photo ${index + 1} ready to upload`}
+                      className="aspect-square w-full rounded-xl bg-black object-cover"
+                    />
+                    <button
+                      type="button"
+                      aria-label={`Remove photo ${index + 1}`}
+                      className="absolute top-2 right-2 grid h-9 w-9 place-items-center rounded-full bg-white text-[#172b35] shadow-sm"
+                      onClick={() => removeStagedPhoto(photo.id)}>
+                      <X aria-hidden="true" size={18} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                className="mt-4 w-full rounded-xl bg-[#b74465] p-4 font-semibold text-white disabled:opacity-60"
+                disabled={
+                  !confirmed ||
+                  !info.uploads_open ||
+                  stagedPhotos.length > info.remaining
+                }
+                onClick={uploadStagedPhotos}>
+                Upload photos ({stagedPhotos.length})
+              </button>
             </div>
           )}
           {cameraError && (
