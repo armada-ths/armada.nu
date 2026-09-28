@@ -158,6 +158,42 @@ export const BatchUpload: Story = {
   }
 }
 
+export const AutomaticallyApproved: Story = {
+  play: async ({ canvas }) => {
+    await canvas.findByRole("heading", { name: "Banquet test event" })
+    await userEvent.click(canvas.getByRole("checkbox"))
+    await userEvent.upload(
+      canvas.getByLabelText("Take photo with camera"),
+      await cameraPhoto(1)
+    )
+    const originalXHR = globalThis.XMLHttpRequest
+    globalThis.XMLHttpRequest = class {
+      upload = { onprogress: null }
+      status = 201
+      onload: (() => void) | null = null
+      onerror: (() => void) | null = null
+      responseText = '{"status":"approved"}'
+      open() {}
+      send() {
+        window.setTimeout(() => this.onload?.(), 0)
+      }
+    } as unknown as typeof XMLHttpRequest
+    try {
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Upload photos (1)" })
+      )
+      await expect(
+        await canvas.findByText("Added to gallery")
+      ).toBeInTheDocument()
+      await expect(
+        canvas.queryByText("Awaiting approval")
+      ).not.toBeInTheDocument()
+    } finally {
+      globalThis.XMLHttpRequest = originalXHR
+    }
+  }
+}
+
 export const EmptyGallery: Story = {
   play: async ({ canvas }) => {
     await canvas.findByRole("heading", { name: "Banquet test event" })

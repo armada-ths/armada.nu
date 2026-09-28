@@ -57,7 +57,9 @@ export default function PhotoPrivacyPage() {
             <p>
               We process the photos guests submit, which may show identifiable
               people. For each photo, we also store its event, upload and
-              moderation times, status, file size and dimensions. A random guest
+              moderation times, status, file size and dimensions. For events
+              using automatic checks, we also store the AI assessment and
+              whether approval was automatic or manual. A random guest
               identifier is kept in your browser and sent with uploads; the
               service stores an event-specific protected hash of it to apply the
               upload limit. We do not ask guests to create an account.
@@ -84,8 +86,13 @@ export default function PhotoPrivacyPage() {
               gallery. THS may also select approved photos to promote Armada on
               its website, in marketing materials and on social media. We use
               the guest identifier, technical data and reCAPTCHA assessment to
-              limit misuse and keep the service working. Photos are not
-              automatically published: Armada reviews them first.
+              limit misuse and keep the service working. For some events, Google
+              Cloud Vision SafeSearch checks photos for potentially explicit
+              content. Photos it rates as clearly low-risk may appear in the
+              gallery automatically. Uncertain photos and failed checks wait for
+              an Armada moderator. SafeSearch does not verify that a photo
+              belongs to the event or that everyone pictured has agreed to
+              publication.
             </p>
             <p>
               THS proposes legitimate interests under GDPR Article 6(1)(f) as
@@ -105,26 +112,38 @@ export default function PhotoPrivacyPage() {
           <section className={sectionClass}>
             <h2 className={headingClass}>Who can see the photos?</h2>
             <p>
-              Armada moderators can review submitted photos. Only approved
-              photos appear in the event gallery. Anyone with the event link or
-              QR code can see approved photos while the gallery is open, so
-              please treat the link as shareable. Images are served through
-              time-limited links. Although the guest page has no download
-              button, viewers may still save or capture what they can see.
-              Administrators can export approved photos as a ZIP archive. A
-              photo chosen for marketing or social media may be seen and copied
-              by a wider audience, including people outside the event.
+              Armada moderators can review submitted photos. Google Cloud Vision
+              receives a temporary, smaller copy of photos submitted to events
+              with automatic checking enabled. Only approved photos appear in
+              the event gallery. Anyone with the event link or QR code can see
+              approved photos while the gallery is open, so please treat the
+              link as shareable. Images are served through time-limited links.
+              Although the guest page has no download button, viewers may still
+              save or capture what they can see. Administrators can export
+              approved photos as a ZIP archive. A photo chosen for marketing or
+              social media may be seen and copied by a wider audience, including
+              people outside the event.
             </p>
             <p>
               Vercel serves the website and currently provides website usage and
               performance measurements. Google Cloud runs the photo API and its
               background jobs, while Google reCAPTCHA Enterprise evaluates
-              uploads for abuse. Supabase hosts the photo database and private
-              image and export storage. The production configuration places the
-              main Supabase data and Google Cloud service in Stockholm, Sweden.
-              Vercel functions are also configured for Stockholm, but its
-              delivery network and other processing are not necessarily limited
-              to Sweden.
+              uploads for abuse and Cloud Vision SafeSearch can assess image
+              content. Google states that it processes images in memory for
+              synchronous Vision requests and does not use them to train its
+              Vision service (see Google&apos;s{" "}
+              <a
+                className="underline"
+                href="https://cloud.google.com/vision/docs/data-usage">
+                data usage information
+              </a>
+              ). Supabase hosts the photo database and private image and export
+              storage. The production configuration places the main Supabase
+              data and photo API in Stockholm, Sweden. This does not establish
+              where Cloud Vision processes an image; THS must verify that before
+              approving this notice. Vercel functions are also configured for
+              Stockholm, but its delivery network and other processing are not
+              necessarily limited to Sweden.
             </p>
             <p>
               These providers and their subprocessors may process limited data

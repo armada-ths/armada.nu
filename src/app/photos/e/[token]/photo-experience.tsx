@@ -32,6 +32,7 @@ type Upload = {
   preview: string
   progress: number
   state: "queued" | "uploading" | "done" | "error"
+  approval?: "approved" | "pending"
   error?: string
 }
 type StagedPhoto = { id: string; file: File; preview: string }
@@ -320,34 +321,48 @@ export function PhotoExperience({
         form.append("guest_id", guestID())
         form.append("privacy_confirmed", "true")
         form.append("recaptcha_token", captcha)
-        await new Promise<void>((resolve, reject) => {
-          const request = new XMLHttpRequest()
-          request.open("POST", `${base}/photos`)
-          request.upload.onprogress = event => {
-            if (event.lengthComputable)
-              updateUploads(items =>
-                items.map(candidate =>
-                  candidate.id === item.id
-                    ? {
-                        ...candidate,
-                        progress: Math.round((100 * event.loaded) / event.total)
-                      }
-                    : candidate
+        const approval = await new Promise<"approved" | "pending">(
+          (resolve, reject) => {
+            const request = new XMLHttpRequest()
+            request.open("POST", `${base}/photos`)
+            request.upload.onprogress = event => {
+              if (event.lengthComputable)
+                updateUploads(items =>
+                  items.map(candidate =>
+                    candidate.id === item.id
+                      ? {
+                          ...candidate,
+                          progress: Math.round(
+                            (100 * event.loaded) / event.total
+                          )
+                        }
+                      : candidate
+                  )
                 )
-              )
+            }
+            request.onload = () => {
+              if (request.status !== 201) {
+                reject(new Error(request.responseText || "The upload failed."))
+                return
+              }
+              try {
+                const result = JSON.parse(request.responseText) as {
+                  status?: string
+                }
+                resolve(result.status === "approved" ? "approved" : "pending")
+              } catch {
+                resolve("pending")
+              }
+            }
+            request.onerror = () =>
+              reject(new Error("Network error. Please try again."))
+            request.send(form)
           }
-          request.onload = () =>
-            request.status === 201
-              ? resolve()
-              : reject(new Error(request.responseText || "The upload failed."))
-          request.onerror = () =>
-            reject(new Error("Network error. Please try again."))
-          request.send(form)
-        })
+        )
         updateUploads(items =>
           items.map(candidate =>
             candidate.id === item.id
-              ? { ...candidate, state: "done", progress: 100 }
+              ? { ...candidate, state: "done", approval, progress: 100 }
               : candidate
           )
         )
@@ -534,8 +549,8 @@ export function PhotoExperience({
         <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-bold">Share your photos</h2>
           <p className="mt-2">
-            Photos are reviewed before they appear in the gallery. You can
-            upload {info.remaining} more photos from this device.
+            Photos are checked before they appear in the gallery. You can upload{" "}
+            {info.remaining} more photos from this device.
           </p>
           <p className="mt-2 text-sm">
             Take photos with your camera, review them here, then upload them
@@ -639,7 +654,9 @@ export function PhotoExperience({
                   <p className="truncate text-sm">Photo taken with camera</p>
                   <p className="text-xs">
                     {item.state === "done"
-                      ? "Awaiting approval"
+                      ? item.approval === "approved"
+                        ? "Added to gallery"
+                        : "Awaiting approval"
                       : item.state === "error"
                         ? item.error
                         : `${item.progress} %`}
