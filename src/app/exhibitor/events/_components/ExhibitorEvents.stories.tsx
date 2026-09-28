@@ -21,33 +21,37 @@ const meta = {
       {
         title: "Lunch Lecture",
         image: "lunch-lecture",
-        summary: "Price: 24,700 / 31,900 SEK excl. VAT",
+        summary: ["Price: 24,700 / 31,900 SEK excl. VAT"],
         description: "Own the room."
       },
       {
         title: "Panel Discussion",
         image: "panel-discussion",
-        summary: "Price: 9,300 SEK excl. VAT",
+        summary: ["Price: 9,300 SEK excl. VAT"],
         description: "Position your company"
       },
       {
         title: "Field Visit",
         image: "field-visit",
-        summary:
-          "Location: Your office Price: 9,300 SEK / 30 attendees excl. VAT",
+        summary: [
+          "Location: Your office",
+          "Price: 9,300 SEK / 30 attendees excl. VAT"
+        ],
         description: "Bring students into your world."
       },
       {
         title: "After Work",
         image: "after-work",
-        summary:
-          "Location: Your office or Nymble Price: 9,300 / 12,400 SEK excl. VAT",
+        summary: [
+          "Location: Your office or Nymble",
+          "Price: 9,300 / 12,400 SEK excl. VAT"
+        ],
         description: "Keep the conversation going"
       },
       {
         title: "Collaborative Events",
         image: "custom",
-        summary: "Your concept, your way",
+        summary: ["Your concept, your way"],
         description: "Have something more specific in mind?"
       }
     ]
@@ -58,17 +62,20 @@ const meta = {
       })
       const photo = within(trigger).getByRole("img")
       await waitFor(() => expect(trigger).toBeEnabled())
-      await expect(trigger).toHaveAccessibleDescription(event.summary)
+      await expect(trigger).toHaveAccessibleDescription(event.summary.join(" "))
       await expect(photo).toBeVisible()
       await expect(photo.getAttribute("alt")?.trim().length).toBeGreaterThan(0)
       await expect(photo.getAttribute("src")).toContain(
         `/events/${event.image}.webp`
       )
       await expect(body.queryByRole("dialog")).not.toBeInTheDocument()
-      for (const detail of within(trigger).queryAllByText(
-        /^(Price|Location):/
-      )) {
-        await expect(detail.tagName).toBe("STRONG")
+      const importantDetails = event.summary.filter(detail =>
+        /^(Price|Location):/.test(detail)
+      )
+      for (const detail of importantDetails) {
+        await expect(
+          within(trigger).getByText(detail, { selector: "strong" })
+        ).toBeVisible()
       }
 
       // Cards are keyboard-operable, and focus returns after dismissing details.
@@ -78,10 +85,10 @@ const meta = {
       await expect(dialog.hasAttribute("data-vaul-drawer")).toBe(
         canvasElement.ownerDocument.defaultView!.innerWidth <= 768
       )
-      for (const detail of within(dialog).queryAllByText(
-        /^(Price|Location):/
-      )) {
-        await expect(detail.tagName).toBe("STRONG")
+      for (const detail of importantDetails) {
+        await expect(
+          within(dialog).getByText(detail, { selector: "strong" })
+        ).toBeInTheDocument()
       }
       await waitFor(() =>
         expect(
@@ -133,9 +140,15 @@ export const LunchLectureDetails: Story = {
       { name: "Lunch Lecture" }
     )
     await waitFor(() => {
-      expect(within(dialog).getByText("60 attendees: 24,700 SEK")).toBeVisible()
       expect(
-        within(dialog).getByText("100 attendees: 31,900 SEK")
+        within(dialog).getByText("60 attendees: 24,700 SEK", {
+          selector: "strong"
+        })
+      ).toBeVisible()
+      expect(
+        within(dialog).getByText("100 attendees: 31,900 SEK", {
+          selector: "strong"
+        })
       ).toBeVisible()
     })
   }
