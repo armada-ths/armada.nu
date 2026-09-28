@@ -3,6 +3,20 @@ import { expect, userEvent, waitFor, within } from "storybook/test"
 
 import { ExhibitorEvents } from "./ExhibitorEvents"
 
+async function findEnabledEventTrigger(
+  canvas: ReturnType<typeof within>,
+  title: string
+) {
+  return waitFor(async () => {
+    // Hydration replaces the initial disabled card with a drawer/dialog trigger.
+    const trigger = canvas.getByRole("button", {
+      name: `View ${title} details`
+    })
+    await expect(trigger).toBeEnabled()
+    return trigger
+  })
+}
+
 const meta = {
   title: "Exhibitor/Events",
   component: ExhibitorEvents,
@@ -57,11 +71,8 @@ const meta = {
     ]
 
     for (const event of events) {
-      const trigger = canvas.getByRole("button", {
-        name: `View ${event.title} details`
-      })
+      const trigger = await findEnabledEventTrigger(canvas, event.title)
       const photo = within(trigger).getByRole("img")
-      await waitFor(() => expect(trigger).toBeEnabled())
       await expect(trigger).toHaveAccessibleDescription(event.summary.join(" "))
       await expect(photo).toBeVisible()
       await expect(photo.getAttribute("alt")?.trim().length).toBeGreaterThan(0)
@@ -132,9 +143,8 @@ export const LunchLectureDetails: Story = {
   globals: { viewport: { value: "desktop", isRotated: false } },
   play: async ({ canvas, canvasElement }) => {
     const user = userEvent.setup({ document: canvasElement.ownerDocument })
-    await user.click(
-      canvas.getByRole("button", { name: "View Lunch Lecture details" })
-    )
+    const trigger = await findEnabledEventTrigger(canvas, "Lunch Lecture")
+    await user.click(trigger)
     const dialog = await within(canvasElement.ownerDocument.body).findByRole(
       "dialog",
       { name: "Lunch Lecture" }
@@ -158,9 +168,11 @@ export const MobileCollaborativeDetails: Story = {
   globals: { viewport: { value: "mobile", isRotated: false } },
   play: async ({ canvas, canvasElement }) => {
     const user = userEvent.setup({ document: canvasElement.ownerDocument })
-    await user.click(
-      canvas.getByRole("button", { name: "View Collaborative Events details" })
+    const trigger = await findEnabledEventTrigger(
+      canvas,
+      "Collaborative Events"
     )
+    await user.click(trigger)
     const dialog = await within(canvasElement.ownerDocument.body).findByRole(
       "dialog",
       { name: "Collaborative Events" }
