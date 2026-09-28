@@ -25,7 +25,7 @@ import {
 import { ArrowUpRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import type { ReactNode } from "react"
+import { useId, type ReactNode } from "react"
 
 function EventCard({
   title,
@@ -43,11 +43,14 @@ function EventCard({
   eager?: boolean
 }) {
   const { width } = useScreenSize()
+  const summaryId = useId()
   const isMobile = width !== undefined && width <= 768
   const card = (
     <button
       type="button"
       aria-label={`View ${title} details`}
+      aria-describedby={summaryId}
+      disabled={width === undefined}
       className="group rounded-base border-border bg-melon text-licorice shadow-shadow focus-visible:outline-licorice flex h-full min-w-0 cursor-pointer flex-col overflow-hidden border-2 text-left transition-transform hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 motion-reduce:transform-none">
       <span className="border-border relative block aspect-3/2 w-full border-b-2">
         <Image
@@ -61,13 +64,18 @@ function EventCard({
       </span>
       <span className="flex flex-1 flex-col p-4">
         <span className="font-heading text-xl">{title}</span>
-        <span className="mt-2 grid gap-1 text-sm">{summary}</span>
+        <span id={summaryId} className="mt-2 grid gap-1 text-sm">
+          {summary}
+        </span>
         <span className="mt-auto flex items-center gap-2 pt-5 text-sm font-bold underline-offset-4 group-hover:underline">
           View details <ArrowUpRight aria-hidden="true" className="size-4" />
         </span>
       </span>
     </button>
   )
+
+  // Keep the server render and hydration consistent without guessing a viewport.
+  if (width === undefined) return card
 
   if (isMobile) {
     return (

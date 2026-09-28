@@ -21,26 +21,33 @@ const meta = {
       {
         title: "Lunch Lecture",
         image: "lunch-lecture",
+        summary: "Price: 24,700 / 31,900 SEK excl. VAT",
         description: "Own the room."
       },
       {
         title: "Panel Discussion",
         image: "panel-discussion",
+        summary: "Price: 9,300 SEK excl. VAT",
         description: "Position your company"
       },
       {
         title: "Field Visit",
         image: "field-visit",
+        summary:
+          "Location: Your office Price: 9,300 SEK / 30 attendees excl. VAT",
         description: "Bring students into your world."
       },
       {
         title: "After Work",
         image: "after-work",
+        summary:
+          "Location: Your office or Nymble Price: 9,300 / 12,400 SEK excl. VAT",
         description: "Keep the conversation going"
       },
       {
         title: "Collaborative Events",
         image: "custom",
+        summary: "Your concept, your way",
         description: "Have something more specific in mind?"
       }
     ]
@@ -50,6 +57,8 @@ const meta = {
         name: `View ${event.title} details`
       })
       const photo = within(trigger).getByRole("img")
+      await waitFor(() => expect(trigger).toBeEnabled())
+      await expect(trigger).toHaveAccessibleDescription(event.summary)
       await expect(photo).toBeVisible()
       await expect(photo.getAttribute("alt")?.trim().length).toBeGreaterThan(0)
       await expect(photo.getAttribute("src")).toContain(
