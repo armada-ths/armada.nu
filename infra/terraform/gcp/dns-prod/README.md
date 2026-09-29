@@ -20,8 +20,9 @@ changes are intentionally manual because Websupport is outside Terraform.
 
 The GCP bootstrap was completed on 2026-09-29. Project `armada-dns-prod` belongs
 to the `thskth.se` organization and uses the same organization-owned billing
-account as ArmadaCMS. The dedicated Terraform service account has these project
-roles:
+account as ArmadaCMS. Cloud Billing and Cloud Resource Manager APIs are enabled
+as bootstrap dependencies; Terraform manages Cloud DNS API enablement. The
+dedicated Terraform service account has these project roles:
 
 - `roles/dns.admin`
 - `roles/serviceusage.serviceUsageAdmin`
@@ -32,7 +33,7 @@ workspace-specific, so DNS uses the dedicated provider
 workspace `armadanu-gcp-dns-prod`. Only that workspace identity has
 `roles/iam.workloadIdentityUser` on the DNS Terraform service account.
 
-The HCP workspace uses remote execution, Terraform 1.14.8, manual applies, and
+The HCP workspace uses remote execution, Terraform 1.15.2, manual applies, and
 these environment variables:
 
 - `TFC_GCP_PROVIDER_AUTH=true`
