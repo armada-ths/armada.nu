@@ -83,8 +83,8 @@ This repo includes shared VS Code configuration for both single-repo and multi-r
 
 In `.vscode/` you will find:
 
-- `tasks.json` — shared tasks for `dev`, `lint`, `type-check`, and `build`
-- `launch.json` — browser launches that use the shared dev tasks
+- `tasks.json` — tasks for starting the public site against the configured, production, or local CMS, plus formatting, linting, type-checking, builds, and Storybook
+- `launch.json` — browser launches that state which CMS environment their development server uses
 
 ### Multi-repo workspace
 
@@ -97,10 +97,11 @@ That workspace opens:
 - `armada.nu`
 - `../ArmadaCMS`
 
-and includes compound launches such as:
+and includes these compound launches:
 
-- `✅ Frontend + Prod CMS`
-- `✅ Full Stack Local (Docker)`
+- `Workspace: Open Public Site (Production CMS)`
+- `Workspace: Open Public Site + Admin UI (Local Backend + Supabase)`
+- `Workspace: Open Admin UI (Local Backend + Supabase)`
 
 This requires you to have both repos checked out in the same parent directory.
 
