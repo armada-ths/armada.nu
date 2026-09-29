@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "dev",
+      "label": "Dev: Start Public Site (Configured CMS)",
       "type": "shell",
       "command": "pnpm",
       "args": ["dev"],
@@ -32,7 +32,7 @@
       }
     },
     {
-      "label": "dev (Prod CMS)",
+      "label": "Dev: Start Public Site (Production CMS)",
       "type": "shell",
       "command": "pnpm",
       "args": ["dev"],
@@ -63,7 +63,7 @@
       }
     },
     {
-      "label": "dev (Local CMS)",
+      "label": "Dev: Start Public Site (Local CMS)",
       "type": "shell",
       "command": "pnpm",
       "args": ["dev"],
@@ -94,7 +94,7 @@
       }
     },
     {
-      "label": "format",
+      "label": "Quality: Format Public Site",
       "type": "shell",
       "command": "pnpm",
       "args": ["format"],
@@ -105,7 +105,7 @@
       "group": "test"
     },
     {
-      "label": "lint",
+      "label": "Quality: Lint Public Site",
       "type": "shell",
       "command": "pnpm",
       "args": ["lint"],
@@ -117,7 +117,7 @@
       "group": "test"
     },
     {
-      "label": "type-check",
+      "label": "Quality: Type-Check Public Site",
       "type": "shell",
       "command": "pnpm",
       "args": ["type-check"],
@@ -129,7 +129,7 @@
       "group": "test"
     },
     {
-      "label": "build",
+      "label": "Build: Create Public Site Production Bundle",
       "type": "shell",
       "command": "pnpm",
       "args": ["build"],
@@ -140,7 +140,7 @@
       "group": "build"
     },
     {
-      "label": "storybook",
+      "label": "Storybook: Start Component Explorer",
       "type": "shell",
       "command": "pnpm",
       "args": ["storybook"],
@@ -167,7 +167,7 @@
       "group": "build"
     },
     {
-      "label": "build-storybook",
+      "label": "Storybook: Build Static Component Explorer",
       "type": "shell",
       "command": "pnpm",
       "args": ["build-storybook"],
