@@ -79,7 +79,9 @@ const meta = {
       await expect(photo.getAttribute("src")).toContain(
         `/events/${event.image}.webp`
       )
-      await expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+      await expect(
+        body.queryByRole("dialog", { name: event.title })
+      ).not.toBeInTheDocument()
       const importantDetails = event.summary.filter(detail =>
         /^(Price|Location):/.test(detail)
       )
@@ -115,8 +117,9 @@ const meta = {
       } else {
         await user.keyboard("{Escape}")
       }
+      // Radix keeps the closed dialog mounted until its exit animation ends.
       await waitFor(() =>
-        expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+        expect(dialog).toHaveAttribute("data-state", "closed")
       )
       await waitFor(() => expect(trigger).toHaveFocus())
     }
