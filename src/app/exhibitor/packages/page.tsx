@@ -293,7 +293,12 @@ export default async function ExhibitorPackagesPage() {
         <div className="mt-10 flex flex-col">
           <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row">
             <Card className="bg-bronze relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
-              <h3 className="font-lato text-2xl">Bronze</h3>
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-lato text-2xl">Bronze</h3>
+                <span className="bg-licorice text-snow shrink-0 rounded-full px-3 py-1 text-sm font-bold">
+                  Low on spots
+                </span>
+              </div>
               <ul className="font-lato mt-2">
                 {dict.bronzeItems.map((item, index) => (
                   <li

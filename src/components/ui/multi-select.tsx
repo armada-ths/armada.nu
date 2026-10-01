@@ -47,7 +47,7 @@ export interface AnimationConfig {
  * Variants for the multi-select component to handle different styles.
  * Uses class-variance-authority (cva) to define different styles based on "variant" prop.
  */
-const multiSelectVariants = cva("m-1 transition-all duration-300 ease-in-out", {
+const multiSelectVariants = cva("transition-all duration-300 ease-in-out", {
   variants: {
     variant: {
       default: "border-foreground/10 text-foreground bg-card hover:bg-card/80",
@@ -58,7 +58,7 @@ const multiSelectVariants = cva("m-1 transition-all duration-300 ease-in-out", {
       inverted: "inverted"
     },
     badgeAnimation: {
-      bounce: "hover:-translate-y-1 hover:scale-110",
+      bounce: "hover:-translate-y-0.5 hover:scale-105",
       pulse: "hover:animate-pulse",
       wiggle: "hover:animate-wiggle",
       fade: "hover:opacity-80",
@@ -68,7 +68,7 @@ const multiSelectVariants = cva("m-1 transition-all duration-300 ease-in-out", {
   },
   defaultVariants: {
     variant: "default",
-    badgeAnimation: "bounce"
+    badgeAnimation: "none"
   }
 })
 
@@ -487,7 +487,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           case "bounce":
             return isAnimating
               ? "animate-bounce"
-              : "hover:-translate-y-1 hover:scale-110"
+              : "hover:-translate-y-0.5 hover:scale-105"
           case "pulse":
             return "hover:animate-pulse"
           case "wiggle":
@@ -631,6 +631,14 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       if (disabled) return
       setSelectedValues([])
       onValueChange([])
+    }
+
+    const handleActionButtonKeyDown = (
+      event: React.KeyboardEvent<HTMLButtonElement>
+    ) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.stopPropagation()
+      }
     }
 
     const handleTogglePopover = () => {
@@ -812,10 +820,10 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 maxWidth: `min(${widthConstraints.maxWidth}, 100%)`
               }}>
               {selectedValues.length > 0 ? (
-                <div className="flex w-full items-center justify-between">
+                <div className="flex w-full min-w-0 items-center justify-between">
                   <div
                     className={cn(
-                      "flex items-center gap-1",
+                      "flex min-w-0 flex-1 items-center gap-1 overflow-hidden",
                       singleLine
                         ? "multiselect-singleline-scroll overflow-x-auto"
                         : "flex-wrap",
@@ -857,10 +865,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 "text-snow border-transparent",
                               responsiveSettings.compactMode &&
                                 "px-1.5 py-0.5 text-xs",
-                              screenSize === "mobile" && "max-w-30 truncate",
-                              screenSize === "tablet" && "max-w-40 truncate",
-                              screenSize === "desktop" && "max-w-50 truncate",
-                              singleLine && "shrink-0 whitespace-nowrap",
+                              "m-0 max-w-full min-w-0 shrink-0",
+                              singleLine && "whitespace-nowrap",
                               "[&>svg]:pointer-events-auto",
                               "bg-snow"
                             )}
@@ -884,13 +890,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 })}
                               />
                             )}
-                            <span
-                              className={cn(
-                                "max-w-45 truncate",
-                                screenSize === "mobile" && "max-w-30",
-                                screenSize === "tablet" && "max-w-40",
-                                screenSize === "desktop" && "max-w-50"
-                              )}>
+                            <span className="min-w-0 flex-1 truncate">
                               {option.label}
                             </span>
                             <div
@@ -911,7 +911,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 }
                               }}
                               aria-label={`Remove ${option.label} from selection`}
-                              className="-m-0.5 ml-2 h-4 w-4 cursor-pointer rounded-xs p-0.5 hover:bg-white/20 focus:ring-1 focus:ring-white/50 focus:outline-hidden">
+                              className="-m-0.5 ml-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-xs p-0.5 hover:bg-white/20 focus:ring-1 focus:ring-white/50 focus:outline-hidden">
                               <XCircle
                                 className={cn(
                                   "h-3 w-3",
@@ -958,7 +958,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       </Badge>
                     )}
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex shrink-0 items-center justify-between">
                     <div
                       role="button"
                       tabIndex={0}
@@ -997,11 +997,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           <PopoverContent
             avoidCollisions={screenSize == "mobile" ? false : true}
             id={listboxId}
-            role="listbox"
-            aria-multiselectable="true"
-            aria-label="Available options"
+            aria-label={`${placeholder} options`}
             className={cn(
-              "w-auto p-0",
+              "flex w-auto flex-col overflow-hidden p-0",
               getPopoverAnimationClass(),
               screenSize === "mobile" && "w-[85vw] max-w-70",
               screenSize === "tablet" && "w-[70vw] max-w-md",
@@ -1017,7 +1015,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             }}
             align="start"
             onEscapeKeyDown={() => setIsPopoverOpen(false)}>
-            <Command className="bg-snow">
+            <Command className="bg-snow min-h-0">
               {searchable && (
                 <CommandInput
                   placeholder="Search options..."
@@ -1034,10 +1032,10 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 </div>
               )}
               <CommandList
+                label="Available options"
+                aria-multiselectable="true"
                 className={cn(
-                  "multiselect-scrollbar max-h-[40vh] overflow-y-auto",
-                  screenSize === "mobile" && "max-h-[50vh]",
-                  "overscroll-behavior-y-contain"
+                  "multiselect-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain"
                 )}>
                 <CommandEmpty>
                   {emptyIndicator || "No results found."}
@@ -1108,7 +1106,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             {option.icon && (
                               <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
                             )}
-                            <span>{option.label}</span>
+                            <span className="min-w-0 truncate">
+                              {option.label}
+                            </span>
                           </CommandItem>
                         )
                       })}
@@ -1145,36 +1145,43 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           {option.icon && (
                             <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
                           )}
-                          <span>{option.label}</span>
+                          <span className="min-w-0 truncate">
+                            {option.label}
+                          </span>
                         </CommandItem>
                       )
                     })}
                   </CommandGroup>
                 )}
-                <CommandSeparator />
-                <CommandGroup>
-                  <div className="flex items-center justify-between">
-                    {selectedValues.length > 0 && (
-                      <>
-                        <CommandItem
-                          onSelect={handleClear}
-                          className="flex-1 cursor-pointer justify-center">
-                          Clear
-                        </CommandItem>
-                        <Separator
-                          orientation="vertical"
-                          className="flex h-full min-h-6"
-                        />
-                      </>
-                    )}
-                    <CommandItem
-                      onSelect={() => setIsPopoverOpen(false)}
-                      className="max-w-full flex-1 cursor-pointer justify-center">
-                      Close
-                    </CommandItem>
-                  </div>
-                </CommandGroup>
               </CommandList>
+              <CommandSeparator className="shrink-0" />
+              <div
+                role="group"
+                aria-label="Filter actions"
+                className="bg-snow sticky bottom-0 z-10 flex shrink-0 items-center justify-between p-1">
+                {selectedValues.length > 0 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleClear}
+                      onKeyDown={handleActionButtonKeyDown}
+                      className="rounded-base flex-1 cursor-pointer px-2 py-1.5 text-sm outline-0 hover:outline-2 focus-visible:outline-2">
+                      Clear
+                    </button>
+                    <Separator
+                      orientation="vertical"
+                      className="flex h-full min-h-6"
+                    />
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setIsPopoverOpen(false)}
+                  onKeyDown={handleActionButtonKeyDown}
+                  className="rounded-base max-w-full flex-1 cursor-pointer px-2 py-1.5 text-sm outline-0 hover:outline-2 focus-visible:outline-2">
+                  Close
+                </button>
+              </div>
             </Command>
           </PopoverContent>
           {animation > 0 && selectedValues.length > 0 && (

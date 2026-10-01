@@ -76,12 +76,24 @@ function CommandInput({
   )
 }
 
-function CommandList({
-  className,
-  ...props
-}: React.ComponentProps<typeof CommandPrimitive.List>) {
+const CommandList = React.forwardRef<
+  React.ComponentRef<typeof CommandPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>
+>(({ className, ...props }, forwardedRef) => {
+  const listRef =
+    React.useRef<React.ComponentRef<typeof CommandPrimitive.List>>(null)
+
+  React.useImperativeHandle(forwardedRef, () => listRef.current!)
+
+  React.useLayoutEffect(() => {
+    listRef.current
+      ?.querySelector(":scope > [cmdk-list-sizer]")
+      ?.setAttribute("role", "presentation")
+  }, [])
+
   return (
     <CommandPrimitive.List
+      ref={listRef}
       data-slot="command-list"
       className={cn(
         "max-h-75 scroll-py-1 overflow-x-hidden overflow-y-auto",
@@ -90,7 +102,9 @@ function CommandList({
       {...props}
     />
   )
-}
+})
+
+CommandList.displayName = "CommandList"
 
 function CommandEmpty({
   className,

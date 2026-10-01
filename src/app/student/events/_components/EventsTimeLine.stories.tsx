@@ -114,3 +114,44 @@ export const SingleEvent: Story = {
     await expect(canvas.getByText("KTH Entré")).toBeInTheDocument()
   }
 }
+
+export const UntrustedDescription: Story = {
+  args: {
+    events: [
+      {
+        ...eventDefaults,
+        description: `
+          <p onclick="window.__eventDescriptionXss = true">Safe <strong>formatting</strong></p>
+          <img src="x" onerror="window.__eventDescriptionXss = true">
+          <script>window.__eventDescriptionXss = true</script>
+          <svg onload="window.__eventDescriptionXss = true"></svg>
+          <iframe src="https://example.com"></iframe>
+          <a href="javascript:window.__eventDescriptionXss = true">Bad link</a>
+          <a href="https://example.com/info" title="Event information">Official information</a>
+        `
+      }
+    ]
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("link", { name: /Women in Tech Evening/i })
+    )
+
+    const dialog = await within(document.body).findByRole("dialog")
+    const description = dialog.querySelector("[data-event-description]")
+    if (!description) throw new Error("Event description was not rendered")
+    await expect(within(dialog).getByText("formatting")).toBeInTheDocument()
+    await expect(
+      within(dialog).getByRole("link", { name: "Official information" })
+    ).toHaveAttribute("href", "https://example.com/info")
+    await expect(within(dialog).getByText("Bad link")).not.toHaveAttribute(
+      "href"
+    )
+    await expect(
+      description.querySelector("img, script, svg, iframe")
+    ).toBeNull()
+    await expect(
+      description.querySelector("[onclick], [onerror], [onload]")
+    ).toBeNull()
+  }
+}

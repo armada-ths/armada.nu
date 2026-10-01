@@ -83,8 +83,8 @@ This repo includes shared VS Code configuration for both single-repo and multi-r
 
 In `.vscode/` you will find:
 
-- `tasks.json` — shared tasks for `dev`, `lint`, `type-check`, and `build`
-- `launch.json` — browser launches that use the shared dev tasks
+- `tasks.json` — tasks for starting the public site against the configured, production, or local CMS, plus formatting, linting, type-checking, builds, and Storybook
+- `launch.json` — browser launches that state which CMS environment their development server uses
 
 ### Multi-repo workspace
 
@@ -97,10 +97,11 @@ That workspace opens:
 - `armada.nu`
 - `../ArmadaCMS`
 
-and includes compound launches such as:
+and includes these compound launches:
 
-- `✅ Frontend + Prod CMS`
-- `✅ Full Stack Local (Docker)`
+- `Workspace: Open Public Site (Production CMS)`
+- `Workspace: Open Public Site + Admin UI (Local Backend + Supabase)`
+- `Workspace: Open Admin UI (Local Backend + Supabase)`
 
 This requires you to have both repos checked out in the same parent directory.
 
@@ -182,7 +183,7 @@ Deployments are handled automatically by Vercel's GitHub integration:
 - Every push to `staging` triggers a **preview deployment** to [staging.armada.nu](https://staging.armada.nu).
 - Pull requests from branches other than `main`/`staging` trigger **preview deployments** with unique Vercel URLs.
 - Preview deployments are protected by Vercel Deployment Protection. The staging CMS sends `VERCEL_AUTOMATION_BYPASS_SECRET` when it calls the staging/preview revalidation endpoint.
-- Core Vercel project settings and application-specific environment-variable definitions are managed with Terraform. Domains and deployments are not — see [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) for details.
+- Core Vercel project settings and application-specific environment-variable definitions are managed in the `vercel/prod` Terraform root. Vercel domain objects and deployments are not managed there. The authoritative `armada.nu` DNS zone is managed separately in the `gcp/dns-prod` root; registrar NS and DS changes remain manual. See [`infra/terraform/README.md`](infra/terraform/README.md) for the ownership boundaries.
 
 ## Backend environments
 

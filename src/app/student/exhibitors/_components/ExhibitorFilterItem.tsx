@@ -4,8 +4,15 @@ import {
   Industry,
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
-import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select" // Adjust path as needed
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
 import { useEffect, useMemo, useState } from "react"
+import ExhibitorSortMenu from "./ExhibitorSortMenu"
+import type { ExhibitorSort } from "./exhibitorSort"
+
+const filterTriggerClassName =
+  "bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2 shadow-shadow transition-all hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
+
+const filterPopoverClassName = "w-(--radix-popover-trigger-width) max-w-[95vw]"
 
 interface Props {
   exhibitors: Exhibitor[]
@@ -19,6 +26,8 @@ interface Props {
     filterIndustry: string
     filterProgram: string
   }
+  sortBy?: ExhibitorSort
+  onSortChange?: (sortBy: ExhibitorSort) => void
 }
 
 export default function ExhibitorFilterItem({
@@ -28,7 +37,9 @@ export default function ExhibitorFilterItem({
   programs,
   searchQueryName,
   onFilterChange,
-  labels
+  labels,
+  sortBy = "tier-gold",
+  onSortChange
 }: Props) {
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
   const [selectedEmploymentIds, setSelectedEmploymentIds] = useState<string[]>(
@@ -60,7 +71,7 @@ export default function ExhibitorFilterItem({
       value: String(program.id),
       label: program.name
     }))
-  }, [industries])
+  }, [programs])
 
   const filtered = useMemo(() => {
     let currentFilteredList = exhibitors
@@ -139,45 +150,50 @@ export default function ExhibitorFilterItem({
   }, [filtered, onFilterChange])
 
   return (
-    <div className="space-y-2 p-4">
-      {/* Employment Filter */}
-      <MultiSelect
-        options={employmentOptions}
-        onValueChange={setSelectedEmploymentIds}
-        placeholder={labels.filterEmployment}
-        popoverClassName="
-      w-(--radix-popover-trigger-width)
-      min-w-full
-      sm:w-(--radix-popover-trigger-width)
-      max-w-[95vw]
-      "
-        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
-      />
+    <div className="border-licorice border-t pt-4 pb-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        {/* Sort By Filter */}
+        <div className="min-w-0 flex-1 sm:min-w-48">
+          <ExhibitorSortMenu
+            value={sortBy}
+            onValueChange={onSortChange}
+            triggerClassName={filterTriggerClassName}
+          />
+        </div>
 
-      <MultiSelect
-        options={industriesOptions}
-        onValueChange={setSelectedIndustriesIds}
-        placeholder={labels.filterIndustry}
-        popoverClassName="
-            w-(--radix-popover-trigger-width) 
-            min-w-full 
-            sm:w-(--radix-popover-trigger-width)
-            max-w-[95vw]
-          "
-        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
-      />
+        {/* Employment Filter */}
+        <div className="min-w-0 flex-1 sm:min-w-48">
+          <MultiSelect
+            options={employmentOptions}
+            onValueChange={setSelectedEmploymentIds}
+            placeholder={labels.filterEmployment}
+            popoverClassName={filterPopoverClassName}
+            className={filterTriggerClassName}
+          />
+        </div>
 
-      {/* Program Filter */}
-      <MultiSelect
-        options={programOptions}
-        onValueChange={setSelectedProgramsIds}
-        placeholder={labels.filterProgram}
-        popoverClassName="
-            w-(--radix-popover-trigger-width) 
-            min-w-full
-          "
-        className="bg-licorice text-snow! w-full hover:bg-gray-800!"
-      />
+        {/* Industries Filter */}
+        <div className="min-w-0 flex-1 sm:min-w-48">
+          <MultiSelect
+            options={industriesOptions}
+            onValueChange={setSelectedIndustriesIds}
+            placeholder={labels.filterIndustry}
+            popoverClassName={filterPopoverClassName}
+            className={filterTriggerClassName}
+          />
+        </div>
+
+        {/* Program Filter */}
+        <div className="min-w-0 flex-1 sm:min-w-48">
+          <MultiSelect
+            options={programOptions}
+            onValueChange={setSelectedProgramsIds}
+            placeholder={labels.filterProgram}
+            popoverClassName={filterPopoverClassName}
+            className={filterTriggerClassName}
+          />
+        </div>
+      </div>
     </div>
   )
 }

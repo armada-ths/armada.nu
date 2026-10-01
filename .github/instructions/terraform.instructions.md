@@ -1,13 +1,23 @@
 ---
-description: "Use when working with Terraform files for the armada.nu Vercel infrastructure. Covers env var value-drift pattern, HCP Terraform workflow, and what Terraform does and does not manage."
+description: "Use when working with Terraform files for armada.nu. Covers the separate Vercel and authoritative Cloud DNS roots, HCP Terraform workflow, and safety boundaries."
 applyTo: "infra/terraform/**"
 ---
 
-# Terraform — armada.nu Vercel production
+# Terraform — armada.nu infrastructure
 
-Reference: [`infra/terraform/vercel/prod/README.md`](../../infra/terraform/vercel/prod/README.md)
+Reference: [`infra/terraform/README.md`](../../infra/terraform/README.md)
 
-## What this root manages
+## Root layout
+
+| Root            | HCP workspace           | Responsibility                                               |
+| --------------- | ----------------------- | ------------------------------------------------------------ |
+| `vercel/prod/`  | `armadanu-vercel-prod`  | Vercel project settings and environment-variable definitions |
+| `gcp/dns-prod/` | `armadanu-gcp-dns-prod` | Public authoritative DNS for `armada.nu`                     |
+
+Keep these as separate roots and states. DNS is organization-wide infrastructure
+and must never be added to the Vercel state.
+
+## Vercel root
 
 - Vercel project settings (`project.tf`): framework, Node version, Git repository, serverless region, skew protection
 - Application-specific project environment-variable definitions (`env_vars.tf`)
@@ -15,13 +25,31 @@ Reference: [`infra/terraform/vercel/prod/README.md`](../../infra/terraform/verce
 It does **not** manage deployments — those are triggered by the Vercel GitHub integration on every push to `main`.
 It also does not manage domains, DNS, GitHub secrets, Vercel-managed system variables, or environment-variable values.
 
+## Cloud DNS root
+
+The DNS root manages the Google Cloud DNS API, one public managed zone, and its
+explicit RRsets. Websupport remains the registrar, so NS and DS updates are
+manual, gated operations. Never manage or import provider-generated SOA, NS, or
+DNSSEC records.
+
+- Keep DNSSEC `off` for initial creation and nameserver migration.
+- Compare a fresh Loopia export with `local.dns_records` before the first apply.
+- Query every assigned Google name server directly before changing Websupport.
+- Enable DNSSEC in a separate change only after at least 72 stable hours, then
+  publish the generated DS record at Websupport.
+- Keep the Loopia zone for at least seven days as a rollback path.
+- Do not remove `prevent_destroy` from the managed zone.
+
 ## HCP Terraform — prefer remote plans
 
-All applies run in HCP Terraform workspace **`armadanu-vercel-prod`** (org `THS-Armada`). For non-trivial changes, queue a plan from the HCP Terraform UI rather than running `terraform plan` locally. Local `terraform plan` requires a valid `VERCEL_API_TOKEN` in your environment and hits the Vercel API directly, which is fine for quick validation but slower than remote.
+All applies run in their root-specific HCP Terraform workspace in organization
+`THS-Armada`. Queue plans remotely and keep auto-apply disabled for the DNS
+workspace. Local `terraform plan` for the Vercel root requires
+`VERCEL_API_TOKEN`; the DNS root uses HCP dynamic GCP credentials.
 
 Local commands that are always safe: `terraform validate`, `terraform fmt`, `terraform import`.
 
-## Env var value-drift pattern (critical)
+## Vercel env var value-drift pattern (critical)
 
 Values for `vercel_project_environment_variable` resources are **managed in the Vercel dashboard**, not in Terraform.
 
@@ -55,6 +83,6 @@ Values for `vercel_project_environment_variable` resources are **managed in the 
 4. Add an `import {}` block with the variable ID, run `terraform apply` to import, then remove the block.
 5. Register the key in `src/env.ts` if the app code needs to read it.
 
-## Workspace setup (first-time / CI)
+## Vercel workspace setup (first-time / CI)
 
 `backend.tf` is gitignored. Copy `backend.tf.example` → `backend.tf` and run `terraform init`. The workspace requires one sensitive env var in HCP Terraform: `VERCEL_API_TOKEN`.

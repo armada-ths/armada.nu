@@ -13,25 +13,35 @@
     "version": "0.2.0",
     "compounds": [
       {
-        "name": "✅ Frontend + Prod CMS",
+        "name": "Workspace: Open Public Site (Production CMS)",
         "configurations": [
           {
             "folder": "armada.nu",
-            "name": "Frontend (Prod CMS)"
+            "name": "Dev: Open Public Site (Starts Server with Production CMS)"
           }
         ],
         "stopAll": true
       },
       {
-        "name": "✅ Full Stack Local (Docker)",
+        "name": "Workspace: Open Public Site + Admin UI (Local Backend + Supabase)",
         "configurations": [
           {
             "folder": "ArmadaCMS",
-            "name": "Docker"
+            "name": "Dev: Open Admin UI (Starts Frontend + Backend + Local Supabase)"
           },
           {
             "folder": "armada.nu",
-            "name": "Frontend (Local CMS)"
+            "name": "Dev: Open Public Site (Starts Server with Local CMS)"
+          }
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Workspace: Open Admin UI (Local Backend + Supabase)",
+        "configurations": [
+          {
+            "folder": "ArmadaCMS",
+            "name": "Dev: Open Admin UI (Starts Frontend + Backend + Local Supabase)"
           }
         ],
         "stopAll": true

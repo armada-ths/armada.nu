@@ -40,10 +40,10 @@ export default async function ExhibitorsPage() {
       <Page.Boundary>
         <Page.Header>
           {locale === "sv"
-            ? "Företag på mässan 2025"
-            : "Companies at the Fair 2025"}
+            ? "Företag på mässan 2026"
+            : "Companies at the Fair 2026"}
         </Page.Header>{" "}
-        {/* Remember to change/remove year when updated! */}
+        {/* TODO: Make year dynamic based on CMS data */}
         <Suspense>
           <ExhibitorSearch
             exhibitors={exhibitors}

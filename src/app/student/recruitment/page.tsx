@@ -3,6 +3,7 @@ import { PhotoSlideCarousel } from "@/app/_components/PhotoSlideCarousel"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { FAQSection } from "@/app/student/recruitment/_components/host/FAQSection"
 import { ApplyButton } from "@/app/student/recruitment/_components/shared/ApplyButton"
+import { EmailListSignup } from "@/app/student/recruitment/_components/shared/EmailListSignup"
 import { RecruitmentDescription } from "@/app/student/recruitment/_components/shared/RecruitmentDescription"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
@@ -18,6 +19,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { translations, type Locale } from "@/lib/i18n"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { Sparkles } from "lucide-react"
+import { DateTime } from "luxon"
 import { Metadata } from "next"
 import ReactMarkdown from "react-markdown"
 
@@ -29,8 +31,12 @@ const recruitmentPageText: Record<
     alertTitle: string
     alertBody: string
     availableRoles: string
-    noRolesTitle: string
-    noRolesBody: string
+    signupNoRolesTitle: string
+    signupNoRolesBody: string
+    signupOpenTitle: string
+    signupOpenBody: string
+    signupClosedTitle: string
+    signupClosedBody: string
   }
 > = {
   en: {
@@ -40,9 +46,15 @@ const recruitmentPageText: Record<
     alertBody:
       "In Armada, over 200 volunteers join together to create one of KTH's biggest happenings. Take the opportunity to meet new friends, expand your network and be a part of something you can be really proud of!",
     availableRoles: "Currently available roles",
-    noRolesTitle: "No available roles at the moment",
-    noRolesBody:
-      "Keep an eye on this page for future opportunities to join our volunteer team!"
+    signupNoRolesTitle: "No available roles at the moment",
+    signupNoRolesBody:
+      "Subscribe for updates about future recruitment opportunities.",
+    signupOpenTitle: "Applications are open",
+    signupOpenBody:
+      "Apply to one of the available roles above, or subscribe for updates about future recruitment opportunities.",
+    signupClosedTitle: "Applications are currently closed",
+    signupClosedBody:
+      "The roles above are not accepting applications right now. Subscribe for updates about future recruitment opportunities."
   },
   sv: {
     title: "Armadarekrytering",
@@ -51,9 +63,15 @@ const recruitmentPageText: Record<
     alertBody:
       "I Armada går över 200 volontärer samman för att skapa ett av KTH:s största arrangemang. Ta chansen att träffa nya vänner, bredda ditt nätverk och vara en del av något du kan vara riktigt stolt över!",
     availableRoles: "Lediga roller just nu",
-    noRolesTitle: "Inga lediga roller just nu",
-    noRolesBody:
-      "Håll utkik på den här sidan för framtida möjligheter att gå med i vårt volontärteam!"
+    signupNoRolesTitle: "Inga lediga roller just nu",
+    signupNoRolesBody:
+      "Prenumerera för uppdateringar om framtida rekryteringsmöjligheter.",
+    signupOpenTitle: "Ansökan är öppen",
+    signupOpenBody:
+      "Ansök till en av rollerna ovan, eller prenumerera för uppdateringar om framtida rekryteringsmöjligheter.",
+    signupClosedTitle: "Ansökan är för tillfället stängd",
+    signupClosedBody:
+      "Rollerna ovan tar för tillfället inte emot ansökningar. Prenumerera för uppdateringar om framtida rekryteringsmöjligheter."
   }
 }
 
@@ -85,7 +103,27 @@ export default async function RecruitmentPage() {
     b.localeCompare(a)
   )
   const hasAvailableRoles = groupEntries.some(([, group]) => group.length > 0)
+  const now = DateTime.now()
+  const recruitmentOpen =
+    data != null &&
+    DateTime.fromISO(data.start_date) <= now &&
+    DateTime.fromISO(data.end_date) >= now
   const recruitmentName = data?.name || "Armada Recruitment"
+
+  const emailSignupCopy = !hasAvailableRoles
+    ? {
+        title: dict.signupNoRolesTitle,
+        description: dict.signupNoRolesBody
+      }
+    : recruitmentOpen
+      ? {
+          title: dict.signupOpenTitle,
+          description: dict.signupOpenBody
+        }
+      : {
+          title: dict.signupClosedTitle,
+          description: dict.signupClosedBody
+        }
 
   const promotionalPhotos: { source: string; altText: string }[] = [
     {
@@ -225,12 +263,10 @@ export default async function RecruitmentPage() {
                     ))}
                   </Accordion>
                 </div>
-              ) : (
-                <Alert className="mt-6">
-                  <AlertTitle>{dict.noRolesTitle}</AlertTitle>
-                  <AlertDescription>{dict.noRolesBody}</AlertDescription>
-                </Alert>
-              )}
+              ) : null}
+              <div className="mt-6">
+                <EmailListSignup {...emailSignupCopy} />
+              </div>
             </div>
             <div className="mt-14 hidden justify-center sm:flex">
               {data ? (
