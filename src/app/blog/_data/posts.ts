@@ -6,5 +6,6 @@ export interface BlogPost {
   author: string
   createdAt: string
   imageUrl?: string
+  imageUrls?: string[]
   showCoverInPost?: boolean
 }

@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 export function PostCard({ post }: { post: BlogPost }) {
-  const coverImage = post.imageUrl ?? "/armada_white.svg"
+  const coverImage = post.imageUrl ?? "/armada_licorice.svg"
   return (
     <Link href={`/blog/${post.id}`} className="group block">
       <Card className="h-full overflow-hidden border-2 p-0 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">

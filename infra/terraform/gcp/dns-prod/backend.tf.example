@@ -1,0 +1,11 @@
+# Copy this file to backend.tf for local remote operations. HCP Terraform's VCS
+# workspace uses the same organization and workspace name directly.
+terraform {
+  cloud {
+    organization = "THS-Armada"
+
+    workspaces {
+      name = "armadanu-gcp-dns-prod"
+    }
+  }
+}

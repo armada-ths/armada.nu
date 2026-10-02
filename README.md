@@ -183,7 +183,7 @@ Deployments are handled automatically by Vercel's GitHub integration:
 - Every push to `staging` triggers a **preview deployment** to [staging.armada.nu](https://staging.armada.nu).
 - Pull requests from branches other than `main`/`staging` trigger **preview deployments** with unique Vercel URLs.
 - Preview deployments are protected by Vercel Deployment Protection. The staging CMS sends `VERCEL_AUTOMATION_BYPASS_SECRET` when it calls the staging/preview revalidation endpoint.
-- Core Vercel project settings and application-specific environment-variable definitions are managed with Terraform. Domains and deployments are not — see [`infra/terraform/vercel/prod/README.md`](infra/terraform/vercel/prod/README.md) for details.
+- Core Vercel project settings and application-specific environment-variable definitions are managed in the `vercel/prod` Terraform root. Vercel domain objects and deployments are not managed there. Google Cloud DNS is authoritative for `armada.nu` and is managed separately in the `gcp/dns-prod` root with DNSSEC enabled; Websupport remains the registrar and its NS/DS settings are manual. See [`infra/terraform/README.md`](infra/terraform/README.md) for the ownership boundaries.
 
 ## Backend environments
 
