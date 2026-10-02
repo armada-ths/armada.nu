@@ -47,10 +47,9 @@ export const OperationTeamWithoutPicture: Story = {
   play: async ({ canvas, canvasElement }) => {
     await expect(canvas.getByText("Anna Svensson")).toBeInTheDocument()
     await expect(canvas.getByText("Logistics")).toBeInTheDocument()
-    await expect(canvas.getByRole("link")).toHaveAttribute(
-      "href",
-      "mailto:anna@armada.nu"
-    )
+    await expect(
+      canvas.getByRole("link", { name: "Email Anna Svensson" })
+    ).toHaveAttribute("href", "mailto:anna@armada.nu")
     await expect(canvasElement.querySelector(".aspect-square.w-52")).toBeNull()
     await expect(
       canvasElement.querySelector('[data-slot="card"]')
@@ -88,5 +87,22 @@ export const OperationTeamWithPicture: Story = {
     await expect(canvasElement.querySelector('[data-slot="card"]')).toHaveClass(
       "sm:h-96"
     )
+  }
+}
+
+export const ContactLinks: Story = {
+  args: {
+    person: {
+      ...meta.args.person,
+      linkedin_url: "https://www.linkedin.com/in/anna-svensson"
+    }
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("link", { name: "Email Anna Svensson" })
+    ).toHaveAttribute("href", "mailto:anna@armada.nu")
+    await expect(
+      canvas.getByRole("link", { name: "View Anna Svensson on LinkedIn" })
+    ).toHaveAttribute("href", "https://www.linkedin.com/in/anna-svensson")
   }
 }

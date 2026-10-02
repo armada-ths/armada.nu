@@ -52,16 +52,25 @@ const PersonCard = ({
           <p className="mt-1 text-sm text-stone-400">{person.role.trim()}</p>
           <div className="mt-2 flex gap-x-2">
             {person.email != null && (
-              <Link href={`mailto:${person.email}`}>
-                <MailIcon className="hover:text-melon inline-block aspect-square w-5 text-stone-600 transition-colors" />
+              <Link
+                href={`mailto:${person.email}`}
+                aria-label={`Email ${person.name}`}>
+                <MailIcon
+                  aria-hidden="true"
+                  className="hover:text-melon inline-block aspect-square w-5 text-stone-600 transition-colors"
+                />
               </Link>
             )}
             {person.linkedin_url != null && (
               <Link
                 href={person.linkedin_url}
+                aria-label={`View ${person.name} on LinkedIn`}
                 target="_blank"
                 rel="noopener noreferrer">
-                <LinkedInIcon className="hover:text-melon ml-1 inline-block aspect-square w-5 text-stone-600 transition-colors" />
+                <LinkedInIcon
+                  aria-hidden="true"
+                  className="hover:text-melon ml-1 inline-block aspect-square w-5 text-stone-600 transition-colors"
+                />
               </Link>
             )}
           </div>
