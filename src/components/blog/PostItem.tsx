@@ -8,23 +8,21 @@ import {
 } from "@/components/ui/card"
 import Image from "next/image"
 import ReactMarkdown from "react-markdown"
+import { PostImageCarousel } from "./PostImageCarousel"
 
 export function PostItem({ post }: { post: BlogPost }) {
-  const coverImage = post.imageUrl ?? "/armada_white.svg"
+  const images = [post.imageUrl, ...(post.imageUrls ?? [])].filter(
+    (image): image is string => Boolean(image)
+  )
   const showCover = post.showCoverInPost !== false
   return (
     <Card className="bg-snow mx-auto w-full max-w-4xl overflow-hidden transition-shadow duration-300">
       {showCover && (
-        <div className="relative -mt-6 aspect-2/1 w-full overflow-hidden">
-          <Image
-            src={coverImage}
-            alt={post.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 1000px) 100vw, 1000px"
-            priority
-          />
-        </div>
+        <PostImageCarousel
+          key={images.join("|")}
+          images={images.length ? images : ["/armada_white.svg"]}
+          title={post.title}
+        />
       )}
       <CardHeader className="space-y-2">
         <CardTitle className="font-bebas-neue text-3xl leading-tight sm:text-4xl">
