@@ -32,12 +32,16 @@ explicit RRsets. Websupport remains the registrar, so NS and DS updates are
 manual, gated operations. Never manage or import provider-generated SOA, NS, or
 DNSSEC records.
 
-- Keep DNSSEC `off` for initial creation and nameserver migration.
-- Compare a fresh Loopia export with `local.dns_records` before the first apply.
-- Query every assigned Google name server directly before changing Websupport.
-- Enable DNSSEC in a separate change only after at least 72 stable hours, then
-  publish the generated DS record at Websupport.
-- Keep the Loopia zone for at least seven days as a rollback path.
+- Google Cloud DNS is authoritative for `armada.nu`; Websupport delegates the
+  four `ns-cloud-d*.googledomains.com` name servers.
+- Keep DNSSEC `on`. The matching KSK DS record is maintained manually at
+  Websupport and must remain synchronized with Google Cloud DNS.
+- Add or change application and email records only in `local.dns_records`, with
+  one entry per `(name, type)` RRset and all values grouped in that entry.
+- Verify every DNS change directly against all four authoritative name servers
+  and through multiple validating public resolvers after apply.
+- Never change delegation while a DS record for a different provider or key is
+  published at `.nu`; remove the DS first and wait out its TTL.
 - Do not remove `prevent_destroy` from the managed zone.
 
 ## HCP Terraform — prefer remote plans

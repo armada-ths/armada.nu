@@ -12,4 +12,4 @@ The DNS root deliberately does not manage the domain registration at
 Websupport, Vercel domains, deployments, or application infrastructure. Changes
 to the registrar's NS and DS records remain controlled manual operations.
 
-See each root's README for bootstrap, validation, apply, and rollback steps.
+See each root's README for ownership, routine changes, validation, and recovery.

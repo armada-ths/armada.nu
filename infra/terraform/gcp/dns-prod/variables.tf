@@ -15,9 +15,9 @@ variable "dns_name" {
 }
 
 variable "dnssec_state" {
-  description = "DNSSEC state. Keep off for the nameserver migration and switch to on only after the delegation is stable."
+  description = "DNSSEC state for the authoritative production zone. Production is expected to remain on."
   type        = string
-  default     = "off"
+  default     = "on"
 
   validation {
     condition     = contains(["off", "on"], var.dnssec_state)

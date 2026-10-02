@@ -1,7 +1,7 @@
 locals {
-  # This inventory was verified against the complete Loopia zone export from
-  # 2026-09-29. Provider-generated SOA and apex NS records are intentionally
-  # omitted; Cloud DNS creates and manages those records for the new zone.
+  # This map is the authoritative inventory of application and email RRsets for
+  # armada.nu. Provider-generated SOA, NS, and DNSSEC records are intentionally
+  # omitted because Cloud DNS creates and manages them.
   #
   # Keep one entry per (name, type) RRset. Cloud DNS and the Google provider
   # treat each RRset as authoritative, so all values for an MX/TXT/etc. RRset
