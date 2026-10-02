@@ -51,9 +51,10 @@ export const HiddenHeader: Story = {
 export const FallbackImage: Story = {
   args: { post: { ...meta.args.post, imageUrl: undefined } },
   play: async ({ canvas }) => {
+    // Storybook's Next.js image loader can append sizing/quality parameters.
     await expect(canvas.getByRole("img")).toHaveAttribute(
       "src",
-      "/armada_white.svg"
+      expect.stringMatching(/^\/armada_white\.svg(?:\?.*)?$/)
     )
   }
 }
