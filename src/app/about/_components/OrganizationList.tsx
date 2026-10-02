@@ -58,31 +58,40 @@ const OrganizationList = ({ group }: { group: Organization }) => {
         {sortedProjectGroup.map(person => (
           <PersonCard key={person.id} person={person} />
         ))}
-        {showOTs &&
-          sortedOperationTeam.map(person => (
-            <PersonCard key={person.id} person={person} />
-          ))}
-        <div className="my-20 flex justify-center">
-          {group.name === "Project Manager" || !hasMoreMembers ? null : (
-            <Button
-              variant={"neutral"}
-              className=""
-              onClick={handleButtonClick}>
-              {showOTs ? (
-                <>
-                  <ArrowLeftIcon className="mr-4 h-4 w-4" />
-                  See Less Members
-                </>
-              ) : (
-                <>
-                  See More Members
-                  <ArrowRightIcon className="ml-4 h-4 w-4" />
-                </>
-              )}
-            </Button>
-          )}
-        </div>
       </div>
+      {showOTs && (
+        <>
+          {sortedProjectGroup.length > 0 && (
+            <hr className="mt-6 border-stone-300/60" />
+          )}
+          <div className="mt-6 flex flex-wrap items-start justify-center gap-6 md:justify-start">
+            {sortedOperationTeam.map(person => (
+              <PersonCard
+                key={person.id}
+                person={person}
+                compactWithoutPicture
+              />
+            ))}
+          </div>
+        </>
+      )}
+      {group.name !== "Project Manager" && hasMoreMembers && (
+        <div className="mt-8 flex justify-center">
+          <Button variant="neutral" onClick={handleButtonClick}>
+            {showOTs ? (
+              <>
+                <ArrowLeftIcon className="mr-4 h-4 w-4" />
+                Hide additional members
+              </>
+            ) : (
+              <>
+                Show additional members
+                <ArrowRightIcon className="ml-4 h-4 w-4" />
+              </>
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
