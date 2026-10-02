@@ -120,7 +120,30 @@ const meta = {
       )
       await waitFor(() => expect(trigger).toHaveFocus())
     }
-    canvasElement.ownerDocument.defaultView?.scrollTo(0, 0)
+    // Focus restoration is tested above. Leave the overview in its initial
+    // state so Chromatic does not capture a keyboard/mouse-dependent outline.
+    const document = canvasElement.ownerDocument
+    const window = document.defaultView!
+    const focusedElement = document.activeElement
+    if (focusedElement instanceof window.HTMLElement) focusedElement.blur()
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+    await waitFor(() => {
+      expect(window.scrollX).toBe(0)
+      expect(window.scrollY).toBe(0)
+      expect(canvasElement.contains(document.activeElement)).toBe(false)
+    })
+
+    // Visibility only checks CSS; lazy images may still be loading or decoding.
+    // Wait for the actual card pixels before completing the snapshot story.
+    await Promise.all(
+      canvas.getAllByRole<HTMLImageElement>("img").map(async image => {
+        await waitFor(() => {
+          expect(image.complete).toBe(true)
+          expect(image.naturalWidth).toBeGreaterThan(0)
+        })
+        await image.decode()
+      })
+    )
   }
 } satisfies Meta<typeof ExhibitorEvents>
 
