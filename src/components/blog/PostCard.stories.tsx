@@ -37,6 +37,10 @@ export const WithFallbackImage: Story = {
     await expect(
       canvas.getByText("Armada 2026 — Behind the Scenes")
     ).toBeInTheDocument()
+    await expect(canvas.getByRole("img")).toHaveAttribute(
+      "src",
+      expect.stringMatching(/^\/armada_licorice\.svg(?:\?.*)?$/)
+    )
     await expect(canvas.getByRole("link")).toHaveAttribute("href", "/blog/1")
   }
 }

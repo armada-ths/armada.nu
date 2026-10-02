@@ -25,6 +25,8 @@ export default defineConfig({
         ],
         test: {
           name: "storybook",
+          // Allow interaction stories to observe a full slideshow interval.
+          testTimeout: 15000,
           browser: {
             enabled: true,
             headless: true,
