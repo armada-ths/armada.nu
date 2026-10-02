@@ -54,7 +54,7 @@ export const FallbackImage: Story = {
     // Storybook's Next.js image loader can append sizing/quality parameters.
     await expect(canvas.getByRole("img")).toHaveAttribute(
       "src",
-      expect.stringMatching(/^\/armada_white\.svg(?:\?.*)?$/)
+      expect.stringMatching(/^\/armada_licorice\.svg(?:\?.*)?$/)
     )
   }
 }

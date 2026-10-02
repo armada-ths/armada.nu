@@ -20,7 +20,7 @@ export function PostItem({ post }: { post: BlogPost }) {
       {showCover && (
         <PostImageCarousel
           key={images.join("|")}
-          images={images.length ? images : ["/armada_white.svg"]}
+          images={images.length ? images : ["/armada_licorice.svg"]}
           title={post.title}
         />
       )}

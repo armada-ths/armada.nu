@@ -1,8 +1,5 @@
 "use client"
 
-import { useEffect, useState, useSyncExternalStore } from "react"
-import Image from "next/image"
-import { Pause, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Carousel,
@@ -12,6 +9,12 @@ import {
   CarouselPrevious,
   type CarouselApi
 } from "@/components/ui/carousel"
+import { Pause, Play } from "lucide-react"
+import Image from "next/image"
+import { useEffect, useState, useSyncExternalStore } from "react"
+
+const controlClassName =
+  "isolate size-11 cursor-pointer rounded-base border-0 bg-transparent text-licorice before:pointer-events-none before:absolute before:inset-1 before:-z-10 before:rounded-base before:bg-snow/25 before:transition-colors before:duration-200 hover:before:bg-snow/90 focus-visible:before:bg-snow/90 motion-reduce:before:transition-none [&_svg]:drop-shadow-sm"
 
 const reducedMotionQuery = "(prefers-reduced-motion: reduce)"
 const subscribeToMotion = (callback: () => void) => {
@@ -87,10 +90,10 @@ export function PostImageCarousel({
       </CarouselContent>
       {images.length > 1 && (
         <>
-          <CarouselPrevious className="bg-snow text-licorice left-3 size-11" />
-          <CarouselNext className="bg-snow text-licorice right-3 size-11" />
+          <CarouselPrevious className={`${controlClassName} left-3`} />
+          <CarouselNext className={`${controlClassName} right-3`} />
           <div
-            className="bg-licorice/80 text-snow absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-sm"
+            className="bg-licorice/50 text-snow absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-sm"
             aria-hidden="true">
             {selected + 1} / {images.length}
           </div>
@@ -100,7 +103,7 @@ export function PostImageCarousel({
               variant="noShadow"
               size="icon"
               data-rotation-control
-              className="bg-snow text-licorice absolute right-3 bottom-3 size-11"
+              className={`${controlClassName} absolute right-3 bottom-3`}
               aria-label={paused ? "Play slideshow" : "Pause slideshow"}
               onClick={() => setPaused(value => !value)}>
               {paused ? (
