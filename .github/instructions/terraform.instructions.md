@@ -21,7 +21,7 @@ and must never be added to the Vercel state.
 
 - Vercel project settings (`projects.tf`): framework, Node version, Git repository, serverless region, skew protection
 - Shared API/Corepack and application-specific environment-variable definitions (`env_vars.tf`)
-- All three projects' production, staging and default vercel.app domain assignments (`domains.tf`); import existing assignments before apply and preserve branch/redirect settings.
+- All three projects' production, staging and default vercel.app domain assignments (`domains.tf`); preserve branch/redirect settings.
 
 It does **not** manage deployments — those are triggered by the Vercel GitHub integration on every push to `main`.
 It does not manage DNS, domain registration, GitHub secrets, Vercel-managed system variables, or environment-variable values.
@@ -53,14 +53,14 @@ All applies run in their root-specific HCP Terraform workspace in organization
 workspace. Local `terraform plan` for the Vercel root requires
 `VERCEL_API_TOKEN`; the DNS root uses HCP dynamic GCP credentials.
 
-Local commands that are always safe: `terraform validate`, `terraform fmt`, `terraform import`.
+Use `terraform validate` and `terraform fmt` for local validation. Imports write state and must target an explicitly identified existing resource; applies require a reviewed plan.
 
 ## Vercel env var value-drift pattern (critical)
 
 Values for `vercel_project_environment_variable` resources are **managed in the Vercel dashboard**, not in Terraform.
 
-- Both `vercel_project_environment_variable.apps` and `vercel_shared_environment_variable.apps` use `value = ""` as a placeholder. Create values in Vercel and import existing definitions before apply; a placeholder must never create a new variable.
-- `lifecycle { ignore_changes = [value] }` ensures Terraform never overwrites a value set in Vercel.
+- Both `vercel_project_environment_variable.apps` and `vercel_shared_environment_variable.apps` use `value = ""` as a placeholder. Create new definitions with Terraform, then set their real values in Vercel before deploying. Import definitions that already exist in Vercel.
+- `lifecycle { ignore_changes = [value] }` preserves values set in Vercel during updates, not creation or replacement. Recreated variables need their real values set again.
 - Terraform **does** enforce: key name, target environments, branch scope, and `sensitive` flag. Drift on those will appear in `terraform plan`.
 - API origins and Corepack use `local.shared_env`, linked to all three projects. Do not duplicate those keys in `local.app_env`: project-local values override shared ones. Shared Production uses the production API; Preview/Development use staging. reCAPTCHA keys and secrets stay project-specific.
 
@@ -68,16 +68,18 @@ Values for `vercel_project_environment_variable` resources are **managed in the 
 
 ## Adding a new environment variable
 
-1. Add the variable in the **Vercel dashboard** with its real value.
-2. Get its ID from the Vercel API or Vercel dashboard network tab (`vercel env ls` also works).
-3. Add an entry to `local.app_env` in `env_vars.tf`:
+1. Add an entry to `local.app_env` in `env_vars.tf` (or `local.shared_env` for a shared key), with the correct environment scope and sensitivity:
 
    ```hcl
    web_my_var = { app = "web", key = "MY_VAR", target = ["production"], sensitive = true }
    ```
 
-4. Add an `import {}` block targeting `vercel_project_environment_variable.apps["web_my_var"]` with the variable ID, run `terraform apply` to import, then remove the block. The shared resource keeps `ignore_changes = [value]`.
-5. Register the key in `src/env.ts` if the app code needs to read it.
+2. Review and apply the Terraform plan to create the definition with an empty placeholder. Retain `ignore_changes = [value]`.
+3. Set its real value in the **Vercel dashboard** before deploying any application that needs it. Never commit or log the value.
+4. Register the key in the owning app's `src/env.ts` if the app code needs to read it; framework/tooling keys follow their respective entry points.
+5. Deploy or redeploy the affected applications.
+
+If the variable already exists in Vercel, retrieve its ID without logging its value and import it into the corresponding resource instead of creating a duplicate. Review and apply the import plan, then remove the completed import block. Do not deploy while a required variable still has an empty placeholder.
 
 ## Vercel workspace setup (first-time / CI)
 

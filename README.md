@@ -144,14 +144,14 @@ packages/shared/src/      # Brand theme, fonts, Page, cn, telemetry and common U
 infra/terraform/          # Vercel settings and separate Cloud DNS state
 ```
 
-Each app has its own `src/app`, `src/env.ts`, `public`, Next config and TypeScript config. Root `src` and `public` temporarily preserve the old deployment during the two-phase cutover; do not edit them for new features.
+Each app has its own `src/app`, `src/env.ts`, `public`, Next config and TypeScript config. The repository root owns workspace scripts, the lockfile, Storybook, linting, formatting and CI. Runtime dependencies are declared by their owning app or shared package; root dependencies support development tooling.
 
 ## Key Conventions
 
 - **Adding env vars**: Register application variables in the owning app's `src/env.ts` unless they must be read directly by framework entry points. `EXPO_ACCESS_TOKEN` belongs only to the Order app; `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` are consumed by their respective tooling. Use the `NEXT_PUBLIC_` prefix only for client-safe values.
 - **Data fetching**: Use the dual-export pattern in `apps/web/src/components/shared/hooks/api/` — `fetch*()` for server components, `use*()` hooks for client components.
 - **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `apps/web/src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel flag cookie overrides applied.
-- **Adding shadcn components**: `pnpm dlx shadcn@latest add <component>`
+- **Adding shadcn components**: Run `pnpm dlx shadcn@latest add <component>` from the owning app directory. Components used across apps belong in `packages/shared/src/ui`.
 - **Adding pages**: Add an entry to `apps/web/src/app/sitemap.ts`. If the page is gated by a feature flag, the sitemap conditionally includes it.
 - **Cache revalidation**: The site uses ISR with on-demand revalidation. Each data hook sets `next: { revalidate: 86400, tags: ["<tag>"] }`. The CMS triggers `POST /api/revalidate` after write operations to purge specific cache tags instantly. See the [tag inventory in copilot-instructions.md](.github/copilot-instructions.md#cache-revalidation) for the full list.
 - **Analytics**: Vercel Analytics and Speed Insights are loaded in the root layout. Use `TrackedLink` from `apps/web/src/components/shared/TrackedLink.tsx` for user-interaction tracking.
@@ -179,15 +179,21 @@ job timeouts so stale checks do not consume runner capacity indefinitely.
 
 Deployments are handled automatically by Vercel's GitHub integration:
 
-- Every push to `main` triggers a **production deployment** to [armada.nu](https://armada.nu).
-- Every push to `staging` triggers a **preview deployment** to [staging.armada.nu](https://staging.armada.nu).
-- Pull requests from branches other than `main`/`staging` trigger **preview deployments** with unique Vercel URLs.
-- Preview deployments are protected by Vercel Deployment Protection. The staging CMS sends `VERCEL_AUTOMATION_BYPASS_SECRET` when it calls the staging/preview revalidation endpoint.
-- Core Vercel project settings and application-specific environment-variable definitions are managed in the `vercel/prod` Terraform root. Vercel domain objects and deployments are not managed there. Google Cloud DNS is authoritative for `armada.nu` and is managed separately in the `gcp/dns-prod` root with DNSSEC enabled; Websupport remains the registrar and its NS/DS settings are manual. See [`infra/terraform/README.md`](infra/terraform/README.md) for the ownership boundaries.
+| App    | Vercel project  | Root Directory | Production                                   | Staging                                                      |
+| ------ | --------------- | -------------- | -------------------------------------------- | ------------------------------------------------------------ |
+| Web    | `armada-nu`     | `apps/web`     | [armada.nu](https://armada.nu)               | [staging.armada.nu](https://staging.armada.nu)               |
+| Photos | `armada-photos` | `apps/photos`  | [photos.armada.nu](https://photos.armada.nu) | [staging.photos.armada.nu](https://staging.photos.armada.nu) |
+| Order  | `armada-order`  | `apps/order`   | [order.armada.nu](https://order.armada.nu)   | [staging.order.armada.nu](https://staging.order.armada.nu)   |
+
+- `main` is the production branch and `staging` has fixed preview domains. Other branches receive generated preview URLs. Skip unaffected projects is enabled; shared-package changes affect its consumers. All projects include workspace files outside their Root Directory, use Node 24 and Stockholm (`arn1`) for functions.
+- Each app's `vercel.json` selects `pnpm build` in its app directory. Vercel detects pnpm from the workspace lockfile; the root `packageManager` pins the version and `ENABLE_EXPERIMENTAL_COREPACK=1` enables Corepack.
+- Standard Protection (`standard_protection_new`) keeps production custom domains public and protects staging, preview and generated deployment URLs with Vercel Authentication. The staging CMS uses `VERCEL_AUTOMATION_BYPASS_SECRET` for Web's revalidation endpoint. Automation bypass tokens are managed directly in Vercel.
+- Photos and Order send `noindex, nofollow` and `Referrer-Policy: no-referrer` in every environment. Web disables indexing for non-production builds and on its staging hostname, with an empty non-production sitemap. Indexing directives are not access controls; keep sensitive data out of public deployments.
+- Project settings, environment-variable definitions and domain assignments are managed in `infra/terraform/vercel/prod`. Deployments and actual environment values are managed by Vercel. Authoritative DNS is managed separately in `infra/terraform/gcp/dns-prod`, using routing records exported by the Vercel workspace. DNSSEC is enabled; Websupport is the registrar and its NS/DS settings are manual. See [`infra/terraform/README.md`](infra/terraform/README.md) for ownership boundaries.
 
 ## Backend environments
 
-Set `NEXT_PUBLIC_API_URL` in `apps/web/.env.local` to point the dev server at a different backend:
+Set `NEXT_PUBLIC_API_URL` in the owning app's `.env.local` to select its development backend:
 
 `NEXT_PUBLIC_API_URL` is the backend origin. Do not append `/api/v1`; the data
 hooks add that path themselves.
@@ -197,16 +203,3 @@ hooks add that path themselves.
 | Local dev   | `http://localhost:8080`         |
 | Staging     | `https://staging.cms.armada.nu` |
 | Production  | `https://cms.armada.nu`         |
-
-## Workspace applications
-
-The pnpm workspace contains `apps/web` (main website), `apps/photos` (guest photos), `apps/order` (exhibitor orders), and `packages/shared` (`@armada/shared`). Shared theme tokens, fonts, Page, cn and common UI live in that package; do not duplicate them in apps. Web compatibility re-exports are intentional.
-
-- `pnpm dev`: Web on 8000; `pnpm dev:photos`: Photos on 8001; `pnpm dev:order`: Order on 8002; `pnpm dev:all`: all three.
-- Each app reads its own `.env.local` and has an `.env.example`. Root environment files are not loaded by workspace apps. Public API origins must be configured for builds too.
-- `pnpm build`, `pnpm lint`, `pnpm type-check`, and `pnpm test` cover the workspace. `pnpm exec vitest run --project unit` runs fast unit tests.
-- Shared Storybook uses aliases `@/*` (Web), `@photos/*` (Photos), and `@order/*` (Order). Run shadcn tooling from the owning app directory.
-- Photos and Order have independent layouts, no main-site CMS layout dependencies, noindex, no-referrer and app-specific telemetry redaction. Web no longer masks retired token routes.
-- Order fetches dates/exhibitors with no-store; it does not use the Web revalidation webhook. Order actions validate access, dates and catalogue inputs server-side; unlike the Web sales contact form, they do not use reCAPTCHA.
-
-See [the staged migration runbook](docs/standalone-apps.md) before changing Vercel roots or domains. Root `src/`, `public/` and Next config are a temporary deployment bridge, not the source for new feature work.

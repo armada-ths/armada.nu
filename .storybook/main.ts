@@ -1,5 +1,6 @@
 import path from "node:path"
 import type { StorybookConfig } from "@storybook/nextjs-vite"
+import tailwindcss from "@tailwindcss/postcss"
 
 const config: StorybookConfig = {
   stories: [
@@ -20,6 +21,10 @@ const config: StorybookConfig = {
   },
   viteFinal: async config => ({
     ...config,
+    css: {
+      ...config.css,
+      postcss: { plugins: [tailwindcss()] }
+    },
     resolve: {
       ...config.resolve,
       alias: {

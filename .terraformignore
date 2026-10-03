@@ -4,11 +4,10 @@
 .next/
 .vercel/
 node_modules/
-public/
-src/
+apps/
+packages/
 .env
 .env.*
-!.env.example
 *.log
 **/.terraform/*
 *.tfstate

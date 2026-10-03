@@ -9,7 +9,7 @@ Also consult:
 
 ## Project scope
 
-`armada.nu` is the public website: Next.js App Router + React + TypeScript + Tailwind.
+`armada.nu` is a pnpm monorepo containing three Next.js App Router applications: Web, Photos and Order, plus a shared package. All use React, TypeScript and Tailwind.
 
 If a task changes API contracts, CMS models, admin resources, or backend auth/upload behavior, also update the sibling `../ArmadaCMS` repo and follow its instructions.
 
@@ -36,7 +36,7 @@ Keep this file concise and keep `.github/copilot-instructions.md` as the source 
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
@@ -46,13 +46,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Workspace applications
 
-The pnpm workspace contains `apps/web` (main website), `apps/photos` (guest photos), `apps/order` (exhibitor orders), and `packages/shared` (`@armada/shared`). Shared theme tokens, fonts, Page, cn and common UI live in that package; do not duplicate them in apps. Web compatibility re-exports are intentional.
+The pnpm workspace contains `apps/web` (main website), `apps/photos` (guest photos), `apps/order` (exhibitor orders), and `packages/shared` (`@armada/shared`). Shared theme tokens, fonts, Page, cn and common UI live in that package; do not duplicate them in apps. Web re-exports shared primitives from `@armada/shared`.
 
 - `pnpm dev`: Web on 8000; `pnpm dev:photos`: Photos on 8001; `pnpm dev:order`: Order on 8002; `pnpm dev:all`: all three.
 - Each app reads its own `.env.local` and has an `.env.example`. Root environment files are not loaded by workspace apps. Public API origins must be configured for builds too.
 - `pnpm build`, `pnpm lint`, `pnpm type-check`, and `pnpm test` cover the workspace. `pnpm exec vitest run --project unit` runs fast unit tests.
 - Shared Storybook uses aliases `@/*` (Web), `@photos/*` (Photos), and `@order/*` (Order). Run shadcn tooling from the owning app directory.
-- Photos and Order have independent layouts, no main-site CMS layout dependencies, noindex, no-referrer and app-specific telemetry redaction. Web no longer masks retired token routes.
+- Photos and Order have independent layouts, no main-site CMS layout dependencies, noindex, no-referrer and app-specific telemetry redaction.
 - Order fetches dates/exhibitors with no-store; it does not use the Web revalidation webhook. Order actions validate access, dates and catalogue inputs server-side; unlike the Web sales contact form, they do not use reCAPTCHA.
 
-See [the staged migration runbook](docs/standalone-apps.md) before changing Vercel roots or domains. Root `src/`, `public/` and Next config are a temporary deployment bridge, not the source for new feature work.
+See `README.md` for app domains, environment configuration and deployment ownership. The repository root contains shared development tooling; application code and assets belong in `apps/*` or `packages/shared`.
