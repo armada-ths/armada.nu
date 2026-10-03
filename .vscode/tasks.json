@@ -176,6 +176,58 @@
         "panel": "dedicated"
       },
       "group": "build"
+    },
+    {
+      "label": "Dev: Start Photos (Configured CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev:photos"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".+",
+          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+        }
+      }
+    },
+    {
+      "label": "Dev: Start Order (Configured CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev:order"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".+",
+          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+        }
+      }
     }
   ]
 }

@@ -19,8 +19,8 @@ and must never be added to the Vercel state.
 
 ## Vercel root
 
-- Vercel project settings (`project.tf`): framework, Node version, Git repository, serverless region, skew protection
-- Application-specific project environment-variable definitions (`env_vars.tf`)
+- Vercel project settings (`projects.tf`): framework, Node version, Git repository, serverless region, skew protection
+- Shared API/Corepack and application-specific environment-variable definitions (`env_vars.tf`)
 
 It does **not** manage deployments — those are triggered by the Vercel GitHub integration on every push to `main`.
 It also does not manage domains, DNS, GitHub secrets, Vercel-managed system variables, or environment-variable values.
@@ -57,9 +57,10 @@ Local commands that are always safe: `terraform validate`, `terraform fmt`, `ter
 
 Values for `vercel_project_environment_variable` resources are **managed in the Vercel dashboard**, not in Terraform.
 
-- Every resource uses `value = ""` as a placeholder.
+- Both `vercel_project_environment_variable.apps` and `vercel_shared_environment_variable.apps` use `value = ""` as a placeholder. Create values in Vercel and import existing definitions before apply; a placeholder must never create a new variable.
 - `lifecycle { ignore_changes = [value] }` ensures Terraform never overwrites a value set in Vercel.
 - Terraform **does** enforce: key name, target environments, branch scope, and `sensitive` flag. Drift on those will appear in `terraform plan`.
+- API origins and Corepack use `local.shared_env`, linked to all three projects. Do not duplicate those keys in `local.app_env`: project-local values override shared ones. Shared Production uses the production API; Preview/Development use staging. reCAPTCHA keys and secrets stay project-specific.
 
 **Never** remove the `lifecycle` block or populate `value` with a real secret — that would store the secret in HCP Terraform state.
 
@@ -67,24 +68,13 @@ Values for `vercel_project_environment_variable` resources are **managed in the 
 
 1. Add the variable in the **Vercel dashboard** with its real value.
 2. Get its ID from the Vercel API or Vercel dashboard network tab (`vercel env ls` also works).
-3. Add a `vercel_project_environment_variable` resource in `env_vars.tf`:
+3. Add an entry to `local.app_env` in `env_vars.tf`:
 
    ```hcl
-   resource "vercel_project_environment_variable" "my_var" {
-     project_id = local.project_id
-     team_id    = local.team_id
-     key        = "MY_VAR"
-     value      = "" # Managed in Vercel dashboard.
-     target     = ["production"]
-     sensitive  = true
-
-     lifecycle {
-      ignore_changes = [value]
-     }
-   }
+   web_my_var = { app = "web", key = "MY_VAR", target = ["production"], sensitive = true }
    ```
 
-4. Add an `import {}` block with the variable ID, run `terraform apply` to import, then remove the block.
+4. Add an `import {}` block targeting `vercel_project_environment_variable.apps["web_my_var"]` with the variable ID, run `terraform apply` to import, then remove the block. The shared resource keeps `ignore_changes = [value]`.
 5. Register the key in `src/env.ts` if the app code needs to read it.
 
 ## Vercel workspace setup (first-time / CI)

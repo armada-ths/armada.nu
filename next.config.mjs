@@ -3,6 +3,8 @@ import toolbar from "@vercel/toolbar/plugins/next"
 
 const withVercelToolbar = toolbar()
 const nextConfig = {
+  // Transitional root deployment only; workspace apps have their own configs.
+  typescript: { tsconfigPath: "tsconfig.legacy.json" },
   webpack(config) {
     // Find the existing rule handling SVGs
     const fileLoaderRule = config.module.rules.find(rule =>

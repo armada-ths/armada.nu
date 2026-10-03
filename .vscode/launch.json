@@ -6,7 +6,7 @@
       "type": "editor-browser",
       "request": "launch",
       "url": "http://localhost:8000",
-      "webRoot": "${workspaceFolder}",
+      "webRoot": "${workspaceFolder}/apps/web",
       "preLaunchTask": "Dev: Start Public Site (Production CMS)"
     },
     {
@@ -14,8 +14,24 @@
       "type": "editor-browser",
       "request": "launch",
       "url": "http://localhost:8000",
-      "webRoot": "${workspaceFolder}",
+      "webRoot": "${workspaceFolder}/apps/web",
       "preLaunchTask": "Dev: Start Public Site (Local CMS)"
+    },
+    {
+      "name": "Dev: Open Photos",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8001",
+      "webRoot": "${workspaceFolder}/apps/photos",
+      "preLaunchTask": "Dev: Start Photos (Configured CMS)"
+    },
+    {
+      "name": "Dev: Open Order",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8002",
+      "webRoot": "${workspaceFolder}/apps/order",
+      "preLaunchTask": "Dev: Start Order (Configured CMS)"
     }
   ]
 }
