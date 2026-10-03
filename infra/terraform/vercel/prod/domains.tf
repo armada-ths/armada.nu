@@ -13,7 +13,7 @@ locals {
     order_default  = { app = "order", domain = "armada-order.vercel.app", redirect = "order.armada.nu", redirect_status_code = 308 }
   }
 
-  # Stable Cloud DNS resource keys preserve existing RRsets during migration.
+  # Stable keys identify each Cloud DNS routing RRset.
   dns_domains = {
     "apex/A"               = { assignment = "web", type = "A" }
     "www/A"                = { assignment = "web_www", type = "A" }

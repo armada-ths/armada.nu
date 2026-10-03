@@ -5,7 +5,8 @@
 # Values are intentionally NOT managed by Terraform. They are set and rotated
 # directly in the Vercel dashboard (or via the Vercel CLI). The `value = ""`
 # placeholder satisfies the provider schema, and `lifecycle { ignore_changes =
-# [value] }` ensures Terraform never overwrites a value set in Vercel.
+# [value] }` preserves values set in Vercel during updates. New or recreated
+# variables start empty and must be configured in Vercel before deployment.
 #
 # Terraform DOES enforce: key name, target environments, branch scope, and
 # sensitive flag.
@@ -15,8 +16,6 @@ locals {
   app_env = {
     web_next_public_recaptcha_site_key_production                 = { app = "web", key = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY", target = ["production"], sensitive = false }
     web_next_public_recaptcha_site_key_preview                    = { app = "web", key = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY", target = ["preview"], sensitive = false }
-    web_expo_access_token                                         = { app = "web", key = "EXPO_ACCESS_TOKEN", target = ["production", "preview"], sensitive = true }
-    web_slack_order_hook_url                                      = { app = "web", key = "SLACK_ORDER_HOOK_URL", target = ["production", "preview"], sensitive = true }
     web_slack_sales_hook_url_production                           = { app = "web", key = "SLACK_SALES_HOOK_URL", target = ["production"], sensitive = true }
     web_slack_sales_hook_url_preview_development                  = { app = "web", key = "SLACK_SALES_HOOK_URL", target = ["preview"], sensitive = true }
     web_flags_secret                                              = { app = "web", key = "FLAGS_SECRET", target = ["production", "preview"], sensitive = true }
@@ -64,7 +63,7 @@ resource "vercel_shared_environment_variable" "apps" {
   for_each    = local.shared_env
   team_id     = var.vercel_team_id
   key         = each.value.key
-  value       = "" # Import first; values remain managed directly in Vercel.
+  value       = "" # Set in Vercel after creation; import existing variables.
   target      = each.value.target
   sensitive   = each.value.sensitive
   project_ids = [for project in vercel_project.apps : project.id]
