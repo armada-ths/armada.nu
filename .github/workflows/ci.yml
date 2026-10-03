@@ -25,8 +25,8 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test
+      # Chromatic runs Storybook interaction and visual tests as a separate check.
+      - run: pnpm exec vitest run --project unit
 
   build:
     runs-on: ubuntu-latest

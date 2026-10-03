@@ -126,6 +126,8 @@ This requires you to have both repos checked out in the same parent directory.
 | `pnpm format`          | Format code with Prettier                           |
 | `pnpm format:check`    | Check formatting                                    |
 
+The CI test job runs only the Vitest unit project, without installing Playwright browsers. Chromatic handles Storybook interaction and visual tests as a required merge check. Local `pnpm test` still runs both unit and Storybook tests.
+
 ## Storybook
 
 This repo uses [Storybook](https://storybook.js.org/) to build and review UI components in isolation. Story files live next to components and use the `*.stories.tsx` naming convention. Prefer multiple story variants and `play` functions for interactive states. The repo also integrates with [Chromatic](https://www.chromatic.com/) for visual regression testing via CI — see the [CI / CD](#ci--cd) section.
