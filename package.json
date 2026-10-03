@@ -3,18 +3,22 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 8000",
-    "build": "next build",
-    "start": "next start",
+    "dev": "pnpm --filter @armada/web dev",
+    "build": "pnpm -r --filter @armada/web --filter @armada/photos --filter @armada/order build",
+    "start": "pnpm --filter @armada/web start",
     "prepare": "husky",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit",
+    "type-check": "pnpm -r type-check && tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build --stats-json",
     "test": "vitest run",
-    "chromatic": "chromatic"
+    "chromatic": "chromatic",
+    "dev:photos": "pnpm --filter @armada/photos dev",
+    "dev:order": "pnpm --filter @armada/order dev",
+    "dev:all": "pnpm --parallel --filter @armada/web --filter @armada/photos --filter @armada/order dev",
+    "build:legacy": "next build"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx,css,json,md,mjs}": "prettier --write",
