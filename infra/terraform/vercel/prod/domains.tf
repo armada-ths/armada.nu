@@ -7,10 +7,10 @@ locals {
     web_default    = { app = "web", domain = "armada-nu.vercel.app", redirect = "armada.nu", redirect_status_code = 308 }
     photos         = { app = "photos", domain = "photos.armada.nu" }
     photos_staging = { app = "photos", domain = "staging.photos.armada.nu", git_branch = "staging" }
-    photos_default = { app = "photos", domain = "armada-photos.vercel.app" }
+    photos_default = { app = "photos", domain = "armada-photos.vercel.app", redirect = "photos.armada.nu", redirect_status_code = 308 }
     order          = { app = "order", domain = "order.armada.nu" }
     order_staging  = { app = "order", domain = "staging.order.armada.nu", git_branch = "staging" }
-    order_default  = { app = "order", domain = "armada-order.vercel.app" }
+    order_default  = { app = "order", domain = "armada-order.vercel.app", redirect = "order.armada.nu", redirect_status_code = 308 }
   }
 
   # Stable Cloud DNS resource keys preserve existing RRsets during migration.
