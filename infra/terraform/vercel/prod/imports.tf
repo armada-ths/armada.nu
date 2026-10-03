@@ -10,6 +10,28 @@ import {
   id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz"
 }
 
+# Order variables were created with empty sensitive values.
+# Set their real values in Vercel before testing or deploying Order.
+import {
+  to = vercel_project_environment_variable.apps["order_token_production"]
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz/aV3qbQh3xtMBupCy"
+}
+
+import {
+  to = vercel_project_environment_variable.apps["order_token_preview"]
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz/Gp9pO7z9gIBF2Uq3"
+}
+
+import {
+  to = vercel_project_environment_variable.apps["order_hook_production"]
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz/YVgj8FNcxxtkCsBZ"
+}
+
+import {
+  to = vercel_project_environment_variable.apps["order_hook_preview"]
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz/kFHQyyggchu2spHa"
+}
+
 
 
 
