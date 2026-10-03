@@ -85,8 +85,18 @@ This repo includes shared VS Code configuration for both single-repo and multi-r
 
 In `.vscode/` you will find:
 
-- `tasks.json` — tasks for starting the public site against the configured, production, or local CMS, plus formatting, linting, type-checking, builds, and Storybook
-- `launch.json` — browser launches that state which CMS environment their development server uses
+- `tasks.json` — start/stop tasks for Web, Photos and Order, plus workspace-wide formatting, linting, type-checking, builds, and shared Storybook
+- `launch.json` — browser launches for each app against the configured, production, or local CMS
+
+Each app offers the same three launch variants:
+
+- **Configured CMS**: use the app's existing environment configuration, including its `.env.local`.
+- **Production CMS**: override `NEXT_PUBLIC_API_URL` with `https://cms.armada.nu`.
+- **Local CMS**: override `NEXT_PUBLIC_API_URL` with `http://localhost:8080`; this single-repo launch does not start the backend.
+
+Web runs on port 8000, Photos on 8001 and Order on 8002. Start tasks run from the owning app directory and wait for Next.js's `Ready` message before opening the browser. Other environment values remain app-specific; Photos needs an event link and Order needs a valid access token. Do not put tokens or secrets in launch configuration.
+
+Every app launch has a `postDebugTask` that terminates its matching dev-server task through VS Code, following the CMS launch pattern. The corresponding `Dev: Stop ...` task can also be run manually. Start only one CMS variant per app at a time because the variants share a port. Stopping a launch terminates the task even if you started that same task manually before launching; servers started outside VS Code tasks are not targeted.
 
 ### Multi-repo workspace
 
@@ -102,10 +112,15 @@ That workspace opens:
 and includes these compound launches:
 
 - `Workspace: Open Public Site (Production CMS)`
+- `Workspace: Open Photos (Production CMS)`
+- `Workspace: Open Order (Production CMS)`
 - `Workspace: Open Public Site + Admin UI (Local Backend + Supabase)`
+- `Workspace: Open Photos + Admin UI (Local Backend + Supabase)`
+- `Workspace: Open Order + Admin UI (Local Backend + Supabase)`
+- `Workspace: Open All Apps + Admin UI (Local Backend + Supabase)`
 - `Workspace: Open Admin UI (Local Backend + Supabase)`
 
-This requires you to have both repos checked out in the same parent directory.
+Local compounds start Admin, the backend and Supabase once, alongside the selected app(s). They use `stopAll`, so stopping one debug session stops the compound, runs each app's stop task and invokes the CMS's existing cleanup task. This requires you to have both repos checked out in the same parent directory.
 
 ## Scripts
 

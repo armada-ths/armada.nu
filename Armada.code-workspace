@@ -37,6 +37,76 @@
         "stopAll": true
       },
       {
+        "name": "Workspace: Open Photos (Production CMS)",
+        "configurations": [
+          {
+            "folder": "armada.nu",
+            "name": "Dev: Open Photos (Starts Server with Production CMS)"
+          }
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Workspace: Open Photos + Admin UI (Local Backend + Supabase)",
+        "configurations": [
+          {
+            "folder": "ArmadaCMS",
+            "name": "Dev: Open Admin UI (Starts Frontend + Backend + Local Supabase)"
+          },
+          {
+            "folder": "armada.nu",
+            "name": "Dev: Open Photos (Starts Server with Local CMS)"
+          }
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Workspace: Open Order (Production CMS)",
+        "configurations": [
+          {
+            "folder": "armada.nu",
+            "name": "Dev: Open Order (Starts Server with Production CMS)"
+          }
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Workspace: Open Order + Admin UI (Local Backend + Supabase)",
+        "configurations": [
+          {
+            "folder": "ArmadaCMS",
+            "name": "Dev: Open Admin UI (Starts Frontend + Backend + Local Supabase)"
+          },
+          {
+            "folder": "armada.nu",
+            "name": "Dev: Open Order (Starts Server with Local CMS)"
+          }
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Workspace: Open All Apps + Admin UI (Local Backend + Supabase)",
+        "configurations": [
+          {
+            "folder": "ArmadaCMS",
+            "name": "Dev: Open Admin UI (Starts Frontend + Backend + Local Supabase)"
+          },
+          {
+            "folder": "armada.nu",
+            "name": "Dev: Open Public Site (Starts Server with Local CMS)"
+          },
+          {
+            "folder": "armada.nu",
+            "name": "Dev: Open Photos (Starts Server with Local CMS)"
+          },
+          {
+            "folder": "armada.nu",
+            "name": "Dev: Open Order (Starts Server with Local CMS)"
+          }
+        ],
+        "stopAll": true
+      },
+      {
         "name": "Workspace: Open Admin UI (Local Backend + Supabase)",
         "configurations": [
           {
