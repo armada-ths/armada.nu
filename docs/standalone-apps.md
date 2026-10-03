@@ -8,6 +8,8 @@
 
 All projects use main for production and staging for staging. Shared dependencies use workspace:* and one pnpm lockfile. There is no Turborepo. Vercel must include files outside each Root Directory; keep this monorepo setting enabled. Skip unaffected projects is enabled in Terraform.
 
+Each app has its own vercel.json selecting pnpm build from its Root Directory. This overrides the temporary repository-root build:legacy command, which is only for the original Web deployment during migration.
+
 ## Environment configuration
 
 Each app has its own .env.example. Copy it to that app's .env.local for development; root .env.local is only read by the temporary legacy app. Web uses port 8000, Photos 8001, Order 8002. Storybook remains at the repository root on 6006.

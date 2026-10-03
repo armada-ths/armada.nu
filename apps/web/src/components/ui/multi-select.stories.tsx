@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, fireEvent, fn, userEvent, within } from "storybook/test"
+import {
+  expect,
+  fireEvent,
+  fn,
+  userEvent,
+  waitFor,
+  within
+} from "storybook/test"
 
 import { MultiSelect } from "./multi-select"
 
@@ -115,6 +122,16 @@ export const ScrollableOptions: Story = {
       name: "Available options"
     })
     const actions = body.getByRole("group", { name: "Filter actions" })
+    const closeButton = body.getByRole("button", { name: "Close" })
+    const popover = actions.closest("[data-slot='popover-content']")
+
+    // Opening animations affect both visibility and the measured footer position.
+    await Promise.all(
+      (popover?.getAnimations({ subtree: true }) ?? []).map(
+        animation => animation.finished
+      )
+    )
+    await waitFor(() => expect(closeButton).toBeVisible())
     const actionsTop = actions.getBoundingClientRect().top
 
     await expect(listbox.scrollHeight).toBeGreaterThan(listbox.clientHeight)
@@ -122,7 +139,7 @@ export const ScrollableOptions: Story = {
     fireEvent.scroll(listbox)
 
     await expect(actions.getBoundingClientRect().top).toBe(actionsTop)
-    await expect(body.getByRole("button", { name: "Close" })).toBeVisible()
+    await expect(closeButton).toBeVisible()
   }
 }
 
