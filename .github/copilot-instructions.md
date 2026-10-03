@@ -1,15 +1,15 @@
 <!--
 Guidance for AI coding agents working on the public armada.nu site.
-Keep this focused on the Next.js app in this folder; backend/admin guidance lives in ArmadaCMS/.github/copilot-instructions.md.
+Keep this focused on the Web, Photos and Order monorepo; backend/admin guidance lives in ArmadaCMS/.github/copilot-instructions.md.
 -->
 
 # armada.nu — Copilot instructions
 
-See `README.md` for setup and scripts. Do not duplicate ArmadaCMS backend/admin guidance here; if a task touches the Go API or React-Admin app, also follow `../../ArmadaCMS/.github/copilot-instructions.md`.
+See `README.md` for setup and scripts. Do not duplicate ArmadaCMS backend/admin guidance here; if a task touches the Go API or React-Admin app, also follow the sibling repo's `../ArmadaCMS/.github/copilot-instructions.md`.
 
 ## Architecture
 
-This folder is the public website: **Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4**, deployed on Vercel.
+This pnpm monorepo contains Web (`apps/web`), Photos (`apps/photos`), Order (`apps/order`) and `@armada/shared` (`packages/shared`): **Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4**, deployed as three Vercel projects.
 
 - Content comes from **ArmadaCMS** (`NEXT_PUBLIC_API_URL`). Production API: `https://cms.armada.nu`; staging API: `https://staging.cms.armada.nu`. To use the staging backend locally, set `NEXT_PUBLIC_API_URL=https://staging.cms.armada.nu` in `apps/web/.env.local`.
 - Server-side integrations such as Slack webhooks and reCAPTCHA verification live in `actions.ts` files with `"use server"`.
@@ -64,9 +64,9 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 - **SVGs/images:** `apps/web/next.config.mjs` enables SVG component imports (`@svgr/webpack`) and whitelists remote image hosts. `*.svg?url` imports as a static asset URL; bare `*.svg` imports as a React component. Update that file when adding new remote image domains.
 - **Site metadata:** if you add or remove public pages, update `apps/web/src/app/sitemap.ts`.
 - **Server-side actions:** form submissions and external integrations use `actions.ts` files colocated with routes (e.g., `apps/web/src/app/exhibitor/actions.ts`). Pattern: Zod validation → reCAPTCHA verification via `RECAPTCHA_SECRET_KEY` → Slack webhook via `SLACK_*_HOOK_URL`. Follow this pattern when adding form-to-server flows.
-- **Routes:** main sections are `about/` (with `team/`), `blog/`, `exhibitor/` (with `events/`, `packages/`, `signup/`, `timeline/`), and `student/` (with `at-the-fair/`, `events/`, `exhibitors/`, `map/`, `recruitment/`). Legacy paths redirect 301 to these locations.
+- **Routes:** Web sections are `about/` (with `team/`), `blog/`, `exhibitor/` (with `events/`, `packages/`, `signup/`, `timeline/`), and `student/` (with `at-the-fair/`, `events/`, `exhibitors/`, `map/`, `recruitment/`). Photos serves `/`, `/e/[token]` and `/privacy`; Order serves `/`.
 - **Analytics/tracking:** Vercel Analytics (`@vercel/analytics`) and Speed Insights are loaded in the root layout. Use `TrackedLink` from `apps/web/src/components/shared/TrackedLink.tsx` (wraps Next.js `Link` + calls `track()`) for user-interaction tracking. CMS-driven tracking via `HighlightCard.ctaEventName`.
-- **Exhibitor order flow:** `apps/order` serves `/` on `order.armada.nu`. Its proxy sets a host-only cookie, and both the page and action verify access and Stockholm opening times. Preview delivery only uses `SLACK_ORDER_TEST_HOOK_URL`. Old main-site order and photo URLs return 404.
+- **Exhibitor order flow:** `apps/order` serves `/` on `order.armada.nu`. Its proxy sets a host-only cookie, and both the page and action verify access and Stockholm opening times. Preview delivery only uses `SLACK_ORDER_TEST_HOOK_URL`.
 - **URL normalization:** use `normalizeExternalUrl()` from `apps/web/src/lib/externalUrl.ts` when rendering user-supplied URLs (adds `https://` if missing, rejects non-http schemes).
 
 ## UI and styling notes
@@ -139,13 +139,13 @@ instructions in `.github/instructions/mermaid.instructions.md`.
 
 ## Workspace applications
 
-The pnpm workspace contains `apps/web` (main website), `apps/photos` (guest photos), `apps/order` (exhibitor orders), and `packages/shared` (`@armada/shared`). Shared theme tokens, fonts, Page, cn and common UI live in that package; do not duplicate them in apps. Web compatibility re-exports are intentional.
+The pnpm workspace contains `apps/web` (main website), `apps/photos` (guest photos), `apps/order` (exhibitor orders), and `packages/shared` (`@armada/shared`). Shared theme tokens, fonts, Page, cn and common UI live in that package; do not duplicate them in apps. Web re-exports shared primitives from `@armada/shared`.
 
 - `pnpm dev`: Web on 8000; `pnpm dev:photos`: Photos on 8001; `pnpm dev:order`: Order on 8002; `pnpm dev:all`: all three.
 - Each app reads its own `.env.local` and has an `.env.example`. Root environment files are not loaded by workspace apps. Public API origins must be configured for builds too.
 - `pnpm build`, `pnpm lint`, `pnpm type-check`, and `pnpm test` cover the workspace. `pnpm exec vitest run --project unit` runs fast unit tests.
 - Shared Storybook uses aliases `@/*` (Web), `@photos/*` (Photos), and `@order/*` (Order). Run shadcn tooling from the owning app directory.
-- Photos and Order have independent layouts, no main-site CMS layout dependencies, noindex, no-referrer and app-specific telemetry redaction. Web no longer masks retired token routes.
+- Photos and Order have independent layouts, no main-site CMS layout dependencies, noindex, no-referrer and app-specific telemetry redaction.
 - Order fetches dates/exhibitors with no-store; it does not use the Web revalidation webhook. Order actions validate access, dates and catalogue inputs server-side; unlike the Web sales contact form, they do not use reCAPTCHA.
 
-See [the staged migration runbook](../docs/standalone-apps.md) before changing Vercel roots or domains. Root `src/`, `public/` and Next config are a temporary deployment bridge, not the source for new feature work.
+See `README.md` for app domains, environment configuration and deployment ownership. The repository root contains shared development tooling; application code and assets belong in `apps/*` or `packages/shared`.

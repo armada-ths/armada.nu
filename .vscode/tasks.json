@@ -6,6 +6,9 @@
       "type": "shell",
       "command": "pnpm",
       "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/web"
+      },
       "isBackground": true,
       "presentation": {
         "reveal": "always",
@@ -22,8 +25,8 @@
         },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": ".+",
-          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
         }
       },
       "group": {
@@ -37,6 +40,7 @@
       "command": "pnpm",
       "args": ["dev"],
       "options": {
+        "cwd": "${workspaceFolder}/apps/web",
         "env": {
           "NEXT_PUBLIC_API_URL": "https://cms.armada.nu"
         }
@@ -57,8 +61,8 @@
         },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": ".+",
-          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
         }
       }
     },
@@ -68,6 +72,7 @@
       "command": "pnpm",
       "args": ["dev"],
       "options": {
+        "cwd": "${workspaceFolder}/apps/web",
         "env": {
           "NEXT_PUBLIC_API_URL": "http://localhost:8080"
         }
@@ -88,13 +93,289 @@
         },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": ".+",
-          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
         }
       }
     },
     {
-      "label": "Quality: Format Public Site",
+      "label": "Dev: Start Photos (Configured CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/photos"
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
+        }
+      }
+    },
+    {
+      "label": "Dev: Start Photos (Production CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/photos",
+        "env": {
+          "NEXT_PUBLIC_API_URL": "https://cms.armada.nu"
+        }
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
+        }
+      }
+    },
+    {
+      "label": "Dev: Start Photos (Local CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/photos",
+        "env": {
+          "NEXT_PUBLIC_API_URL": "http://localhost:8080"
+        }
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
+        }
+      }
+    },
+    {
+      "label": "Dev: Start Order (Configured CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/order"
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
+        }
+      }
+    },
+    {
+      "label": "Dev: Start Order (Production CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/order",
+        "env": {
+          "NEXT_PUBLIC_API_URL": "https://cms.armada.nu"
+        }
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
+        }
+      }
+    },
+    {
+      "label": "Dev: Start Order (Local CMS)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/order",
+        "env": {
+          "NEXT_PUBLIC_API_URL": "http://localhost:8080"
+        }
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(__never_match_this__)$",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in\\s+"
+        }
+      }
+    },
+    {
+      "label": "Dev: Stop Public Site (Configured CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminatewebConfiguredCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Public Site (Production CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminatewebProductionCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Public Site (Local CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminatewebLocalCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Photos (Configured CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminatephotosConfiguredCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Photos (Production CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminatephotosProductionCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Photos (Local CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminatephotosLocalCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Order (Configured CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminateorderConfiguredCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Order (Production CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminateorderProductionCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Stop Order (Local CMS)",
+      "type": "shell",
+      "command": "echo ${input:terminateorderLocalCMS}",
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Quality: Format Workspace",
       "type": "shell",
       "command": "pnpm",
       "args": ["format"],
@@ -102,10 +383,13 @@
         "reveal": "always",
         "panel": "dedicated"
       },
-      "group": "test"
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     },
     {
-      "label": "Quality: Lint Public Site",
+      "label": "Quality: Lint Workspace",
       "type": "shell",
       "command": "pnpm",
       "args": ["lint"],
@@ -114,10 +398,13 @@
         "panel": "dedicated"
       },
       "problemMatcher": ["$eslint-stylish"],
-      "group": "test"
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     },
     {
-      "label": "Quality: Type-Check Public Site",
+      "label": "Quality: Type-Check Workspace",
       "type": "shell",
       "command": "pnpm",
       "args": ["type-check"],
@@ -126,10 +413,13 @@
         "panel": "dedicated"
       },
       "problemMatcher": ["$tsc"],
-      "group": "test"
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     },
     {
-      "label": "Build: Create Public Site Production Bundle",
+      "label": "Build: Create Workspace Production Bundles",
       "type": "shell",
       "command": "pnpm",
       "args": ["build"],
@@ -137,7 +427,10 @@
         "reveal": "always",
         "panel": "dedicated"
       },
-      "group": "build"
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     },
     {
       "label": "Storybook: Start Component Explorer",
@@ -164,7 +457,10 @@
           "endsPattern": "Local:\\s+(https?://[^\\s]+)"
         }
       },
-      "group": "build"
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     },
     {
       "label": "Storybook: Build Static Component Explorer",
@@ -175,59 +471,66 @@
         "reveal": "always",
         "panel": "dedicated"
       },
-      "group": "build"
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminatewebConfiguredCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Public Site (Configured CMS)"
     },
     {
-      "label": "Dev: Start Photos (Configured CMS)",
-      "type": "shell",
-      "command": "pnpm",
-      "args": ["dev:photos"],
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      },
-      "problemMatcher": {
-        "owner": "custom",
-        "fileLocation": "absolute",
-        "pattern": {
-          "regexp": "^(__never_match_this__)$",
-          "kind": "file",
-          "file": 1,
-          "message": 1
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".+",
-          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
-        }
-      }
+      "id": "terminatewebProductionCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Public Site (Production CMS)"
     },
     {
-      "label": "Dev: Start Order (Configured CMS)",
-      "type": "shell",
-      "command": "pnpm",
-      "args": ["dev:order"],
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      },
-      "problemMatcher": {
-        "owner": "custom",
-        "fileLocation": "absolute",
-        "pattern": {
-          "regexp": "^(__never_match_this__)$",
-          "kind": "file",
-          "file": 1,
-          "message": 1
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".+",
-          "endsPattern": "- Local:\\s+(https?://[^\\s]+)"
-        }
-      }
+      "id": "terminatewebLocalCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Public Site (Local CMS)"
+    },
+    {
+      "id": "terminatephotosConfiguredCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Photos (Configured CMS)"
+    },
+    {
+      "id": "terminatephotosProductionCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Photos (Production CMS)"
+    },
+    {
+      "id": "terminatephotosLocalCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Photos (Local CMS)"
+    },
+    {
+      "id": "terminateorderConfiguredCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Order (Configured CMS)"
+    },
+    {
+      "id": "terminateorderProductionCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Order (Production CMS)"
+    },
+    {
+      "id": "terminateorderLocalCMS",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Dev: Start Order (Local CMS)"
     }
   ]
 }

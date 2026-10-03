@@ -15,9 +15,18 @@ The zone is protected by `prevent_destroy` and `force_destroy = false`.
 
 ## DNS records
 
-`local.dns_records` in `records.tf` is the source of truth for all application
-and email RRsets. Keep one entry per `(name, type)` and group every value for a
-multi-value MX or TXT RRset in that entry.
+`local.dns_records` in `records.tf` combines explicitly configured application
+and email RRsets with the public `vercel_dns_records` output from
+`THS-Armada/armadanu-vercel-prod`, read through `tfe_outputs` in
+`vercel_outputs.tf`. Vercel routing A/CNAME targets are not duplicated here.
+Keep one entry per `(name, type)` and group every value for a multi-value RRset.
+
+Apply the Vercel workspace first to publish the output, then plan/apply this
+workspace. Grant this workspace output-read access in HCP Terraform and ensure
+the tfe provider can authenticate (HCP run credentials, or TFE_TOKEN locally).
+Missing/incomplete output blocks planning rather than deleting existing Vercel
+records. This reads outputs only, not the complete Vercel state. Review changes
+to recommended IPv4 sets as well as CNAME targets before approving DNS apply.
 
 Use fully qualified targets with a trailing dot and correctly quoted TXT data.
 Public verification and DKIM public keys may be committed; private keys and API

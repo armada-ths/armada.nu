@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 7.0"
     }
+    tfe = {
+      source  = "hashicorp/tfe"
+      version = "~> 0.61"
+    }
   }
 }
 

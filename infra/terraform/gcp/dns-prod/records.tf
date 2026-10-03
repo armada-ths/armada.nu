@@ -6,13 +6,7 @@ locals {
   # Keep one entry per (name, type) RRset. Cloud DNS and the Google provider
   # treat each RRset as authoritative, so all values for an MX/TXT/etc. RRset
   # must be kept together.
-  dns_records = {
-    "apex/A" = {
-      name    = var.dns_name
-      type    = "A"
-      ttl     = 300
-      rrdatas = ["216.150.1.1"]
-    }
+  dns_records = merge({
     "apex/MX" = {
       name = var.dns_name
       type = "MX"
@@ -34,48 +28,17 @@ locals {
         "\"v=spf1 include:_spf.google.com ~all\"",
       ]
     }
-    "www/A" = {
-      name    = "www.${var.dns_name}"
-      type    = "A"
-      ttl     = 300
-      rrdatas = ["216.150.1.1"]
-    }
     "cms/A" = {
       name    = "cms.${var.dns_name}"
       type    = "A"
       ttl     = 300
       rrdatas = ["34.54.47.115"]
     }
-    "staging/CNAME" = {
-      name    = "staging.${var.dns_name}"
-      type    = "CNAME"
-      ttl     = 300
-      rrdatas = ["62bb52c3234ea8a7.vercel-dns-016.com."]
-    }
     "staging.cms/CNAME" = {
       name    = "staging.cms.${var.dns_name}"
       type    = "CNAME"
       ttl     = 300
       rrdatas = ["ghs.googlehosted.com."]
-    }
-    # Recommended by Vercel for the standalone projects; production cutover is separate.
-    "staging.photos/CNAME" = {
-      name    = "staging.photos.${var.dns_name}"
-      type    = "CNAME"
-      ttl     = 300
-      rrdatas = ["0ee25f1f8cdb02c1.vercel-dns-016.com."]
-    }
-    "staging.order/CNAME" = {
-      name    = "staging.order.${var.dns_name}"
-      type    = "CNAME"
-      ttl     = 300
-      rrdatas = ["59c8ed543f9f54db.vercel-dns-016.com."]
-    }
-    "photos/CNAME" = {
-      name    = "photos.${var.dns_name}"
-      type    = "CNAME"
-      ttl     = 300
-      rrdatas = ["62bb52c3234ea8a7.vercel-dns-016.com."]
     }
     "banquet/CNAME" = {
       name    = "banquet.${var.dns_name}"
@@ -121,7 +84,7 @@ locals {
       ttl     = 300
       rrdatas = ["links2.resend-dns.com."]
     }
-  }
+  }, data.tfe_outputs.vercel_prod.nonsensitive_values.vercel_dns_records)
 }
 
 resource "google_dns_record_set" "managed" {

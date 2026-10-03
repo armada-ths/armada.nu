@@ -1,5 +1,6 @@
 import { getDefaultFeatureFlags, type FeatureFlagKey } from "@/feature_flags"
 import { MetadataRoute } from "next"
+import { isProductionDeployment } from "@/lib/deployment"
 
 type SitemapEntry = {
   url: string
@@ -9,6 +10,7 @@ type SitemapEntry = {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (!isProductionDeployment()) return []
   const flags = await getDefaultFeatureFlags()
   const lastModified = new Date()
 

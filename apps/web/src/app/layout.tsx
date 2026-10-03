@@ -9,6 +9,7 @@ import { FooterGuard } from "@/components/shared/FooterGuard"
 import { SiteTelemetry } from "@/components/shared/SiteTelemetry"
 import { DevToolbar } from "@/components/shared/VercelToolbar"
 import { HEX_COLORS } from "@/lib/colors"
+import { isProductionDeployment } from "@/lib/deployment"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
 
@@ -21,6 +22,9 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+  robots: isProductionDeployment()
+    ? undefined
+    : { index: false, follow: false },
   metadataBase: new URL("https://armada.nu"),
   icons: {
     icon: [

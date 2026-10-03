@@ -13,9 +13,7 @@ export default [
       "**/.next/**",
       "**/node_modules/**",
       "storybook-static/**",
-      "src/**",
-      "next.config.mjs",
-      "next-env.d.ts"
+      "**/next-env.d.ts"
     ]
   },
   { languageOptions: { globals: globals.browser } },

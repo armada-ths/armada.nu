@@ -1,91 +1,71 @@
-# armada.nu Terraform — Vercel production
+# armada.nu Terraform — Vercel
 
-This Terraform root manages the **Vercel project configuration** for Web, Photos and Order.
+This root manages the Web, Photos and Order Vercel projects, their environment-variable definitions and domain assignments. Deployments are handled by Vercel's GitHub integration. Environment values, automation bypass tokens, GitHub secrets, DNS and domain registration are managed separately.
 
-It does **not** manage deployments — those are triggered automatically by the
-Vercel GitHub integration on every push to `main`.
+## Projects and domains
 
-## What it manages
+| Project         | Root Directory | Production         | Staging branch domain      |
+| --------------- | -------------- | ------------------ | -------------------------- |
+| `armada-nu`     | `apps/web`     | `armada.nu`        | `staging.armada.nu`        |
+| `armada-photos` | `apps/photos`  | `photos.armada.nu` | `staging.photos.armada.nu` |
+| `armada-order`  | `apps/order`   | `order.armada.nu`  | `staging.order.armada.nu`  |
 
-- Vercel project settings (framework, Node version, Git repository, serverless region)
-- Shared and application-specific environment-variable definitions in `env_vars.tf`
+All projects use Next.js, Node 24, `main` as the production branch, Stockholm (`arn1`) for functions and Skip unaffected projects. Workspace source files outside each Root Directory must be included. Each app's `vercel.json` selects its own `pnpm build`.
 
-It does not manage domains, DNS, deployments, GitHub secrets, or environment
-variable values. Vercel-managed system variables are also outside this root.
+`domains.tf` manages ten assignments: the production, staging and generated vercel.app domain for each project, plus `www.armada.nu`. Web's www and all projects' generated domains redirect permanently to their production domains; staging assignments select the `staging` branch.
 
-## Files
+Standard Protection (`standard_protection_new`) makes only production custom domains public. Staging, preview and generated deployment URLs require Vercel Authentication unless an explicit bypass or exception applies. Automation bypass tokens are managed directly in Vercel; the CMS's `VERCEL_AUTOMATION_BYPASS_SECRET` must match the Web project's token.
 
-| File                 | Purpose                                                          |
-| -------------------- | ---------------------------------------------------------------- |
-| `versions.tf`        | Provider version requirements (vercel)                           |
-| `variables.tf`       | Configurable inputs                                              |
-| `projects.tf`        | Web, Photos and Order `vercel_project` resources                 |
-| `env_vars.tf`        | Shared and project-specific environment-variable resources       |
-| `outputs.tf`         | Project ID and name outputs                                      |
-| `imports.tf`         | Existing project and environment-variable imports                |
-| `moved.tf`           | State-address migrations into the shared for_each resources      |
-| `prod.auto.tfvars`   | Committed non-secret production defaults (team ID, project name) |
-| `backend.tf.example` | HCP Terraform backend template                                   |
+## Files and state
 
-## HCP Terraform workspace
+| File                  | Purpose                                             |
+| --------------------- | --------------------------------------------------- |
+| `versions.tf`         | Terraform and Vercel provider requirements          |
+| `.terraform.lock.hcl` | Selected provider versions                          |
+| `variables.tf`        | Configurable inputs                                 |
+| `projects.tf`         | The three `vercel_project.apps` resources           |
+| `env_vars.tf`         | Project-specific and shared environment definitions |
+| `domains.tf`          | Domain assignments and routing data sources         |
+| `outputs.tf`          | Project identifiers and public DNS recommendations  |
+| `prod.auto.tfvars`    | Non-secret defaults                                 |
+| `backend.tf.example`  | HCP Terraform backend template                      |
 
-Workspace: `armadanu-vercel-prod`. Requires one sensitive environment variable:
-`VERCEL_API_TOKEN` — a personal access token from vercel.com/account.
+The HCP workspace is `THS-Armada/armadanu-vercel-prod`. It requires a sensitive `VERCEL_API_TOKEN` environment variable. The provider uses v5; the exact selected version is pinned in `.terraform.lock.hcl`.
 
-## Environment variable values — managed in Vercel, not in Terraform
+## Environment variables
 
-Values for existing env vars are set and rotated in the **Vercel dashboard** (or
-via the Vercel CLI). Terraform does not store or push values.
+Actual values are set and rotated in Vercel, never committed. Both project-specific and shared Terraform resources use `value = ""` and `ignore_changes = [value]`. This preserves values of existing managed variables; it does not configure a valid value for a new variable. Protect Terraform state and API credentials.
 
-The `value = ""` placeholder in each `vercel_project_environment_variable`
-resource satisfies the provider schema. `lifecycle { ignore_changes = [value] }`
-tells Terraform to never plan a change when the in-Vercel value differs from the
-placeholder in config.
+Terraform controls key names, environment targets, sensitivity, project links and project-specific branch scope. Project-local variables take precedence over shared variables; do not duplicate shared API/Corepack keys in `local.app_env`.
 
-Terraform **does** enforce:
-
-- The variable key name
-- Target environments (`production`, `preview`, `development`)
-- Whether the variable is `sensitive`
-
-Any drift on those attributes will surface in `terraform plan`.
-
-## Adding a new environment variable
-
-1. Add the variable in the **Vercel dashboard** with its real value.
-2. Get its ID from the Vercel API or dashboard network tab (or `vercel env ls`).
-3. Add an entry to `local.app_env` in `env_vars.tf` with the owning app, key, targets and sensitivity (and `git_branch` if applicable). Add an `import {}` block targeting `vercel_project_environment_variable.apps["entry_name"]` with the variable ID. The shared resource preserves dashboard values with `ignore_changes = [value]`.
-4. Run `terraform apply` to import it into state, then remove the `import {}` block.
-5. Register the key in the owning app's `src/env.ts` if the app code needs to read it.
-
-## Standalone projects
-
-`projects.tf` defines all three projects, `env_vars.tf` contains their environment-variable definitions, and `outputs.tf` exposes their project identifiers. `imports.tf` adopts the prepared projects and public configuration. The existing armada-nu project ID is preserved. Apply the apps/web Root Directory change only when the workspace commit is available and the staged cutover is ready. See [the rollout runbook](../../../../docs/standalone-apps.md). Secret values and production domain moves remain separate manual steps.
-
-All projects use `vercel_project.apps`. Project-specific variables use `vercel_project_environment_variable.apps`, and shared variables use `vercel_shared_environment_variable.apps`. `moved.tf` migrates the remaining project-specific state addresses without recreating projects or resetting environment values. Existing output names remain compatible; `project_ids` also includes Web.
-
-## Shared environment variables
-
-Three team-level definitions are linked to Web, Photos and Order:
-
-| Key                            | Environments                     | Value managed in Vercel         |
+| Shared key                     | Environments                     | Value configured in Vercel      |
 | ------------------------------ | -------------------------------- | ------------------------------- |
 | `NEXT_PUBLIC_API_URL`          | Production                       | `https://cms.armada.nu`         |
 | `NEXT_PUBLIC_API_URL`          | Preview, Development             | `https://staging.cms.armada.nu` |
 | `ENABLE_EXPERIMENTAL_COREPACK` | Production, Preview, Development | `1`                             |
 
-These shared definitions and their project links were created and verified through the Vercel CLI on 2026-10-03. The ten project-local API/Corepack overrides were then deleted, including Web's staging-branch API override. Previously, Web's generic previews/development used the production API; they now use staging, matching Photos and Order. All unrelated project variables were retained. reCAPTCHA keys and application secrets remain project-specific.
+These definitions link to all three projects. All preview branches use staging; local apps can override the API in their own `.env.local`. Public values must be available at build time. Changes to Vercel environment values require a new deployment to take effect.
 
-The imports in `imports.tf` adopt the three existing shared definitions on the next HCP apply. Import before applying any shared resource with a placeholder value: `ignore_changes` protects imported values, but does not supply a valid value for a newly created variable. `prevent_destroy` guards against accidental deletion of an existing managed shared definition. The first plan may drop stale project-local variable records because those objects have already been removed in Vercel; it must not recreate API/Corepack overrides or reset shared values. Do not apply older configuration that would restore the retired project-local placeholders.
+Web owns sales, reCAPTCHA, Eventro, feature flag and revalidation variables. Photos owns its public reCAPTCHA keys. Order owns production/preview access tokens, the production `SLACK_ORDER_HOOK_URL` and preview-only `SLACK_ORDER_TEST_HOOK_URL`. Order's test delivery never falls back to the production hook.
 
-Project-local variables take precedence over shared values, so do not add duplicate API/Corepack keys to `local.app_env`. All Preview branches use staging; branch-specific shared values are not supported. Each local app's `.env.local` can still override its development API, for example to `http://localhost:8080`. Existing deployments keep their previously captured configuration; the new settings take effect on the next deployment. No deployment was triggered as part of this migration.
+To add a new variable that does not already exist in Vercel:
 
-## Provider v5 and automation bypass
+1. Add its definition to `local.app_env` (or `local.shared_env` for a shared key), with the correct environment scope and sensitivity. Retain `ignore_changes = [value]`.
+2. Review and apply the Terraform plan to create the variable with an empty placeholder value.
+3. Set its real value in the Vercel dashboard before deploying any application that needs it. Never commit or log the value.
+4. Register application keys in the owning app's `src/env.ts`. Framework/tooling keys follow their respective entry points.
+5. Deploy or redeploy the affected applications to use the configured value.
 
-The provider uses v5 with the exact selected version recorded in `.terraform.lock.hcl`. Run `terraform init` after pulling the upgrade. Schema retrieval for an initialized HCP root requires valid HCP authentication (`terraform login`); reload VS Code after refreshing its provider schema if diagnostics are stale.
+If the variable already exists in Vercel, retrieve its ID without logging its value, add its Terraform definition and import it into the corresponding resource instead of creating a duplicate. Review and apply the import plan, then remove the completed import block.
 
-V5 removes `protection_bypass_for_automation` and its secret from the project resource. Existing automation bypass tokens remain managed directly in Vercel; this root does not create, rotate or delete them. The CMS's configured `VERCEL_AUTOMATION_BYPASS_SECRET` must keep matching the existing Web token. Do not create a replacement token as part of this upgrade. If token management is added to Terraform later, import existing tokens into `vercel_project_protection_bypass` rather than generating replacements; import identifiers contain the secret and must never be committed. Review the first HCP plan for project replacements, environment-value changes and unexpected protection changes before applying.
+`ignore_changes = [value]` preserves manually configured values during updates, not creation or replacement. Set the real value again if Terraform recreates a variable. Do not deploy to production while a required variable still has an empty placeholder.
 
-## Removing state migration blocks
+## DNS output and apply order
 
-After a successful apply has migrated every state using this root, `moved.tf` can be removed. Verify that no source addresses listed in its `from` declarations remain (`terraform state list`), then check that removing the file produces no infrastructure changes. A plan alone does not persist these migrations. Keep the file if any workspace or restored older state still needs the upgrade path; retaining the blocks is harmless. The same caution applies when rolling back to older Terraform configuration.
+`vercel_domain_config` retrieves routing recommendations for seven custom domains. `vercel_dns_records` exports stable RRset keys, fully qualified names, TTLs and A/CNAME values to `THS-Armada/armadanu-gcp-dns-prod` through `tfe_outputs`. Generated vercel.app domains do not belong in Cloud DNS.
+
+Apply this workspace before planning/applying DNS. Grant the DNS workspace output-read access in HCP Terraform and configure its tfe provider credentials. DNS reads public outputs, not the complete Vercel state; it needs no Vercel API credential. Review every recommended IPv4 and CNAME change. Domain assignments do not wait for DNS readiness, avoiding a circular dependency.
+
+## Validation and changes
+
+Run `terraform fmt -check`, `terraform validate` and a reviewed HCP plan. Review project replacements, environment definitions and protection settings before approving an apply. Verify DNS/TLS, production responses and staging authentication after domain or protection changes. Do not apply changes directly in Vercel that conflict with Terraform-managed settings.

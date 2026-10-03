@@ -6,6 +6,28 @@ const withVercelToolbar = toolbar()
 const nextConfig = {
   transpilePackages: ["@armada/shared"],
   outputFileTracingRoot: path.resolve(import.meta.dirname, "../.."),
+  async headers() {
+    const stagingHeaders = [
+      { key: "X-Robots-Tag", value: "noindex, nofollow" },
+      { key: "Referrer-Policy", value: "no-referrer" },
+      { key: "X-Content-Type-Options", value: "nosniff" }
+    ]
+    return [
+      // Preview builds also have NODE_ENV=production. VERCEL_ENV identifies
+      // the deployment, and an absent value keeps local/self-hosted builds safe.
+      // eslint-disable-next-line no-undef
+      ...(process.env.VERCEL_ENV !== "production"
+        ? [{ source: "/:path*", headers: stagingHeaders }]
+        : []),
+      // Keep the fixed staging domain non-indexable even if it is accidentally
+      // assigned a production deployment. Do not rely on authentication alone.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "staging\\.armada\\.nu" }],
+        headers: stagingHeaders
+      }
+    ]
+  },
   webpack(config) {
     // Find the existing rule handling SVGs
     const fileLoaderRule = config.module.rules.find(rule =>
