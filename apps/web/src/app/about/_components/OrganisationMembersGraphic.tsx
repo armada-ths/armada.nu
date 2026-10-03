@@ -1,4 +1,3 @@
- 
 "use client"
 import { OrganisationMembersInfo } from "@/app/about/_components/OrganisationMemberInfo"
 import { CircleDashed } from "lucide-react"
