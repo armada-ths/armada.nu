@@ -23,6 +23,8 @@ Set NEXT_PUBLIC_API_URL to https://cms.armada.nu in production and https://stagi
 
 Values are configured directly in Vercel, never committed. Import existing environment-variable IDs into the matching Terraform resources; empty placeholders and ignore_changes preserve dashboard values. Domain associations remain outside Terraform. DNS belongs to the separate Cloud DNS root.
 
+API origins and ENABLE_EXPERIMENTAL_COREPACK are now shared team variables linked to all three projects. Production uses the production CMS; Preview/Development use staging. The shared definitions are prepared in Vercel and imports.tf adopts them into Terraform. Do not recreate the retired project-local API/Corepack variables. See the [Vercel root README](../infra/terraform/vercel/prod/README.md#shared-environment-variables) for the completed migration and apply checks.
+
 ## Phase 1: staging
 
 Preparation completed on 2026-10-03: the two projects exist, their staging branch domains are associated, and API origins, public reCAPTCHA site keys and Corepack settings are configured. `imports.tf` adopts these resources on the next HCP apply. The two staging CNAME records are prepared but not applied. The original Web project/root and production domains are unchanged; no code has been committed, pushed or deployed as part of this preparation.

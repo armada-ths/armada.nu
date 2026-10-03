@@ -10,20 +10,8 @@ import {
   id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz"
 }
 
-import {
-  to = vercel_project_environment_variable.apps["photos_api_production"]
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_NmkiFlsmef0gTtzRmCRzzOc8HCVa/fQ0g0VFIs3Gslc5f"
-}
 
-import {
-  to = vercel_project_environment_variable.apps["photos_api_preview"]
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_NmkiFlsmef0gTtzRmCRzzOc8HCVa/wdimCAhzW9o8PXat"
-}
 
-import {
-  to = vercel_project_environment_variable.apps["photos_corepack"]
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_NmkiFlsmef0gTtzRmCRzzOc8HCVa/1xGLClKhB7sZCs0t"
-}
 
 import {
   to = vercel_project_environment_variable.apps["photos_captcha_production"]
@@ -35,17 +23,20 @@ import {
   id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_NmkiFlsmef0gTtzRmCRzzOc8HCVa/C2o91hX3H90eq3Y3"
 }
 
+
+
+
 import {
-  to = vercel_project_environment_variable.apps["order_api_production"]
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz/RwBdtIdV6IyYDcQ2"
+  to = vercel_shared_environment_variable.apps["api_production"]
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/env_fNYgzCIhVC6GKV9WAV5Ooemt"
 }
 
 import {
-  to = vercel_project_environment_variable.apps["order_api_preview"]
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz/LSm2bj77mnl5Cc2s"
+  to = vercel_shared_environment_variable.apps["api_preview_development"]
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/env_cB6VjGQc1XDaRRqbGeWa86k6"
 }
 
 import {
-  to = vercel_project_environment_variable.apps["order_corepack"]
-  id = "team_btIcmU7B2r6eWM5S61x4wJWM/prj_jojVslRWi91VyCrj8eQYUMkWD2lz/4i7O76DrSygmJTdV"
+  to = vercel_shared_environment_variable.apps["corepack"]
+  id = "team_btIcmU7B2r6eWM5S61x4wJWM/env_s5gpj9QEysbd8Td8XjxYDub1"
 }

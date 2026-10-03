@@ -8,7 +8,7 @@ Vercel GitHub integration on every push to `main`.
 ## What it manages
 
 - Vercel project settings (framework, Node version, Git repository, serverless region)
-- Application-specific project environment-variable definitions in `env_vars.tf`
+- Shared and application-specific environment-variable definitions in `env_vars.tf`
 
 It does not manage domains, DNS, deployments, GitHub secrets, or environment
 variable values. Vercel-managed system variables are also outside this root.
@@ -20,7 +20,7 @@ variable values. Vercel-managed system variables are also outside this root.
 | `versions.tf`        | Provider version requirements (vercel)                           |
 | `variables.tf`       | Configurable inputs                                              |
 | `projects.tf`        | Web, Photos and Order `vercel_project` resources                 |
-| `env_vars.tf`        | `vercel_project_environment_variable` resources                  |
+| `env_vars.tf`        | Shared and project-specific environment-variable resources       |
 | `outputs.tf`         | Project ID and name outputs                                      |
 | `imports.tf`         | Existing project and environment-variable imports                |
 | `moved.tf`           | State-address migrations into the shared for_each resources      |
@@ -62,7 +62,23 @@ Any drift on those attributes will surface in `terraform plan`.
 
 `projects.tf` defines all three projects, `env_vars.tf` contains their environment-variable definitions, and `outputs.tf` exposes their project identifiers. `imports.tf` adopts the prepared projects and public configuration. The existing armada-nu project ID is preserved. Apply the apps/web Root Directory change only when the workspace commit is available and the staged cutover is ready. See [the rollout runbook](../../../../docs/standalone-apps.md). Secret values and production domain moves remain separate manual steps.
 
-All projects use `vercel_project.apps`, and all environment-variable definitions use `vercel_project_environment_variable.apps`. `moved.tf` migrates existing state addresses without recreating projects or resetting environment values. Existing output names remain compatible; `project_ids` also includes Web.
+All projects use `vercel_project.apps`. Project-specific variables use `vercel_project_environment_variable.apps`, and shared variables use `vercel_shared_environment_variable.apps`. `moved.tf` migrates the remaining project-specific state addresses without recreating projects or resetting environment values. Existing output names remain compatible; `project_ids` also includes Web.
+
+## Shared environment variables
+
+Three team-level definitions are linked to Web, Photos and Order:
+
+| Key                            | Environments                     | Value managed in Vercel         |
+| ------------------------------ | -------------------------------- | ------------------------------- |
+| `NEXT_PUBLIC_API_URL`          | Production                       | `https://cms.armada.nu`         |
+| `NEXT_PUBLIC_API_URL`          | Preview, Development             | `https://staging.cms.armada.nu` |
+| `ENABLE_EXPERIMENTAL_COREPACK` | Production, Preview, Development | `1`                             |
+
+These shared definitions and their project links were created and verified through the Vercel CLI on 2026-10-03. The ten project-local API/Corepack overrides were then deleted, including Web's staging-branch API override. Previously, Web's generic previews/development used the production API; they now use staging, matching Photos and Order. All unrelated project variables were retained. reCAPTCHA keys and application secrets remain project-specific.
+
+The imports in `imports.tf` adopt the three existing shared definitions on the next HCP apply. Import before applying any shared resource with a placeholder value: `ignore_changes` protects imported values, but does not supply a valid value for a newly created variable. `prevent_destroy` guards against accidental deletion of an existing managed shared definition. The first plan may drop stale project-local variable records because those objects have already been removed in Vercel; it must not recreate API/Corepack overrides or reset shared values. Do not apply older configuration that would restore the retired project-local placeholders.
+
+Project-local variables take precedence over shared values, so do not add duplicate API/Corepack keys to `local.app_env`. All Preview branches use staging; branch-specific shared values are not supported. Each local app's `.env.local` can still override its development API, for example to `http://localhost:8080`. Existing deployments keep their previously captured configuration; the new settings take effect on the next deployment. No deployment was triggered as part of this migration.
 
 ## Provider v5 and automation bypass
 

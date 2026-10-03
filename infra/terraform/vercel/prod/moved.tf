@@ -15,20 +15,8 @@ moved {
   to   = vercel_project_environment_variable.apps
 }
 
-moved {
-  from = vercel_project_environment_variable.next_public_api_url_staging_branch
-  to   = vercel_project_environment_variable.apps["web_next_public_api_url_staging_branch"]
-}
 
-moved {
-  from = vercel_project_environment_variable.next_public_api_url_production
-  to   = vercel_project_environment_variable.apps["web_next_public_api_url_production"]
-}
 
-moved {
-  from = vercel_project_environment_variable.next_public_api_url_preview_development
-  to   = vercel_project_environment_variable.apps["web_next_public_api_url_preview_development"]
-}
 
 moved {
   from = vercel_project_environment_variable.next_public_recaptcha_site_key_production
@@ -60,10 +48,6 @@ moved {
   to   = vercel_project_environment_variable.apps["web_slack_sales_hook_url_preview_development"]
 }
 
-moved {
-  from = vercel_project_environment_variable.enable_experimental_corepack
-  to   = vercel_project_environment_variable.apps["web_enable_experimental_corepack"]
-}
 
 moved {
   from = vercel_project_environment_variable.flags_secret
