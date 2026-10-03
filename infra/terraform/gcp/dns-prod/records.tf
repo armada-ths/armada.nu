@@ -58,6 +58,19 @@ locals {
       ttl     = 300
       rrdatas = ["ghs.googlehosted.com."]
     }
+    # Recommended by Vercel for the standalone projects; production cutover is separate.
+    "staging.photos/CNAME" = {
+      name    = "staging.photos.${var.dns_name}"
+      type    = "CNAME"
+      ttl     = 300
+      rrdatas = ["0ee25f1f8cdb02c1.vercel-dns-016.com."]
+    }
+    "staging.order/CNAME" = {
+      name    = "staging.order.${var.dns_name}"
+      type    = "CNAME"
+      ttl     = 300
+      rrdatas = ["59c8ed543f9f54db.vercel-dns-016.com."]
+    }
     "photos/CNAME" = {
       name    = "photos.${var.dns_name}"
       type    = "CNAME"

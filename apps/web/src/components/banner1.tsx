@@ -1,0 +1,74 @@
+"use client"
+
+import { X } from "lucide-react"
+import { useState } from "react"
+
+import { TrackingConfig } from "@/components/shared/TrackedLink"
+import { Button } from "@/components/ui/button"
+import { track } from "@vercel/analytics"
+
+interface Banner1Props {
+  title: string
+  description: string
+  linkText: string
+  linkUrl: string
+  defaultVisible?: boolean
+  linkTracking?: TrackingConfig
+}
+
+const Banner1 = ({
+  title = "Version 2.0 is now available!",
+  description = "Read the full release notes",
+  linkText = "here",
+  linkUrl = "#",
+  defaultVisible = true,
+  linkTracking
+}: Banner1Props) => {
+  const [isVisible, setIsVisible] = useState(defaultVisible)
+
+  const handleClose = () => {
+    setIsVisible(false)
+  }
+
+  if (!isVisible) return null
+
+  return (
+    <section className="bg-grapefruit border-licorice -mt-1 w-full border-b px-4 py-3">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex-1 text-center">
+          <span className="text-sm">
+            <span className="font-medium">{title}</span>
+            {""}
+            <span className="text-snow">
+              {description}
+              {""}
+              <a
+                href={linkUrl}
+                className="underline underline-offset-2 hover:text-stone-50"
+                onClick={
+                  linkTracking
+                    ? () =>
+                        track(linkTracking.eventName, linkTracking.eventData)
+                    : undefined
+                }>
+                {linkText}
+              </a>
+              .
+            </span>
+          </span>
+        </div>
+
+        <Button
+          variant="noShadow"
+          size="icon"
+          className="bg-snow -mr-2 h-8 w-8 flex-none"
+          aria-label="Dismiss banner"
+          onClick={handleClose}>
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+    </section>
+  )
+}
+
+export { Banner1 }

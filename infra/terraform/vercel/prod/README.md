@@ -1,6 +1,6 @@
 # armada.nu Terraform — Vercel production
 
-This Terraform root manages the **Vercel project configuration** for `armada.nu`.
+This Terraform root manages the **Vercel project configuration** for Web, Photos and Order.
 
 It does **not** manage deployments — those are triggered automatically by the
 Vercel GitHub integration on every push to `main`.
@@ -54,4 +54,8 @@ Any drift on those attributes will surface in `terraform plan`.
 2. Get its ID from the Vercel API or dashboard network tab (or `vercel env ls`).
 3. Add a `vercel_project_environment_variable` resource in `env_vars.tf` (use `value = ""` + `lifecycle { ignore_changes = [value] }`) and an `import {}` block with the variable ID.
 4. Run `terraform apply` to import it into state, then remove the `import {}` block.
-5. Register the key in `src/env.ts` if the app code needs to read it.
+5. Register the key in the owning app's `src/env.ts` if the app code needs to read it.
+
+## Standalone projects
+
+`apps.tf` defines armada-photos and armada-order, environment metadata and outputs. `imports.tf` adopts the prepared projects and public configuration. The existing armada-nu project ID is preserved. Apply the apps/web Root Directory change only when the workspace commit is available and the staged cutover is ready. See [the rollout runbook](../../../../docs/standalone-apps.md). Secret values and production domain moves remain separate manual steps.

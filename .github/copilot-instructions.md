@@ -11,9 +11,9 @@ See `README.md` for setup and scripts. Do not duplicate ArmadaCMS backend/admin 
 
 This folder is the public website: **Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4**, deployed on Vercel.
 
-- Content comes from **ArmadaCMS** (`NEXT_PUBLIC_API_URL`). Production API: `https://cms.armada.nu`; staging API: `https://staging.cms.armada.nu`. To use the staging backend locally, set `NEXT_PUBLIC_API_URL=https://staging.cms.armada.nu` in `.env.local`.
+- Content comes from **ArmadaCMS** (`NEXT_PUBLIC_API_URL`). Production API: `https://cms.armada.nu`; staging API: `https://staging.cms.armada.nu`. To use the staging backend locally, set `NEXT_PUBLIC_API_URL=https://staging.cms.armada.nu` in `apps/web/.env.local`.
 - Server-side integrations such as Slack webhooks and reCAPTCHA verification live in `actions.ts` files with `"use server"`.
-- Styling and theme tokens are defined in `src/app/globals.css`; there is **no** `tailwind.config.ts`.
+- Shared theme tokens are defined in `packages/shared/src/theme.css`; Web-specific styles live in `apps/web/src/app/globals.css`; there is **no** `tailwind.config.ts`.
 
 ## Build and validation
 
@@ -31,8 +31,8 @@ This folder is the public website: **Next.js 16 App Router + React 19 + TypeScri
 The site uses **ISR + on-demand revalidation** to keep content fresh without full rebuilds:
 
 - **Baseline**: the root layout sets `revalidate: 86400` (24 h). Individual data hooks inherit this.
-- **Cache tags**: every `fetch*()` call in `src/components/shared/hooks/api/` includes a `tags` array (e.g. `tags: ["events"]`). These tags are the revalidation unit.
-- **On-demand purge**: `POST /api/revalidate` (`src/app/api/revalidate/route.ts`) accepts `{ tag, secret }`, validates `REVALIDATION_SECRET`, and calls `revalidateTag(tag, { expire: 0 })`. The CMS fires this automatically after write operations.
+- **Cache tags**: every `fetch*()` call in `apps/web/src/components/shared/hooks/api/` includes a `tags` array (e.g. `tags: ["events"]`). These tags are the revalidation unit.
+- **On-demand purge**: `POST /api/revalidate` (`apps/web/src/app/api/revalidate/route.ts`) accepts `{ tag, secret }`, validates `REVALIDATION_SECRET`, and calls `revalidateTag(tag, { expire: 0 })`. The CMS fires this automatically after write operations.
 - **Tag inventory** (must stay in sync between Next.js hooks and Go controllers):
 
   | Tag               | Next.js hook                         | CMS controller                          |
@@ -53,33 +53,33 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 
 ## Conventions
 
-- **Env vars:** application env vars should be registered in `src/env.ts`. `EXPO_ACCESS_TOKEN` is currently read directly by `src/proxy.ts` and `src/app/exhibitor/order/page.tsx`; framework/tooling variables such as `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` also stay outside the helper. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
-- **Routing/layout:** routes live under `src/app/`. Prefer colocated route-specific components in `_components/`; shared UI belongs in `src/components/ui/` or `src/components/shared/`.
-- **Shared layout primitives:** use `Page.Boundary`, `Page.Header`, and `Page.Background` from `src/components/shared/Page.tsx` for consistent page structure.
-- **Data fetching:** API hooks in `src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components. Each hook sets `next: { revalidate: 86400, tags: ["<tag>"] }` for ISR and on-demand revalidation (see _Cache revalidation_ above). Hooks accept an `options?: RequestInit` parameter that allows callers to merge or override `next` settings.
-- **Client-side state:** React Query (`@tanstack/react-query`) is configured in `src/app/providers.tsx` with `staleTime: 60_000` (1 min). Client-side `use*()` hooks wrap the server-side `fetch*()` in `useQuery`.
-- **Feature flags:** definitions live in `src/feature_flags.ts`; read flags with `await feature("FLAG_NAME")` from `src/components/shared/feature.ts`. Defined flags: `EVENT_PAGE`, `MAP_PAGE`, `AT_FAIR_PAGE`, `EXHIBITOR_PACKAGES`, `EXHIBITOR_EVENTS`, `EXHIBITOR_PAGE`, `STUDENT_RECRUITMENT_PAGE`, `EXHIBITOR_MAIN_PAGE`, `EXHIBITOR_TIMELINE_PAGE`, `EXHIBITOR_SIGNUP_PAGE`, `ABOUT_PAGE`, `ABOUT_TEAM_PAGE`, `ARMADA_BLOG_PAGE`. Flag overrides come from Vercel flag cookies (`vercel-flag-overrides`). `FLAGS_SECRET` is required for Vercel's flag evaluation infrastructure (managed in Vercel dashboard, not `src/env.ts`). All flags default to `true` if the CMS fetch fails.
-- **Sitemap and flags:** `src/app/sitemap.ts` conditionally includes routes based on their feature flag — if a flag is `false`, the route is omitted from the sitemap.
-- **Dates/times:** use Luxon helpers from `src/lib/utils.ts`; event times are normalized to `Europe/Stockholm`.
-- **SVGs/images:** `next.config.mjs` enables SVG component imports (`@svgr/webpack`) and whitelists remote image hosts. `*.svg?url` imports as a static asset URL; bare `*.svg` imports as a React component. Update that file when adding new remote image domains.
-- **Site metadata:** if you add or remove public pages, update `src/app/sitemap.ts`.
-- **Server-side actions:** form submissions and external integrations use `actions.ts` files colocated with routes (e.g., `src/app/exhibitor/actions.ts`). Pattern: Zod validation → reCAPTCHA verification via `RECAPTCHA_SECRET_KEY` → Slack webhook via `SLACK_*_HOOK_URL`. Follow this pattern when adding form-to-server flows.
-- **Routes:** main sections are `about/` (with `team/`), `blog/`, `exhibitor/` (with `events/`, `order/`, `packages/`, `signup/`, `timeline/`), and `student/` (with `at-the-fair/`, `events/`, `exhibitors/`, `map/`, `recruitment/`). Legacy paths redirect 301 to these locations.
-- **Analytics/tracking:** Vercel Analytics (`@vercel/analytics`) and Speed Insights are loaded in the root layout. Use `TrackedLink` from `src/components/shared/TrackedLink.tsx` (wraps Next.js `Link` + calls `track()`) for user-interaction tracking. CMS-driven tracking via `HighlightCard.ctaEventName`.
-- **Exhibitor order flow:** the `/exhibitor/order/*` route is gated by `src/proxy.ts` — a cookie-based access check using `EXPO_ACCESS_TOKEN`. See that file for details.
-- **URL normalization:** use `normalizeExternalUrl()` from `src/lib/externalUrl.ts` when rendering user-supplied URLs (adds `https://` if missing, rejects non-http schemes).
+- **Env vars:** application env vars should be registered in the owning app's `src/env.ts`. `EXPO_ACCESS_TOKEN` is read by the Order app and its proxy; framework/tooling variables such as `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` also stay outside the helper. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
+- **Routing/layout:** routes live under `apps/web/src/app/`. Prefer colocated route-specific components in `_components/`; shared UI belongs in `apps/web/src/components/ui/` or `apps/web/src/components/shared/`.
+- **Shared layout primitives:** use `Page.Boundary`, `Page.Header`, and `Page.Background` from `@armada/shared/Page` for consistent page structure.
+- **Data fetching:** API hooks in `apps/web/src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components. Each hook sets `next: { revalidate: 86400, tags: ["<tag>"] }` for ISR and on-demand revalidation (see _Cache revalidation_ above). Hooks accept an `options?: RequestInit` parameter that allows callers to merge or override `next` settings.
+- **Client-side state:** React Query (`@tanstack/react-query`) is configured in `apps/web/src/app/providers.tsx` with `staleTime: 60_000` (1 min). Client-side `use*()` hooks wrap the server-side `fetch*()` in `useQuery`.
+- **Feature flags:** definitions live in `apps/web/src/feature_flags.ts`; read flags with `await feature("FLAG_NAME")` from `apps/web/src/components/shared/feature.ts`. Defined flags: `EVENT_PAGE`, `MAP_PAGE`, `AT_FAIR_PAGE`, `EXHIBITOR_PACKAGES`, `EXHIBITOR_EVENTS`, `EXHIBITOR_PAGE`, `STUDENT_RECRUITMENT_PAGE`, `EXHIBITOR_MAIN_PAGE`, `EXHIBITOR_TIMELINE_PAGE`, `EXHIBITOR_SIGNUP_PAGE`, `ABOUT_PAGE`, `ABOUT_TEAM_PAGE`, `ARMADA_BLOG_PAGE`. Flag overrides come from Vercel flag cookies (`vercel-flag-overrides`). `FLAGS_SECRET` is required for Vercel's flag evaluation infrastructure (managed in Vercel dashboard, not `apps/web/src/env.ts`). All flags default to `true` if the CMS fetch fails.
+- **Sitemap and flags:** `apps/web/src/app/sitemap.ts` conditionally includes routes based on their feature flag — if a flag is `false`, the route is omitted from the sitemap.
+- **Dates/times:** use Luxon helpers from `apps/web/src/lib/utils.ts`; event times are normalized to `Europe/Stockholm`.
+- **SVGs/images:** `apps/web/next.config.mjs` enables SVG component imports (`@svgr/webpack`) and whitelists remote image hosts. `*.svg?url` imports as a static asset URL; bare `*.svg` imports as a React component. Update that file when adding new remote image domains.
+- **Site metadata:** if you add or remove public pages, update `apps/web/src/app/sitemap.ts`.
+- **Server-side actions:** form submissions and external integrations use `actions.ts` files colocated with routes (e.g., `apps/web/src/app/exhibitor/actions.ts`). Pattern: Zod validation → reCAPTCHA verification via `RECAPTCHA_SECRET_KEY` → Slack webhook via `SLACK_*_HOOK_URL`. Follow this pattern when adding form-to-server flows.
+- **Routes:** main sections are `about/` (with `team/`), `blog/`, `exhibitor/` (with `events/`, `packages/`, `signup/`, `timeline/`), and `student/` (with `at-the-fair/`, `events/`, `exhibitors/`, `map/`, `recruitment/`). Legacy paths redirect 301 to these locations.
+- **Analytics/tracking:** Vercel Analytics (`@vercel/analytics`) and Speed Insights are loaded in the root layout. Use `TrackedLink` from `apps/web/src/components/shared/TrackedLink.tsx` (wraps Next.js `Link` + calls `track()`) for user-interaction tracking. CMS-driven tracking via `HighlightCard.ctaEventName`.
+- **Exhibitor order flow:** `apps/order` serves `/` on `order.armada.nu`. Its proxy sets a host-only cookie, and both the page and action verify access and Stockholm opening times. Preview delivery only uses `SLACK_ORDER_TEST_HOOK_URL`. Old main-site order and photo URLs return 404.
+- **URL normalization:** use `normalizeExternalUrl()` from `apps/web/src/lib/externalUrl.ts` when rendering user-supplied URLs (adds `https://` if missing, rejects non-http schemes).
 
 ## UI and styling notes
 
-- Tailwind v4 uses a **CSS-first** setup in `src/app/globals.css`.
+- Tailwind v4 uses a **CSS-first** setup in `apps/web/src/app/globals.css`.
 - Brand tokens are defined with `@theme`; prefer classes such as `text-melon`, `bg-coconut`, and `text-licorice` over ad hoc colors.
 - Color values are intentionally split across **two files that must stay in sync**:
-  - `src/app/globals.css` — CSS/Tailwind theme tokens (`--color-*`) used by utility classes and CSS variables.
-  - `src/lib/colors.ts` — shared TypeScript runtime hex constants (`HEX_COLORS`, `COUNTDOWN_CONFETTI_COLORS`) for JS/TS contexts (SVG props, scripts, metadata/manifest values, etc.).
+  - `packages/shared/src/theme.css` — CSS/Tailwind theme tokens (`--color-*`) used by utility classes and CSS variables.
+  - `packages/shared/src/colors.ts` — shared TypeScript runtime hex constants (`HEX_COLORS`, `COUNTDOWN_CONFETTI_COLORS`) for JS/TS contexts (SVG props, scripts, metadata/manifest values, etc.).
 - If you add or change a brand color value, update both files in the same change and keep naming aligned (for example `--color-grapefruit` ↔ `HEX_COLORS.grapefruit`).
-- Avoid introducing raw hex literals directly in `src/**/*.{ts,tsx,js,jsx}`; define/reuse entries in `src/lib/colors.ts` instead.
-- Fonts are defined in `src/app/layout.tsx` and `src/app/globals.css`; use the existing font utility classes (`font-bebas-neue`, `font-lato`, `font-inter`).
-- `shadcn/ui` is configured via `components.json`, with utilities such as `cn()` in `src/lib/utils.ts`. Reuse the existing primitives and surrounding Tailwind patterns for UI work.
+- Avoid introducing raw hex literals directly in `apps/web/src/**/*.{ts,tsx,js,jsx}`; define/reuse entries in `packages/shared/src/colors.ts` instead.
+- Fonts are defined in `packages/shared/src/fonts.ts` and `packages/shared/src/theme.css`; use the existing font utility classes (`font-bebas-neue`, `font-lato`, `font-inter`).
+- `shadcn/ui` is configured via `apps/web/components.json`, with utilities such as `cn()` in `apps/web/src/lib/utils.ts`. Reuse the existing primitives and surrounding Tailwind patterns for UI work.
 
 ## Storybook and Chromatic
 
@@ -136,3 +136,16 @@ When the user asks to create, edit, or visualize a diagram, follow the
 instructions in `.github/instructions/mermaid.instructions.md`.
 
 <!-- mermaid-ai-skills:end -->
+
+## Workspace applications
+
+The pnpm workspace contains `apps/web` (main website), `apps/photos` (guest photos), `apps/order` (exhibitor orders), and `packages/shared` (`@armada/shared`). Shared theme tokens, fonts, Page, cn and common UI live in that package; do not duplicate them in apps. Web compatibility re-exports are intentional.
+
+- `pnpm dev`: Web on 8000; `pnpm dev:photos`: Photos on 8001; `pnpm dev:order`: Order on 8002; `pnpm dev:all`: all three.
+- Each app reads its own `.env.local` and has an `.env.example`. Root environment files are not loaded by workspace apps. Public API origins must be configured for builds too.
+- `pnpm build`, `pnpm lint`, `pnpm type-check`, and `pnpm test` cover the workspace. `pnpm exec vitest run --project unit` runs fast unit tests.
+- Shared Storybook uses aliases `@/*` (Web), `@photos/*` (Photos), and `@order/*` (Order). Run shadcn tooling from the owning app directory.
+- Photos and Order have independent layouts, no main-site CMS layout dependencies, noindex, no-referrer and app-specific telemetry redaction. Web no longer masks retired token routes.
+- Order fetches dates/exhibitors with no-store; it does not use the Web revalidation webhook. Order actions validate access, dates and catalogue inputs server-side; unlike the Web sales contact form, they do not use reCAPTCHA.
+
+See [the staged migration runbook](../docs/standalone-apps.md) before changing Vercel roots or domains. Root `src/`, `public/` and Next config are a temporary deployment bridge, not the source for new feature work.

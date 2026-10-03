@@ -2,8 +2,10 @@ resource "vercel_project" "armada_nu" {
   name    = var.vercel_project_name
   team_id = var.vercel_team_id
 
-  framework    = "nextjs"
-  node_version = "24.x"
+  framework                            = "nextjs"
+  node_version                         = "24.x"
+  root_directory                       = "apps/web"
+  enable_affected_projects_deployments = true
 
   git_repository = {
     type              = "github"
