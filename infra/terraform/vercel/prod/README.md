@@ -9,8 +9,9 @@ Vercel GitHub integration on every push to `main`.
 
 - Vercel project settings (framework, Node version, Git repository, serverless region)
 - Shared and application-specific environment-variable definitions in `env_vars.tf`
+- All Web, Photos and Order domain assignments in `domains.tf`, including staging branches and default vercel.app domains
 
-It does not manage domains, DNS, deployments, GitHub secrets, or environment
+It does not manage domain registration, DNS, deployments, GitHub secrets, or environment
 variable values. Vercel-managed system variables are also outside this root.
 
 ## Files
@@ -21,8 +22,9 @@ variable values. Vercel-managed system variables are also outside this root.
 | `variables.tf`       | Configurable inputs                                              |
 | `projects.tf`        | Web, Photos and Order `vercel_project` resources                 |
 | `env_vars.tf`        | Shared and project-specific environment-variable resources       |
+| `domains.tf`         | All project domain assignments, branch links and redirects       |
 | `outputs.tf`         | Project ID and name outputs                                      |
-| `imports.tf`         | Existing project and environment-variable imports                |
+| `imports.tf`         | Existing project, domain and environment-variable imports        |
 | `moved.tf`           | State-address migrations into the shared for_each resources      |
 | `prod.auto.tfvars`   | Committed non-secret production defaults (team ID, project name) |
 | `backend.tf.example` | HCP Terraform backend template                                   |
@@ -60,7 +62,13 @@ Any drift on those attributes will surface in `terraform plan`.
 
 ## Standalone projects
 
-`projects.tf` defines all three projects, `env_vars.tf` contains their environment-variable definitions, and `outputs.tf` exposes their project identifiers. `imports.tf` adopts the prepared projects and public configuration. The existing armada-nu project ID is preserved. Apply the apps/web Root Directory change only when the workspace commit is available and the staged cutover is ready. See [the rollout runbook](../../../../docs/standalone-apps.md). Secret values and production domain moves remain separate manual steps.
+`projects.tf` defines all three projects, `env_vars.tf` contains their environment-variable definitions, and `outputs.tf` exposes their project identifiers. `imports.tf` adopts the prepared resources. The existing armada-nu project ID is preserved. Apply the apps/web Root Directory change only when the workspace commit is available and the staged cutover is ready. See [the rollout runbook](../../../../docs/standalone-apps.md). Secret values remain managed directly in Vercel. `domains.tf` manages all ten project domain assignments, with imports for existing assignments, staging branch links and redirects. DNS remains in the separate Cloud DNS root. All three projects use standard_protection_new; production custom domains remain public, while custom staging domains are also excluded from Vercel Authentication under this mode.
+
+## DNS output and apply order
+
+The vercel_domain_config data source retrieves current recommended routing records for all seven custom domains. The public vercel_dns_records output supplies stable RRset keys, fully qualified names, TTLs and A/CNAME values to armadanu-gcp-dns-prod through tfe_outputs; the generated vercel.app domains do not belong in Cloud DNS. No Vercel API credential is needed in the DNS workspace, and DNS does not read the complete Vercel state.
+
+Apply this workspace first to publish the output, then plan and apply the DNS workspace. Grant the DNS workspace read access to this workspace's outputs in HCP Terraform and ensure its tfe provider authentication can read them. Review DNS changes: recommended A records may contain more addresses than the previous hardcoded record. The domain resources intentionally do not wait for DNS readiness, avoiding a circular dependency. Existing resource keys and routing types are preserved; no other DNS records are moved into the Vercel root.
 
 All projects use `vercel_project.apps`. Project-specific variables use `vercel_project_environment_variable.apps`, and shared variables use `vercel_shared_environment_variable.apps`. `moved.tf` migrates the remaining project-specific state addresses without recreating projects or resetting environment values. Existing output names remain compatible; `project_ids` also includes Web.
 

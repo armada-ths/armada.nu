@@ -3,7 +3,7 @@ locals {
     web = {
       name                                              = var.vercel_project_name
       automatically_expose_system_environment_variables = null
-      vercel_authentication                             = null
+      vercel_authentication                             = { deployment_type = "standard_protection_new" }
     }
     photos = {
       name                                              = "armada-photos"

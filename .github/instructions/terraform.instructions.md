@@ -21,9 +21,10 @@ and must never be added to the Vercel state.
 
 - Vercel project settings (`projects.tf`): framework, Node version, Git repository, serverless region, skew protection
 - Shared API/Corepack and application-specific environment-variable definitions (`env_vars.tf`)
+- All three projects' production, staging and default vercel.app domain assignments (`domains.tf`); import existing assignments before apply and preserve branch/redirect settings.
 
 It does **not** manage deployments — those are triggered by the Vercel GitHub integration on every push to `main`.
-It also does not manage domains, DNS, GitHub secrets, Vercel-managed system variables, or environment-variable values.
+It does not manage DNS, domain registration, GitHub secrets, Vercel-managed system variables, or environment-variable values.
 
 ## Cloud DNS root
 
@@ -38,6 +39,7 @@ DNSSEC records.
   Websupport and must remain synchronized with Google Cloud DNS.
 - Add or change application and email records only in `local.dns_records`, with
   one entry per `(name, type)` RRset and all values grouped in that entry.
+- Vercel routing records are merged from `vercel_dns_records` in the Vercel workspace through `tfe_outputs`; do not duplicate their A/CNAME targets. Apply Vercel first, then DNS, with output-read access granted in HCP Terraform. Domain registration and non-Vercel records remain independent.
 - Verify every DNS change directly against all four authoritative name servers
   and through multiple validating public resolvers after apply.
 - Never change delegation while a DS record for a different provider or key is
