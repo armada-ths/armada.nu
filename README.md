@@ -2,7 +2,9 @@
 
 [![Checks](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml)
 [![Chromatic](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml)
-[![Production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production?label=production&logo=vercel)](https://github.com/armada-ths/armada.nu/deployments/Production)
+[![Web production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-nu?label=web%20production&logo=vercel)](https://vercel.com/thsarmada/armada-nu/deployments)
+[![Photos production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-photos?label=photos%20production&logo=vercel)](https://vercel.com/thsarmada/armada-photos/deployments)
+[![Order production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-order?label=order%20production&logo=vercel)](https://vercel.com/thsarmada/armada-order/deployments)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Farmada.nu&label=armada.nu)](https://armada.nu)
 [![Last commit](https://img.shields.io/github/last-commit/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/commits)
 [![Open issues](https://img.shields.io/github/issues/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/issues)
