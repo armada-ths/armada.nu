@@ -19,9 +19,11 @@ variable values. Vercel-managed system variables are also outside this root.
 | -------------------- | ---------------------------------------------------------------- |
 | `versions.tf`        | Provider version requirements (vercel)                           |
 | `variables.tf`       | Configurable inputs                                              |
-| `project.tf`         | `vercel_project` resource                                        |
+| `projects.tf`        | Web, Photos and Order `vercel_project` resources                 |
 | `env_vars.tf`        | `vercel_project_environment_variable` resources                  |
 | `outputs.tf`         | Project ID and name outputs                                      |
+| `imports.tf`         | Existing project and environment-variable imports                |
+| `moved.tf`           | State-address migrations into the shared for_each resources      |
 | `prod.auto.tfvars`   | Committed non-secret production defaults (team ID, project name) |
 | `backend.tf.example` | HCP Terraform backend template                                   |
 
@@ -52,10 +54,22 @@ Any drift on those attributes will surface in `terraform plan`.
 
 1. Add the variable in the **Vercel dashboard** with its real value.
 2. Get its ID from the Vercel API or dashboard network tab (or `vercel env ls`).
-3. Add a `vercel_project_environment_variable` resource in `env_vars.tf` (use `value = ""` + `lifecycle { ignore_changes = [value] }`) and an `import {}` block with the variable ID.
+3. Add an entry to `local.app_env` in `env_vars.tf` with the owning app, key, targets and sensitivity (and `git_branch` if applicable). Add an `import {}` block targeting `vercel_project_environment_variable.apps["entry_name"]` with the variable ID. The shared resource preserves dashboard values with `ignore_changes = [value]`.
 4. Run `terraform apply` to import it into state, then remove the `import {}` block.
 5. Register the key in the owning app's `src/env.ts` if the app code needs to read it.
 
 ## Standalone projects
 
-`apps.tf` defines armada-photos and armada-order, environment metadata and outputs. `imports.tf` adopts the prepared projects and public configuration. The existing armada-nu project ID is preserved. Apply the apps/web Root Directory change only when the workspace commit is available and the staged cutover is ready. See [the rollout runbook](../../../../docs/standalone-apps.md). Secret values and production domain moves remain separate manual steps.
+`projects.tf` defines all three projects, `env_vars.tf` contains their environment-variable definitions, and `outputs.tf` exposes their project identifiers. `imports.tf` adopts the prepared projects and public configuration. The existing armada-nu project ID is preserved. Apply the apps/web Root Directory change only when the workspace commit is available and the staged cutover is ready. See [the rollout runbook](../../../../docs/standalone-apps.md). Secret values and production domain moves remain separate manual steps.
+
+All projects use `vercel_project.apps`, and all environment-variable definitions use `vercel_project_environment_variable.apps`. `moved.tf` migrates existing state addresses without recreating projects or resetting environment values. Existing output names remain compatible; `project_ids` also includes Web.
+
+## Provider v5 and automation bypass
+
+The provider uses v5 with the exact selected version recorded in `.terraform.lock.hcl`. Run `terraform init` after pulling the upgrade. Schema retrieval for an initialized HCP root requires valid HCP authentication (`terraform login`); reload VS Code after refreshing its provider schema if diagnostics are stale.
+
+V5 removes `protection_bypass_for_automation` and its secret from the project resource. Existing automation bypass tokens remain managed directly in Vercel; this root does not create, rotate or delete them. The CMS's configured `VERCEL_AUTOMATION_BYPASS_SECRET` must keep matching the existing Web token. Do not create a replacement token as part of this upgrade. If token management is added to Terraform later, import existing tokens into `vercel_project_protection_bypass` rather than generating replacements; import identifiers contain the secret and must never be committed. Review the first HCP plan for project replacements, environment-value changes and unexpected protection changes before applying.
+
+## Removing state migration blocks
+
+After a successful apply has migrated every state using this root, `moved.tf` can be removed. Verify that no source addresses listed in its `from` declarations remain (`terraform state list`), then check that removing the file produces no infrastructure changes. A plan alone does not persist these migrations. Keep the file if any workspace or restored older state still needs the upgrade path; retaining the blocks is harmless. The same caution applies when rolling back to older Terraform configuration.

@@ -169,7 +169,7 @@ CI is handled by GitHub Actions and CD by Vercel's GitHub integration.
 
 Repository checks live in `.github/workflows/`:
 
-- `ci.yml` — checks lint, types, formatting, unit/Storybook tests and a build matrix for all three apps on main/staging pushes and pull requests.
+- `ci.yml` — checks lint, types, formatting and unit tests on main/staging pushes and pull requests. Application builds run in Vercel deployments.
 - `chromatic.yml` — runs on every push; builds Storybook and uploads it to Chromatic for visual regression testing. PRs get a Chromatic status check with visual diffs. `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret — do not commit it to the repo. The `autoAcceptChanges: main` option auto-approves baseline updates on the `main` branch.
 
 Both workflows cancel superseded runs for the same branch or pull request and use

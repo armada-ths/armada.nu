@@ -28,25 +28,6 @@ jobs:
       # Chromatic runs Storybook interaction and visual tests as a separate check.
       - run: pnpm exec vitest run --project unit
 
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
-        app: [web, photos, order]
-    env:
-      NEXT_PUBLIC_API_URL: https://staging.cms.armada.nu
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @armada/${{ matrix.app }} build
-
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 10

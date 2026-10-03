@@ -19,7 +19,7 @@ and must never be added to the Vercel state.
 
 ## Vercel root
 
-- Vercel project settings (`project.tf`): framework, Node version, Git repository, serverless region, skew protection
+- Vercel project settings (`projects.tf`): framework, Node version, Git repository, serverless region, skew protection
 - Application-specific project environment-variable definitions (`env_vars.tf`)
 
 It does **not** manage deployments — those are triggered by the Vercel GitHub integration on every push to `main`.
@@ -57,7 +57,7 @@ Local commands that are always safe: `terraform validate`, `terraform fmt`, `ter
 
 Values for `vercel_project_environment_variable` resources are **managed in the Vercel dashboard**, not in Terraform.
 
-- Every resource uses `value = ""` as a placeholder.
+- The shared `vercel_project_environment_variable.apps` resource uses `value = ""` as a placeholder.
 - `lifecycle { ignore_changes = [value] }` ensures Terraform never overwrites a value set in Vercel.
 - Terraform **does** enforce: key name, target environments, branch scope, and `sensitive` flag. Drift on those will appear in `terraform plan`.
 
@@ -67,24 +67,13 @@ Values for `vercel_project_environment_variable` resources are **managed in the 
 
 1. Add the variable in the **Vercel dashboard** with its real value.
 2. Get its ID from the Vercel API or Vercel dashboard network tab (`vercel env ls` also works).
-3. Add a `vercel_project_environment_variable` resource in `env_vars.tf`:
+3. Add an entry to `local.app_env` in `env_vars.tf`:
 
    ```hcl
-   resource "vercel_project_environment_variable" "my_var" {
-     project_id = local.project_id
-     team_id    = local.team_id
-     key        = "MY_VAR"
-     value      = "" # Managed in Vercel dashboard.
-     target     = ["production"]
-     sensitive  = true
-
-     lifecycle {
-      ignore_changes = [value]
-     }
-   }
+   web_my_var = { app = "web", key = "MY_VAR", target = ["production"], sensitive = true }
    ```
 
-4. Add an `import {}` block with the variable ID, run `terraform apply` to import, then remove the block.
+4. Add an `import {}` block targeting `vercel_project_environment_variable.apps["web_my_var"]` with the variable ID, run `terraform apply` to import, then remove the block. The shared resource keeps `ignore_changes = [value]`.
 5. Register the key in `src/env.ts` if the app code needs to read it.
 
 ## Vercel workspace setup (first-time / CI)
