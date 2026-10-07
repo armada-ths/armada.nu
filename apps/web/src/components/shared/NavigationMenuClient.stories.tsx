@@ -56,7 +56,8 @@ export const AllSectionsEnabled: Story = {
       name: "For Students"
     })
 
-    await userEvent.click(trigger)
+    trigger.focus()
+    await userEvent.keyboard("{Enter}")
 
     await expect(
       canvas.getByText("Look at the companies attending the fair")
@@ -67,7 +68,6 @@ export const AllSectionsEnabled: Story = {
       )
     ).toBeInTheDocument()
 
-    await userEvent.unhover(trigger)
     await userEvent.keyboard("{ArrowDown}")
     await expect(
       canvas.getByRole("link", { name: /^Exhibitors/ })
@@ -86,7 +86,13 @@ export const AllSectionsEnabled: Story = {
     await expect(trigger).toHaveFocus()
     await expect(trigger).toHaveAttribute("aria-expanded", "false")
     await userEvent.keyboard("{Enter}")
+
+    // Verify the snapshot state outlasts Radix's 150 ms close timer.
+    await new Promise(resolve => setTimeout(resolve, 250))
     await expect(trigger).toHaveAttribute("aria-expanded", "true")
+    await expect(
+      canvas.getByRole("link", { name: /^Exhibitors/ })
+    ).toBeVisible()
   }
 }
 
