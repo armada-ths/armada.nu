@@ -5,11 +5,13 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type ChangeEvent
 } from "react"
 import Script from "next/script"
 import { X } from "lucide-react"
 import { shouldSkipPhotoRecaptcha } from "@photos/lib/photoRecaptcha"
+import { isMobilePhotoDevice } from "@photos/lib/photoDevice"
 import { env } from "@photos/env"
 
 type EventInfo = {
@@ -56,6 +58,11 @@ const api = env.NEXT_PUBLIC_API_URL
 const siteKey = env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 const skipLocalRecaptcha = shouldSkipPhotoRecaptcha(api, process.env.NODE_ENV)
 
+// Device information is constant for this page; SSR must not access navigator.
+const subscribeToDevice = () => () => {}
+const getMobileDeviceSnapshot = () => isMobilePhotoDevice(navigator)
+const getServerDeviceSnapshot = () => false
+
 function guestID() {
   const key = "armada-photo-guest"
   let value = localStorage.getItem(key)
@@ -89,6 +96,11 @@ export function PhotoExperience({
   token: string
   getVerificationToken?: () => Promise<string>
 }) {
+  const mobileDevice = useSyncExternalStore(
+    subscribeToDevice,
+    getMobileDeviceSnapshot,
+    getServerDeviceSnapshot
+  )
   const [info, setInfo] = useState<EventInfo | null>(null)
   const [tab, setTab] = useState<"upload" | "gallery">("upload")
   const [uploads, setUploads] = useState<Upload[]>([])
@@ -392,6 +404,7 @@ export function PhotoExperience({
   )
 
   const drain = useCallback(() => {
+    if (!mobileDevice) return
     while (active.current < 2) {
       const item = uploadsRef.current.find(
         candidate => candidate.state === "queued"
@@ -407,12 +420,12 @@ export function PhotoExperience({
       )
       void uploadOne(item)
     }
-  }, [updateUploads, uploadOne])
+  }, [mobileDevice, updateUploads, uploadOne])
 
   const onCameraPhoto = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0]
     event.currentTarget.value = ""
-    if (!file) return
+    if (!file || !mobileDevice) return
     if (
       (file.type && !file.type.startsWith("image/")) ||
       file.size > 25 * 1024 * 1024
@@ -449,6 +462,7 @@ export function PhotoExperience({
     const staged = stagedPhotosRef.current
     if (
       staged.length === 0 ||
+      !mobileDevice ||
       !confirmed ||
       !info?.uploads_open ||
       staged.length > info.remaining
@@ -515,7 +529,7 @@ export function PhotoExperience({
 
   return (
     <main className="mx-auto min-h-screen max-w-5xl px-4 py-8 sm:px-8">
-      {siteKey && !skipLocalRecaptcha && (
+      {mobileDevice && siteKey && !skipLocalRecaptcha && (
         <Script
           src={`https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`}
           strategy="afterInteractive"
@@ -546,7 +560,16 @@ export function PhotoExperience({
           Gallery
         </button>
       </nav>
-      {tab === "upload" ? (
+      {tab === "upload" && !mobileDevice ? (
+        <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm">
+          <h2 className="text-2xl font-bold">Upload from your phone</h2>
+          <p className="mt-2">
+            Photo uploads are only available on mobile devices. Open this event
+            link on your phone or tablet to take and upload photos.
+          </p>
+          <p className="mt-2">You can still view the gallery on this device.</p>
+        </section>
+      ) : tab === "upload" ? (
         <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-bold">Share your photos</h2>
           <p className="mt-2">
