@@ -102,7 +102,7 @@ export function PostImageCarousel({
             {selected + 1} / {images.length}
           </div>
           <div
-            className="absolute right-16 bottom-3 left-3 overflow-x-auto sm:hidden"
+            className="absolute right-14 bottom-0 left-2 overflow-x-auto sm:hidden"
             role="group"
             aria-label="Choose photo">
             <div className="flex w-max min-w-full justify-center">
@@ -112,7 +112,7 @@ export function PostImageCarousel({
                   type="button"
                   variant="noShadow"
                   size="icon"
-                  className="size-11 shrink-0 cursor-pointer rounded-full border-0 bg-transparent"
+                  className="h-11 w-8 shrink-0 cursor-pointer items-end rounded-full border-0 bg-transparent pb-2"
                   aria-label={`Go to photo ${index + 1} of ${images.length}`}
                   aria-current={index === selected ? "true" : undefined}
                   disabled={!api}
@@ -122,7 +122,7 @@ export function PostImageCarousel({
                   }}>
                   <span
                     aria-hidden="true"
-                    className={`size-2 rounded-full shadow-sm transition-colors motion-reduce:transition-none ${index === selected ? "bg-snow" : "bg-snow/50"}`}
+                    className={`size-1.5 rounded-full shadow-sm transition-colors motion-reduce:transition-none ${index === selected ? "bg-snow" : "bg-snow/50"}`}
                   />
                 </Button>
               ))}
@@ -134,7 +134,7 @@ export function PostImageCarousel({
               variant="noShadow"
               size="icon"
               data-rotation-control
-              className={`${controlClassName} absolute right-3 bottom-3`}
+              className={`${controlClassName} absolute right-1 bottom-1 before:inset-2 sm:right-3 sm:bottom-3 sm:before:inset-1 [&_svg]:size-3.5 sm:[&_svg]:size-4`}
               aria-label={paused ? "Play slideshow" : "Pause slideshow"}
               onClick={() => setPaused(value => !value)}>
               {paused ? (
