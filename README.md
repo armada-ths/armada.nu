@@ -186,6 +186,8 @@ CI is handled by GitHub Actions and CD by Vercel's GitHub integration.
 
 ### GitHub Actions (CI)
 
+CodeQL uses the checked-in Advanced setup workflow in `.github/workflows/codeql.yml`. It analyzes Actions and JavaScript/TypeScript, on pull requests to `main`/`staging` (including Dependabot), pushes to those branches, a weekly schedule, and manual dispatch. The query suite remains the CodeQL default. Actions are SHA-pinned; analysis has only source-read and security-event-upload permissions. Dependabot and fork uploads use GitHub's `pull_request` support.
+
 Repository checks live in `.github/workflows/`:
 
 - `ci.yml` — checks lint, types, formatting and unit tests on main/staging pushes and pull requests. Application builds run in Vercel deployments.
