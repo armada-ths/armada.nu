@@ -67,7 +67,26 @@ export const AllSectionsEnabled: Story = {
       )
     ).toBeInTheDocument()
 
-    await userEvent.click(trigger)
+    await userEvent.unhover(trigger)
+    await userEvent.keyboard("{ArrowDown}")
+    await expect(
+      canvas.getByRole("link", { name: /^Exhibitors/ })
+    ).toHaveFocus()
+    await userEvent.keyboard("{ArrowDown}")
+    await expect(canvas.getByRole("link", { name: /^Events/ })).toHaveFocus()
+    await userEvent.keyboard("{ArrowUp}")
+    await expect(
+      canvas.getByRole("link", { name: /^Exhibitors/ })
+    ).toHaveFocus()
+    await userEvent.keyboard("{End}")
+    await expect(
+      canvas.getByRole("link", { name: /^At the Fair/ })
+    ).toHaveFocus()
+    await userEvent.keyboard("{Escape}")
+    await expect(trigger).toHaveFocus()
+    await expect(trigger).toHaveAttribute("aria-expanded", "false")
+    await userEvent.keyboard("{Enter}")
+    await expect(trigger).toHaveAttribute("aria-expanded", "true")
   }
 }
 
@@ -83,7 +102,9 @@ export const WithComingSoonItem: Story = {
     await userEvent.click(trigger)
 
     await expect(canvas.getByText(COMING_SOON_TEXT)).toBeInTheDocument()
-
-    await userEvent.click(trigger)
+    await expect(
+      canvas.queryByRole("link", { name: /^Map/ })
+    ).not.toBeInTheDocument()
+    await expect(trigger).toHaveAttribute("aria-expanded", "true")
   }
 }

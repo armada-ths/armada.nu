@@ -2,6 +2,9 @@
 
 import { track } from "@vercel/analytics"
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
+import type { ComponentPropsWithRef } from "react"
+
+import { cn } from "@/lib/utils"
 
 import { TrackingConfig } from "@/components/shared/TrackedLink"
 import {
@@ -222,11 +225,15 @@ const renderMenuItem = (item: MenuItem) => {
           {item.title}
         </NavigationMenuTrigger>
         <NavigationMenuContent className="bg-snow">
-          {item.items.map(subItem => (
-            <NavigationMenuLink asChild key={subItem.title} className="w-80">
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
-          ))}
+          {item.items.map(subItem =>
+            subItem.disabled ? (
+              <SubMenuLink key={subItem.title} item={subItem} />
+            ) : (
+              <NavigationMenuLink asChild key={subItem.title} className="w-80">
+                <SubMenuLink item={subItem} />
+              </NavigationMenuLink>
+            )
+          )}
         </NavigationMenuContent>
       </NavigationMenuItem>
     )
@@ -288,7 +295,12 @@ const renderMobileMenuItem = (item: MenuItem) => {
   )
 }
 
-const SubMenuLink = ({ item }: { item: MenuItem }) => {
+const SubMenuLink = ({
+  item,
+  className,
+  onClick,
+  ...props
+}: ComponentPropsWithRef<"a"> & { item: MenuItem }) => {
   const content = (
     <>
       <div className="text-licorice">{item.icon}</div>
@@ -315,13 +327,18 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
 
   return (
     <a
-      className="rounded-base border-licorice flex max-w-fit flex-row gap-4 p-3 leading-none no-underline outline-hidden transition-colors select-none hover:border-2 sm:min-w-80"
+      {...props}
+      className={cn(
+        className,
+        "rounded-base border-licorice flex max-w-fit flex-row gap-4 space-y-0 p-3 leading-none no-underline outline-hidden transition-colors select-none hover:border-2 sm:min-w-80"
+      )}
       href={item.url}
-      onClick={
-        item.tracking
-          ? () => track(item.tracking!.eventName, item.tracking!.eventData)
-          : undefined
-      }>
+      onClick={event => {
+        onClick?.(event)
+        if (!event.defaultPrevented && item.tracking) {
+          track(item.tracking.eventName, item.tracking.eventData)
+        }
+      }}>
       {content}
     </a>
   )
