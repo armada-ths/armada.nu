@@ -102,7 +102,7 @@ export function PostImageCarousel({
             {selected + 1} / {images.length}
           </div>
           <div
-            className="absolute right-14 bottom-0 left-2 overflow-x-auto sm:hidden"
+            className="absolute right-14 bottom-0 left-14 overflow-x-auto sm:hidden"
             role="group"
             aria-label="Choose photo">
             <div className="flex w-max min-w-full justify-center">

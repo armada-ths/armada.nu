@@ -97,6 +97,17 @@ export const Mobile: Story = {
     await expect(
       canvas.queryByRole("button", { name: "Next slide" })
     ).not.toBeInTheDocument()
+    const imageBounds = canvas.getByRole("region").getBoundingClientRect()
+    const dotBounds = canvas
+      .getByRole("group", { name: "Choose photo" })
+      .getBoundingClientRect()
+    await expect(
+      Math.abs(
+        dotBounds.left +
+          dotBounds.width / 2 -
+          (imageBounds.left + imageBounds.width / 2)
+      )
+    ).toBeLessThan(1)
     const third = canvas.getByRole("button", { name: "Go to photo 3 of 3" })
     await waitFor(() => expect(third).toBeEnabled())
     for (const dot of canvas.getAllByRole("button", { name: /Go to photo/ })) {
