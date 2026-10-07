@@ -85,7 +85,49 @@ export const SingleImage: Story = {
 }
 
 export const Mobile: Story = {
-  globals: { viewport: { value: "mobile", isRotated: false } }
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  parameters: {
+    viewport: {
+      options: {
+        mobile: { name: "Mobile", styles: { width: "375px", height: "812px" } }
+      }
+    }
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.queryByRole("button", { name: "Next slide" })
+    ).not.toBeInTheDocument()
+    const imageBounds = canvas.getByRole("region").getBoundingClientRect()
+    const dotBounds = canvas
+      .getByRole("group", { name: "Choose photo" })
+      .getBoundingClientRect()
+    await expect(
+      Math.abs(
+        dotBounds.left +
+          dotBounds.width / 2 -
+          (imageBounds.left + imageBounds.width / 2)
+      )
+    ).toBeLessThan(1)
+    const third = canvas.getByRole("button", { name: "Go to photo 3 of 3" })
+    await waitFor(() => expect(third).toBeEnabled())
+    for (const dot of canvas.getAllByRole("button", { name: /Go to photo/ })) {
+      await expect(dot.getBoundingClientRect().width).toBe(32)
+      await expect(dot.getBoundingClientRect().height).toBe(44)
+      await expect(
+        dot.querySelector("span")?.getBoundingClientRect().width
+      ).toBe(6)
+    }
+    const pause = canvas.getByRole("button", { name: "Pause slideshow" })
+    await expect(getComputedStyle(pause, "::before").width).toBe("28px")
+    await userEvent.click(third)
+    await waitFor(() => expect(third).toHaveAttribute("aria-current", "true"))
+    await expect(
+      canvas.getByRole("button", { name: "Play slideshow" })
+    ).toBeVisible()
+    await expect(
+      canvas.getByRole("img", { name: "A day at Armada — photo 3" })
+    ).toBeVisible()
+  }
 }
 
 export const ControlAppearance: Story = {

@@ -90,12 +90,43 @@ export function PostImageCarousel({
       </CarouselContent>
       {images.length > 1 && (
         <>
-          <CarouselPrevious className={`${controlClassName} left-3`} />
-          <CarouselNext className={`${controlClassName} right-3`} />
+          <CarouselPrevious
+            className={`${controlClassName} left-3 hidden sm:inline-flex`}
+          />
+          <CarouselNext
+            className={`${controlClassName} right-3 hidden sm:inline-flex`}
+          />
           <div
-            className="bg-licorice/50 text-snow absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-sm"
+            className="bg-licorice/50 text-snow absolute bottom-3 left-1/2 hidden -translate-x-1/2 rounded-full px-3 py-1 text-sm sm:block"
             aria-hidden="true">
             {selected + 1} / {images.length}
+          </div>
+          <div
+            className="absolute right-14 bottom-0 left-14 overflow-x-auto sm:hidden"
+            role="group"
+            aria-label="Choose photo">
+            <div className="flex w-max min-w-full justify-center">
+              {images.map((_, index) => (
+                <Button
+                  key={index}
+                  type="button"
+                  variant="noShadow"
+                  size="icon"
+                  className="h-11 w-8 shrink-0 cursor-pointer items-end rounded-full border-0 bg-transparent pb-2"
+                  aria-label={`Go to photo ${index + 1} of ${images.length}`}
+                  aria-current={index === selected ? "true" : undefined}
+                  disabled={!api}
+                  onClick={() => {
+                    setPaused(true)
+                    api?.scrollTo(index)
+                  }}>
+                  <span
+                    aria-hidden="true"
+                    className={`size-1.5 rounded-full shadow-sm transition-colors motion-reduce:transition-none ${index === selected ? "bg-snow" : "bg-snow/50"}`}
+                  />
+                </Button>
+              ))}
+            </div>
           </div>
           {!reducedMotion && (
             <Button
@@ -103,7 +134,7 @@ export function PostImageCarousel({
               variant="noShadow"
               size="icon"
               data-rotation-control
-              className={`${controlClassName} absolute right-3 bottom-3`}
+              className={`${controlClassName} absolute right-1 bottom-1 before:inset-2 sm:right-3 sm:bottom-3 sm:before:inset-1 [&_svg]:size-3.5 sm:[&_svg]:size-4`}
               aria-label={paused ? "Play slideshow" : "Pause slideshow"}
               onClick={() => setPaused(value => !value)}>
               {paused ? (
