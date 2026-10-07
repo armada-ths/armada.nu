@@ -180,6 +180,8 @@ Each app has its own `src/app`, `src/env.ts`, `public`, Next config and TypeScri
 
 ## CI / CD
 
+GitHub Actions are pinned to full commit SHAs with version comments. Dependabot checks for version updates every Monday at 08:00 Europe/Stockholm, covering GitHub Actions, pnpm dependencies, and Terraform providers. Minor and patch updates are grouped per ecosystem; major updates remain separate PRs and all updates use the existing review and CI requirements. See [the Dependabot configuration](.github/dependabot.yml).
+
 CI is handled by GitHub Actions and CD by Vercel's GitHub integration.
 
 ### GitHub Actions (CI)
