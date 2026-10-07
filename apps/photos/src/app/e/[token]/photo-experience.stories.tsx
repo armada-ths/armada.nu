@@ -38,11 +38,43 @@ const meta = {
     token: "storybook-event",
     getVerificationToken: fn(async () => "storybook-verification-token")
   },
-  beforeEach: () => {
+  parameters: { photoDevice: "mobile" },
+  beforeEach: ({ parameters }) => {
+    const deviceProperties = ["userAgent", "maxTouchPoints", "userAgentData"]
+    const originalDevice = deviceProperties.map(
+      key => [key, Object.getOwnPropertyDescriptor(navigator, key)] as const
+    )
+    const desktop = parameters.photoDevice === "desktop"
+    const ipad = parameters.photoDevice === "ipad"
+    Object.defineProperties(navigator, {
+      userAgent: {
+        configurable: true,
+        value: desktop
+          ? "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+          : ipad
+            ? "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+            : "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)"
+      },
+      maxTouchPoints: { configurable: true, value: desktop ? 0 : 5 },
+      userAgentData: { configurable: true, value: undefined }
+    })
     const originalFetch = globalThis.fetch
     globalThis.fetch = fn(async input => {
       const data = String(input).includes("/gallery")
-        ? { items: [], next_cursor: "" }
+        ? {
+            items: parameters.galleryPhoto
+              ? [
+                  {
+                    id: 1,
+                    url: "/icons/armada-icon.svg",
+                    width: 64,
+                    height: 64,
+                    approved_at: "2026-10-07T12:00:00Z"
+                  }
+                ]
+              : [],
+            next_cursor: ""
+          }
         : {
             name: "Banquet test event",
             description: "Guest photos",
@@ -54,6 +86,10 @@ const meta = {
     }) as typeof fetch
     return () => {
       globalThis.fetch = originalFetch
+      for (const [key, descriptor] of originalDevice) {
+        if (descriptor) Object.defineProperty(navigator, key, descriptor)
+        else Reflect.deleteProperty(navigator, key)
+      }
     }
   }
 } satisfies Meta<typeof PhotoExperience>
@@ -199,5 +235,61 @@ export const EmptyGallery: Story = {
     await canvas.findByRole("heading", { name: "Banquet test event" })
     await userEvent.click(canvas.getByRole("button", { name: "Gallery" }))
     await expect(canvas.getByText(/no photos/i)).toBeInTheDocument()
+  }
+}
+
+export const DesktopUploadBlocked: Story = {
+  parameters: { photoDevice: "desktop" },
+  play: async ({ canvas, args }) => {
+    await expect(
+      await canvas.findByRole("heading", { name: "Upload from your phone" })
+    ).toBeInTheDocument()
+    await expect(
+      canvas.getByText(/only available on mobile devices/)
+    ).toBeInTheDocument()
+    await expect(canvas.queryByRole("checkbox")).not.toBeInTheDocument()
+    await expect(
+      canvas.queryByLabelText("Take photo with camera")
+    ).not.toBeInTheDocument()
+    await expect(
+      canvas.queryByRole("button", { name: "Open camera" })
+    ).not.toBeInTheDocument()
+    await userEvent.click(canvas.getByRole("button", { name: "Gallery" }))
+    await expect(canvas.getByText(/no photos/i)).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole("button", { name: "Upload" }))
+    await expect(
+      canvas.getByRole("heading", { name: "Upload from your phone" })
+    ).toBeInTheDocument()
+    await expect(args.getVerificationToken).not.toHaveBeenCalled()
+  }
+}
+
+export const DesktopGallery: Story = {
+  parameters: { photoDevice: "desktop", galleryPhoto: true },
+  play: async ({ canvas }) => {
+    await canvas.findByRole("heading", { name: "Banquet test event" })
+    await userEvent.click(canvas.getByRole("button", { name: "Gallery" }))
+    const photo = await canvas.findByAltText("Photo 1 from Banquet test event")
+    await userEvent.click(photo)
+    await expect(
+      canvas.getByRole("dialog", { name: "Photo viewer" })
+    ).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole("button", { name: "Slideshow" }))
+    await expect(
+      canvas.getByRole("button", { name: "Pause" })
+    ).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole("button", { name: "Close" }))
+    await expect(canvas.queryByRole("dialog")).not.toBeInTheDocument()
+  }
+}
+
+export const IPadUploadReady: Story = {
+  parameters: { photoDevice: "ipad" },
+  play: async ({ canvas }) => {
+    await canvas.findByRole("heading", { name: "Share your photos" })
+    await userEvent.click(canvas.getByRole("checkbox"))
+    await expect(
+      canvas.getByRole("button", { name: "Open camera" })
+    ).toBeEnabled()
   }
 }
