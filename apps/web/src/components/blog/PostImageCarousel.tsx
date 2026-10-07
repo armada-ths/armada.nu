@@ -90,12 +90,43 @@ export function PostImageCarousel({
       </CarouselContent>
       {images.length > 1 && (
         <>
-          <CarouselPrevious className={`${controlClassName} left-3`} />
-          <CarouselNext className={`${controlClassName} right-3`} />
+          <CarouselPrevious
+            className={`${controlClassName} left-3 hidden sm:inline-flex`}
+          />
+          <CarouselNext
+            className={`${controlClassName} right-3 hidden sm:inline-flex`}
+          />
           <div
-            className="bg-licorice/50 text-snow absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-sm"
+            className="bg-licorice/50 text-snow absolute bottom-3 left-1/2 hidden -translate-x-1/2 rounded-full px-3 py-1 text-sm sm:block"
             aria-hidden="true">
             {selected + 1} / {images.length}
+          </div>
+          <div
+            className="absolute right-16 bottom-3 left-3 overflow-x-auto sm:hidden"
+            role="group"
+            aria-label="Choose photo">
+            <div className="flex w-max min-w-full justify-center">
+              {images.map((_, index) => (
+                <Button
+                  key={index}
+                  type="button"
+                  variant="noShadow"
+                  size="icon"
+                  className="size-11 shrink-0 cursor-pointer rounded-full border-0 bg-transparent"
+                  aria-label={`Go to photo ${index + 1} of ${images.length}`}
+                  aria-current={index === selected ? "true" : undefined}
+                  disabled={!api}
+                  onClick={() => {
+                    setPaused(true)
+                    api?.scrollTo(index)
+                  }}>
+                  <span
+                    aria-hidden="true"
+                    className={`size-2 rounded-full shadow-sm transition-colors motion-reduce:transition-none ${index === selected ? "bg-snow" : "bg-snow/50"}`}
+                  />
+                </Button>
+              ))}
+            </div>
           </div>
           {!reducedMotion && (
             <Button
