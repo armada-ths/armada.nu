@@ -52,25 +52,36 @@ function EntryBody({ body }: { body: string }) {
 function EntryDesktop({
   entry,
   side,
-  isLast = false
+  isLast = false,
+  isBeforeLastRight = false
 }: {
   entry: TimelineEntry
   side: "left" | "right"
   isLast?: boolean
+  isBeforeLastRight?: boolean
 }) {
   const isLeft = side === "left"
   // Center dot
   const centerDot = (
-    <div className="bg-melon border-licorice absolute top-2 left-1/2 z-10 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
-      <div className="bg-licorice h-2 w-2 rounded-full" />
+    <div className="bg-melon border-licorice absolute top-2 left-1/2 z-10 h-5 w-5 -translate-x-1/2 rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
+      <div className="bg-licorice absolute inset-0 m-auto h-2 w-2 rounded-full" />
     </div>
   )
+
+  // The last-right entry is pulled up 128 px (-mt-32) so the preceding entry's
+  // line must stop 110 px (128 − 18) short of its own bottom to land exactly
+  // on the last dot centre (top-2 + half of h-5 = 18 px into that entry).
+  const lineClass = isLast
+    ? "top-0 h-[18px]"
+    : isBeforeLastRight
+      ? "top-0 h-[calc(100%_-_110px)]"
+      : "top-0 bottom-0"
 
   return (
     <div className={`relative flex flex-row pb-4 ${!isLeft ? "-mt-32" : ""}`}>
       {/* Center line */}
       <div
-        className={`bg-licorice absolute left-1/2 w-0.5 -translate-x-1/2 ${isLast ? "top-0 h-[18px]" : "top-0 bottom-0"}`}
+        className={`bg-licorice absolute left-1/2 w-0.5 -translate-x-1/2 ${lineClass}`}
       />
       {!isLeft && <div className="w-1/2" />}
       {!isLeft && centerDot}
@@ -153,8 +164,8 @@ function EntryMobile({
         <div className={`bg-licorice absolute left-2 w-0.5 ${lineClass}`} />
       )}
       {/* Dot */}
-      <div className="bg-melon border-licorice absolute top-4 left-0 z-10 flex h-5 w-5 -translate-x-[0.125rem] items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
-        <div className="bg-licorice h-2 w-2 rounded-full" />
+      <div className="bg-melon border-licorice absolute top-4 left-0 z-10 h-5 w-5 -translate-x-[0.125rem] rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
+        <div className="bg-licorice absolute inset-0 m-auto h-2 w-2 rounded-full" />
       </div>
       {entry.imageUrl ? (
         <>
@@ -232,12 +243,19 @@ export function HistoryTimeline({ eras }: HistoryTimelineProps) {
             {era.entries.map((entry, index) => {
               const isLastEntry =
                 eraIndex === lastEraIndex && index === era.entries.length - 1
+              // True when this entry precedes a right (odd-index) last entry,
+              // so its center line must be shortened to not overrun the last dot.
+              const isBeforeLastRight =
+                eraIndex === lastEraIndex &&
+                index === era.entries.length - 2 &&
+                era.entries.length % 2 === 0
               return (
                 <EntryDesktop
                   key={entry.id}
                   entry={entry}
                   side={index % 2 === 0 ? "left" : "right"}
                   isLast={isLastEntry}
+                  isBeforeLastRight={isBeforeLastRight}
                 />
               )
             })}
