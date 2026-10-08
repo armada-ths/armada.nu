@@ -1,0 +1,189 @@
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+
+@font-face {
+  font-family: "Bebas Neue Book";
+  src: url("/fonts/BebasNeue-Book.otf") format("opentype");
+  font-display: swap;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Bebas Neue Bold";
+  src: url("/fonts/BebasNeue-Bold.otf") format("opentype");
+  font-display: swap;
+  font-weight: 700;
+}
+
+:root {
+  /* Backgrounds */
+  --background: var(--color-coconut);
+  --secondary-background: oklch(100% 0 0);
+  --foreground: oklch(0% 0 0);
+  /* Snow */
+
+  /* Text / Foreground */
+  --foreground: var(--color-licorice);
+  /* Licorice */
+  --main-foreground: var(--color-licorice);
+  /* Licorice */
+
+  /* Primary Brand Color (Melon) */
+  --main: var(--color-melon);
+
+  /* Borders, rings, shadows */
+  --border: var(--color-licorice);
+  --ring: var(--color-licorice);
+  --overlay: color-mix(in srgb, var(--color-licorice) 80%, transparent);
+  --shadow: 4px 4px 0px 0px var(--border);
+
+  /* Charts mapped to brand palette */
+  --chart-1: var(--color-melon);
+  /* Melon */
+  --chart-2: var(--color-grapefruit);
+  /* Grape/Grapefruit */
+  --chart-3: var(--color-licorice);
+  /* Licorice */
+  --chart-4: var(--color-pineapple);
+  /* Pineapple */
+  --chart-5: var(--color-coconut);
+  /* Coconut (light) */
+
+  /* Active Dot */
+  --chart-active-dot: var(--color-licorice);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+
+  @media (width >=--theme(--breakpoint-xs)) {
+    max-width: none;
+  }
+
+  @media (width >=1400px) {
+    max-width: 1400px;
+  }
+}
+
+@theme inline {
+  --color-main: var(--main);
+  --color-background: var(--background);
+  --color-secondary-background: var(--secondary-background);
+  --color-foreground: var(--foreground);
+  --color-main-foreground: var(--main-foreground);
+  --color-border: var(--border);
+  --color-overlay: var(--overlay);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --spacing-boxShadowX: 4px;
+  --spacing-boxShadowY: 4px;
+  --spacing-reverseBoxShadowX: -4px;
+  --spacing-reverseBoxShadowY: -4px;
+  --radius-base: 5px;
+  --shadow-shadow: var(--shadow);
+  --font-weight-base: 500;
+  --font-weight-heading: 700;
+}
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-xs: 470px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --color-melon: #48bc8e;
+  --color-grapefruit: #e73953;
+  --color-licorice: #2d2d2c;
+  --color-coconut: #fff0d9;
+  --color-snow: #ffffff;
+  --color-pineapple: #f7b519;
+  --color-bronze: #cd7f32;
+  --color-silver: #99a1af;
+
+  --font-bebas-neue: var(--font-bebas-neue);
+  --font-lato: "Lato", sans-serif;
+  --font-inter: var(--font-inter);
+  --font-bebas-book: "Bebas Neue Book", sans-serif;
+  --font-bebas-bold: "Bebas Neue Bold", sans-serif;
+
+  --font-sans: "Lato", sans-serif;
+
+  --animate-aurora: aurora 60s linear infinite;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-scroll: scroll 30s linear infinite;
+  --animate-scroll-reverse: scroll-reverse 30s linear infinite;
+
+  --container-sm: 640px;
+
+  @keyframes aurora {
+    from {
+      background-position:
+        50% 50%,
+        50% 50%;
+    }
+
+    to {
+      background-position:
+        350% 50%,
+        350% 50%;
+    }
+  }
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes scroll-reverse {
+    0% {
+      transform: translateX(-50%);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}

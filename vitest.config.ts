@@ -14,8 +14,26 @@ const dirname =
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@": path.join(dirname, "apps/web/src"),
+      "@photos": path.join(dirname, "apps/photos/src"),
+      "@order": path.join(dirname, "apps/order/src")
+    }
+  },
   test: {
     projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          environment: "node",
+          include: [
+            "apps/*/src/lib/**/*.test.ts",
+            "packages/*/src/**/*.test.ts"
+          ]
+        }
+      },
       {
         extends: true,
         plugins: [
@@ -25,6 +43,8 @@ export default defineConfig({
         ],
         test: {
           name: "storybook",
+          // Allow interaction stories to observe a full slideshow interval.
+          testTimeout: 15000,
           browser: {
             enabled: true,
             headless: true,

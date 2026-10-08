@@ -2,20 +2,85 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Frontend (Prod CMS)",
+      "name": "Dev: Open Public Site (Starts Server with Configured CMS)",
       "type": "editor-browser",
       "request": "launch",
       "url": "http://localhost:8000",
-      "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "dev (Prod CMS)"
+      "webRoot": "${workspaceFolder}/apps/web",
+      "preLaunchTask": "Dev: Start Public Site (Configured CMS)",
+      "postDebugTask": "Dev: Stop Public Site (Configured CMS)"
     },
     {
-      "name": "Frontend (Local CMS)",
+      "name": "Dev: Open Public Site (Starts Server with Production CMS)",
       "type": "editor-browser",
       "request": "launch",
       "url": "http://localhost:8000",
-      "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "dev (Local CMS)"
+      "webRoot": "${workspaceFolder}/apps/web",
+      "preLaunchTask": "Dev: Start Public Site (Production CMS)",
+      "postDebugTask": "Dev: Stop Public Site (Production CMS)"
+    },
+    {
+      "name": "Dev: Open Public Site (Starts Server with Local CMS)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}/apps/web",
+      "preLaunchTask": "Dev: Start Public Site (Local CMS)",
+      "postDebugTask": "Dev: Stop Public Site (Local CMS)"
+    },
+    {
+      "name": "Dev: Open Photos (Starts Server with Configured CMS)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8001",
+      "webRoot": "${workspaceFolder}/apps/photos",
+      "preLaunchTask": "Dev: Start Photos (Configured CMS)",
+      "postDebugTask": "Dev: Stop Photos (Configured CMS)"
+    },
+    {
+      "name": "Dev: Open Photos (Starts Server with Production CMS)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8001",
+      "webRoot": "${workspaceFolder}/apps/photos",
+      "preLaunchTask": "Dev: Start Photos (Production CMS)",
+      "postDebugTask": "Dev: Stop Photos (Production CMS)"
+    },
+    {
+      "name": "Dev: Open Photos (Starts Server with Local CMS)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8001",
+      "webRoot": "${workspaceFolder}/apps/photos",
+      "preLaunchTask": "Dev: Start Photos (Local CMS)",
+      "postDebugTask": "Dev: Stop Photos (Local CMS)"
+    },
+    {
+      "name": "Dev: Open Order (Starts Server with Configured CMS)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8002",
+      "webRoot": "${workspaceFolder}/apps/order",
+      "preLaunchTask": "Dev: Start Order (Configured CMS)",
+      "postDebugTask": "Dev: Stop Order (Configured CMS)"
+    },
+    {
+      "name": "Dev: Open Order (Starts Server with Production CMS)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8002",
+      "webRoot": "${workspaceFolder}/apps/order",
+      "preLaunchTask": "Dev: Start Order (Production CMS)",
+      "postDebugTask": "Dev: Stop Order (Production CMS)"
+    },
+    {
+      "name": "Dev: Open Order (Starts Server with Local CMS)",
+      "type": "editor-browser",
+      "request": "launch",
+      "url": "http://localhost:8002",
+      "webRoot": "${workspaceFolder}/apps/order",
+      "preLaunchTask": "Dev: Start Order (Local CMS)",
+      "postDebugTask": "Dev: Stop Order (Local CMS)"
     }
   ]
 }

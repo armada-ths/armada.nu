@@ -1,7 +1,7 @@
 import type { Preview } from "@storybook/nextjs-vite"
 import { sb } from "storybook/test"
 
-import "../src/app/globals.css"
+import "./styles.css"
 
 sb.mock(import("@vercel/analytics"), { spy: true })
 
@@ -23,7 +23,7 @@ const preview: Preview = {
 
     // Viewport presets matching the site's Tailwind breakpoints
     viewport: {
-      viewports: {
+      options: {
         mobile: {
           name: "Mobile (390px)",
           styles: { width: "390px", height: "844px" }
