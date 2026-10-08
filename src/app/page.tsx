@@ -76,7 +76,10 @@ export default async function HomePage() {
             loop
             muted
             playsInline>
-            <source src="/videos/hero-background.mp4" type="video/mp4" />
+            <source
+              src="https://rsdjnixgxqauonaofrwr.supabase.co/storage/v1/object/public/armada.nu-files/Timelapse%20-%2024fps%20-%20Full%20Resolution.mp4"
+              type="video/mp4"
+            />
           </video>
           <div className="bg-coconut/50 absolute inset-0 -z-10" />
           <RecruitmentBanner />
