@@ -8,6 +8,7 @@ export type TimelineEntry = {
   eraId: number
   eraTitle: string
   sortOrder: number
+  imageUrl?: string | null
 }
 
 export async function fetchTimelineEntries(): Promise<TimelineEntry[]> {

@@ -80,19 +80,48 @@ function EntryDesktop({
           className={`border-melon absolute top-[18px] w-full border-t-2 border-dashed ${isLeft ? "right-0" : "left-0"}`}
         />
         <div className={`relative mt-[25px] ${isLeft ? "mr-12" : "ml-12"}`}>
-          {/* Title badge */}
-          <div className="relative z-10 -mb-3 flex justify-center">
-            <div
-              role="heading"
-              aria-level={3}
-              className={`shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice max-w-full rounded border-2 py-3 text-center text-3xl ${isLeft ? "px-10" : "px-5"}`}>
-              {entry.title}
-            </div>
-          </div>
-          {/* Info box */}
-          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-6 pb-5 text-base">
-            <EntryBody body={entry.body} />
-          </div>
+          {entry.imageUrl ? (
+            <>
+              {/* Image with badge absolutely positioned at its bottom edge */}
+              <div className="relative">
+                <div className="border-licorice overflow-hidden rounded-t border-2 border-b-0">
+                  <img
+                    src={entry.imageUrl}
+                    alt=""
+                    className="h-44 w-full object-cover"
+                  />
+                </div>
+                <div className="absolute right-0 bottom-0 left-0 z-10 flex translate-y-1/2 justify-center">
+                  <div
+                    role="heading"
+                    aria-level={3}
+                    className={`shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice max-w-full rounded border-2 py-3 text-center text-3xl ${isLeft ? "px-10" : "px-5"}`}>
+                    {entry.title}
+                  </div>
+                </div>
+              </div>
+              {/* Info box — pt-10 clears the half-badge that overhangs from above */}
+              <div className="border-licorice font-lato text-licorice rounded-b border-2 border-t-0 bg-white px-5 pt-10 pb-5 text-base">
+                <EntryBody body={entry.body} />
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Title badge */}
+              <div className="relative z-10 -mb-3 flex justify-center">
+                <div
+                  role="heading"
+                  aria-level={3}
+                  className={`shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice max-w-full rounded border-2 py-3 text-center text-3xl ${isLeft ? "px-10" : "px-5"}`}>
+                  {entry.title}
+                </div>
+              </div>
+              {/* Info box */}
+              <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-5 pt-6 pb-5 text-base">
+                <EntryBody body={entry.body} />
+              </div>
+            </>
+          )}
         </div>
       </div>
       {isLeft && centerDot}
@@ -127,17 +156,46 @@ function EntryMobile({
       <div className="bg-melon border-licorice absolute top-4 left-0 z-10 flex h-5 w-5 -translate-x-[0.125rem] items-center justify-center rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
         <div className="bg-licorice h-2 w-2 rounded-full" />
       </div>
-      {/* Title badge */}
-      <div
-        role="heading"
-        aria-level={3}
-        className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice mb-3 inline-block rounded border-2 px-4 py-2 text-2xl">
-        {entry.title}
-      </div>
-      {/* Body card */}
-      <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-4 py-3 text-base">
-        <EntryBody body={entry.body} />
-      </div>
+      {entry.imageUrl ? (
+        <>
+          {/* Image with badge absolutely positioned at its bottom edge */}
+          <div className="relative">
+            <div className="border-licorice overflow-hidden rounded-t border-2 border-b-0">
+              <img
+                src={entry.imageUrl}
+                alt=""
+                className="h-40 w-full object-cover"
+              />
+            </div>
+            <div className="absolute right-0 bottom-0 left-0 z-10 flex translate-y-1/2 justify-center">
+              <div
+                role="heading"
+                aria-level={3}
+                className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice rounded border-2 px-4 py-2 text-2xl">
+                {entry.title}
+              </div>
+            </div>
+          </div>
+          {/* Body card — pt-8 clears the half-badge that overhangs from above */}
+          <div className="border-licorice font-lato text-licorice rounded-b border-2 border-t-0 bg-white px-4 pt-8 pb-3 text-base">
+            <EntryBody body={entry.body} />
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Title badge */}
+          <div
+            role="heading"
+            aria-level={3}
+            className="shadow-shadow border-licorice bg-melon font-bebas-neue text-licorice mb-3 inline-block rounded border-2 px-4 py-2 text-2xl">
+            {entry.title}
+          </div>
+          {/* Body card */}
+          <div className="border-licorice font-lato text-licorice rounded border-2 bg-white px-4 py-3 text-base">
+            <EntryBody body={entry.body} />
+          </div>
+        </>
+      )}
     </div>
   )
 }
