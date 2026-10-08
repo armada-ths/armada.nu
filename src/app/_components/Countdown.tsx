@@ -4,7 +4,6 @@ import {
   ConfettiBurst,
   useCountdownAnimation
 } from "@/app/_components/CountdownTimer"
-import { NauticalCard } from "@/components/ui/nautical-card"
 import { cn } from "@/lib/utils"
 import { DateTime } from "luxon"
 
@@ -138,15 +137,5 @@ function Divider({ centered }: { centered?: boolean }) {
         centered ? "mb-4 h-9 sm:h-11 md:h-13" : "mb-4 h-7"
       )}
     />
-  )
-}
-
-// Countdown wrapped in the same nautical-card shell as HighlightCard,
-// used as sideContent in the hero when no highlight card is available.
-export function CountdownCard({ fairDays }: CountdownProps) {
-  return (
-    <NauticalCard>
-      <Countdown fairDays={fairDays} centered />
-    </NauticalCard>
   )
 }

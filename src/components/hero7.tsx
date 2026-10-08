@@ -3,12 +3,11 @@ import { ReactNode } from "react"
 
 import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
 import { Button } from "@/components/ui/button"
+import { NauticalCard } from "@/components/ui/nautical-card"
 
 interface Hero1Props {
-  badge?: string
   heading: string
   description: string
-  sideContent?: ReactNode
   bottomContent?: ReactNode
   buttons?: {
     primary?: {
@@ -27,7 +26,6 @@ interface Hero1Props {
 const Hero1 = ({
   heading = "Blocks Built With Shadcn & Tailwind",
   description = "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
-  sideContent,
   bottomContent,
   buttons = {
     primary: {
@@ -41,19 +39,19 @@ const Hero1 = ({
   }
 }: Hero1Props) => {
   return (
-    <section className="pt-20">
-      <div className="container">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+    <section className="py-20">
+      <div className="container flex justify-center lg:justify-start">
+        <div className="w-full max-w-md">
+          <NauticalCard>
             <h1 className="font-bebas-neue text-melon text-5xl lg:text-7xl">
               {heading}
             </h1>
-            <p className="text mb-8 max-w-xl lg:text-lg">{description}</p>
-            <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
+            <p className="text mb-4 max-w-xl lg:text-lg">{description}</p>
+            <div className="mb-4 flex w-full flex-col justify-center gap-2 sm:flex-row">
               {buttons.primary && (
                 <Button
                   asChild
-                  className="bg-grapefruit text-snow w-full sm:w-auto">
+                  className="bg-grapefruit text-snow mb-6 w-full sm:w-auto">
                   {buttons.primary.tracking ? (
                     <TrackedLink
                       href={buttons.primary.url}
@@ -84,8 +82,7 @@ const Hero1 = ({
               )}
             </div>
             {bottomContent}
-          </div>
-          {sideContent}
+          </NauticalCard>
         </div>
       </div>
     </section>

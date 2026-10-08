@@ -12,18 +12,18 @@ interface HighlightCardProps {
   description: string
 }
 
-const HighlightCard = ({
-  brand = "ARMADA",
+// Inner highlight-card content, reusable without the NauticalCard window shell.
+const HighlightCardContent = ({
   title,
   subtitle,
   ctaText,
   ctaUrl,
   ctaTracking,
   description
-}: HighlightCardProps) => {
+}: Omit<HighlightCardProps, "brand">) => {
   const hasLink = ctaText && ctaUrl
   return (
-    <NauticalCard brand={brand}>
+    <>
       <h1 className="font-bebas-bold text-licorice rounded-md text-center text-3xl font-bold sm:text-4xl">
         {title}
       </h1>
@@ -45,8 +45,16 @@ const HighlightCard = ({
           ))}
       </h2>
       <P className="pb-3 text-sm">{description}</P>
+    </>
+  )
+}
+
+const HighlightCard = ({ brand = "ARMADA", ...rest }: HighlightCardProps) => {
+  return (
+    <NauticalCard brand={brand}>
+      <HighlightCardContent {...rest} />
     </NauticalCard>
   )
 }
 
-export { HighlightCard }
+export { HighlightCard, HighlightCardContent }

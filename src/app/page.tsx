@@ -1,14 +1,12 @@
-import { Countdown, CountdownCard } from "@/app/_components/Countdown"
+import { Countdown } from "@/app/_components/Countdown"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import { Hero1 } from "@/components/hero7"
-import { HighlightCard } from "@/components/highlight-card"
 import { feature } from "@/components/shared/feature"
 import {
   fetchDates,
   isExhibitorSignupOpen
 } from "@/components/shared/hooks/api/useDates"
-import { fetchHighlightCards } from "@/components/shared/hooks/api/useHighlightCards"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
 import { Page } from "@/components/shared/Page"
@@ -20,13 +18,11 @@ import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
-  const [dates, exhibitorPackagesEnabled, highlightCards, recruitment] =
-    await Promise.all([
-      fetchDates(),
-      feature("EXHIBITOR_PACKAGES"),
-      fetchHighlightCards(),
-      fetchRecruitment({ next: { revalidate: 86400 } })
-    ])
+  const [dates, exhibitorPackagesEnabled, recruitment] = await Promise.all([
+    fetchDates(),
+    feature("EXHIBITOR_PACKAGES"),
+    fetchRecruitment({ next: { revalidate: 86400 } })
+  ])
 
   const now = DateTime.now()
   const recruitmentOpen =
@@ -38,7 +34,6 @@ export default async function HomePage() {
   const signupUrl = exhibitorSignupEnabled
     ? "https://app.eventro.se/register/armada"
     : "/exhibitor/signup"
-  const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
 
   const heroButtons = recruitmentOpen
     ? {
@@ -74,73 +69,61 @@ export default async function HomePage() {
     <>
       <NavigationMenu />
       <Page.Background>
-        <RecruitmentBanner />
-        <Page.Boundary className="">
-          <Hero1
-            heading={"Set Sail For Success"}
-            description={
-              "The No. 1 career fair at KTH Royal Institute of Technology"
-            }
-            sideContent={
-              highlightCard ? (
-                <HighlightCard
-                  title={highlightCard.title}
-                  subtitle={highlightCard.subtitle}
-                  description={highlightCard.description}
-                  brand={highlightCard.brand}
-                  ctaText={highlightCard.linkText}
-                  ctaUrl={highlightCard.linkUrl}
-                  ctaTracking={
-                    highlightCard.linkUrl && highlightCard.ctaEventName
-                      ? {
-                          eventName: highlightCard.ctaEventName,
-                          eventData: { location: "highlight_card" }
-                        }
-                      : undefined
-                  }
-                />
-              ) : dates?.fair.days && dates.fair.days.length > 0 ? (
-                <CountdownCard fairDays={dates.fair.days} />
-              ) : undefined
-            }
-            bottomContent={
-              highlightCard &&
-              dates?.fair.days &&
-              dates.fair.days.length > 0 ? (
-                <Countdown fairDays={dates.fair.days} />
-              ) : undefined
-            }
-            buttons={heroButtons}
-          />
-        </Page.Boundary>
-        <Page.Boundary className="p-6 pt-12">
-          {/* Time and place */}
-          {/* <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-visible">
-            {today < fair_end ? (
-              <div className="w-full flex-1 rounded pb-2 text-2xl font-medium mt-2 md:mt-0 overflow-visible">
-                <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
-              </div>
-            ) : (
-              <div className="mt-2 md:mt-0 sm:w-[40vw] flex-1">
-                <h1 className=" text-4xl font-bebas-bold font-bold text-center text-licorice rounded-md">
-                  ARMADA 2025 HAS ENDED
-                </h1>
-                <h2 className="text-melon">
-                  Thank You to All Our Partners and Participants!
-                </h2>
-                <P>
-                  Armada 2025 was a huge success because of your energy, innovation, and commitment.
-                  We're grateful to every company and student who made this fair possible and memorable.
-                  Together, we're shaping the future of talent and industry!
-                  See you next year - let's keep building!
-                </P>
-              </div>
-            )}
-          </div> */}
+        <div className="relative isolate overflow-hidden">
+          <video
+            className="absolute inset-0 -z-10 h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline>
+            <source src="/videos/hero-background.mp4" type="video/mp4" />
+          </video>
+          <div className="bg-coconut/50 absolute inset-0 -z-10" />
+          <RecruitmentBanner />
+          <Page.Boundary className="">
+            <Hero1
+              heading={"Set Sail For Success"}
+              description={
+                "The No. 1 career fair at KTH Royal Institute of Technology"
+              }
+              bottomContent={
+                dates?.fair.days && dates.fair.days.length > 0 ? (
+                  <Countdown fairDays={dates.fair.days} centered />
+                ) : undefined
+              }
+              buttons={heroButtons}
+            />
+          </Page.Boundary>
+          <Page.Boundary className="p-6 pt-12 pb-0">
+            {/* Time and place */}
+            {/* <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-visible">
+              {today < fair_end ? (
+                <div className="w-full flex-1 rounded pb-2 text-2xl font-medium mt-2 md:mt-0 overflow-visible">
+                  <CountdownTimer targetDate={new Date(`${dates.fair.days[0]}T10:00:00+01:00`)} />
+                </div>
+              ) : (
+                <div className="mt-2 md:mt-0 sm:w-[40vw] flex-1">
+                  <h1 className=" text-4xl font-bebas-bold font-bold text-center text-licorice rounded-md">
+                    ARMADA 2025 HAS ENDED
+                  </h1>
+                  <h2 className="text-melon">
+                    Thank You to All Our Partners and Participants!
+                  </h2>
+                  <P>
+                    Armada 2025 was a huge success because of your energy, innovation, and commitment.
+                    We're grateful to every company and student who made this fair possible and memorable.
+                    Together, we're shaping the future of talent and industry!
+                    See you next year - let's keep building!
+                  </P>
+                </div>
+              )}
+            </div> */}
+          </Page.Boundary>
           <section className="relative right-1/2 left-1/2 mx-[-50vw] mt-5 w-screen max-w-none overflow-y-visible">
             <VisitorNumberBar />
           </section>
-
+        </div>
+        <Page.Boundary className="p-6">
           <div className="flex flex-col py-2 md:flex-row">
             {/* <div className="justify-center">
               <div className="md:mt-10 flex gap-2 text-melon">
