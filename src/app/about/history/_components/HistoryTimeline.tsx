@@ -88,7 +88,7 @@ function EntryDesktop({
                   <img
                     src={entry.imageUrl}
                     alt=""
-                    className="h-44 w-full object-cover"
+                    className="h-56 w-full object-cover"
                   />
                 </div>
                 <div className="absolute right-0 bottom-0 left-0 z-10 flex translate-y-1/2 justify-center">
@@ -164,7 +164,7 @@ function EntryMobile({
               <img
                 src={entry.imageUrl}
                 alt=""
-                className="h-40 w-full object-cover"
+                className="h-52 w-full object-cover"
               />
             </div>
             <div className="absolute right-0 bottom-0 left-0 z-10 flex translate-y-1/2 justify-center">
