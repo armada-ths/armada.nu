@@ -67,7 +67,7 @@ function EntryDesktop({
   )
 
   return (
-    <div className="relative flex flex-row pb-4">
+    <div className={`relative flex flex-row pb-4 ${!isLeft ? "-mt-32" : ""}`}>
       {/* Center line */}
       <div
         className={`bg-licorice absolute left-1/2 w-0.5 -translate-x-1/2 ${isLast ? "top-0 h-[18px]" : "top-0 bottom-0"}`}
