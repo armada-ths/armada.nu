@@ -21,6 +21,11 @@ interface Props {
   programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
+  labels: {
+    filterEmployment: string
+    filterIndustry: string
+    filterProgram: string
+  }
   sortBy?: ExhibitorSort
   onSortChange?: (sortBy: ExhibitorSort) => void
 }
@@ -32,6 +37,7 @@ export default function ExhibitorFilterItem({
   programs,
   searchQueryName,
   onFilterChange,
+  labels,
   sortBy = "tier-gold",
   onSortChange
 }: Props) {
@@ -160,7 +166,7 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={employmentOptions}
             onValueChange={setSelectedEmploymentIds}
-            placeholder="Filter by Employment"
+            placeholder={labels.filterEmployment}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}
           />
@@ -171,7 +177,7 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={industriesOptions}
             onValueChange={setSelectedIndustriesIds}
-            placeholder="Filter by Industry"
+            placeholder={labels.filterIndustry}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}
           />
@@ -182,7 +188,7 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={programOptions}
             onValueChange={setSelectedProgramsIds}
-            placeholder="Filter by Program"
+            placeholder={labels.filterProgram}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}
           />

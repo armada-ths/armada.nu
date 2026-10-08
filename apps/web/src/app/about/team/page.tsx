@@ -3,17 +3,42 @@ import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { Page } from "@/components/shared/Page"
+import { translations, type Locale } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { Metadata } from "next"
 
-export const metadata: Metadata = {
-  title: `Armada Organization`,
-  description: "Meet all the volunteers that make Armada possible"
+const teamText: Record<
+  Locale,
+  { title: string; description: string; heading: string }
+> = {
+  en: {
+    title: "Armada Organization",
+    description: "Meet all the volunteers that make Armada possible",
+    heading: "Meet the team"
+  },
+  sv: {
+    title: "Armadas organisation",
+    description: "Möt volontärerna som gör Armada möjligt",
+    heading: "Träffa teamet"
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  const dict = teamText[locale]
+
+  return {
+    title: dict.title,
+    description: dict.description
+  }
 }
 
 export default async function TeamPage() {
+  const locale = await getRequestLocale()
+  const dict = teamText[locale]
   const showTeamPage = await feature("ABOUT_TEAM_PAGE")
   if (!showTeamPage) {
-    return <ComingSoonPage title="Team" />
+    return <ComingSoonPage title={translations[locale].team} />
   }
 
   const organization = await fetchOrganization({
@@ -31,7 +56,7 @@ export default async function TeamPage() {
   return (
     <Page.Background withIndents className="justify-start">
       <Page.Boundary>
-        <Page.Header>Meet the team</Page.Header>
+        <Page.Header>{dict.heading}</Page.Header>
         <div className="">
           {sortedOrganization.map(group => (
             <OrganizationList key={group.name} group={group} />

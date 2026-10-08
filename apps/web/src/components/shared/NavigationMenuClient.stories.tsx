@@ -64,7 +64,7 @@ export const AllSectionsEnabled: Story = {
     ).toBeInTheDocument()
     await expect(
       canvas.getByText(
-        `Join Armada ${currentYear}. See which roles are available`
+        `Join Armada. See which roles are available ${currentYear}`
       )
     ).toBeInTheDocument()
 

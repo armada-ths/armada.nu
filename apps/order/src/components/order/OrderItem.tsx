@@ -10,6 +10,11 @@ export interface OrderItemProps {
   onIncrease: () => void
   onDecrease: () => void
   onChange: (qty: number) => void
+  labels?: {
+    decrease: string
+    quantity: string
+    increase: string
+  }
 }
 
 export default function OrderItem({
@@ -19,7 +24,12 @@ export default function OrderItem({
   quantity,
   onIncrease,
   onDecrease,
-  onChange
+  onChange,
+  labels = {
+    decrease: "Decrease",
+    quantity: "Quantity",
+    increase: "Increase"
+  }
 }: OrderItemProps) {
   const canIncrease = !max || quantity < max
   const canDecrease = quantity > 0
@@ -47,7 +57,7 @@ export default function OrderItem({
           onClick={onDecrease}
           disabled={!canDecrease}
           className="w-16"
-          aria-label="Decrease">
+          aria-label={labels.decrease}>
           <Minus className="h-4 w-4" />
         </Button>
         <Input
@@ -56,7 +66,7 @@ export default function OrderItem({
           className="w-full text-center"
           value={quantity}
           onChange={e => handleInput(e.target.value)}
-          aria-label="Quantity"
+          aria-label={labels.quantity}
         />
         <Button
           type="button"
@@ -65,7 +75,7 @@ export default function OrderItem({
           className="w-16"
           onClick={onIncrease}
           disabled={!canIncrease}
-          aria-label="Increase">
+          aria-label={labels.increase}>
           <Plus className="h-4 w-4" />
         </Button>
       </div>

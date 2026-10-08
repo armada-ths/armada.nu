@@ -14,7 +14,9 @@ import {
   PopoverContent,
   PopoverTrigger
 } from "@/components/ui/popover"
+import { getLocaleFromPathname } from "@/lib/i18n"
 import { Search } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 interface CompanySearchProps {
@@ -26,6 +28,19 @@ export default function CompanySearch({
   exhibitors,
   onSelect
 }: CompanySearchProps) {
+  const locale = getLocaleFromPathname(usePathname())
+  const labels =
+    locale === "sv"
+      ? {
+          placeholder: "Sök utställare...",
+          empty: "Inga företag hittades.",
+          heading: "Utställare"
+        }
+      : {
+          placeholder: "Search exhibitors...",
+          empty: "No companies found.",
+          heading: "Exhibitors"
+        }
   const [open, setOpen] = useState(false)
 
   const handleSelect = (exhibitor: Exhibitor) => {
@@ -48,12 +63,12 @@ export default function CompanySearch({
           className="w-80 rounded-md border p-0 shadow-xl">
           <Command className="bg-snow rounded-md">
             <CommandInput
-              placeholder="Search exhibitors..."
+              placeholder={labels.placeholder}
               className="text-licorice"
             />
             <CommandList className="max-h-64 overflow-y-auto">
-              <CommandEmpty>No companies found.</CommandEmpty>
-              <CommandGroup heading="Exhibitors">
+              <CommandEmpty>{labels.empty}</CommandEmpty>
+              <CommandGroup heading={labels.heading}>
                 {exhibitors.map(ex => (
                   <CommandItem key={ex.id} onSelect={() => handleSelect(ex)}>
                     {ex.name}

@@ -4,8 +4,11 @@ import { useQuery } from "@tanstack/react-query"
 export interface HighlightCardData {
   id: number
   title: string
+  titleSv?: string | null
   subtitle: string
+  subtitleSv?: string | null
   description: string
+  descriptionSv?: string | null
   brand?: string
   linkText?: string
   linkUrl?: string

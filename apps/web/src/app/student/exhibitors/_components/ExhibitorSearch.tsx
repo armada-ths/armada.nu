@@ -8,9 +8,34 @@ import {
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
 import { Input } from "@/components/ui/input"
+import { getLocaleFromPathname, type Locale } from "@/lib/i18n"
+import { usePathname } from "next/navigation"
 import { useMemo, useState } from "react"
 import { ExhibitorCard } from "./ExhibitorCard"
 import { sortExhibitors, type ExhibitorSort } from "./exhibitorSort"
+
+const exhibitorSearchText: Record<
+  Locale,
+  {
+    searchPlaceholder: string
+    filterEmployment: string
+    filterIndustry: string
+    filterProgram: string
+  }
+> = {
+  en: {
+    searchPlaceholder: "Search by company name",
+    filterEmployment: "Filter by Employment",
+    filterIndustry: "Filter by Industry",
+    filterProgram: "Filter by Program"
+  },
+  sv: {
+    searchPlaceholder: "Sök efter företagsnamn",
+    filterEmployment: "Filtrera på anställningsform",
+    filterIndustry: "Filtrera på bransch",
+    filterProgram: "Filtrera på program"
+  }
+}
 
 interface Props {
   exhibitors: Exhibitor[]
@@ -25,6 +50,8 @@ export default function ExhibitorSearch({
   industries,
   programs
 }: Props) {
+  const locale = getLocaleFromPathname(usePathname())
+  const dict = exhibitorSearchText[locale]
   const [searchQueryName, setSearchQueryName] = useState("")
   const [sortBy, setSortBy] = useState<ExhibitorSort>("tier-gold")
   const [filteredExhibitors, setFilteredExhibitors] =
@@ -41,7 +68,7 @@ export default function ExhibitorSearch({
         type="text"
         value={searchQueryName}
         onChange={e => setSearchQueryName(e.target.value)}
-        placeholder="Search by company name"
+        placeholder={dict.searchPlaceholder}
         className="grow rounded-sm border p-2"
       />
 
@@ -52,6 +79,7 @@ export default function ExhibitorSearch({
         programs={programs}
         searchQueryName={searchQueryName}
         onFilterChange={setFilteredExhibitors}
+        labels={dict}
         sortBy={sortBy}
         onSortChange={setSortBy}
       />

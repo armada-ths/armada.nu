@@ -87,7 +87,7 @@ export const Default: Story = {
       name: /Women in Tech Evening/i
     })
 
-    await expect(eventLink).toHaveAttribute("href", "/student/events?id=1")
+    await expect(eventLink).toHaveAttribute("href", "/en/student/events?id=1")
     await userEvent.click(eventLink)
 
     const dialog = await within(document.body).findByRole("dialog")

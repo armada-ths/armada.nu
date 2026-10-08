@@ -2,6 +2,7 @@
 
 import { track } from "@vercel/analytics"
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
+import { usePathname } from "next/navigation"
 import type { ComponentPropsWithRef } from "react"
 
 import { cn } from "@/lib/utils"
@@ -29,6 +30,11 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet"
+import {
+  createLocalePath,
+  getLocaleFromPathname,
+  translations
+} from "@/lib/i18n"
 
 export interface MenuItem {
   title: string
@@ -150,6 +156,11 @@ const Navbar1 = ({
     }
   ]
 }: Navbar1Props) => {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
+  const nextLocale = locale === "en" ? "sv" : "en"
+  const languageToggleLabel = translations[locale].switchLanguage
+
   return (
     <section className="bg-melon border-licorice flex h-20 items-center border-b-2">
       {/* Desktop Menu */}
@@ -170,7 +181,14 @@ const Navbar1 = ({
               </NavigationMenu>
             </div>
 
-            <div className="flex-1"></div>
+            <div className="flex flex-1 items-center justify-end">
+              <a
+                href={createLocalePath(pathname, nextLocale)}
+                className="text-licorice border-licorice hover:bg-licorice hover:text-snow rounded-full border px-3 py-1 text-sm font-semibold transition-colors"
+                aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
+                {languageToggleLabel}
+              </a>
+            </div>
           </div>
         </nav>
 
@@ -179,31 +197,39 @@ const Navbar1 = ({
           <div className="flex items-center justify-between">
             {/* Logo */}
             <LogoLink logo={logo} />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="neutral"
-                  size="icon"
-                  className="border-licorice">
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="bg-coconut overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>
-                    <LogoLink logo={logo} />
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-6 p-4">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="flex w-full flex-col gap-4">
-                    {menu.map(item => renderMobileMenuItem(item))}
-                  </Accordion>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <div className="flex items-center gap-2">
+              <a
+                href={createLocalePath(pathname, nextLocale)}
+                className="text-licorice border-licorice rounded-full border px-2 py-1 text-xs font-semibold"
+                aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
+                {languageToggleLabel}
+              </a>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="neutral"
+                    size="icon"
+                    className="border-licorice">
+                    <Menu className="size-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="bg-coconut overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>
+                      <LogoLink logo={logo} />
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-6 p-4">
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="flex w-full flex-col gap-4">
+                      {menu.map(item => renderMobileMenuItem(item))}
+                    </Accordion>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>

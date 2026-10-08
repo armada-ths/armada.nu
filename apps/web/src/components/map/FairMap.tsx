@@ -4,7 +4,9 @@ import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDeta
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import Modal from "@/components/ui/Modal"
 import { HEX_COLORS } from "@/lib/colors"
+import { getLocaleFromPathname } from "@/lib/i18n"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import {
   ReactZoomPanPinchRef,
@@ -47,6 +49,7 @@ export default function FairMap({
   MapComponent,
   selectedExhibitor = null
 }: FairMapProps) {
+  const locale = getLocaleFromPathname(usePathname())
   const [modalOpen, setModalOpen] = useState(false)
   const [activeExhibitor, setActiveExhibitor] = useState<Exhibitor | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -243,7 +246,9 @@ export default function FairMap({
             </div>
 
             {/* Loading text */}
-            <p className="mt-4 text-lg font-medium">Loading the map...</p>
+            <p className="mt-4 text-lg font-medium">
+              {locale === "sv" ? "Laddar kartan..." : "Loading the map..."}
+            </p>
           </div>
         </div>
       )}

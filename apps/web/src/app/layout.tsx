@@ -9,6 +9,7 @@ import { FooterGuard } from "@/components/shared/FooterGuard"
 import { SiteTelemetry } from "@/components/shared/SiteTelemetry"
 import { DevToolbar } from "@/components/shared/VercelToolbar"
 import { HEX_COLORS } from "@/lib/colors"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { isProductionDeployment } from "@/lib/deployment"
 import "leaflet/dist/leaflet.css"
 import "./globals.css"
@@ -71,11 +72,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getRequestLocale()
   const signupUrl = await getSignupUrl()
 
   return (
     <html
-      lang="en"
+      lang={locale}
       style={{
         colorScheme: "light"
       }}>

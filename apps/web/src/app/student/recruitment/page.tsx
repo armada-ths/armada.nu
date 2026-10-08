@@ -16,19 +16,81 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { translations, type Locale } from "@/lib/i18n"
+import { getRequestLocale } from "@/lib/i18n-server"
 import { Sparkles } from "lucide-react"
 import { DateTime } from "luxon"
 import { Metadata } from "next"
 import ReactMarkdown from "react-markdown"
-export const metadata: Metadata = {
-  title: `Armada Recruitment`,
-  description: "See available roles and apply to become a part of Armada"
+
+const recruitmentPageText: Record<
+  Locale,
+  {
+    title: string
+    description: string
+    alertTitle: string
+    alertBody: string
+    availableRoles: string
+    signupNoRolesTitle: string
+    signupNoRolesBody: string
+    signupOpenTitle: string
+    signupOpenBody: string
+    signupClosedTitle: string
+    signupClosedBody: string
+  }
+> = {
+  en: {
+    title: "Armada Recruitment",
+    description: "See available roles and apply to become a part of Armada",
+    alertTitle: "Become an Armada volunteer",
+    alertBody:
+      "In Armada, over 200 volunteers join together to create one of KTH's biggest happenings. Take the opportunity to meet new friends, expand your network and be a part of something you can be really proud of!",
+    availableRoles: "Currently available roles",
+    signupNoRolesTitle: "No available roles at the moment",
+    signupNoRolesBody:
+      "Subscribe for updates about future recruitment opportunities.",
+    signupOpenTitle: "Applications are open",
+    signupOpenBody:
+      "Apply to one of the available roles above, or subscribe for updates about future recruitment opportunities.",
+    signupClosedTitle: "Applications are currently closed",
+    signupClosedBody:
+      "The roles above are not accepting applications right now. Subscribe for updates about future recruitment opportunities."
+  },
+  sv: {
+    title: "Armadarekrytering",
+    description: "Se lediga roller och ansök om att bli en del av Armada",
+    alertTitle: "Bli volontär i Armada",
+    alertBody:
+      "I Armada går över 200 volontärer samman för att skapa ett av KTH:s största arrangemang. Ta chansen att träffa nya vänner, bredda ditt nätverk och vara en del av något du kan vara riktigt stolt över!",
+    availableRoles: "Lediga roller just nu",
+    signupNoRolesTitle: "Inga lediga roller just nu",
+    signupNoRolesBody:
+      "Prenumerera för uppdateringar om framtida rekryteringsmöjligheter.",
+    signupOpenTitle: "Ansökan är öppen",
+    signupOpenBody:
+      "Ansök till en av rollerna ovan, eller prenumerera för uppdateringar om framtida rekryteringsmöjligheter.",
+    signupClosedTitle: "Ansökan är för tillfället stängd",
+    signupClosedBody:
+      "Rollerna ovan tar för tillfället inte emot ansökningar. Prenumerera för uppdateringar om framtida rekryteringsmöjligheter."
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  const dict = recruitmentPageText[locale]
+
+  return {
+    title: dict.title,
+    description: dict.description
+  }
 }
 
 export default async function RecruitmentPage() {
+  const locale = await getRequestLocale()
+  const dict = recruitmentPageText[locale]
   const showRecruitment = await feature("STUDENT_RECRUITMENT_PAGE")
   if (!showRecruitment) {
-    return <ComingSoonPage title="Recruitment" />
+    return <ComingSoonPage title={translations[locale].recruitment} />
   }
 
   const data = await fetchRecruitment({
@@ -50,20 +112,17 @@ export default async function RecruitmentPage() {
 
   const emailSignupCopy = !hasAvailableRoles
     ? {
-        title: "No available roles at the moment",
-        description:
-          "Subscribe for updates about future recruitment opportunities."
+        title: dict.signupNoRolesTitle,
+        description: dict.signupNoRolesBody
       }
     : recruitmentOpen
       ? {
-          title: "Applications are open",
-          description:
-            "Apply to one of the available roles above, or subscribe for updates about future recruitment opportunities."
+          title: dict.signupOpenTitle,
+          description: dict.signupOpenBody
         }
       : {
-          title: "Applications are currently closed",
-          description:
-            "The roles above are not accepting applications right now. Subscribe for updates about future recruitment opportunities."
+          title: dict.signupClosedTitle,
+          description: dict.signupClosedBody
         }
 
   const promotionalPhotos: { source: string; altText: string }[] = [
@@ -107,13 +166,8 @@ export default async function RecruitmentPage() {
           </Page.Header> */}
             <Alert className="mb-2">
               <Sparkles size={20} />
-              <AlertTitle>Become an Armada volunteer</AlertTitle>
-              <AlertDescription>
-                In Armada, over 200 volunteers join together to create one of
-                KTH&apos;s biggest happenings. Take the opportunity to meet new
-                friends, expand your network and be a part of something you can
-                be really proud of!
-              </AlertDescription>
+              <AlertTitle>{dict.alertTitle}</AlertTitle>
+              <AlertDescription>{dict.alertBody}</AlertDescription>
             </Alert>
             <PhotoSlideCarousel photoSrc={promotionalPhotos} />
             <RecruitmentDescription />
@@ -137,7 +191,7 @@ export default async function RecruitmentPage() {
               <Page.Header
                 tier="secondary"
                 className="text-melon mt-14 text-4xl md:mt-10">
-                {"Currently available roles"}
+                {dict.availableRoles}
               </Page.Header>
               {hasAvailableRoles ? (
                 <div>
