@@ -56,3 +56,8 @@ infra/terraform/**/backend.hcl
 
 *storybook.log
 storybook-static
+
+# Workspace app artifacts
+**/node_modules/
+**/.next/
+**/out/

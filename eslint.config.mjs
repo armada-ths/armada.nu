@@ -8,7 +8,14 @@ import pluginReact from "eslint-plugin-react"
 
 export default [
   { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
-  { ignores: [".next/**", "storybook-static/**"] },
+  {
+    ignores: [
+      "**/.next/**",
+      "**/node_modules/**",
+      "storybook-static/**",
+      "**/next-env.d.ts"
+    ]
+  },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,

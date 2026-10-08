@@ -1,0 +1,8 @@
+@import "@armada/shared/theme.css";
+@source "../";
+@source "../../../../packages/shared/src";
+
+body {
+  background: #f7f5f2;
+  color: #172b35;
+}
