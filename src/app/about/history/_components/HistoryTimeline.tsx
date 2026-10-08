@@ -10,6 +10,15 @@ interface HistoryTimelineProps {
   eras: Era[]
 }
 
+function DotMarker({ className }: { className: string }) {
+  return (
+    <div
+      className={`bg-melon border-licorice z-10 h-5 w-5 rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)] ${className}`}>
+      <div className="bg-licorice absolute top-1 left-1 h-2 w-2 rounded-full" />
+    </div>
+  )
+}
+
 function EntryBody({ body }: { body: string }) {
   return (
     <ReactMarkdown
@@ -61,11 +70,8 @@ function EntryDesktop({
   isBeforeLastRight?: boolean
 }) {
   const isLeft = side === "left"
-  // Center dot
   const centerDot = (
-    <div className="bg-melon border-licorice absolute top-2 left-1/2 z-10 h-5 w-5 -translate-x-1/2 rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
-      <div className="bg-licorice absolute inset-0 m-auto h-2 w-2 rounded-full" />
-    </div>
+    <DotMarker className="absolute top-2 left-1/2 -translate-x-1/2" />
   )
 
   // The last-right entry is pulled up 128 px (-mt-32) so the preceding entry's
@@ -164,9 +170,7 @@ function EntryMobile({
         <div className={`bg-licorice absolute left-2 w-0.5 ${lineClass}`} />
       )}
       {/* Dot */}
-      <div className="bg-melon border-licorice absolute top-4 left-0 z-10 h-5 w-5 -translate-x-[0.125rem] rounded-full border-2 shadow-[2px_2px_0_0_var(--color-licorice)]">
-        <div className="bg-licorice absolute inset-0 m-auto h-2 w-2 rounded-full" />
-      </div>
+      <DotMarker className="absolute top-4 left-0 -translate-x-[0.125rem]" />
       {entry.imageUrl ? (
         <>
           {/* Image with badge absolutely positioned at its bottom edge */}
