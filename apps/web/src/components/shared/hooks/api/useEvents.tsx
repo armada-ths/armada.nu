@@ -1,3 +1,5 @@
+import { z } from "zod"
+import { readCmsResponse, eventSchema } from "@/lib/cmsResponse"
 import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query"
 
@@ -41,15 +43,7 @@ export async function fetchEvents(options?: RequestInit) {
       next: { revalidate: 86400, tags: ["events"], ...options?.next }
     }
   )
-  try {
-    const result = await res.json()
-    return result as Event[]
-  } catch (error) {
-    console.error(
-      `Unable to fetch events. Error: ${(error as Error)?.message || error}`
-    )
-  }
-  return []
+  return readCmsResponse<Event[]>(res, "events", z.array(eventSchema))
 }
 
 export function useEvents(options?: RequestInit) {
