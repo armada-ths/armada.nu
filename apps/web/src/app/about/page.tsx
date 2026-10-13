@@ -50,6 +50,13 @@ export default async function RecruitmentPage() {
           between students and employers.
         </P>
         <P className="mt-4">
+          Learn more about Armada&apos;s origins in our{" "}
+          <Link className="underline hover:no-underline" href="/about/history">
+            history timeline
+          </Link>
+          .
+        </P>
+        <P className="mt-4">
           Each year, Armada goes from 1 student, the Project Manager, to over
           200 student volunteers managing a fair over two days, in several
           locations and 20 000 visitors. As Armada is fully owned by{" "}

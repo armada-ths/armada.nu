@@ -20,6 +20,7 @@ export async function NavigationMenu() {
       aboutPageEnabled={flags.ABOUT_PAGE}
       aboutTeamEnabled={flags.ABOUT_TEAM_PAGE}
       blogEnabled={flags.ARMADA_BLOG_PAGE}
+      historyTimelineEnabled={flags.ARMADA_TIMELINE_PAGE}
     />
   )
 }

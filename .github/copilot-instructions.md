@@ -72,6 +72,7 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 ## UI and styling notes
 
 - Tailwind v4 uses a **CSS-first** setup in `apps/web/src/app/globals.css`.
+- Prefer canonical Tailwind utility classes over arbitrary values whenever they express the same value in the current theme (e.g. `pt-13` instead of `pt-[52px]`, or `pt-11.5` instead of `pt-[46px]` with the default spacing scale). Check new or changed classes for `tailwindcss(suggestCanonicalClasses)` suggestions before finishing; use arbitrary values only when no equivalent canonical utility exists.
 - Brand tokens are defined with `@theme`; prefer classes such as `text-melon`, `bg-coconut`, and `text-licorice` over ad hoc colors.
 - Color values are intentionally split across **two files that must stay in sync**:
   - `packages/shared/src/theme.css` — CSS/Tailwind theme tokens (`--color-*`) used by utility classes and CSS variables.
