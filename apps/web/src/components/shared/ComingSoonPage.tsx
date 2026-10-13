@@ -1,7 +1,7 @@
 import { P } from "@/app/_components/Paragraph"
 import { Page } from "@/components/shared/Page"
 
-export const COMING_SOON_TEXT = "More information coming soon"
+export const COMING_SOON_TEXT = "Coming soon"
 
 interface ComingSoonPageProps {
   title: string
