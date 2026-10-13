@@ -3,6 +3,7 @@
 import { MenuItem, Navbar1 } from "@/components/navbar1"
 import { COMING_SOON_TEXT } from "@/components/shared/ComingSoonPage"
 import {
+  BookOpenIcon,
   BriefcaseIcon,
   Building2Icon,
   CalendarDaysIcon,
@@ -34,6 +35,7 @@ interface NavigationMenuClientProps {
   aboutPageEnabled: boolean
   aboutTeamEnabled: boolean
   blogEnabled: boolean
+  historyTimelineEnabled: boolean
 }
 
 const applyComingSoonDescriptions = (items: MenuItem[]): MenuItem[] =>
@@ -63,7 +65,8 @@ export function NavigationMenuClient({
   exhibitorSignupEnabled,
   aboutPageEnabled,
   aboutTeamEnabled,
-  blogEnabled
+  blogEnabled,
+  historyTimelineEnabled
 }: NavigationMenuClientProps) {
   const companyLinks: MenuItem[] = [
     {
@@ -190,6 +193,14 @@ export function NavigationMenuClient({
             eventData: { location: "topnav_blog" }
           },
           disabled: !blogEnabled
+        },
+        {
+          title: "History of Armada",
+          url: "/about/history",
+          description:
+            "45 years of Scandinavia's largest student-run career fair",
+          icon: <BookOpenIcon className="size-5 shrink-0" />,
+          disabled: !historyTimelineEnabled
         }
       ]
     }
