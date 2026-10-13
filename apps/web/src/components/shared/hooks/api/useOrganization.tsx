@@ -1,3 +1,5 @@
+import { z } from "zod"
+import { readCmsResponse, organizationSchema } from "@/lib/cmsResponse"
 import { env } from "@/env"
 import { normalizeExternalUrl } from "@/lib/externalUrl"
 import { useQuery } from "@tanstack/react-query"
@@ -22,12 +24,13 @@ export async function fetchOrganization(options?: RequestInit) {
     ...options,
     next: { revalidate: 86400, tags: ["organization"], ...options?.next }
   })
-  if (!res.ok) {
-    throw new Error(`Failed to fetch organization: ${res.status}`)
-  }
-  const result = await res.json()
+  const result = await readCmsResponse<Organization[]>(
+    res,
+    "organization",
+    z.array(organizationSchema)
+  )
 
-  return ((result as Organization[] | null) ?? []).map(organization => ({
+  return result.map(organization => ({
     ...organization,
     people: organization.people.map(person => ({
       ...person,

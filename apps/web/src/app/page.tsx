@@ -52,21 +52,29 @@ export default async function HomePage() {
         },
         secondary: {
           text: "Meet the Team",
-          url: "/about/team"
+          url: "/about/team",
+          tracking: {
+            eventName: "team_click",
+            eventData: { location: "hero_secondary" }
+          }
         }
       }
     : {
         primary: {
-          text: "Read our Blog",
-          url: "/blog",
+          text: "Browse our events",
+          url: "/student/events",
           tracking: {
-            eventName: "blog_click",
+            eventName: "student_events_click",
             eventData: { location: "hero_primary" }
           }
         },
         secondary: {
-          text: "Meet the Team",
-          url: "/about/team"
+          text: "Read our blog",
+          url: "/blog",
+          tracking: {
+            eventName: "blog_click",
+            eventData: { location: "hero_secondary" }
+          }
         }
       }
 

@@ -79,14 +79,14 @@ export default async function SignupPage() {
     heading = "Registration Has Closed"
     body = (
       <p className="mt-4">
-        Exhibitor registration for {year} has now closed. We hope to see you at
-        Armada {year + 1}! In the meantime, feel free to reach out to{" "}
+        Exhibitor registration for {year} has now closed. Late registration may
+        still be possible if spots are available. Contact{" "}
         <Link
           className="underline hover:no-underline"
           href="mailto:sales@armada.nu">
           sales@armada.nu
         </Link>{" "}
-        if you have any questions.
+        for more information about late registration.
       </p>
     )
   }

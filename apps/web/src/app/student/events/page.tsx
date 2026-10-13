@@ -51,23 +51,7 @@ export default async function EventPage() {
     return <ComingSoonPage title="Events" />
   }
 
-  let events: Event[] = []
-
-  try {
-    const response = await fetchEvents({
-      next: {
-        revalidate: 86400
-      }
-    })
-
-    if (Array.isArray(response) && response.length > 0) {
-      events = response
-    }
-  } catch (error) {
-    console.error(
-      `Unable to fetch events. Error: ${(error as Error)?.message || error}`
-    )
-  }
+  const events = await fetchEvents({ next: { revalidate: 86400 } })
 
   const nowInSeconds = Math.floor(Date.now() / 1000)
   const orderedEvents = orderEvents(events, nowInSeconds)
