@@ -118,8 +118,8 @@ function EntryDesktop({
                     </div>
                   </div>
                 </div>
-                {/* Info box — pt-10 clears the half-badge that overhangs from above */}
-                <div className="font-lato text-licorice rounded-b bg-white px-5 pt-10 pb-5 text-base">
+                {/* Info box — 32px badge overhang + 14px gap, matching entries without images */}
+                <div className="font-lato text-licorice rounded-b bg-white px-5 pt-11.5 pb-5 text-base">
                   <EntryBody body={entry.body} />
                 </div>
               </div>
@@ -172,7 +172,7 @@ function EntryMobile({
         <div className={`bg-licorice absolute left-2 w-0.5 ${lineClass}`} />
       )}
       {/* Dot */}
-      <DotMarker className="absolute top-4 left-0 -translate-x-[0.125rem]" />
+      <DotMarker className="absolute top-4 left-0 -translate-x-0.5" />
       {entry.imageUrl ? (
         <>
           {/* Image with badge absolutely positioned at its bottom edge */}
@@ -194,8 +194,8 @@ function EntryMobile({
                 </div>
               </div>
             </div>
-            {/* Body card — pt-8 clears the half-badge that overhangs from above */}
-            <div className="font-lato text-licorice rounded-b bg-white px-4 pt-8 pb-3 text-base">
+            {/* Body card — 26px badge overhang + 26px gap, matching entries without images */}
+            <div className="font-lato text-licorice rounded-b bg-white px-4 pt-13 pb-3 text-base">
               <EntryBody body={entry.body} />
             </div>
           </div>
