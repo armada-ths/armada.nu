@@ -84,3 +84,23 @@ export const SingleEra: Story = {
     eras: [{ eraTitle: "The Founding Years (1979–1989)", entries: era1Entries }]
   }
 }
+
+const fairImages = [
+  "/fair_pictures/23031965122_efd3a80707_c.jpg",
+  "/fair_pictures/49122134781_31550b6d35_b.jpg",
+  "/fair_pictures/49122320697_07018807e8_b.jpg",
+  "/fair_pictures/52520926612_8f5d642178_c.jpg",
+  "/fair_pictures/53396623064_9fce4e05b3_c.jpg"
+]
+
+export const WithImages: Story = {
+  args: {
+    eras: allEras.map(era => ({
+      ...era,
+      entries: era.entries.map(entry => ({
+        ...entry,
+        imageUrl: fairImages[entry.id - 1]
+      }))
+    }))
+  }
+}
