@@ -76,11 +76,11 @@ export default async function SignupPage() {
     )
   } else {
     // closed
-    heading = "Registration Has Closed"
+    heading = "Late Registration Possible"
     body = (
       <p className="mt-4">
-        Exhibitor registration for {year} has now closed. Late registration may
-        still be possible if spots are available. Contact{" "}
+        Standard registration has closed. Late registration may still be
+        possible if spots are available. Contact{" "}
         <Link
           className="underline hover:no-underline"
           href="mailto:sales@armada.nu">
