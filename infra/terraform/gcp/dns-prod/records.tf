@@ -34,6 +34,12 @@ locals {
       ttl     = 300
       rrdatas = ["34.54.47.115"]
     }
+    "preview.cms/A" = {
+      name    = "preview.cms.${var.dns_name}"
+      type    = "A"
+      ttl     = 300
+      rrdatas = ["34.54.47.115"]
+    }
     "staging.cms/CNAME" = {
       name    = "staging.cms.${var.dns_name}"
       type    = "CNAME"
