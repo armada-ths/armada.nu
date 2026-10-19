@@ -1,8 +1,8 @@
 # armada.nu
 
-[![Checks](https://img.shields.io/github/actions/workflow/status/armada-ths/armada.nu/ci.yml?branch=main&label=Checks)](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml?query=branch%3Amain)
-[![Chromatic](https://img.shields.io/github/actions/workflow/status/armada-ths/armada.nu/chromatic.yml?branch=main&label=Chromatic)](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml?query=branch%3Amain)
-[![CodeQL](https://img.shields.io/github/actions/workflow/status/armada-ths/armada.nu/codeql.yml?branch=main&label=CodeQL)](https://github.com/armada-ths/armada.nu/actions/workflows/codeql.yml?query=branch%3Amain)
+[![Checks](https://img.shields.io/github/actions/workflow/status/armada-ths/armada.nu/ci.yml?branch=main&label=Checks&logo=githubactions)](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml?query=branch%3Amain)
+[![Chromatic](https://img.shields.io/github/actions/workflow/status/armada-ths/armada.nu/chromatic.yml?branch=main&label=Chromatic&logo=githubactions)](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml?query=branch%3Amain)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/armada-ths/armada.nu/codeql.yml?branch=main&label=CodeQL&logo=githubactions)](https://github.com/armada-ths/armada.nu/actions/workflows/codeql.yml?query=branch%3Amain)
 [![Web production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-nu?label=web%20production&logo=vercel)](https://vercel.com/thsarmada/armada-nu/deployments)
 [![Photos production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-photos?label=photos%20production&logo=vercel)](https://vercel.com/thsarmada/armada-photos/deployments)
 [![Order production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-order?label=order%20production&logo=vercel)](https://vercel.com/thsarmada/armada-order/deployments)
