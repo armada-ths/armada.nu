@@ -7,6 +7,11 @@ Keep this focused on the Web, Photos and Order monorepo; backend/admin guidance 
 
 See `README.md` for setup and scripts. Do not duplicate ArmadaCMS backend/admin guidance here; if a task touches the Go API or React-Admin app, also follow the sibling repo's `../ArmadaCMS/.github/copilot-instructions.md`.
 
+## Documentation
+
+- Add only relevant information to README files and match the document's existing level of detail. Keep summaries concise; create or extend focused documentation in a suitable subdirectory only when the extra detail is needed.
+- Never put bootstrap instructions directly in a README. Prefer keeping one-time provisioning, permission setup and environment activation instructions outside the checked-in repository (for example, in the delivery chat). If they must be stored in the repository, use a separate file that is not a README and link to it rather than embedding the instructions.
+
 ## Architecture
 
 This pnpm monorepo contains Web (`apps/web`), Photos (`apps/photos`), Order (`apps/order`) and `@armada/shared` (`packages/shared`): **Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4**, deployed as three Vercel projects.

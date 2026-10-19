@@ -2,12 +2,11 @@
 
 [![Checks](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/ci.yml)
 [![Chromatic](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/chromatic.yml)
+[![CodeQL](https://github.com/armada-ths/armada.nu/actions/workflows/codeql.yml/badge.svg)](https://github.com/armada-ths/armada.nu/actions/workflows/codeql.yml)
 [![Web production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-nu?label=web%20production&logo=vercel)](https://vercel.com/thsarmada/armada-nu/deployments)
 [![Photos production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-photos?label=photos%20production&logo=vercel)](https://vercel.com/thsarmada/armada-photos/deployments)
 [![Order production deployment](https://img.shields.io/github/deployments/armada-ths/armada.nu/Production%20%E2%80%93%20armada-order?label=order%20production&logo=vercel)](https://vercel.com/thsarmada/armada-order/deployments)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Farmada.nu&label=armada.nu)](https://armada.nu)
-[![Last commit](https://img.shields.io/github/last-commit/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/commits)
-[![Open issues](https://img.shields.io/github/issues/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/issues)
+
 [![License: MIT](https://img.shields.io/github/license/armada-ths/armada.nu)](https://github.com/armada-ths/armada.nu/blob/main/license.txt)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)](https://nextjs.org/)
 [![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
@@ -48,20 +47,15 @@ The Web, Photos and Exhibitor Order applications for [THS Armada](https://armada
 
 ## Getting Started
 
-1. **Clone the repo**
+1. **Clone and install**
 
    ```bash
    git clone https://github.com/armada-ths/armada.nu.git
    cd armada.nu
+   pnpm install --frozen-lockfile
    ```
 
-2. **Install dependencies**
-
-   ```bash
-   pnpm install
-   ```
-
-3. **Set up environment variables**
+2. **Configure the apps you want to run**
 
    ```bash
    cp apps/web/.env.example apps/web/.env.local
@@ -69,60 +63,17 @@ The Web, Photos and Exhibitor Order applications for [THS Armada](https://armada
    cp apps/order/.env.example apps/order/.env.local
    ```
 
-   Fill in the values you need. Not all variables are required — see the comments in each app's `.env.example` for details.
+   Each app loads its own `.env.local`; root environment files are not used. Follow the comments in its `.env.example` and choose a [backend environment](#backend-environments). Photos needs an event link; Order needs a valid access token. Keep tokens and secrets out of source control.
 
-4. **Start the dev server**
+3. **Start development**
 
-   ```bash
-   pnpm dev
-   ```
-
-   Open [http://localhost:8000](http://localhost:8000).
+   Run `pnpm dev` for Web at <http://localhost:8000>, `pnpm dev:photos` for Photos at <http://localhost:8001>, or `pnpm dev:order` for Order at <http://localhost:8002>. `pnpm dev:all` starts all three.
 
 ## VS Code workspace and launches
 
-This repo includes shared VS Code configuration for both single-repo and multi-repo workflows.
+[`.vscode/`](.vscode/) contains start/stop tasks and browser launches for each app. Choose **Configured CMS**, **Production CMS** or **Local CMS**; the single-repo Local CMS launch expects an already-running backend. Launch variants for the same app share a port, so run one at a time. Stopping a launch also stops its matching VS Code server task, including one started manually.
 
-### Single-repo config
-
-In `.vscode/` you will find:
-
-- `tasks.json` — start/stop tasks for Web, Photos and Order, plus workspace-wide formatting, linting, type-checking, builds, and shared Storybook
-- `launch.json` — browser launches for each app against the configured, production, or local CMS
-
-Each app offers the same three launch variants:
-
-- **Configured CMS**: use the app's existing environment configuration, including its `.env.local`.
-- **Production CMS**: override `NEXT_PUBLIC_API_URL` with `https://cms.armada.nu`.
-- **Local CMS**: override `NEXT_PUBLIC_API_URL` with `http://localhost:8080`; this single-repo launch does not start the backend.
-
-Web runs on port 8000, Photos on 8001 and Order on 8002. Start tasks run from the owning app directory and wait for Next.js's `Ready` message before opening the browser. Other environment values remain app-specific; Photos needs an event link and Order needs a valid access token. Do not put tokens or secrets in launch configuration.
-
-Every app launch has a `postDebugTask` that terminates its matching dev-server task through VS Code, following the CMS launch pattern. The corresponding `Dev: Stop ...` task can also be run manually. Start only one CMS variant per app at a time because the variants share a port. Stopping a launch terminates the task even if you started that same task manually before launching; servers started outside VS Code tasks are not targeted.
-
-### Multi-repo workspace
-
-If you work on both the public site and the CMS together, open:
-
-- `Armada.code-workspace`
-
-That workspace opens:
-
-- `armada.nu`
-- `../ArmadaCMS`
-
-and includes these compound launches:
-
-- `Workspace: Open Public Site (Production CMS)`
-- `Workspace: Open Photos (Production CMS)`
-- `Workspace: Open Order (Production CMS)`
-- `Workspace: Open Public Site + Admin UI (Local Backend + Supabase)`
-- `Workspace: Open Photos + Admin UI (Local Backend + Supabase)`
-- `Workspace: Open Order + Admin UI (Local Backend + Supabase)`
-- `Workspace: Open All Apps + Admin UI (Local Backend + Supabase)`
-- `Workspace: Open Admin UI (Local Backend + Supabase)`
-
-Local compounds start Admin, the backend and Supabase once, alongside the selected app(s). They use `stopAll`, so stopping one debug session stops the compound, runs each app's stop task and invokes the CMS's existing cleanup task. This requires you to have both repos checked out in the same parent directory.
+For frontend and CMS work together, open [`Armada.code-workspace`](Armada.code-workspace) with both repos checked out in the same parent directory. Local compound launches start the selected apps, Admin, backend and Supabase, and stop them together. See the [CMS guide](../ArmadaCMS/README.md) for backend development.
 
 ## Scripts
 
@@ -133,7 +84,7 @@ Local compounds start Admin, the backend and Supabase once, alongside the select
 | `pnpm dev:order`       | Order dev server (port 8002)                        |
 | `pnpm dev:all`         | All app dev servers                                 |
 | `pnpm build`           | Production builds for all apps                      |
-| `pnpm start`           | Start production server                             |
+| `pnpm start`           | Start Web production server                         |
 | `pnpm storybook`       | Run Storybook (port 6006)                           |
 | `pnpm build-storybook` | Build static Storybook output                       |
 | `pnpm test`            | Run unit and Storybook tests with Vitest/Playwright |
@@ -143,11 +94,9 @@ Local compounds start Admin, the backend and Supabase once, alongside the select
 | `pnpm format`          | Format code with Prettier                           |
 | `pnpm format:check`    | Check formatting                                    |
 
-The CI test job runs only the Vitest unit project, without installing Playwright browsers. Chromatic handles Storybook interaction and visual tests as a required merge check. Local `pnpm test` still runs both unit and Storybook tests.
-
 ## Storybook
 
-This repo uses [Storybook](https://storybook.js.org/) to build and review UI components in isolation. Story files live next to components and use the `*.stories.tsx` naming convention. Prefer multiple story variants and `play` functions for interactive states. The repo also integrates with [Chromatic](https://www.chromatic.com/) for visual regression testing via CI — see the [CI / CD](#ci--cd) section.
+Run `pnpm storybook` to review components at <http://localhost:6006>. Stories live beside components as `*.stories.tsx`, with variants and `play` functions for interactive states. [Chromatic](https://www.chromatic.com/) provides visual regression checks in CI; see the [story guidelines](.github/copilot-instructions.md#storybook-and-chromatic).
 
 ## Project Structure
 
@@ -165,59 +114,32 @@ Each app has its own `src/app`, `src/env.ts`, `public`, Next config and TypeScri
 
 ## Key Conventions
 
-- **Adding env vars**: Register application variables in the owning app's `src/env.ts` unless they must be read directly by framework entry points. `EXPO_ACCESS_TOKEN` belongs only to the Order app; `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` are consumed by their respective tooling. Use the `NEXT_PUBLIC_` prefix only for client-safe values.
-- **Data fetching**: Use the dual-export pattern in `apps/web/src/components/shared/hooks/api/` — `fetch*()` for server components, `use*()` hooks for client components.
-- **Feature flags**: Use `await feature("FLAG_NAME")` in server components (see `apps/web/src/components/shared/feature.ts`). Default values are fetched from ArmadaCMS (`/api/v1/featureflags`), with Vercel flag cookie overrides applied.
-- **Adding shadcn components**: Run `pnpm dlx shadcn@latest add <component>` from the owning app directory. Components used across apps belong in `packages/shared/src/ui`.
-- **Adding pages**: Add an entry to `apps/web/src/app/sitemap.ts`. If the page is gated by a feature flag, the sitemap conditionally includes it.
-- **Cache revalidation**: The site uses ISR with on-demand revalidation. Each data hook sets `next: { revalidate: 86400, tags: ["<tag>"] }`. The CMS triggers `POST /api/revalidate` after write operations to purge specific cache tags instantly. See the [tag inventory in copilot-instructions.md](.github/copilot-instructions.md#cache-revalidation) for the full list.
-- **Analytics**: Vercel Analytics and Speed Insights are loaded in the root layout. Use `TrackedLink` from `apps/web/src/components/shared/TrackedLink.tsx` for user-interaction tracking.
-- **Brand colors**:
-  - Prefer semantic Tailwind classes like `text-melon`, `bg-coconut`, `text-licorice` (from `packages/shared/src/theme.css`).
-  - Runtime JS/TS color values live in `packages/shared/src/colors.ts` (`HEX_COLORS`).
-  - `packages/shared/src/theme.css` and `packages/shared/src/colors.ts` are a paired source of truth and must be kept in sync when adding/changing color values.
-  - Avoid hardcoded hex values in `apps/web/src/**/*.{ts,tsx,js,jsx}`; add/reuse constants in `packages/shared/src/colors.ts`.
+- Keep application code and environment variables in the owning app; register application variables in its `src/env.ts`. Only client-safe values use `NEXT_PUBLIC_`.
+- Reuse UI, fonts and theme tokens from `@armada/shared`. Keep `theme.css` and `colors.ts` synchronized when changing brand colors.
+- Web data hooks provide server `fetch*()` functions and client `use*()` hooks. Include cache tags so CMS writes can revalidate content.
+- Update Web's sitemap when adding pages, including feature-flag conditions where relevant.
+
+See the [development conventions](.github/copilot-instructions.md#conventions) for integration exceptions, feature flags, component tooling and the [cache-tag inventory](.github/copilot-instructions.md#cache-revalidation).
 
 ## CI / CD
 
-GitHub Actions are pinned to full commit SHAs with version comments. Dependabot checks for version updates every Monday at 08:00 Europe/Stockholm, covering GitHub Actions, pnpm dependencies, and Terraform providers. Minor and patch updates are grouped per ecosystem; major updates remain separate PRs and all updates use the existing review and CI requirements. See [the Dependabot configuration](.github/dependabot.yml).
+GitHub Actions checks linting, types, formatting and unit tests on pull requests and `main`/`staging` pushes. CodeQL scans Actions and JavaScript/TypeScript, while Chromatic checks Storybook interactions and visual changes. Local `pnpm test` runs both unit and Storybook tests; the CI test job runs only the unit project.
 
-CI is handled by GitHub Actions and CD by Vercel's GitHub integration.
+Vercel's GitHub integration builds and deploys the three apps independently. `main` targets production, `staging` has fixed preview domains, and other branches receive generated preview URLs. Unaffected projects can skip builds; shared-package changes affect their consumers.
 
-### GitHub Actions (CI)
+| App    | Production                                   | Staging                                                      |
+| ------ | -------------------------------------------- | ------------------------------------------------------------ |
+| Web    | [armada.nu](https://armada.nu)               | [staging.armada.nu](https://staging.armada.nu)               |
+| Photos | [photos.armada.nu](https://photos.armada.nu) | [staging.photos.armada.nu](https://staging.photos.armada.nu) |
+| Order  | [order.armada.nu](https://order.armada.nu)   | [staging.order.armada.nu](https://staging.order.armada.nu)   |
 
-CodeQL uses the checked-in Advanced setup workflow in `.github/workflows/codeql.yml`. It analyzes Actions and JavaScript/TypeScript, on pull requests to `main`/`staging` (including Dependabot), pushes to those branches, a weekly schedule, and manual dispatch. The query suite remains the CodeQL default. Actions are SHA-pinned; analysis has only source-read and security-event-upload permissions. Dependabot and fork uploads use GitHub's `pull_request` support.
+Production custom domains are public; staging and preview deployments use Vercel Authentication. Photos and Order disable indexing in every environment; Web does so outside production. Indexing directives are not access controls.
 
-Repository checks live in `.github/workflows/`:
-
-- `ci.yml` — checks lint, types, formatting and unit tests on main/staging pushes and pull requests. Application builds run in Vercel deployments.
-- `chromatic.yml` — runs on every push; builds Storybook and uploads it to Chromatic for visual regression testing. PRs get a Chromatic status check with visual diffs. `CHROMATIC_PROJECT_TOKEN` is stored as a GitHub secret — do not commit it to the repo. The `autoAcceptChanges: main` option auto-approves baseline updates on the `main` branch.
-
-Both workflows cancel superseded runs for the same branch or pull request and use
-job timeouts so stale checks do not consume runner capacity indefinitely.
-
-### Vercel (CD)
-
-Deployments are handled automatically by Vercel's GitHub integration:
-
-| App    | Vercel project  | Root Directory | Production                                   | Staging                                                      |
-| ------ | --------------- | -------------- | -------------------------------------------- | ------------------------------------------------------------ |
-| Web    | `armada-nu`     | `apps/web`     | [armada.nu](https://armada.nu)               | [staging.armada.nu](https://staging.armada.nu)               |
-| Photos | `armada-photos` | `apps/photos`  | [photos.armada.nu](https://photos.armada.nu) | [staging.photos.armada.nu](https://staging.photos.armada.nu) |
-| Order  | `armada-order`  | `apps/order`   | [order.armada.nu](https://order.armada.nu)   | [staging.order.armada.nu](https://staging.order.armada.nu)   |
-
-- `main` is the production branch and `staging` has fixed preview domains. Other branches receive generated preview URLs. Skip unaffected projects is enabled; shared-package changes affect its consumers. All projects include workspace files outside their Root Directory, use Node 24 and Stockholm (`arn1`) for functions.
-- Each app's `vercel.json` selects `pnpm build` in its app directory. Vercel detects pnpm from the workspace lockfile; the root `packageManager` pins the version and `ENABLE_EXPERIMENTAL_COREPACK=1` enables Corepack.
-- Standard Protection (`standard_protection_new`) keeps production custom domains public and protects staging, preview and generated deployment URLs with Vercel Authentication. The staging CMS uses `VERCEL_AUTOMATION_BYPASS_SECRET` for Web's revalidation endpoint. Automation bypass tokens are managed directly in Vercel.
-- Photos and Order send `noindex, nofollow` and `Referrer-Policy: no-referrer` in every environment. Web disables indexing for non-production builds and on its staging hostname, with an empty non-production sitemap. Indexing directives are not access controls; keep sensitive data out of public deployments.
-- Project settings, environment-variable definitions and domain assignments are managed in `infra/terraform/vercel/prod`. Deployments and actual environment values are managed by Vercel. Authoritative DNS is managed separately in `infra/terraform/gcp/dns-prod`, using routing records exported by the Vercel workspace. DNSSEC is enabled; Websupport is the registrar and its NS/DS settings are manual. See [`infra/terraform/README.md`](infra/terraform/README.md) for ownership boundaries.
+Actions are SHA-pinned, and [Dependabot](.github/dependabot.yml) opens weekly dependency updates. See the [Terraform overview](infra/terraform/README.md) and [Vercel guide](infra/terraform/vercel/prod/README.md) for project settings, environment ownership and DNS boundaries.
 
 ## Backend environments
 
-Set `NEXT_PUBLIC_API_URL` in the owning app's `.env.local` to select its development backend:
-
-`NEXT_PUBLIC_API_URL` is the backend origin. Do not append `/api/v1`; the data
-hooks add that path themselves.
+Set `NEXT_PUBLIC_API_URL` in the owning app's `.env.local` to one of these origins. Do not append `/api/v1`; data hooks add that path themselves.
 
 | Environment | API origin                      |
 | ----------- | ------------------------------- |
