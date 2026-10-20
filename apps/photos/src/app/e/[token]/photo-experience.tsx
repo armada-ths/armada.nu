@@ -10,8 +10,9 @@ import {
 } from "react"
 import Script from "next/script"
 import { X } from "lucide-react"
-import { shouldSkipPhotoRecaptcha } from "@photos/lib/photoRecaptcha"
+import { usesLocalPhotoApi } from "@photos/lib/photoRecaptcha"
 import { isMobilePhotoDevice } from "@photos/lib/photoDevice"
+import { createPhotoID, photoStorageURL } from "@photos/lib/photoClient"
 import { env } from "@photos/env"
 
 type EventInfo = {
@@ -54,9 +55,12 @@ declare global {
   }
 }
 
-const api = env.NEXT_PUBLIC_API_URL
-const siteKey = env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-const skipLocalRecaptcha = shouldSkipPhotoRecaptcha(api, process.env.NODE_ENV)
+const configuredApi = env.NEXT_PUBLIC_API_URL
+const localApi = usesLocalPhotoApi(configuredApi, process.env.NODE_ENV)
+const siteKey = localApi
+  ? env.NEXT_PUBLIC_LOCAL_RECAPTCHA_SITE_KEY
+  : env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+const api = localApi ? "" : configuredApi
 
 // Device information is constant for this page; SSR must not access navigator.
 const subscribeToDevice = () => () => {}
@@ -67,14 +71,13 @@ function guestID() {
   const key = "armada-photo-guest"
   let value = localStorage.getItem(key)
   if (!value) {
-    value = crypto.randomUUID()
+    value = createPhotoID()
     localStorage.setItem(key, value)
   }
   return value
 }
 
 function recaptchaToken(): Promise<string> {
-  if (skipLocalRecaptcha) return Promise.resolve("")
   return new Promise((resolve, reject) => {
     const enterprise = window.grecaptcha?.enterprise
     if (!enterprise || !siteKey) {
@@ -438,7 +441,7 @@ export function PhotoExperience({
       return
     }
     const next = {
-      id: crypto.randomUUID(),
+      id: createPhotoID(),
       file,
       preview: URL.createObjectURL(file)
     }
@@ -529,7 +532,7 @@ export function PhotoExperience({
 
   return (
     <main className="mx-auto min-h-screen max-w-5xl px-4 py-8 sm:px-8">
-      {mobileDevice && siteKey && !skipLocalRecaptcha && (
+      {mobileDevice && siteKey && (
         <Script
           src={`https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`}
           strategy="afterInteractive"
@@ -747,7 +750,7 @@ export function PhotoExperience({
                   onClick={() => setSelected(photo.id)}
                   className="aspect-square overflow-hidden rounded-lg bg-gray-200">
                   <img
-                    src={photo.url}
+                    src={photoStorageURL(photo.url, localApi)}
                     alt={`Photo ${index + 1} from ${info.name}`}
                     className="h-full w-full object-cover"
                   />
@@ -805,7 +808,7 @@ export function PhotoExperience({
               ‹
             </button>
             <img
-              src={selectedPhoto.url}
+              src={photoStorageURL(selectedPhoto.url, localApi)}
               alt={`Photo ${selectedIndex + 1}`}
               className="max-h-full max-w-[85vw] min-w-0 object-contain"
             />

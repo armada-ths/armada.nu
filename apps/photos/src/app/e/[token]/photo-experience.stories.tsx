@@ -97,6 +97,32 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+export const HttpLan: Story = {
+  beforeEach: () => {
+    const original = Object.getOwnPropertyDescriptor(crypto, "randomUUID")
+    Object.defineProperty(crypto, "randomUUID", {
+      configurable: true,
+      value: undefined
+    })
+    localStorage.removeItem("armada-photo-guest")
+    return () => {
+      if (original) Object.defineProperty(crypto, "randomUUID", original)
+      else Reflect.deleteProperty(crypto, "randomUUID")
+    }
+  },
+  play: async ({ canvas }) => {
+    await canvas.findByRole("heading", { name: "Banquet test event" })
+    await userEvent.click(canvas.getByRole("checkbox"))
+    await userEvent.upload(
+      canvas.getByLabelText("Take photo with camera"),
+      await cameraPhoto(1)
+    )
+    await expect(
+      canvas.getByRole("button", { name: "Upload photos (1)" })
+    ).toBeEnabled()
+  }
+}
+
 export const UploadReady: Story = {
   play: async ({ canvas }) => {
     await expect(
@@ -191,6 +217,31 @@ export const BatchUpload: Story = {
     } finally {
       globalThis.XMLHttpRequest = originalXHR
     }
+  }
+}
+
+export const VerificationUnavailable: Story = {
+  args: {
+    getVerificationToken: fn(async () => {
+      throw new Error("Verification could not be loaded.")
+    })
+  },
+  play: async ({ canvas }) => {
+    await canvas.findByRole("heading", { name: "Banquet test event" })
+    await userEvent.click(canvas.getByRole("checkbox"))
+    await userEvent.upload(
+      canvas.getByLabelText("Take photo with camera"),
+      await cameraPhoto(1)
+    )
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Upload photos (1)" })
+    )
+    await expect(
+      await canvas.findByText("Verification could not be loaded.")
+    ).toBeInTheDocument()
+    await expect(
+      canvas.queryByText("Awaiting approval")
+    ).not.toBeInTheDocument()
   }
 }
 
