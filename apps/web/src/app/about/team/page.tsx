@@ -7,7 +7,8 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: `Armada Organization`,
-  description: "Meet all the volunteers that make Armada possible"
+  description: "Meet all the volunteers that make Armada possible",
+  robots: { index: false, follow: false }
 }
 
 export default async function TeamPage() {

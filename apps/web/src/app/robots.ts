@@ -8,12 +8,8 @@ export default function robots(): MetadataRoute.Robots {
     return { rules: { userAgent: "*", allow: "/" } }
   }
   return {
-    rules: [
-      {
-        userAgent: "*",
-        disallow: "/about/team"
-      }
-    ],
+    // Page-specific exclusions use noindex metadata, which requires crawling.
+    rules: { userAgent: "*", allow: "/" },
     sitemap: "https://armada.nu/sitemap.xml"
   }
 }
