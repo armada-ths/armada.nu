@@ -66,7 +66,9 @@ const meta = {
               ? [
                   {
                     id: 1,
-                    url: "/icons/armada-icon.svg",
+                    url: "/icons/armada-icon.svg?full",
+                    thumbnail_url: "/icons/armada-icon.svg?thumbnail",
+                    urls_expires_at: "2099-01-01T00:00:00Z",
                     width: 64,
                     height: 64,
                     approved_at: "2026-10-07T12:00:00Z"
@@ -321,7 +323,15 @@ export const DesktopGallery: Story = {
     await canvas.findByRole("heading", { name: "Banquet test event" })
     await userEvent.click(canvas.getByRole("button", { name: "Gallery" }))
     const photo = await canvas.findByAltText("Photo 1 from Banquet test event")
+    await expect(photo).toHaveAttribute(
+      "src",
+      "/icons/armada-icon.svg?thumbnail"
+    )
     await userEvent.click(photo)
+    await expect(canvas.getByAltText("Photo 1")).toHaveAttribute(
+      "src",
+      "/icons/armada-icon.svg?full"
+    )
     await expect(
       canvas.getByRole("dialog", { name: "Photo viewer" })
     ).toBeInTheDocument()
@@ -331,6 +341,7 @@ export const DesktopGallery: Story = {
     ).toBeInTheDocument()
     await userEvent.click(canvas.getByRole("button", { name: "Close" }))
     await expect(canvas.queryByRole("dialog")).not.toBeInTheDocument()
+    await expect(photo.closest("button")).toHaveFocus()
   }
 }
 
@@ -342,5 +353,26 @@ export const IPadUploadReady: Story = {
     await expect(
       canvas.getByRole("button", { name: "Open camera" })
     ).toBeEnabled()
+  }
+}
+
+export const StagedPhotosSurviveTabSwitch: Story = {
+  play: async ({ canvas }) => {
+    await canvas.findByRole("heading", { name: "Share your photos" })
+    await userEvent.click(canvas.getByRole("checkbox"))
+    await userEvent.upload(
+      canvas.getByLabelText("Take photo with camera"),
+      await cameraPhoto(1)
+    )
+    await expect(
+      canvas.getByAltText("Photo 1 ready to upload")
+    ).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole("button", { name: "Gallery" }))
+    await expect(canvas.getByText(/no photos/i)).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole("button", { name: "Upload" }))
+    await expect(
+      canvas.getByAltText("Photo 1 ready to upload")
+    ).toBeInTheDocument()
+    await expect(canvas.getByRole("checkbox")).toBeChecked()
   }
 }
