@@ -22,6 +22,11 @@ const meta = {
   title: "Photos/PhotoGrid",
   component: PhotoGrid,
   tags: ["autodocs"],
+  parameters: {
+    // The virtualizer reserves the full scroll height for 1,000 photos.
+    // Capture the visible viewport instead of a tens-of-thousands-pixel image.
+    chromatic: { cropToViewport: true }
+  },
   args: {
     photos,
     eventName: "Large gallery",
@@ -65,6 +70,10 @@ export const LargeGallery: Story = {
       )
     )
     window.scrollTo(0, 0)
+    await waitFor(() => expect(window.scrollY).toBe(0))
+    await waitFor(() =>
+      expect(canvasElement.querySelector('[data-photo-id="1"]')).not.toBeNull()
+    )
   }
 }
 function UpdatingGrid() {
@@ -122,6 +131,12 @@ export const LiveUpdates: Story = {
       ).toBeLessThan(2)
     )
     window.scrollTo(0, 0)
+    await waitFor(() => expect(window.scrollY).toBe(0))
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector('[data-photo-id="2000"]')
+      ).not.toBeNull()
+    )
   }
 }
 function RenewingGrid() {
