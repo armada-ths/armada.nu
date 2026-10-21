@@ -36,6 +36,7 @@ const meta = {
   decorators: [
     Story => (
       <div className="bg-coconut px-12 sm:px-16">
+        <h1 className="sr-only">Armada homepage</h1>
         <Story />
       </div>
     )
@@ -49,11 +50,14 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole("heading", { name: "Gold Exhibitors" })
+      canvas.getByRole("heading", { name: "Gold Exhibitors", level: 2 })
     ).toBeInTheDocument()
     await expect(
       canvas.getByRole("link", { name: "Northstar Engineering" })
     ).toHaveAttribute("href", "https://example.com/engineering")
+    await expect(
+      canvas.getByRole("heading", { name: "Northstar Engineering", level: 3 })
+    ).toBeInTheDocument()
     const secondSlide = await canvas.findByRole("button", {
       name: "Go to slide 2"
     })

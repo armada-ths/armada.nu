@@ -10,6 +10,7 @@ const meta = {
   decorators: [
     Story => (
       <div className="bg-coconut mx-auto max-w-6xl px-5">
+        <h1 className="sr-only">Armada homepage</h1>
         <Story />
       </div>
     )
@@ -62,7 +63,7 @@ async function checkAnimationCoverage(canvasElement: HTMLElement) {
 export const Default: Story = {
   play: async ({ canvas, canvasElement }) => {
     await expect(
-      canvas.getByRole("heading", { name: "Silver Exhibitors" })
+      canvas.getByRole("heading", { name: "Silver Exhibitors", level: 2 })
     ).toBeInTheDocument()
     await expect(canvas.getAllByRole("img")).toHaveLength(144)
     await checkAnimationCoverage(canvasElement)
@@ -109,7 +110,7 @@ export const Empty: Story = {
   args: { logos: [] },
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole("heading", { name: "Silver Exhibitors" })
+      canvas.getByRole("heading", { name: "Silver Exhibitors", level: 2 })
     ).toBeInTheDocument()
     await expect(canvas.queryByRole("img")).not.toBeInTheDocument()
   }
