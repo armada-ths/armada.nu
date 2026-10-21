@@ -35,8 +35,19 @@ const meta = {
     onRangeChange: fn()
   },
   decorators: [
-    Story => (
-      <div style={{ width: 960, maxWidth: "100%" }}>
+    (Story, { parameters }) => (
+      <div
+        style={{
+          width: 960,
+          maxWidth: "100%",
+          // cropToViewport still lets Chromatic use a full-page screenshot.
+          // Clip visual fixtures so capturing the virtual scroll spacer cannot
+          // resize the viewport and trigger a new virtualizer layout mid-capture.
+          ...(parameters.boundedViewport && {
+            height: "min(720px, calc(100vh - 32px))",
+            overflow: "clip"
+          })
+        }}>
         <Story />
       </div>
     )
@@ -45,11 +56,9 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Visual stories never visit distant rows before capture. Wait for the final
-// layout and visible image decoding instead of relying on a capture delay.
-async function settleGrid(canvasElement: HTMLElement, firstID: number) {
-  await document.fonts.ready
-  window.scrollTo(0, 0)
+// Visual fixtures stay within the viewport; the separate unbounded stories
+// cover navigation and scroll anchoring through the full gallery.
+async function expectViewportGrid(canvasElement: HTMLElement, firstID: number) {
   await waitFor(() => {
     expect(window.scrollY).toBe(0)
     const first = canvasElement.querySelector<HTMLElement>(
@@ -57,22 +66,16 @@ async function settleGrid(canvasElement: HTMLElement, firstID: number) {
     )
     expect(first).not.toBeNull()
     expect(first!.getBoundingClientRect().width).toBeGreaterThan(0)
+    expect(document.documentElement.scrollHeight).toBeLessThanOrEqual(
+      window.innerHeight
+    )
   })
-  await new Promise<void>(resolve =>
-    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
-  )
-  const images = Array.from(
-    canvasElement.querySelectorAll<HTMLImageElement>("img")
-  ).filter(image => {
-    const rect = image.getBoundingClientRect()
-    return rect.top < window.innerHeight && rect.bottom > 0
-  })
-  await Promise.all(images.map(image => image.decode()))
 }
 
 export const LargeGallery: Story = {
+  parameters: { boundedViewport: true },
   play: async ({ canvasElement }) => {
-    await settleGrid(canvasElement, 1)
+    await expectViewportGrid(canvasElement, 1)
   }
 }
 
@@ -143,14 +146,15 @@ function UpdatingGrid() {
   )
 }
 export const LiveUpdates: Story = {
+  parameters: { boundedViewport: true },
   render: () => <UpdatingGrid />,
   play: async ({ canvas, canvasElement }) => {
-    await settleGrid(canvasElement, 1)
+    await expectViewportGrid(canvasElement, 1)
     const prepend = canvas.getByRole("button", { name: "Prepend photos" })
     await userEvent.click(prepend)
     await userEvent.unhover(prepend)
     prepend.blur()
-    await settleGrid(canvasElement, 2000)
+    await expectViewportGrid(canvasElement, 2000)
   }
 }
 
