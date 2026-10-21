@@ -1,6 +1,8 @@
 import { Countdown, CountdownCard } from "@/app/_components/Countdown"
+import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
+import RollingBannerSilver from "@/app/_components/RollingBannerSilver"
 import { Hero1 } from "@/components/hero7"
 import { HighlightCard } from "@/components/highlight-card"
 import { feature } from "@/components/shared/feature"
@@ -8,6 +10,7 @@ import {
   fetchDates,
   isExhibitorSignupOpen
 } from "@/components/shared/hooks/api/useDates"
+import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { fetchHighlightCards } from "@/components/shared/hooks/api/useHighlightCards"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
@@ -20,13 +23,30 @@ import { DateTime } from "luxon"
 import Link from "next/link"
 
 export default async function HomePage() {
-  const [dates, exhibitorPackagesEnabled, highlightCards, recruitment] =
-    await Promise.all([
-      fetchDates(),
-      feature("EXHIBITOR_PACKAGES"),
-      fetchHighlightCards(),
-      fetchRecruitment({ next: { revalidate: 86400 } })
-    ])
+  const [
+    dates,
+    exhibitorPackagesEnabled,
+    highlightCards,
+    recruitment,
+    exhibitors
+  ] = await Promise.all([
+    fetchDates(),
+    feature("EXHIBITOR_PACKAGES"),
+    fetchHighlightCards(),
+    fetchRecruitment({ next: { revalidate: 86400 } }),
+    feature("EXHIBITOR_PAGE").then(enabled =>
+      enabled ? fetchExhibitors() : []
+    )
+  ])
+
+  const goldExhibitors = exhibitors.filter(
+    exhibitor => exhibitor.tier === "Gold"
+  )
+  const silverLogos = exhibitors
+    .filter(exhibitor => exhibitor.tier === "Silver")
+    .flatMap(exhibitor =>
+      exhibitor.logoFreesize ? [exhibitor.logoFreesize] : []
+    )
 
   const now = DateTime.now()
   const recruitmentOpen =
@@ -173,6 +193,13 @@ export default async function HomePage() {
 
             {/* <MapWrapper /> */}
           </div>
+          {goldExhibitors.length > 0 && (
+            <GoldExhibitors exhibitors={goldExhibitors} />
+          )}
+          {silverLogos.length > 0 && (
+            <RollingBannerSilver logos={silverLogos} />
+          )}
+
           {/* About section */}
           <Page.Header className="mt-8">About Armada</Page.Header>
           <P className="mt-4">
