@@ -16,7 +16,7 @@ const photos = Array.from({ length: 1000 }, (_, index) => ({
   id: index + 1,
   url: "/full-photo.jpg",
   thumbnail_url: thumb,
-  urls_expires_at: new Date(Date.now() + 3600_000).toISOString()
+  urls_expires_at: "2099-01-01T00:00:00Z"
 }))
 const meta = {
   title: "Photos/PhotoGrid",
@@ -36,7 +36,7 @@ const meta = {
   },
   decorators: [
     Story => (
-      <div style={{ maxWidth: 960 }}>
+      <div style={{ width: 960, maxWidth: "100%" }}>
         <Story />
       </div>
     )
@@ -45,7 +45,42 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+// Visual stories never visit distant rows before capture. Wait for the final
+// layout and visible image decoding instead of relying on a capture delay.
+async function settleGrid(canvasElement: HTMLElement, firstID: number) {
+  await document.fonts.ready
+  window.scrollTo(0, 0)
+  await waitFor(() => {
+    expect(window.scrollY).toBe(0)
+    const first = canvasElement.querySelector<HTMLElement>(
+      `[data-photo-id="${firstID}"]`
+    )
+    expect(first).not.toBeNull()
+    expect(first!.getBoundingClientRect().width).toBeGreaterThan(0)
+  })
+  await new Promise<void>(resolve =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+  )
+  const images = Array.from(
+    canvasElement.querySelectorAll<HTMLImageElement>("img")
+  ).filter(image => {
+    const rect = image.getBoundingClientRect()
+    return rect.top < window.innerHeight && rect.bottom > 0
+  })
+  await Promise.all(images.map(image => image.decode()))
+}
+
 export const LargeGallery: Story = {
+  play: async ({ canvasElement }) => {
+    await settleGrid(canvasElement, 1)
+  }
+}
+
+// Keep navigation coverage in Vitest/Storybook without capturing its transient
+// focus and virtualizer state as a visual baseline.
+export const LargeGalleryNavigation: Story = {
+  parameters: { chromatic: { disableSnapshot: true } },
+
   play: async ({ canvasElement, args }) => {
     const cards = () =>
       canvasElement.querySelectorAll<HTMLButtonElement>("[data-photo-id]")
@@ -110,6 +145,20 @@ function UpdatingGrid() {
 export const LiveUpdates: Story = {
   render: () => <UpdatingGrid />,
   play: async ({ canvas, canvasElement }) => {
+    await settleGrid(canvasElement, 1)
+    const prepend = canvas.getByRole("button", { name: "Prepend photos" })
+    await userEvent.click(prepend)
+    await userEvent.unhover(prepend)
+    prepend.blur()
+    await settleGrid(canvasElement, 2000)
+  }
+}
+
+export const LiveUpdatesScrollAnchoring: Story = {
+  parameters: { chromatic: { disableSnapshot: true } },
+
+  render: () => <UpdatingGrid />,
+  play: async ({ canvas, canvasElement }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Focus photo 900" })
     )
@@ -150,7 +199,7 @@ function RenewingGrid() {
     setCalls(ids)
     return {
       thumbnail_urls: Object.fromEntries(ids.map(id => [id, thumb])),
-      urls_expires_at: new Date(Date.now() + 3600_000).toISOString()
+      urls_expires_at: "2099-01-01T00:00:00Z"
     }
   }).current
   usePhotoLinks("story", items, setItems, [1, 2], renew)
