@@ -267,6 +267,11 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
           <FooterAffiliations />
         </div>
       </div>
+      <a
+        href="/cookies"
+        className="hover:text-melon mt-8 text-sm underline underline-offset-4">
+        Cookies & browser storage
+      </a>
     </footer>
   )
 }
