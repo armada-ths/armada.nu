@@ -1,3 +1,4 @@
+import { CookieInformation } from "@armada/shared/CookieInformation"
 import { Page } from "@armada/shared/Page"
 import type { Metadata } from "next"
 import Link from "next/link"
@@ -77,6 +78,11 @@ export default function PhotoPrivacyPage() {
               link itself and may still be handled by the hosting infrastructure
               when the page is requested.
             </p>
+          </section>
+
+          <section id="cookies" className={`${sectionClass} scroll-mt-8`}>
+            <h2 className={headingClass}>Cookies & browser storage</h2>
+            <CookieInformation site="photos" />
           </section>
 
           <section className={sectionClass}>

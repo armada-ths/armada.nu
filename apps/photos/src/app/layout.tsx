@@ -1,3 +1,4 @@
+import { LegalFooter } from "@armada/shared/LegalFooter"
 import type { Metadata } from "next"
 import { fontVariables } from "@armada/shared/fonts"
 import { AppTelemetry } from "@armada/shared/telemetry"
@@ -25,6 +26,7 @@ export default function PhotosLayout({
           data-photo-app
           className="min-h-screen bg-[#f7f5f2] text-[#172b35]">
           {children}
+          <LegalFooter site="photos" />
         </div>
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { LegalFooter } from "@armada/shared/LegalFooter"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { fontVariables } from "@armada/shared/fonts"
@@ -28,6 +29,7 @@ export default function OrderLayout({
           </Link>
         </header>
         {children}
+        <LegalFooter site="order" />
         <Toaster expand closeButton />
       </body>
     </html>

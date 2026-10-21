@@ -16,6 +16,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const entries: SitemapEntry[] = [
     {
+      url: "https://armada.nu/cookies",
+      changeFrequency: "yearly",
+      priority: 0.2
+    },
+    {
       url: "https://armada.nu",
       changeFrequency: "monthly",
       priority: 1

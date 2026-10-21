@@ -37,6 +37,9 @@ export const Default: Story = {
         name: "Sture Logo"
       })
     ).toBeInTheDocument()
+    await expect(
+      canvas.getByRole("link", { name: "Cookies & browser storage" })
+    ).toHaveAttribute("href", "/cookies")
     await expect(canvas.getAllByText("Member of:")).toHaveLength(2)
     await expect(
       canvas.getByRole("img", {
@@ -66,5 +69,14 @@ export const ExternalRegistration: Story = {
         name: "Registration"
       })
     ).toHaveAttribute("href", "https://app.eventro.se/register/armada")
+  }
+}
+
+export const Mobile: Story = {
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("link", { name: "Cookies & browser storage" })
+    ).toBeVisible()
   }
 }

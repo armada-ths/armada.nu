@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./CookieInformation": "./src/CookieInformation.tsx",
+    "./LegalFooter": "./src/LegalFooter.tsx",
     "./Page": "./src/Page.tsx",
     "./colors": "./src/colors.ts",
     "./cn": "./src/cn.ts",
