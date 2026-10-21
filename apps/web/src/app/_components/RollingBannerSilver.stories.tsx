@@ -15,14 +15,13 @@ const meta = {
     )
   ],
   args: {
-    logos: [
-      "/armada_licorice.svg",
-      "/sture-logo-up.png",
-      "/LogoDCS-300dpi.png",
-      "/sture-logo-up.png",
-      "/armada_licorice.svg",
-      "/LogoDCS-300dpi.png"
-    ]
+    logos: Array.from(
+      { length: 24 },
+      (_, index) =>
+        ["/armada_licorice.svg", "/sture-logo-up.png", "/LogoDCS-300dpi.png"][
+          index % 3
+        ]
+    )
   }
 } satisfies Meta<typeof RollingBannerSilver>
 
@@ -34,7 +33,7 @@ export const Default: Story = {
     await expect(
       canvas.getByRole("heading", { name: "Silver Exhibitors" })
     ).toBeInTheDocument()
-    await expect(canvas.getAllByRole("img")).toHaveLength(12)
+    await expect(canvas.getAllByRole("img")).toHaveLength(48)
   }
 }
 
