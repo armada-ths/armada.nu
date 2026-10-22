@@ -3,6 +3,9 @@ const getEnvVar = (key: string, defaultValue = "") => {
 }
 
 export const env = {
+  // Browser-visible, API/referrer-restricted key. Static access is required for Next.js inlining.
+  NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY:
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY || "",
   SLACK_SALES_HOOK_URL: getEnvVar("SLACK_SALES_HOOK_URL"),
   NEXT_PUBLIC_API_URL: getEnvVar("NEXT_PUBLIC_API_URL"),
   NEXT_PUBLIC_RECAPTCHA_SITE_KEY: getEnvVar("NEXT_PUBLIC_RECAPTCHA_SITE_KEY"),
