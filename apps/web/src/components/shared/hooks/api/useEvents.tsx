@@ -7,8 +7,10 @@ export interface Event {
   id: number
   name: string
   description: string
-  location: string
-  food: string
+  location?: string | null
+  food?: string | null
+  openTo?: string | null
+  mapUrl?: string | null
   eventStart: number | string
   eventEnd: number | string
   eventStartString?: string

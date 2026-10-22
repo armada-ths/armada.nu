@@ -12,7 +12,9 @@ import {
   shouldBypassNextImageOptimization
 } from "@/lib/utils"
 
-import { Calendar, Clock, Coins, MapPin, User, Utensils } from "lucide-react"
+import { EventMap } from "./EventMap"
+
+import { Calendar, Clock, Coins, MapPin, Users, Utensils } from "lucide-react"
 import Image from "next/image"
 import { ReactNode } from "react"
 
@@ -22,17 +24,19 @@ function InfoBoxItem({
   icon
 }: {
   label: string
-  value: string
+  value?: string | null
   icon?: ReactNode
 }) {
-  if (value == null) return
+  if (!value?.trim()) return null
   return (
     <div className="grid grid-cols-[1fr_1.4fr] gap-3 text-sm">
       <div className="text-licorice flex gap-2">
         <span className="mt-0.5 w-5 shrink-0">{icon}</span>
         <span className="font-bold">{label}</span>
       </div>
-      <span className="text-licorice/75">{value}</span>
+      <span className="text-licorice/75 wrap-break-word whitespace-pre-line">
+        {value}
+      </span>
     </div>
   )
 }
@@ -56,7 +60,7 @@ export default function EventDetails({
   return (
     <div
       className={cn(
-        "mx-auto flex max-w-150 flex-col gap-6 lg:grid lg:max-w-250 lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-10 lg:gap-y-0",
+        "mx-auto flex max-h-[calc(80dvh-3rem)] max-w-150 flex-col gap-6 overflow-y-auto lg:grid lg:max-h-none lg:max-w-250 lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-10 lg:gap-y-0 lg:overflow-hidden",
         className
       )}>
       <Page.Header className="text-licorice lg:col-start-1 lg:row-start-1 lg:pb-6">
@@ -97,15 +101,15 @@ export default function EventDetails({
           label="Time"
           value={`${formatTimestampAsTime(event.eventStart)} - ${formatTimestampAsTime(event.eventEnd)}`}
           icon={<Clock size={16} />}></InfoBoxItem>
+        <InfoBoxItem
+          label="Open to"
+          value={event.openTo}
+          icon={<Users size={16} />}
+        />
+        <EventMap mapUrl={event.mapUrl} name={event.name} />
         {/* Separator */}
         <div className="bg-licorice/20 h-0.5 w-full" />
         {/* Bottom row */}
-        {event.eventMaxCapacity > 0 && (
-          <InfoBoxItem
-            label="Capacity"
-            value={`${event.eventMaxCapacity} participants`}
-            icon={<User size={16} />}></InfoBoxItem>
-        )}
         <InfoBoxItem
           label="Food"
           value={event.food}

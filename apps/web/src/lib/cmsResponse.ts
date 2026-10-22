@@ -42,7 +42,10 @@ export const fairDateSchema = z.object({
 export const eventSchema = z.object({
   id: z.number(),
   name: z.string(),
-  location: z.string(),
+  location: z.string().nullish(),
+  food: z.string().nullish(),
+  openTo: z.string().nullish(),
+  mapUrl: z.string().nullish(),
   eventStart: z.union([z.string(), z.number()]),
   eventEnd: z.union([z.string(), z.number()]),
   registrationRequired: z.boolean()
