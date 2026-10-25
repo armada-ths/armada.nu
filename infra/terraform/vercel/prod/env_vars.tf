@@ -14,6 +14,9 @@
 
 locals {
   app_env = {
+    web_maps_embed_production                                     = { app = "web", key = "NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY", target = ["production"], sensitive = false }
+    web_maps_embed_preview                                        = { app = "web", key = "NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY", target = ["preview"], sensitive = false }
+    web_maps_embed_development                                    = { app = "web", key = "NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY", target = ["development"], sensitive = false }
     web_next_public_recaptcha_site_key_production                 = { app = "web", key = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY", target = ["production"], sensitive = false }
     web_next_public_recaptcha_site_key_preview                    = { app = "web", key = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY", target = ["preview"], sensitive = false }
     web_slack_sales_hook_url_production                           = { app = "web", key = "SLACK_SALES_HOOK_URL", target = ["production"], sensitive = true }
