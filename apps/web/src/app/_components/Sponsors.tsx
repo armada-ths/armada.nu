@@ -36,7 +36,7 @@ export default function Sponsors() {
   return (
     <section
       aria-labelledby="sponsors-heading"
-      className="bg-snow text-licorice mt-8">
+      className="bg-snow text-licorice border-licorice mt-8 border-t-2 border-solid">
       <Page.Boundary className="mt-0 px-6 py-14 sm:py-16">
         <h2
           id="sponsors-heading"
@@ -48,7 +48,7 @@ export default function Sponsors() {
             <li key={sponsor.name} className="flex justify-center">
               <a
                 href={sponsor.href}
-                className="focus-visible:outline-licorice flex h-40 w-full max-w-72 items-center justify-center rounded-md px-4 transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4">
+                className="focus-visible:outline-licorice flex h-40 w-full max-w-72 items-center justify-center rounded-md px-4 focus-visible:outline-2 focus-visible:outline-offset-4">
                 <Image
                   src={sponsor.logo}
                   alt={sponsor.name}

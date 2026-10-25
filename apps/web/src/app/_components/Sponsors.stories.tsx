@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect } from "storybook/test"
+import { expect, userEvent } from "storybook/test"
 
 import Sponsors from "./Sponsors"
 
@@ -25,6 +25,10 @@ const meta = {
         href
       )
       await expect(canvas.getByRole("img", { name })).toBeVisible()
+      const link = canvas.getByRole("link", { name })
+      await userEvent.hover(link)
+      await expect(link).toHaveStyle({ opacity: "1" })
+      await userEvent.unhover(link)
     }
   }
 } satisfies Meta<typeof Sponsors>
