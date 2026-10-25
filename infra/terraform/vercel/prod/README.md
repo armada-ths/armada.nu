@@ -64,7 +64,7 @@ If the variable already exists in Vercel, retrieve its ID without logging its va
 
 `vercel_domain_config` retrieves routing recommendations for seven custom domains. `vercel_dns_records` exports stable RRset keys, fully qualified names, TTLs and A/CNAME values to `THS-Armada/armadanu-gcp-dns-prod` through `tfe_outputs`. Generated vercel.app domains do not belong in Cloud DNS.
 
-Apply this workspace before planning/applying DNS. Grant the DNS workspace output-read access in HCP Terraform and configure its tfe provider credentials. DNS reads public outputs, not the complete Vercel state; it needs no Vercel API credential. Review every recommended IPv4 and CNAME change. Domain assignments do not wait for DNS readiness, avoiding a circular dependency.
+Apply this workspace before planning/applying DNS. The DNS workspace requires output-read access and tfe provider credentials. DNS reads public outputs, not the complete Vercel state; it needs no Vercel API credential. Review every recommended IPv4 and CNAME change. Domain assignments do not wait for DNS readiness, avoiding a circular dependency.
 
 ## Validation and changes
 
