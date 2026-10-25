@@ -23,7 +23,7 @@ export interface Event {
   signupLink: string
   canCreateTeams: boolean
   canJoinTeams: boolean
-  openForSignupStudent: boolean
+  openForSignupStudent?: boolean
   openForSignupCompany: boolean
   eventMaxCapacity: number
   participantCount: number

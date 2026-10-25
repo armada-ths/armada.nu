@@ -118,7 +118,7 @@ export default function EventDetails({
           label="Fee"
           value={event.fee}
           icon={<Coins size={16} />}></InfoBoxItem>
-        {event.openForSignupStudent && registrationClose && (
+        {registrationClose !== null && (
           <p className="text-licorice/65 mt-3 -mb-1 text-xs">
             Registration closes {formatTimestampAsDate(event.registrationEnd)}
           </p>

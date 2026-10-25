@@ -225,3 +225,46 @@ export const MobileMap: Story = {
     }
   }
 }
+
+export const CmsRegistrationDeadline: Story = {
+  args: {
+    events: [{ ...eventDefaults, openForSignupStudent: undefined }]
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Registration closes 5 October")
+    ).toBeInTheDocument()
+    await userEvent.click(
+      canvas.getByRole("link", { name: /Women in Tech Evening/i })
+    )
+    const dialog = within(await within(document.body).findByRole("dialog"))
+    await expect(
+      dialog.getByText("Registration closes 5 October")
+    ).toBeInTheDocument()
+    await expect(dialog.getByRole("link", { name: "Sign up" })).toHaveAttribute(
+      "href",
+      eventDefaults.signupLink
+    )
+  }
+}
+
+export const WithoutRegistrationDeadline: Story = {
+  args: {
+    events: [{ ...eventDefaults, registrationEnd: undefined }]
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.queryByText(/Registration closes/)
+    ).not.toBeInTheDocument()
+    await userEvent.click(
+      canvas.getByRole("link", { name: /Women in Tech Evening/i })
+    )
+    const dialog = within(await within(document.body).findByRole("dialog"))
+    await expect(
+      dialog.queryByText(/Registration closes/)
+    ).not.toBeInTheDocument()
+    await expect(
+      dialog.getByRole("link", { name: "Sign up" })
+    ).toBeInTheDocument()
+  }
+}
