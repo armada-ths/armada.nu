@@ -48,6 +48,7 @@ export default function Sponsors() {
             <li key={sponsor.name} className="flex justify-center">
               <a
                 href={sponsor.href}
+                target="_blank"
                 className="focus-visible:outline-licorice flex h-40 w-full max-w-72 items-center justify-center rounded-md px-4 focus-visible:outline-2 focus-visible:outline-offset-4">
                 <Image
                   src={sponsor.logo}
