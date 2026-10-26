@@ -6,7 +6,12 @@
     "back": "Gå tillbaka",
     "comingSoon": "Mer information kommer snart",
     "notifications": "Meddelanden",
-    "closeToast": "Stäng meddelandet"
+    "closeToast": "Stäng meddelandet",
+    "notFoundTitle": "Sidan hittades inte",
+    "notFoundDescription": "Kontrollera länken eller gå tillbaka till startsidan.",
+    "home": "Till startsidan",
+    "errorTitle": "Något gick fel",
+    "tryAgain": "Försök igen"
   },
   "Order": {
     "emptyCompany": "Ange ett företagsnamn.",

@@ -1,3 +1,4 @@
+import { Link } from "@armada/shared/i18n/navigation"
 import { TimelineEntry } from "@/components/shared/hooks/api/useTimelineEntries"
 import ReactMarkdown from "react-markdown"
 
@@ -31,9 +32,9 @@ function EntryBody({ body }: { body: string }) {
           <ol className="mb-3 list-decimal pl-5 last:mb-0">{children}</ol>
         ),
         a: ({ children, href }) => (
-          <a href={href} className="underline">
+          <Link href={href ?? "#"} className="underline">
             {children}
-          </a>
+          </Link>
         ),
         h1: ({ children }) => (
           <h1 className="font-bebas-neue text-2xl">{children}</h1>

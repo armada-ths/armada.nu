@@ -1,6 +1,6 @@
 import { getLocale } from "next-intl/server"
 import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
-import { localeAlternates } from "@/i18n/metadata"
+import { pageMetadata } from "@/i18n/metadata"
 import { LocalizedText } from "@/i18n/text"
 import { PostItem } from "@/components/blog/PostItem"
 import { fetchBlogPostById } from "@/components/shared/hooks/api/useBlogPosts"
@@ -16,12 +16,9 @@ export async function generateMetadata({
   const { id } = await params
   const locale = normalizeLocale(await getLocale())
   const post = await fetchBlogPostById(Number(id))
+  if (!post) notFound()
   const title = localizedText(locale, post.title, post.titleSv)
-  return {
-    ...(await localeAlternates("/blog/" + id)),
-    title,
-    openGraph: { title }
-  }
+  return pageMetadata("/blog/" + id, { title })
 }
 
 export default async function BlogPostPage({

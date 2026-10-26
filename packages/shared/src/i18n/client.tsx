@@ -12,6 +12,7 @@ import {
 } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import type { AbstractIntlMessages } from "next-intl"
+import { Link } from "./navigation"
 import { localePath, normalizeLocale, stripLocalePrefix } from "./routing"
 
 type Drafts = Record<string, unknown>
@@ -134,4 +135,32 @@ export function LocaleMetadata() {
     if (element) element.setAttribute("content", description)
   }, [title, description])
   return null
+}
+
+export function NotFoundView() {
+  const t = useTranslations("Common")
+  return (
+    <section className="mx-auto max-w-xl px-6 py-20 text-center">
+      <h1 className="text-3xl font-bold">{t("notFoundTitle")}</h1>
+      <p className="my-6">{t("notFoundDescription")}</p>
+      <Link href="/" className="underline">
+        {t("home")}
+      </Link>
+    </section>
+  )
+}
+export function ErrorView({ reset }: { reset: () => void }) {
+  const t = useTranslations("Common")
+  return (
+    <section className="mx-auto max-w-xl px-6 py-20 text-center" role="alert">
+      <h1 className="text-3xl font-bold">{t("errorTitle")}</h1>
+      <p className="my-6">{t("error")}</p>
+      <button
+        type="button"
+        onClick={reset}
+        className="rounded-full border px-4 py-2">
+        {t("tryAgain")}
+      </button>
+    </section>
+  )
 }
