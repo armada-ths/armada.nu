@@ -8,7 +8,7 @@ export default function PhotosHome() {
         Scan your event's QR code to upload and view photos.
       </p>
       <Link className="mt-8 text-sm underline" href="/privacy">
-        Photo privacy notice (draft)
+        Photo privacy notice
       </Link>
     </main>
   )

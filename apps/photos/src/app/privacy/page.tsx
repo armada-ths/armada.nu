@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Photo privacy notice | Armada Photos",
-  description: "Draft privacy information for Armada event photo sharing.",
+  description: "How Armada Photos handles event photos and personal data.",
   robots: { index: false, follow: false }
 }
 
@@ -21,200 +21,220 @@ export default function PhotoPrivacyPage() {
           </Link>
           <Page.Header className="mt-6">Photo privacy notice</Page.Header>
           <p className="mt-4 text-lg leading-7">
-            This notice explains how guest photos from Armada events are handled
-            in the photo-sharing service.
+            This notice explains how guest photos and personal data are handled
+            in Armada Photos. It applies both to guests uploading photos and to
+            people pictured in them.
           </p>
+          <p className="mt-3 text-sm">Last updated: 26 October 2026</p>
         </div>
-
-        <aside className="rounded-2xl border border-amber-300 bg-amber-50 p-5 text-sm leading-6">
-          <p className="font-semibold">Draft for review — not yet approved</p>
-          <p className="mt-2">
-            Before using this notice for a live event, THS must assess the
-            proposed legal basis and review its provider agreements and any
-            international transfers. Square-bracketed text below still needs a
-            decision before publication.
-          </p>
-        </aside>
 
         <div className="space-y-8 leading-7">
           <section className={sectionClass}>
             <h2 className={headingClass}>Who is responsible?</h2>
             <p>
               Tekniska Högskolans Studentkår (THS), organisation number
-              802005-9153, Ref: Armada, Drottning Kristinas Väg 15-19, 114 28
+              802005-9153, is the controller of this photo service. Its postal
+              address is Ref: Armada, Drottning Kristinas Väg 15-19, 114 28
               Stockholm, Sweden. For questions about personal data or a photo,
               email{" "}
               <a className="underline" href="mailto:a@armada.nu">
                 a@armada.nu
               </a>
-              . THS is the controller of this photo service. [Add data
-              protection officer details if applicable.]
+              .
             </p>
           </section>
 
           <section className={sectionClass}>
-            <h2 className={headingClass}>What do we collect?</h2>
+            <h2 className={headingClass}>What information is processed?</h2>
             <p>
-              We process the photos guests submit, which may show identifiable
-              people. For each photo, we also store its event, upload and
-              moderation times, status, file size and dimensions. For events
-              using automatic checks, we also store the AI assessment and
-              whether approval was automatic or manual. A random guest
-              identifier is kept in your browser and sent with uploads; the
-              service stores an event-specific protected hash of it to apply the
-              upload limit. We do not ask guests to create an account.
+              Guests supply the photos, which may show identifiable people. The
+              service stores the event, upload and moderation times, status,
+              file size and dimensions for each photo. When automatic checks are
+              enabled, it also stores the content assessment and whether
+              approval was automatic or manual. Guests do not need an account or
+              have to provide their name or email address to upload.
             </p>
             <p>
-              Camera images are converted to smaller JPEG files before storage.
-              The original is not retained and image metadata is removed from
-              the stored version. The service also processes technical request
-              data needed to operate and protect the website, including a
-              reCAPTCHA Enterprise risk assessment for each upload. Google says
-              reCAPTCHA uses a necessary cookie (_GRECAPTCHA) for this purpose.
-              The website also loads Vercel Analytics and Speed Insights to
-              measure usage and performance. The event token is masked in the
-              URL sent to those two measurement tools; it remains in the event
-              link itself and may still be handled by the hosting infrastructure
-              when the page is requested.
+              Uploaded images are converted to JPEG files with size limits and
+              image metadata removed. The service stores these processed images
+              and gallery thumbnails rather than the original uploaded file.
+              Technical request data is also processed to deliver and protect
+              the website and measure usage and performance. Event links contain
+              an access token, which is handled when the page is requested.
             </p>
           </section>
 
           <section className={sectionClass}>
-            <h2 className={headingClass}>Why do we use the data?</h2>
+            <h2 className={headingClass}>How are photos used and shared?</h2>
             <p>
-              We use photos to let event guests share memories in a moderated
+              Photos are used to let event guests share memories in a moderated
               gallery. THS may also select approved photos to promote Armada on
-              its website, in marketing materials and on social media. We use
-              the guest identifier, technical data and reCAPTCHA assessment to
-              limit misuse and keep the service working. For some events, Google
-              Cloud Vision SafeSearch checks photos for potentially explicit
-              content. Photos it rates as clearly low-risk may appear in the
-              gallery automatically. Uncertain photos and failed checks wait for
-              an Armada moderator. SafeSearch does not verify that a photo
-              belongs to the event or that everyone pictured has agreed to
-              publication.
+              its website, in marketing materials and on social media.
             </p>
             <p>
-              THS proposes legitimate interests under GDPR Article 6(1)(f) as
-              the legal basis for the moderated gallery, selected promotional
-              use and abuse prevention. Its interests are sharing memories from
-              the banquet, communicating about Armada and protecting the
-              service. Before using that basis, THS must document whether each
-              use is necessary and whether the rights and interests of everyone
-              pictured outweigh those interests. Wider social-media publication
-              needs its own assessment. If that assessment does not support a
-              use, THS must not rely on this proposed basis for it. Checking the
-              upload confirmation is not, by itself, consent from everyone
-              pictured.
+              Armada moderators can review submitted photos. Only approved
+              photos appear in the event gallery. Anyone with the event link or
+              QR code can view them while the gallery is open; access is not
+              restricted to named or signed-in guests. Please treat the link as
+              shareable. Images are served through time-limited links, but
+              viewers can still save or capture what they see. Administrators
+              can export approved photos as a ZIP archive. Promotional use can
+              make a photo available to a wider audience outside the event.
+            </p>
+            <p>
+              For events with automatic checking enabled, Google Cloud Vision
+              SafeSearch receives a smaller copy to check for potentially
+              explicit content. Photos assessed as clearly low-risk may be
+              approved automatically. Uncertain results and failed checks wait
+              for a moderator. This check does not establish that a photo
+              belongs to the event or that everyone pictured agrees to
+              publication. Contact us if you want a moderator to review a photo.
             </p>
           </section>
 
           <section className={sectionClass}>
-            <h2 className={headingClass}>Who can see the photos?</h2>
+            <h2 className={headingClass}>Legal basis</h2>
             <p>
-              Armada moderators can review submitted photos. Google Cloud Vision
-              receives a temporary, smaller copy of photos submitted to events
-              with automatic checking enabled. Only approved photos appear in
-              the event gallery. Anyone with the event link or QR code can see
-              approved photos while the gallery is open, so please treat the
-              link as shareable. Images are served through time-limited links.
-              Although the guest page has no download button, viewers may still
-              save or capture what they can see. Administrators can export
-              approved photos as a ZIP archive. A photo chosen for marketing or
-              social media may be seen and copied by a wider audience, including
-              people outside the event.
+              THS has not yet established the legal basis for the gallery,
+              promotional use and abuse prevention described in this notice.
+              This notice does not establish that these uses are lawful. The
+              upload confirmation acknowledges that the uploader has read this
+              notice and has the right to share the photos; it is not consent
+              from everyone pictured.
+            </p>
+          </section>
+
+          <section id="cookies" className={sectionClass}>
+            <h2 className={headingClass}>
+              Browser storage and abuse prevention
+            </h2>
+            <p>
+              The service stores a random guest identifier in your
+              browser&apos;s local storage under <code>armada-photo-guest</code>
+              . It is sent with upload and quota requests, and an event-specific
+              protected hash is stored on the server to apply the upload limit.
+              The browser identifier has no automatic expiry in the application;
+              it remains until browser storage is cleared. Clearing it removes
+              the identifier from that browser, not photos already uploaded.
             </p>
             <p>
-              Vercel serves the website and currently provides website usage and
-              performance measurements. Google Cloud runs the photo API and its
-              background jobs, while Google reCAPTCHA Enterprise evaluates
-              uploads for abuse and Cloud Vision SafeSearch can assess image
-              content. Google states that it processes images in memory for
-              synchronous Vision requests and does not use them to train its
-              Vision service (see Google&apos;s{" "}
+              Google reCAPTCHA Enterprise assesses upload requests to help
+              prevent abuse. Google states that reCAPTCHA sets a necessary
+              cookie named <code>_GRECAPTCHA</code> for its risk analysis. See
+              Google&apos;s{" "}
               <a
                 className="underline"
-                href="https://cloud.google.com/vision/docs/data-usage">
-                data usage information
-              </a>
-              ). Supabase hosts the photo database and private image and export
-              storage. The production configuration places the main Supabase
-              data and photo API in Stockholm, Sweden. This does not establish
-              where Cloud Vision processes an image; THS must verify that before
-              approving this notice. Vercel functions are also configured for
-              Stockholm, but its delivery network and other processing are not
-              necessarily limited to Sweden.
-            </p>
-            <p>
-              These providers and their subprocessors may process limited data
-              outside the EU/EEA. Their published data processing terms include
-              international-transfer provisions. THS has not yet reviewed its
-              own provider agreements or assessed the relevant transfers and
-              safeguards; this must happen before the notice is approved.
+                href="https://cloud.google.com/recaptcha/docs/faq">
+                reCAPTCHA information
+              </a>{" "}
+              for details.
             </p>
           </section>
 
           <section className={sectionClass}>
-            <h2 className={headingClass}>How long do we keep the data?</h2>
+            <h2 className={headingClass}>Service providers</h2>
             <p>
-              Each event has an upload closing time and a gallery closing time.
-              THS intends to keep gallery photos, selected marketing copies and
-              published posts only while they remain relevant to the purposes
-              described above. There is no fixed retention period or automatic
-              deletion date. When THS decides the photos are no longer needed,
-              an administrator closes access and requests permanent deletion of
-              the event photos and exports; THS separately removes marketing
-              copies and posts it controls. Rejected photo files are deleted
-              immediately; a limited moderation record may remain until event
-              deletion. An administrator&apos;s ZIP export expires after 24
-              hours. [Confirm separate retention for security logs, backups and
-              provider data.]
+              Vercel hosts the website. Google Cloud runs the photo API and
+              background jobs; Google reCAPTCHA Enterprise assesses uploads for
+              abuse, and Cloud Vision SafeSearch can check image content.
+              Supabase provides the database and private image and export
+              storage. These providers process data involved in delivering their
+              respective services.
             </p>
             <p>
-              THS can remove copies it controls after the purpose ends, but
-              copies saved by viewers or social-media platforms may remain
-              outside its control.
+              Processing by providers and their subprocessors may take place
+              outside the EU/EEA. A storage or server location does not mean all
+              processing is confined to that location. The providers publish
+              data processing and international-transfer terms:{" "}
+              <a
+                className="underline"
+                href="https://cloud.google.com/terms/data-processing-addendum">
+                Google Cloud
+              </a>
+              ,{" "}
+              <a className="underline" href="https://supabase.com/legal/dpa">
+                Supabase
+              </a>{" "}
+              and{" "}
+              <a className="underline" href="https://vercel.com/legal/dpa">
+                Vercel
+              </a>
+              . These describe the providers&apos; terms, rather than a
+              service-specific assessment by THS of the transfers and safeguards
+              that apply. Contact THS for questions about these arrangements.
+            </p>
+          </section>
+
+          <section className={sectionClass}>
+            <h2 className={headingClass}>How long is information kept?</h2>
+            <p>
+              Each event has an upload closing time and a gallery closing time.
+              Closing the gallery ends guest access; it does not delete the
+              photos. There is currently no fixed retention period or automatic
+              deletion date for event photos. Unless an administrator deletes
+              them, they remain stored after the event. No fixed deletion date
+              has been set for selected marketing copies or published posts
+              either.
+            </p>
+            <p>
+              Rejected photos are hidden from the gallery immediately and can be
+              restored by a moderator for 24 hours. After that deadline, the
+              cleanup job is scheduled to delete their image files; a limited
+              moderation record may remain until event deletion. Administrator
+              ZIP exports expire after 24 hours. Administrators can also request
+              deletion of an event&apos;s photos and exports. This notice does
+              not specify retention periods for provider logs or backups.
+            </p>
+            <p>
+              You can ask us to remove a photo and copies used by Armada. Copies
+              saved by viewers or shared by others may remain outside THS&apos;s
+              control.
             </p>
           </section>
 
           <section className={sectionClass}>
             <h2 className={headingClass}>Your choices and rights</h2>
             <p>
-              Uploading is optional. Please avoid sharing photos of people who
-              do not want to appear in the gallery, and do not upload sensitive
-              or inappropriate images. You can contact{" "}
+              Uploading is optional. Avoid sharing photos of people who do not
+              want to appear, and do not upload sensitive or inappropriate
+              images. Contact{" "}
               <a className="underline" href="mailto:a@armada.nu">
                 a@armada.nu
               </a>{" "}
-              to ask about a photo, object to its use, request access or
-              correction, or request deletion. The applicable right depends on
-              the circumstances and the legal basis. Please include the event
-              and enough detail to identify the photo; do not send extra
+              to ask about a photo, object to its use, or request access,
+              correction, deletion or restriction of processing. You can also
+              ask about data portability where applicable. Which rights apply
+              depends on the circumstances and legal basis. Include the event
+              and enough detail to identify the photo, without sending extra
               sensitive information unnecessarily.
             </p>
             <p>
-              You can also complain to the Swedish Authority for Privacy
-              Protection (IMY). See its information about{" "}
+              You can complain to the Swedish Authority for Privacy Protection
+              (IMY). Read IMY&apos;s information about{" "}
               <a
                 className="underline"
-                href="https://www.imy.se/verksamhet/dataskydd/det-har-galler-enligt-gdpr/de-registrerades-rattigheter/">
-                data subject rights
+                href="https://www.imy.se/privatperson/dataskydd/dina-rattigheter/">
+                your rights
+              </a>{" "}
+              and{" "}
+              <a
+                className="underline"
+                href="https://www.imy.se/privatperson/utfora-arenden/lamna-ett-klagomal/">
+                how to make a complaint
               </a>
-              . [Confirm whether any other rights or contact channels need to be
-              stated for this controller.]
+              .
             </p>
           </section>
 
           <section className={sectionClass}>
-            <h2 className={headingClass}>Questions or changes</h2>
+            <h2 className={headingClass}>Questions and updates</h2>
             <p>
-              Contact{" "}
+              For questions about this notice, contact{" "}
               <a className="underline" href="mailto:a@armada.nu">
                 a@armada.nu
-              </a>{" "}
-              before the event if you have questions about this notice. [Add the
-              effective date and describe how material changes will be
-              communicated.]
+              </a>
+              . Updates to this notice will appear on this page with a revised
+              last-updated date.
             </p>
           </section>
         </div>
