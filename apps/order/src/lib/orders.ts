@@ -2,7 +2,19 @@ import { DateTime } from "luxon"
 import { z } from "zod"
 import { ITEMS } from "./catalogue"
 
-export type OrderResult = { success: boolean; error?: string }
+export type OrderErrorCode =
+  | "access_required"
+  | "orders_closed"
+  | "invalid_order"
+  | "availability_unavailable"
+  | "delivery_unavailable"
+  | "delivery_failed"
+  | "submission_failed"
+export type OrderResult = {
+  success: boolean
+  error?: string
+  errorCode?: OrderErrorCode
+}
 export type OrderInput = {
   company: string
   items: { id: string; quantity: number }[]

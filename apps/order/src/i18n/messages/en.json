@@ -12,5 +12,91 @@
     "home": "Go to home page",
     "errorTitle": "Something went wrong",
     "tryAgain": "Try again"
+  },
+  "Order": {
+    "emptyCompany": "Please enter a company name.",
+    "emptyCart": "Your cart is empty.",
+    "submittedToast": "Submitted!",
+    "submitFailed": "Submit failed!",
+    "heading": "Order",
+    "submittedHeading": "Order submitted!",
+    "submittedBody": "We'll deliver your order as soon as possible.",
+    "newOrder": "New order",
+    "intro": "Here you can order drinks and snacks for your booth during Armada.\n\nUse this form for delivery straight to your booth - or feel free to drop by the lounge for a friendly chat and a fresh cup of coffee. (If you have any questions about ingredients or allergies, please come by the lounge and we'll be happy to help.)",
+    "companyLabel": "Company",
+    "companyPlaceholder": "Select your company",
+    "useCustomCompany": "Use “{company}”",
+    "cartLabel": "Cart:",
+    "empty": "(empty)",
+    "send": "Send",
+    "controls": {
+      "decrease": "Decrease",
+      "quantity": "Quantity",
+      "increase": "Increase"
+    },
+    "sending": "Sending…"
+  },
+  "Products": {
+    "sandwich-turkey": {
+      "name": "Sandwich (Turkey)",
+      "description": "Freshly made with turkey and vegetables"
+    },
+    "sandwich-vegetarian": {
+      "name": "Sandwich (Vegetarian)",
+      "description": "Freshly made with cheese and vegetables"
+    },
+    "pain-au-chocolat": {
+      "name": "Pain au Chocolat",
+      "description": "Butter pastry with chocolate"
+    },
+    "cinnamon-bun": {
+      "name": "Cinnamon bun",
+      "description": "Classic Swedish Kanelbulle"
+    },
+    "muffin-chocolate": {
+      "name": "Muffin (Chocolate)",
+      "description": "Soft and rich"
+    },
+    "muffin-blueberry": {
+      "name": "Muffin (Blueberry)",
+      "description": "Sweet and fruity"
+    },
+    "apple-cake-vegan": {
+      "name": "Apple Cake (Vegan)",
+      "description": "Plant-based apple cake"
+    },
+    "chocolate-balls-vegan": {
+      "name": "Chocolate ball (Vegan)",
+      "description": "Classic Swedish Chokladboll"
+    },
+    "coffee": {
+      "name": "Black Coffee",
+      "description": "Sugar on the side"
+    },
+    "coffee-with-milk": {
+      "name": "Coffee with Oat milk",
+      "description": "Sugar on the side"
+    },
+    "tea": {
+      "name": "Tea",
+      "description": "Sugar on the side"
+    },
+    "hot-chocolate": {
+      "name": "Oboy",
+      "description": "Warm and Sweet Cocoa drink"
+    }
+  },
+  "OrderErrors": {
+    "access_required": "Please open the access link provided to your company.",
+    "orders_closed": "The order form is currently closed. You can order during the fair opening hours until 30 minutes before closing.",
+    "invalid_order": "Please check your company name and selected items.",
+    "availability_unavailable": "Ordering is temporarily unavailable. Please try again shortly.",
+    "delivery_unavailable": "Ordering is temporarily unavailable. Please contact the exhibitor lounge.",
+    "delivery_failed": "Could not deliver your order. Please try again.",
+    "submission_failed": "Could not submit your order. Check your connection and try again."
+  },
+  "Metadata": {
+    "title": "Order Form – Exhibitor Lounge",
+    "description": "Order drinks and snacks from the exhibitor lounge."
   }
 }

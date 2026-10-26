@@ -1,4 +1,7 @@
 "use client"
+import { useMessages, useTranslations, useFormatter } from "next-intl"
+import { useDraftState } from "@armada/shared/i18n/client"
+import en from "@order/i18n/messages/en.json"
 
 import OrderItem from "@order/components/order/OrderItem"
 import { Page } from "@armada/shared/Page"
@@ -10,7 +13,7 @@ import { useRef, useState } from "react"
 import { toast } from "sonner"
 
 import { ITEMS } from "@order/lib/catalogue"
-import type { OrderInput, OrderResult } from "@order/lib/orders"
+import type { OrderInput, OrderResult, OrderErrorCode } from "@order/lib/orders"
 
 type OrderFormProps = {
   exhibitors: string[]
@@ -18,11 +21,28 @@ type OrderFormProps = {
 }
 
 export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
+  const format = useFormatter()
+  const t = useTranslations("Order")
+  const products = useTranslations("Products")
+  const dict = useMessages().Order as typeof en.Order
+  const items = ITEMS.map(item => {
+    const nameKey = (item.id + ".name") as Parameters<typeof products>[0]
+    const descriptionKey = (item.id + ".description") as Parameters<
+      typeof products
+    >[0]
+    return {
+      ...item,
+      name: products.has(nameKey) ? products(nameKey) : item.name,
+      description: products.has(descriptionKey)
+        ? products(descriptionKey)
+        : item.description
+    }
+  })
   const submissionLock = useRef(false)
-  const [company, setCompany] = useState("")
-  const [cart, setCart] = useState<Record<string, number>>({})
+  const [company, setCompany] = useDraftState("company", "")
+  const [cart, setCart] = useDraftState<Record<string, number>>("cart", {})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useDraftState("submitted", false)
   const [showDropdown, setShowDropdown] = useState(false)
 
   const filteredCompanies = company
@@ -48,20 +68,22 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
   }
 
   const cartLines = Object.entries(cart).map(([id, qty]) => {
-    const item = ITEMS.find(i => i.id === id)
-    return item ? `${item.name} x${qty}` : `${id} x${qty}`
+    const item = items.find(i => i.id === id)
+    return item
+      ? item.name + " × " + format.number(qty)
+      : id + " × " + format.number(qty)
   })
 
   async function sendMessage() {
     if (submissionLock.current) return
 
     if (!company.trim()) {
-      toast.warning("Please enter a company name.")
+      toast.warning(<OrderFeedback code="emptyCompany" />)
       return
     }
 
     if (cartLines.length === 0) {
-      toast.warning("Your cart is empty.")
+      toast.warning(<OrderFeedback code="emptyCart" />)
       return
     }
 
@@ -76,15 +98,15 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
       setIsSubmitting(false)
 
       if (result.success) {
-        toast.success("Submitted!")
+        toast.success(<OrderFeedback code="submittedToast" />)
         setSubmitted(true)
         setCompany("")
         setCart({})
       } else {
-        toast.error(result.error ?? "Submit failed!")
+        toast.error(<OrderErrorFeedback code={result.errorCode} />)
       }
     } catch {
-      toast.error("Could not submit your order. Please try again.")
+      toast.error(<OrderErrorFeedback code="submission_failed" />)
     } finally {
       submissionLock.current = false
       setIsSubmitting(false)
@@ -94,15 +116,17 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
   if (submitted) {
     return (
       <Page.Boundary maxWidth={750}>
-        <Page.Header>Order</Page.Header>
+        <Page.Header>{dict.heading}</Page.Header>
         <div className="mt-3">
-          <h2 className="mb-2 text-lg font-semibold">Order submitted!</h2>
-          <p>We’ll deliver your order as soon as possible.</p>
+          <h2 className="mb-2 text-lg font-semibold">
+            {dict.submittedHeading}
+          </h2>
+          <p>{dict.submittedBody}</p>
           <Button
             size="sm"
             className="mt-6"
             onClick={() => setSubmitted(false)}>
-            New order
+            {dict.newOrder}
           </Button>
         </div>
       </Page.Boundary>
@@ -111,21 +135,13 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
 
   return (
     <Page.Boundary maxWidth={750}>
-      <Page.Header>Order</Page.Header>
-      <p className="mt-2 text-stone-400">
-        Here you can order drinks and snacks for your booth during Armada.
-        <br />
-        <br />
-        Use this form for delivery straight to your booth – or feel free to drop
-        by the lounge for a friendly chat and a fresh cup of coffee. (If you
-        have any questions about ingredients or allergies, please come by the
-        lounge and we’ll be happy to help.)
-      </p>
+      <Page.Header>{dict.heading}</Page.Header>
+      <p className="mt-2 whitespace-pre-line text-stone-400">{dict.intro}</p>
 
       {/* Company combobox */}
       <div className="mt-6">
         <label className="mb-1 text-sm" htmlFor="company">
-          Company
+          {dict.companyLabel}
         </label>
         <div className="relative">
           <Input
@@ -137,7 +153,7 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
             }}
             onFocus={() => company && setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-            placeholder="Select your company"
+            placeholder={dict.companyPlaceholder}
           />
           {showDropdown &&
             (filteredCompanies.length > 0 || showCustomOption) && (
@@ -165,7 +181,7 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
                     type="button"
                     className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-zinc-700"
                     onClick={() => setShowDropdown(false)}>
-                    Use “{company}”
+                    {t("useCustomCompany", { company })}
                   </button>
                 )}
               </div>
@@ -175,7 +191,7 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
 
       {/* Items */}
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {ITEMS.map(item => (
+        {items.map(item => (
           <Card key={item.id} className="p-4">
             <OrderItem
               name={item.name}
@@ -185,6 +201,7 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
               onIncrease={() => adjustQty(item.id, 1)}
               onDecrease={() => adjustQty(item.id, -1)}
               onChange={n => updateCart(item.id, n)}
+              labels={dict.controls}
             />
           </Card>
         ))}
@@ -192,17 +209,31 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
 
       {/* Cart summary */}
       <div className="mt-6 text-sm text-stone-300">
-        <span className="font-medium">Cart:</span>{" "}
-        {cartLines.length === 0 ? "(empty)" : cartLines.join(", ")}
+        <span className="font-medium">{dict.cartLabel}</span>{" "}
+        {cartLines.length === 0 ? dict.empty : cartLines.join(", ")}
       </div>
 
       <div className="mt-4 flex items-end gap-4">
         <div className="ml-auto">
           <Button onClick={sendMessage} disabled={isSubmitting}>
-            Send
+            {isSubmitting ? dict.sending : dict.send}
           </Button>
         </div>
       </div>
     </Page.Boundary>
   )
+}
+
+function OrderErrorFeedback({ code }: { code?: OrderErrorCode }) {
+  const t = useTranslations("OrderErrors")
+  return <>{t(code && t.has(code) ? code : "submission_failed")}</>
+}
+
+function OrderFeedback({
+  code
+}: {
+  code: "emptyCompany" | "emptyCart" | "submittedToast"
+}) {
+  const t = useTranslations("Order")
+  return <>{t(code)}</>
 }

@@ -12,5 +12,91 @@
     "home": "Till startsidan",
     "errorTitle": "Något gick fel",
     "tryAgain": "Försök igen"
+  },
+  "Order": {
+    "emptyCompany": "Ange ett företagsnamn.",
+    "emptyCart": "Varukorgen är tom.",
+    "submittedToast": "Skickat!",
+    "submitFailed": "Det gick inte att skicka!",
+    "heading": "Beställning",
+    "submittedHeading": "Beställningen är skickad!",
+    "submittedBody": "Vi levererar er beställning så snart som möjligt.",
+    "newOrder": "Ny beställning",
+    "intro": "Här kan ni beställa dryck och snacks till er monter under Armada.\n\nAnvänd formuläret för leverans direkt till montern - eller kom gärna förbi loungen för ett trevligt samtal och en ny kopp kaffe. Om ni har frågor om ingredienser eller allergier är ni välkomna förbi loungen så hjälper vi gärna till.",
+    "companyLabel": "Företag",
+    "companyPlaceholder": "Välj ert företag",
+    "useCustomCompany": "Använd \"{company}\"",
+    "cartLabel": "Varukorg:",
+    "empty": "(tom)",
+    "send": "Skicka",
+    "controls": {
+      "decrease": "Minska",
+      "quantity": "Antal",
+      "increase": "Öka"
+    },
+    "sending": "Skickar…"
+  },
+  "Products": {
+    "sandwich-turkey": {
+      "name": "Smörgås (kalkon)",
+      "description": "Nybredd med kalkon och grönsaker"
+    },
+    "sandwich-vegetarian": {
+      "name": "Smörgås (vegetarisk)",
+      "description": "Nybredd med ost och grönsaker"
+    },
+    "pain-au-chocolat": {
+      "name": "Pain au chocolat",
+      "description": "Smördeg med choklad"
+    },
+    "cinnamon-bun": {
+      "name": "Kanelbulle",
+      "description": "Klassisk svensk kanelbulle"
+    },
+    "muffin-chocolate": {
+      "name": "Muffin (choklad)",
+      "description": "Mjuk och fyllig"
+    },
+    "muffin-blueberry": {
+      "name": "Muffin (blåbär)",
+      "description": "Söt och fruktig"
+    },
+    "apple-cake-vegan": {
+      "name": "Äppelkaka (vegansk)",
+      "description": "Växtbaserad äppelkaka"
+    },
+    "chocolate-balls-vegan": {
+      "name": "Chokladboll (vegansk)",
+      "description": "Klassisk svensk chokladboll"
+    },
+    "coffee": {
+      "name": "Svart kaffe",
+      "description": "Socker vid sidan av"
+    },
+    "coffee-with-milk": {
+      "name": "Kaffe med havremjölk",
+      "description": "Socker vid sidan av"
+    },
+    "tea": {
+      "name": "Te",
+      "description": "Socker vid sidan av"
+    },
+    "hot-chocolate": {
+      "name": "Oboy",
+      "description": "Varm och söt kakaodryck"
+    }
+  },
+  "OrderErrors": {
+    "access_required": "Öppna åtkomstlänken som ditt företag har fått.",
+    "orders_closed": "Beställningsformuläret är stängt. Du kan beställa under mässans öppettider fram till 30 minuter före stängning.",
+    "invalid_order": "Kontrollera företagsnamnet och de valda varorna.",
+    "availability_unavailable": "Beställningar är tillfälligt otillgängliga. Försök igen om en stund.",
+    "delivery_unavailable": "Beställningar är tillfälligt otillgängliga. Kontakta utställarloungen.",
+    "delivery_failed": "Det gick inte att skicka beställningen. Försök igen.",
+    "submission_failed": "Det gick inte att skicka beställningen. Kontrollera anslutningen och försök igen."
+  },
+  "Metadata": {
+    "title": "Beställning – Utställarloungen",
+    "description": "Beställ dryck och tilltugg från utställarloungen."
   }
 }
