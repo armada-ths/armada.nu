@@ -1,4 +1,5 @@
 "use client"
+import { Link } from "@armada/shared/i18n/navigation"
 import { useLocale } from "next-intl"
 import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
 import { LocalizedText } from "@/i18n/text"
@@ -32,7 +33,7 @@ export function PostItem({ post }: { post: BlogPost }) {
       )}
       <CardHeader className="space-y-2">
         <CardTitle className="font-bebas-neue text-3xl leading-tight sm:text-4xl">
-          {title}
+          <h1>{title}</h1>
         </CardTitle>
         <div className="text-licorice/60 text-sm">
           {new Date(post.createdAt).toLocaleDateString(
@@ -114,13 +115,13 @@ export function PostItem({ post }: { post: BlogPost }) {
               </blockquote>
             ),
             a: props => (
-              <a
-                href={props.href}
+              <Link
+                href={props.href ?? "#"}
                 className="text-melon hover:text-melon/80 underline"
                 target="_blank"
                 rel="noopener noreferrer">
                 {props.children}
-              </a>
+              </Link>
             )
           }}>
           {localizedText(locale, post.text, post.textSv)}

@@ -8,7 +8,12 @@
     "dialog": "Details",
     "dialogDescription": "More information",
     "notifications": "Notifications",
-    "closeToast": "Close notification"
+    "closeToast": "Close notification",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "Check the link or return to the home page.",
+    "home": "Go to home page",
+    "errorTitle": "Something went wrong",
+    "tryAgain": "Try again"
   },
   "teamText": {
     "title": "Armada Organization",
