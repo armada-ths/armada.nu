@@ -63,6 +63,10 @@ import {
 import { redactAppTelemetry } from "@armada/shared/telemetry-utils"
 import { config } from "../proxy"
 describe("photo API errors", () => {
+  it("covers every error code in both catalogs", () =>
+    expect(Object.keys(en.PhotoErrors).sort()).toEqual(
+      [...photoErrorCodes].sort()
+    ))
   it.each(photoErrorCodes)("translates code %s", code => {
     expect(en.PhotoErrors[code]).toBeTruthy()
     expect(sv.PhotoErrors[code]).toBeTruthy()
