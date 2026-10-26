@@ -1,3 +1,6 @@
+"use client"
+import { Link } from "@armada/shared/i18n/navigation"
+import { useTranslations, useFormatter } from "next-intl"
 import { X } from "lucide-react"
 import type { EventInfo } from "./photo-types"
 import type { usePhotoUploads } from "./use-photo-uploads"
@@ -11,6 +14,10 @@ export function PhotoUpload({
   mobileDevice: boolean
   upload: ReturnType<typeof usePhotoUploads>
 }) {
+  const t = useTranslations("Photos"),
+    text = useTranslations("PhotosStatic"),
+    errors = useTranslations("PhotoErrors"),
+    format = useFormatter()
   const {
     uploads,
     confirmed,
@@ -25,23 +32,18 @@ export function PhotoUpload({
   } = upload
   return !mobileDevice ? (
     <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm">
-      <h2 className="text-2xl font-bold">Upload from your phone</h2>
+      <h2 className="text-2xl font-bold">{text("uploadFromYourPhone")}</h2>
       <p className="mt-2">
-        Photo uploads are only available on mobile devices. Open this event link
-        on your phone or tablet to take and upload photos.
+        {text("photoUploadsAreOnlyAvailableOnMobileDevices")}
       </p>
-      <p className="mt-2">You can still view the gallery on this device.</p>
+      <p className="mt-2">{text("youCanStillViewTheGalleryOnThis")}</p>
     </section>
   ) : (
     <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm">
-      <h2 className="text-2xl font-bold">Share your photos</h2>
-      <p className="mt-2">
-        Photos are checked before they appear in the gallery. You can upload{" "}
-        {info.remaining} more photos from this device.
-      </p>
+      <h2 className="text-2xl font-bold">{text("shareYourPhotos")}</h2>
+      <p className="mt-2">{t("remaining", { count: info.remaining })}</p>
       <p className="mt-2 text-sm">
-        Take photos with your camera, review them here, then upload them
-        together. Your phone may ask you to confirm each photo first.
+        {text("takePhotosWithYourCameraReviewThemHere")}
       </p>
       <label className="mt-6 flex items-start gap-3">
         <input
@@ -53,15 +55,15 @@ export function PhotoUpload({
           className="mt-1"
         />
         <span>
-          I have read the{" "}
-          <a
+          {text("iHaveReadThe")}{" "}
+          <Link
             className="underline"
             href="/privacy"
             target="_blank"
             rel="noreferrer">
-            privacy information
-          </a>{" "}
-          and have the right to share these photos.
+            {text("privacyInformation")}
+          </Link>{" "}
+          {text("andHaveTheRightToShareThesePhotos")}
         </span>
       </label>
       <input
@@ -69,7 +71,7 @@ export function PhotoUpload({
         type="file"
         accept="image/*"
         capture="environment"
-        aria-label="Take photo with camera"
+        aria-label={text("takePhotoWithCamera")}
         className="sr-only"
         onChange={onCameraPhoto}
       />
@@ -82,25 +84,24 @@ export function PhotoUpload({
           stagedPhotos.length >= info.remaining
         }
         onClick={() => cameraInputRef.current?.click()}>
-        {stagedPhotos.length > 0 ? "Take another photo" : "Open camera"}
+        {stagedPhotos.length > 0 ? t("takeAnother") : t("openCamera")}
       </button>
       {stagedPhotos.length > 0 && (
         <div className="mt-4">
           <p className="mb-3 font-semibold">
-            {stagedPhotos.length}{" "}
-            {stagedPhotos.length === 1 ? "photo" : "photos"} ready to upload
+            {t("ready", { count: stagedPhotos.length })}
           </p>
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {stagedPhotos.map((photo, index) => (
               <li key={photo.id} className="relative">
                 <img
                   src={photo.preview}
-                  alt={`Photo ${index + 1} ready to upload`}
+                  alt={t("photoReady", { index: index + 1 })}
                   className="aspect-square w-full rounded-xl bg-black object-cover"
                 />
                 <button
                   type="button"
-                  aria-label={`Remove photo ${index + 1}`}
+                  aria-label={t("removePhoto", { index: index + 1 })}
                   className="absolute top-2 right-2 grid h-9 w-9 place-items-center rounded-full bg-white text-[#172b35] shadow-sm"
                   onClick={() => removeStagedPhoto(photo.id)}>
                   <X aria-hidden="true" size={18} />
@@ -117,16 +118,16 @@ export function PhotoUpload({
               stagedPhotos.length > info.remaining
             }
             onClick={uploadStagedPhotos}>
-            Upload photos ({stagedPhotos.length})
+            {t("uploadCount", { count: stagedPhotos.length })}
           </button>
         </div>
       )}
       {cameraError && (
         <p role="alert" className="mt-3 text-red-700">
-          {cameraError}
+          {errors(cameraError)}
         </p>
       )}
-      {!info.uploads_open && <p className="mt-4">Uploads are closed.</p>}
+      {!info.uploads_open && <p className="mt-4">{text("uploadsAreClosed")}</p>}
       <ul className="mt-6 space-y-3">
         {uploads.map(item => (
           <li
@@ -134,19 +135,19 @@ export function PhotoUpload({
             className="flex items-center gap-3 rounded-lg border p-2">
             <img
               src={item.preview}
-              alt="Photo preview"
+              alt={text("photoPreview")}
               className="h-16 w-16 rounded object-cover"
             />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm">Photo taken with camera</p>
+              <p className="truncate text-sm">{text("photoTakenWithCamera")}</p>
               <p className="text-xs">
                 {item.state === "done"
                   ? item.approval === "approved"
-                    ? "Added to gallery"
-                    : "Awaiting approval"
+                    ? t("added")
+                    : t("awaiting")
                   : item.state === "error"
-                    ? item.error
-                    : `${item.progress} %`}
+                    ? errors(item.error ?? "unknown_error")
+                    : format.number(item.progress / 100, { style: "percent" })}
               </p>
               {item.state === "uploading" && (
                 <progress className="w-full" value={item.progress} max="100" />
@@ -157,7 +158,7 @@ export function PhotoUpload({
                 type="button"
                 className="rounded bg-[#b74465] px-3 py-2 text-sm text-white"
                 onClick={() => retryUpload(item.id)}>
-                Try again
+                {text("tryAgain")}
               </button>
             )}
           </li>

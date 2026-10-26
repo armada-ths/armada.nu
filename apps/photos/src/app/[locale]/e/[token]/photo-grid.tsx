@@ -1,3 +1,6 @@
+"use client"
+import { useTranslations } from "next-intl"
+import { PhotoText } from "@photos/i18n/text"
 import {
   useEffect,
   useLayoutEffect,
@@ -14,7 +17,7 @@ function Thumbnail({ src, alt }: { src: string; alt: string }) {
   const [failed, setFailed] = useState(false)
   return failed ? (
     <span role="img" aria-label={alt}>
-      Image unavailable
+      <PhotoText id="imageUnavailable" />
     </span>
   ) : (
     <img
@@ -42,6 +45,7 @@ export function PhotoGrid({
   onRangeChange: (ids: number[]) => void
   ref?: Ref<PhotoGridHandle>
 }) {
+  const t = useTranslations("Photos")
   const container = useRef<HTMLDivElement>(null)
   const [layout, setLayout] = useState({ width: 0, columns: 2, top: 0 })
   const previous = useRef(photos)
@@ -206,7 +210,10 @@ export function PhotoGrid({
                   <Thumbnail
                     key={src}
                     src={src}
-                    alt={`Photo ${index + 1} from ${eventName}`}
+                    alt={t("photoFromEvent", {
+                      index: index + 1,
+                      event: eventName
+                    })}
                   />
                 </button>
               )

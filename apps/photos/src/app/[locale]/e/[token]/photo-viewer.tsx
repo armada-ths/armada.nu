@@ -1,3 +1,7 @@
+"use client"
+import { LanguageSwitcher } from "@armada/shared/i18n/client"
+import { PhotoText } from "@photos/i18n/text"
+import { useTranslations } from "next-intl"
 import { photoStorageURL } from "@photos/lib/photoClient"
 import { localApi } from "./photo-client"
 import type { Photo } from "./photo-types"
@@ -19,11 +23,14 @@ export function PhotoViewer({
   onClose: () => void
   onMove: (direction: number) => void
 }) {
+  const photoStatic = useTranslations("PhotosStatic")
+  const t = useTranslations("Photos")
+
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Photo viewer"
+      aria-label={photoStatic("photoViewer")}
       className="fixed inset-0 z-50 flex flex-col bg-black/95 text-white"
       onTouchStart={event => {
         ;(event.currentTarget as HTMLElement).dataset.startX = String(
@@ -37,36 +44,37 @@ export function PhotoViewer({
         if (Math.abs(delta) > 60) onMove(delta < 0 ? 1 : -1)
       }}>
       <div className="flex justify-end gap-3 p-4">
+        <LanguageSwitcher refresh={false} />
         <button type="button" onClick={onTogglePlaying}>
-          {playing ? "Pause" : "Slideshow"}
+          {playing ? t("pause") : t("slideshow")}
         </button>
         <button type="button" onClick={onClose}>
-          Close
+          <PhotoText id="close" />
         </button>
       </div>
       <div className="flex min-h-0 flex-1 items-center justify-between">
         <button
           type="button"
-          aria-label="Previous photo"
+          aria-label={photoStatic("previousPhoto")}
           className="p-4 text-3xl"
           onClick={() => onMove(-1)}>
           ‹
         </button>
         <img
           src={photoStorageURL(photo.url, localApi)}
-          alt={`Photo ${index + 1}`}
+          alt={t("photoNumber", { index: index + 1 })}
           className="max-h-full max-w-[85vw] min-w-0 object-contain"
         />
         <button
           type="button"
-          aria-label="Next photo"
+          aria-label={photoStatic("nextPhoto")}
           className="p-4 text-3xl"
           onClick={() => onMove(1)}>
           ›
         </button>
       </div>
       <p className="p-4 text-center">
-        {index + 1} / {total}
+        {t("photoPosition", { index: index + 1, total })}
       </p>
     </div>
   )
