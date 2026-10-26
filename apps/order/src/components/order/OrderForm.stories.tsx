@@ -56,12 +56,14 @@ export const DeliveryFailure: Story = {
   beforeEach: ({ args }) => {
     mocked(args.submitOrder).mockResolvedValue({
       success: false,
+      errorCode: "delivery_failed",
       error: "Delivery failed"
     })
   },
   args: {
     submitOrder: fn().mockResolvedValue({
       success: false,
+      errorCode: "delivery_failed",
       error: "Delivery failed"
     })
   },
@@ -77,7 +79,9 @@ export const DeliveryFailure: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "Send" }))
     await waitFor(() =>
       expect(
-        within(canvasElement.ownerDocument.body).getByText("Delivery failed")
+        within(canvasElement.ownerDocument.body).getByText(
+          "Could not deliver your order. Please try again."
+        )
       ).toBeVisible()
     )
     await expect(canvas.getByRole("button", { name: "Send" })).toBeEnabled()
@@ -87,11 +91,11 @@ export const DeliveryFailure: Story = {
 }
 
 export const SwedishSubmit: Story = {
+  globals: { locale: "sv" },
   beforeEach: ({ args }) => {
     mocked(args.submitOrder).mockResolvedValue({ success: true })
   },
   args: {
-    locale: "sv",
     submitOrder: fn().mockResolvedValue({ success: true })
   },
   play: async ({ canvas, args }) => {

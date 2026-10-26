@@ -1,3 +1,5 @@
+import orderEn from "../apps/order/src/i18n/messages/en.json"
+import orderSv from "../apps/order/src/i18n/messages/sv.json"
 import { createElement } from "react"
 import { NextIntlClientProvider } from "../packages/shared/src/i18n/client"
 import en from "../apps/web/src/i18n/messages/en.json"
@@ -29,7 +31,10 @@ const preview: Preview = {
         NextIntlClientProvider,
         {
           locale: context.globals.locale ?? "en",
-          messages: context.globals.locale === "sv" ? sv : en,
+          messages:
+            context.globals.locale === "sv"
+              ? { ...sv, ...orderSv }
+              : { ...en, ...orderEn },
           timeZone: "Europe/Stockholm",
           children: createElement(Story)
         },

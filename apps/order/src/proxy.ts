@@ -1,12 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server"
+import { localeProxy } from "@armada/shared/i18n/proxy"
 import { hasOrderAccess } from "./lib/orders"
 
 export function proxy(request: NextRequest) {
+  const localized = localeProxy(request)
   const token = request.nextUrl.searchParams.get("access")
-  if (token === null) return NextResponse.next()
-  const url = request.nextUrl.clone()
-  url.search = ""
+  if (token === null) return localized
+  const url = new URL(localized.headers.get("location") ?? request.url)
+  url.searchParams.delete("access")
   const response = NextResponse.redirect(url)
+  for (const cookie of localized.cookies.getAll()) response.cookies.set(cookie)
   response.headers.set("Referrer-Policy", "no-referrer")
   response.headers.set("Cache-Control", "no-store")
   if (hasOrderAccess(token, process.env.EXPO_ACCESS_TOKEN)) {
@@ -20,4 +23,4 @@ export function proxy(request: NextRequest) {
   }
   return response
 }
-export const config = { matcher: "/" }
+export const config = { matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"] }
