@@ -1,3 +1,4 @@
+import { PhotoError } from "@photos/lib/photoErrors"
 import { useSyncExternalStore } from "react"
 import { usesLocalPhotoApi } from "@photos/lib/photoRecaptcha"
 import { isMobilePhotoDevice } from "@photos/lib/photoDevice"
@@ -44,13 +45,13 @@ export function recaptchaToken(): Promise<string> {
   return new Promise((resolve, reject) => {
     const enterprise = window.grecaptcha?.enterprise
     if (!enterprise || !siteKey) {
-      reject(new Error("Verification could not be loaded."))
+      reject(new PhotoError("verification_unavailable"))
       return
     }
     enterprise.ready(() =>
       enterprise
         .execute(siteKey, { action: "photo_upload" })
-        .then(resolve, reject)
+        .then(resolve, () => reject(new PhotoError("verification_failed")))
     )
   })
 }

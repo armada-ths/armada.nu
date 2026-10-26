@@ -7,7 +7,9 @@ export function redactAppTelemetry<T extends TelemetryEvent>(
   try {
     const url = new URL(event.url)
     const mask = (path: string) =>
-      app === "photos" ? path.replace(/^(\/e\/)[^/]+/, "$1:redacted") : path
+      app === "photos"
+        ? path.replace(/^((?:\/(?:en|sv))?\/e\/)[^/]+/, "$1:redacted")
+        : path
     url.pathname = mask(url.pathname)
     url.search = ""
     url.hash = ""

@@ -1,4 +1,10 @@
 import {
+  PhotoError,
+  photoAPIError,
+  photoErrorCode,
+  type PhotoErrorCode
+} from "@photos/lib/photoErrors"
+import {
   useCallback,
   useEffect,
   useRef,
@@ -25,7 +31,7 @@ export function usePhotoUploads({
   const [uploads, setUploads] = useState<Upload[]>([])
   const [confirmed, setConfirmed] = useState(false)
   const [stagedPhotos, setStagedPhotos] = useState<StagedPhoto[]>([])
-  const [cameraError, setCameraError] = useState("")
+  const [cameraError, setCameraError] = useState<PhotoErrorCode | null>(null)
   const active = useRef(0)
   const uploadsRef = useRef<Upload[]>([])
   const stagedPhotosRef = useRef<StagedPhoto[]>([])
@@ -77,7 +83,7 @@ export function usePhotoUploads({
             }
             request.onload = () => {
               if (request.status !== 201) {
-                reject(new Error(request.responseText || "The upload failed."))
+                reject(photoAPIError(request))
                 return
               }
               try {
@@ -89,8 +95,7 @@ export function usePhotoUploads({
                 resolve("pending")
               }
             }
-            request.onerror = () =>
-              reject(new Error("Network error. Please try again."))
+            request.onerror = () => reject(new PhotoError("network_error"))
             request.send(form)
           }
         )
@@ -101,7 +106,9 @@ export function usePhotoUploads({
               : candidate
           )
         )
-        void refreshInfo()
+        void refreshInfo().catch(cause =>
+          setCameraError(photoErrorCode(cause, "network_error"))
+        )
       } catch (cause) {
         updateUploads(items =>
           items.map(candidate =>
@@ -109,10 +116,7 @@ export function usePhotoUploads({
               ? {
                   ...candidate,
                   state: "error",
-                  error:
-                    cause instanceof Error
-                      ? cause.message
-                      : "The upload failed."
+                  error: photoErrorCode(cause, "upload_failed")
                 }
               : candidate
           )
@@ -152,11 +156,11 @@ export function usePhotoUploads({
       (file.type && !file.type.startsWith("image/")) ||
       file.size > 25 * 1024 * 1024
     ) {
-      setCameraError("Choose a camera photo smaller than 25 MB.")
+      setCameraError("camera_photo_invalid")
       return
     }
     if (stagedPhotosRef.current.length >= (info?.remaining ?? 0)) {
-      setCameraError("You have reached the photo limit for this event.")
+      setCameraError("photo_limit_reached")
       return
     }
     const next = {
@@ -166,7 +170,7 @@ export function usePhotoUploads({
     }
     stagedPhotosRef.current = [...stagedPhotosRef.current, next]
     setStagedPhotos(stagedPhotosRef.current)
-    setCameraError("")
+    setCameraError(null)
   }
 
   const removeStagedPhoto = (id: string) => {
@@ -177,7 +181,7 @@ export function usePhotoUploads({
       candidate => candidate.id !== id
     )
     setStagedPhotos(stagedPhotosRef.current)
-    setCameraError("")
+    setCameraError(null)
   }
 
   const uploadStagedPhotos = () => {
