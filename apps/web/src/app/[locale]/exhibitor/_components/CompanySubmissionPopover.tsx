@@ -1,4 +1,5 @@
 "use client"
+import { useTranslations } from "next-intl"
 import { useDraftState } from "@armada/shared/i18n/client"
 import { useLocale } from "@armada/shared/i18n/client"
 import { normalizeLocale } from "@armada/shared/i18n/routing"
@@ -33,7 +34,10 @@ export function CompanySubmissionPopover() {
     company: "",
     message: ""
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useDraftState(
+    "contactSubmitting",
+    false
+  )
   const [isOpen, setIsOpen] = useDraftState("contactOpen", false)
   const [isAllowedHost, setIsAllowedHost] = useState(false)
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
@@ -65,18 +69,18 @@ export function CompanySubmissionPopover() {
 
   async function sendMessage() {
     if (!siteKey) {
-      toast.error(dict.missingRecaptcha)
+      toast.error(<ContactFeedback message="missingRecaptcha" />)
       return
     }
 
     if (!isAllowedHost) {
-      toast.error(dict.invalidDomain)
+      toast.error(<ContactFeedback message="invalidDomain" />)
       return
     }
 
     const grecaptchaEnterprise = window.grecaptcha?.enterprise
     if (!grecaptchaEnterprise) {
-      toast.error(dict.recaptchaNotReady)
+      toast.error(<ContactFeedback message="recaptchaNotReady" />)
       return
     }
 
@@ -104,13 +108,13 @@ export function CompanySubmissionPopover() {
           company: "",
           message: ""
         })
-        toast.success(dict.submitted)
+        toast.success(<ContactFeedback message="submitted" />)
         setIsOpen(false)
       } else {
-        toast.error(dict.submitFailed)
+        toast.error(<ContactFeedback message="submitFailed" />)
       }
     } catch {
-      toast.error(dict.submitFailed)
+      toast.error(<ContactFeedback message="submitFailed" />)
     } finally {
       setIsSubmitting(false)
     }
@@ -223,4 +227,13 @@ export function CompanySubmissionPopover() {
       </Popover>
     </div>
   )
+}
+
+function ContactFeedback({
+  message
+}: {
+  message: keyof typeof contactSalesText.en
+}) {
+  const t = useTranslations("contactSalesText")
+  return <>{t(message)}</>
 }

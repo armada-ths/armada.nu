@@ -4,7 +4,9 @@
     "loading": "Laddar…",
     "error": "Något gick fel. Försök igen.",
     "back": "Gå tillbaka",
-    "comingSoon": "Kommer snart"
+    "comingSoon": "Kommer snart",
+    "dialog": "Information",
+    "dialogDescription": "Mer information"
   },
   "teamText": {
     "title": "Armadas organisation",

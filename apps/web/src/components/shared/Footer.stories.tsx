@@ -31,7 +31,7 @@ export const Default: Story = {
       canvas.getByRole("link", {
         name: "Registration"
       })
-    ).toHaveAttribute("href", "/exhibitor/signup")
+    ).toHaveAttribute("href", "/en/exhibitor/signup")
     await expect(
       canvas.getByRole("img", {
         name: "Sture Logo"

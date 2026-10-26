@@ -41,7 +41,7 @@ export const WithFallbackImage: Story = {
       "src",
       expect.stringMatching(/^\/armada_licorice\.svg(?:\?.*)?$/)
     )
-    await expect(canvas.getByRole("link")).toHaveAttribute("href", "/blog/1")
+    await expect(canvas.getByRole("link")).toHaveAttribute("href", "/en/blog/1")
   }
 }
 

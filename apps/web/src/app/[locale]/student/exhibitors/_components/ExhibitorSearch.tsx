@@ -1,4 +1,5 @@
 "use client"
+import { useDraftState } from "@armada/shared/i18n/client"
 import { useLocale } from "@armada/shared/i18n/client"
 import { normalizeLocale } from "@armada/shared/i18n/routing"
 
@@ -32,8 +33,8 @@ export default function ExhibitorSearch({
 }: Props) {
   const locale = normalizeLocale(useLocale())
   const dict = exhibitorSearchText[locale]
-  const [searchQueryName, setSearchQueryName] = useState("")
-  const [sortBy, setSortBy] = useState<ExhibitorSort>("tier-gold")
+  const [searchQueryName, setSearchQueryName] = useDraftState("search", "")
+  const [sortBy, setSortBy] = useDraftState<ExhibitorSort>("sort", "tier-gold")
   const [filteredExhibitors, setFilteredExhibitors] =
     useState<Exhibitor[]>(exhibitors)
 

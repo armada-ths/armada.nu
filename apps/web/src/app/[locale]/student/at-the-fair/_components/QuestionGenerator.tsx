@@ -1,7 +1,7 @@
 "use client"
+import { useDraftState } from "@armada/shared/i18n/client"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { useState } from "react"
 
 export function QuestionGenerator({
   eyebrow,
@@ -14,7 +14,7 @@ export function QuestionGenerator({
   buttonText: string
   questions: string[]
 }) {
-  const [randomNumber, setRandomNumber] = useState(-1)
+  const [randomNumber, setRandomNumber] = useDraftState("question", -1)
 
   const generateRandomNumber = () => {
     const number = Math.floor(Math.random() * questions.length)
