@@ -92,18 +92,6 @@ export default function PhotoPrivacyPage() {
             </p>
           </section>
 
-          <section className={sectionClass}>
-            <h2 className={headingClass}>Legal basis</h2>
-            <p>
-              THS has not yet established the legal basis for the gallery,
-              promotional use and abuse prevention described in this notice.
-              This notice does not establish that these uses are lawful. The
-              upload confirmation acknowledges that the uploader has read this
-              notice and has the right to share the photos; it is not consent
-              from everyone pictured.
-            </p>
-          </section>
-
           <section id="cookies" className={sectionClass}>
             <h2 className={headingClass}>
               Browser storage and abuse prevention
@@ -204,9 +192,9 @@ export default function PhotoPrivacyPage() {
               to ask about a photo, object to its use, or request access,
               correction, deletion or restriction of processing. You can also
               ask about data portability where applicable. Which rights apply
-              depends on the circumstances and legal basis. Include the event
-              and enough detail to identify the photo, without sending extra
-              sensitive information unnecessarily.
+              depends on the circumstances. Include the event and enough detail
+              to identify the photo, without sending extra sensitive information
+              unnecessarily.
             </p>
             <p>
               You can complain to the Swedish Authority for Privacy Protection
