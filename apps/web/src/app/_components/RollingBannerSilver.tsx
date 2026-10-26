@@ -1,4 +1,5 @@
 "use client"
+import { LocalizedText } from "@/i18n/text"
 
 import Image from "next/image"
 
@@ -30,7 +31,7 @@ function RollingRow({
           <div key={index} className="mx-12 shrink-0">
             <Image
               src={logo}
-              alt={`Logo ${index + 1}`}
+              alt=""
               width={0}
               height={0}
               sizes="100vw"
@@ -53,7 +54,7 @@ export default function RollingBanner({ logos }: RollingBannerProps) {
   return (
     <section className="relative right-1/2 left-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible py-12">
       <h2 className="mb-8 text-center text-2xl font-semibold text-gray-700">
-        Silver Exhibitors
+        <LocalizedText id="silverExhibitors" />
       </h2>
 
       <div className="space-y-10">

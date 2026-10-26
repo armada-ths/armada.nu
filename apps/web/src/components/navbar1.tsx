@@ -1,8 +1,10 @@
 "use client"
+import { Link } from "@armada/shared/i18n/navigation"
+import { LanguageSwitcher } from "@armada/shared/i18n/client"
 
 import { track } from "@vercel/analytics"
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
-import { usePathname } from "next/navigation"
+import { Menu } from "lucide-react"
+
 import type { ComponentPropsWithRef } from "react"
 
 import { cn } from "@/lib/utils"
@@ -30,11 +32,6 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet"
-import {
-  createLocalePath,
-  getLocaleFromPathname,
-  translations
-} from "@/lib/i18n"
 
 export interface MenuItem {
   title: string
@@ -57,7 +54,7 @@ interface Navbar1Props {
 }
 
 const LogoLink = ({ logo }: { logo: NonNullable<Navbar1Props["logo"]> }) => (
-  <a href={logo.url} className="inline-flex items-center gap-1.5">
+  <Link href={logo.url} className="inline-flex items-center gap-1.5">
     <img
       src={logo.src}
       className="h-8 w-auto shrink-0"
@@ -73,94 +70,18 @@ const LogoLink = ({ logo }: { logo: NonNullable<Navbar1Props["logo"]> }) => (
         ARMADA
       </span>
     </div>
-  </a>
+  </Link>
 )
 
 const Navbar1 = ({
   logo = {
-    url: "https://www.shadcnblocks.com",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-    alt: "logo",
-    title: "Shadcnblocks.com"
+    url: "/",
+    src: "/armada_licorice.svg",
+    alt: "THS Armada",
+    title: "THS Armada"
   },
-  menu = [
-    { title: "Home", url: "#" },
-    {
-      title: "Products",
-      url: "#",
-      items: [
-        {
-          title: "Blog",
-          description: "The latest industry news, updates, and info",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Company",
-          description: "Our mission is to innovate and empower the world",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Careers",
-          description: "Browse job listing and discover our workspace",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Support",
-          description:
-            "Get in touch with our support team or visit community forums",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#"
-        }
-      ]
-    },
-    {
-      title: "Resources",
-      url: "#",
-      items: [
-        {
-          title: "Help Center",
-          description: "Get all the answers you need right here",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Contact Us",
-          description: "We are here to help you with any questions have",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Status",
-          description: "Check the current status of our services and APIs",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Terms of Service",
-          description: "Our terms and conditions for using our services",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#"
-        }
-      ]
-    },
-    {
-      title: "Pricing",
-      url: "#"
-    },
-    {
-      title: "Blog",
-      url: "#"
-    }
-  ]
+  menu = []
 }: Navbar1Props) => {
-  const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname)
-  const nextLocale = locale === "en" ? "sv" : "en"
-  const languageToggleLabel = translations[locale].switchLanguage
-
   return (
     <section className="bg-melon border-licorice flex h-20 items-center border-b-2">
       {/* Desktop Menu */}
@@ -182,12 +103,7 @@ const Navbar1 = ({
             </div>
 
             <div className="flex flex-1 items-center justify-end">
-              <a
-                href={createLocalePath(pathname, nextLocale)}
-                className="text-licorice border-licorice hover:bg-licorice hover:text-snow rounded-full border px-3 py-1 text-sm font-semibold transition-colors"
-                aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
-                {languageToggleLabel}
-              </a>
+              <LanguageSwitcher />
             </div>
           </div>
         </nav>
@@ -198,12 +114,7 @@ const Navbar1 = ({
             {/* Logo */}
             <LogoLink logo={logo} />
             <div className="flex items-center gap-2">
-              <a
-                href={createLocalePath(pathname, nextLocale)}
-                className="text-licorice border-licorice rounded-full border px-2 py-1 text-xs font-semibold"
-                aria-label={`Switch language to ${nextLocale === "en" ? "English" : "Swedish"}`}>
-                {languageToggleLabel}
-              </a>
+              <LanguageSwitcher />
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
@@ -272,9 +183,9 @@ const renderMenuItem = (item: MenuItem) => {
   return (
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
-        href={item.url}
+        asChild
         className="group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium">
-        {item.title}
+        <Link href={item.url}>{item.title}</Link>
       </NavigationMenuLink>
     </NavigationMenuItem>
   )
@@ -308,7 +219,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
 
   return (
     <span key={item.title} className="text-md font-semibold">
-      <a
+      <Link
         href={item.url}
         onClick={
           item.tracking
@@ -316,7 +227,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
             : undefined
         }>
         {item.title}
-      </a>
+      </Link>
     </span>
   )
 }
@@ -352,7 +263,7 @@ const SubMenuLink = ({
   }
 
   return (
-    <a
+    <Link
       {...props}
       className={cn(
         className,
@@ -366,7 +277,7 @@ const SubMenuLink = ({
         }
       }}>
       {content}
-    </a>
+    </Link>
   )
 }
 

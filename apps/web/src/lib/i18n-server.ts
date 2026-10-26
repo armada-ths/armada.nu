@@ -1,8 +1,5 @@
-import { headers } from "next/headers"
-
-import { defaultLocale, normalizeLocale, type Locale } from "@/lib/i18n"
-
-export async function getRequestLocale(): Promise<Locale> {
-  const requestHeaders = await headers()
-  return normalizeLocale(requestHeaders.get("x-armada-locale") ?? defaultLocale)
+import { getLocale } from "@armada/shared/i18n/server"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
+export async function getRequestLocale() {
+  return normalizeLocale(await getLocale())
 }

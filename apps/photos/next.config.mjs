@@ -1,3 +1,5 @@
+import createNextIntlPlugin from "next-intl/plugin"
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts")
 import path from "node:path"
 import process from "node:process"
 import { networkInterfaces } from "node:os"
@@ -8,7 +10,7 @@ const localApi =
     process.env.NEXT_PUBLIC_API_URL ?? ""
   )
 
-export default {
+const nextConfig = {
   allowedDevOrigins: Object.values(networkInterfaces())
     .flat()
     .filter(address => address?.family === "IPv4" && !address.internal)
@@ -41,3 +43,5 @@ export default {
     ]
   }
 }
+
+export default withNextIntl(nextConfig)

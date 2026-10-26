@@ -1,4 +1,5 @@
 "use client"
+import { useLocale } from "next-intl"
 
 import {
   ConfettiBurst,
@@ -42,12 +43,15 @@ export function Countdown({
   centered,
   labels = defaultLabels
 }: CountdownProps) {
+  const locale = useLocale()
   if (fairDays.length === 0) return null
 
-  const startDt = DateTime.fromISO(fairDays[0], { zone: "Europe/Stockholm" })
+  const startDt = DateTime.fromISO(fairDays[0], {
+    zone: "Europe/Stockholm"
+  }).setLocale(locale)
   const endDt = DateTime.fromISO(fairDays[fairDays.length - 1], {
     zone: "Europe/Stockholm"
-  })
+  }).setLocale(locale)
   const showYear = endDt.year !== DateTime.now().year
   const targetDate = startDt.set({ hour: 10 }).toJSDate()
 

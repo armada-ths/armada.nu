@@ -1,3 +1,5 @@
+"use client"
+import { useTranslations } from "next-intl"
 import { P } from "@/app/_components/Paragraph"
 import { Page } from "@/components/shared/Page"
 
@@ -8,16 +10,14 @@ interface ComingSoonPageProps {
   description?: string
 }
 
-export function ComingSoonPage({
-  title,
-  description = COMING_SOON_TEXT
-}: ComingSoonPageProps) {
+export function ComingSoonPage({ title, description }: ComingSoonPageProps) {
+  const t = useTranslations("Common")
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
         <div className="mx-auto max-w-150 text-center">
           <Page.Header>{title}</Page.Header>
-          <P className="mt-4">{description}</P>
+          <P className="mt-4">{description ?? t("comingSoon")}</P>
         </div>
       </Page.Boundary>
     </Page.Background>

@@ -18,7 +18,8 @@
     "luxon": "^3.7.2",
     "sonner": "^2.0.8",
     "zod": "^4.6.7",
-    "@armada/shared": "workspace:*"
+    "@armada/shared": "workspace:*",
+    "next-intl": "^4.14.9"
   },
   "devDependencies": {
     "typescript": "^5.9.3",

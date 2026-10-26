@@ -1,12 +1,18 @@
 "use client"
+import { uiText } from "@/i18n/ui"
 
-import ExhibitorDetails from "@/app/student/exhibitors/_components/ExhibitorDetails"
+import { useTranslations } from "next-intl"
+
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
+
+import ExhibitorDetails from "@/app/[locale]/student/exhibitors/_components/ExhibitorDetails"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import Modal from "@/components/ui/Modal"
 import { HEX_COLORS } from "@/lib/colors"
-import { getLocaleFromPathname } from "@/lib/i18n"
+
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+
 import { useEffect, useRef, useState } from "react"
 import {
   ReactZoomPanPinchRef,
@@ -49,7 +55,9 @@ export default function FairMap({
   MapComponent,
   selectedExhibitor = null
 }: FairMapProps) {
-  const locale = getLocaleFromPathname(usePathname())
+  const staticT = useTranslations("Static")
+
+  const locale = normalizeLocale(useLocale())
   const [modalOpen, setModalOpen] = useState(false)
   const [activeExhibitor, setActiveExhibitor] = useState<Exhibitor | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -220,7 +228,7 @@ export default function FairMap({
               {/* Logo */}
               <Image
                 src="/armada_white.svg"
-                alt="Fair logo"
+                alt={staticT("fairLogo")}
                 width={50}
                 height={50}
                 priority
@@ -247,7 +255,7 @@ export default function FairMap({
 
             {/* Loading text */}
             <p className="mt-4 text-lg font-medium">
-              {locale === "sv" ? "Laddar kartan..." : "Loading the map..."}
+              {uiText(locale, "loadingTheMap")}
             </p>
           </div>
         </div>

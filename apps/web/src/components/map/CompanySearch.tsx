@@ -1,4 +1,8 @@
 "use client"
+import { uiSections } from "@/i18n/ui"
+
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
 
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import {
@@ -14,9 +18,9 @@ import {
   PopoverContent,
   PopoverTrigger
 } from "@/components/ui/popover"
-import { getLocaleFromPathname } from "@/lib/i18n"
+
 import { Search } from "lucide-react"
-import { usePathname } from "next/navigation"
+
 import { useState } from "react"
 
 interface CompanySearchProps {
@@ -28,19 +32,8 @@ export default function CompanySearch({
   exhibitors,
   onSelect
 }: CompanySearchProps) {
-  const locale = getLocaleFromPathname(usePathname())
-  const labels =
-    locale === "sv"
-      ? {
-          placeholder: "Sök utställare...",
-          empty: "Inga företag hittades.",
-          heading: "Utställare"
-        }
-      : {
-          placeholder: "Search exhibitors...",
-          empty: "No companies found.",
-          heading: "Exhibitors"
-        }
+  const locale = normalizeLocale(useLocale())
+  const labels = uiSections[locale].companySearchLabels
   const [open, setOpen] = useState(false)
 
   const handleSelect = (exhibitor: Exhibitor) => {

@@ -1,7 +1,11 @@
 "use client"
+import { uiText } from "@/i18n/ui"
 
-import { getLocaleFromPathname, type Locale } from "@/lib/i18n"
-import { usePathname } from "next/navigation"
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
+
+import { type Locale } from "@/lib/i18n"
+
 import { useEffect, useState } from "react"
 
 interface RecruitmentRollingBannerProps {
@@ -14,16 +18,15 @@ const SEGMENT_COUNT = 8
 function formatTimeLeft(endDate: Date, locale: Locale): string {
   const msLeft = endDate.getTime() - Date.now()
   if (msLeft <= 0) {
-    return locale === "sv" ? "ANSÖKAN ÄR STÄNGD" : "OT APPLICATIONS ARE CLOSED"
+    return uiText(locale, "oTAPPLICATIONSARECLOSED")
   }
   const totalSeconds = Math.floor(msLeft / 1000)
   const days = Math.floor(totalSeconds / 86400)
   const hours = Math.floor((totalSeconds % 86400) / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
-  const prefix =
-    locale === "sv" ? "VÄRDANSÖKAN STÄNGER OM" : "HOST APPLICATIONS CLOSES IN"
-  if (days > 3) return `${prefix} ${days} ${locale === "sv" ? "DAGAR" : "DAYS"}`
+  const prefix = uiText(locale, "hOSTAPPLICATIONSCLOSESIN")
+  if (days > 3) return `${prefix} ${days} ${uiText(locale, "dAYS")}`
   if (days > 0) return `${prefix} ${days}D ${hours}H ${minutes}M`
   if (hours > 0) return `${prefix} ${hours}H ${minutes}M`
   if (minutes > 0) return `${prefix} ${minutes}M ${seconds}S`
@@ -34,7 +37,7 @@ export function RecruitmentRollingBanner({
   endDate,
   defaultVisible
 }: RecruitmentRollingBannerProps) {
-  const locale = getLocaleFromPathname(usePathname())
+  const locale = normalizeLocale(useLocale())
   const parsedEnd = new Date(endDate)
   const [label, setLabel] = useState(() => formatTimeLeft(parsedEnd, locale))
 

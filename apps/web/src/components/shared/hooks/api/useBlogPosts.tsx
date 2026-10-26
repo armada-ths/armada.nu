@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { readCmsResponse, blogPostSchema } from "@/lib/cmsResponse"
-import { BlogPost } from "@/app/blog/_data/posts"
+import { BlogPost } from "@/app/[locale]/blog/_data/posts"
 import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query"
 

@@ -13,6 +13,7 @@ export interface HighlightCardData {
   descriptionSv?: string | null
   brand?: string
   linkText?: string
+  linkTextSv?: string | null
   linkUrl?: string
   ctaEventName?: string
 }

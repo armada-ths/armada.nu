@@ -6,17 +6,20 @@ import { useQuery } from "@tanstack/react-query"
 
 export interface Organization {
   name: string
+  nameSv?: string | null
   people: Person[]
 }
 
 export interface Person {
   id: number
   name: string
+  nameSv?: string | null
   rank?: null | string
   email: null | string
   picture: string
   linkedin_url: null | string
   role: string
+  roleSv?: string | null
 }
 
 export async function fetchOrganization(options?: RequestInit) {
@@ -41,7 +44,7 @@ export async function fetchOrganization(options?: RequestInit) {
 
 export function useOrganization(options?: RequestInit) {
   return useQuery({
-    queryKey: ["recruitment"],
+    queryKey: ["organization"],
     queryFn: () => fetchOrganization(options)
   })
 }

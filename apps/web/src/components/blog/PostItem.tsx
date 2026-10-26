@@ -1,4 +1,8 @@
-import { BlogPost } from "@/app/blog/_data/posts"
+"use client"
+import { useLocale } from "next-intl"
+import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
+import { LocalizedText } from "@/i18n/text"
+import { BlogPost } from "@/app/[locale]/blog/_data/posts"
 import {
   Card,
   CardContent,
@@ -11,6 +15,8 @@ import ReactMarkdown from "react-markdown"
 import { PostImageCarousel } from "./PostImageCarousel"
 
 export function PostItem({ post }: { post: BlogPost }) {
+  const locale = normalizeLocale(useLocale())
+  const title = localizedText(locale, post.title, post.titleSv)
   const images = [post.imageUrl, ...(post.imageUrls ?? [])].filter(
     (image): image is string => Boolean(image)
   )
@@ -21,19 +27,23 @@ export function PostItem({ post }: { post: BlogPost }) {
         <PostImageCarousel
           key={images.join("|")}
           images={images.length ? images : ["/armada_licorice.svg"]}
-          title={post.title}
+          title={title}
         />
       )}
       <CardHeader className="space-y-2">
         <CardTitle className="font-bebas-neue text-3xl leading-tight sm:text-4xl">
-          {post.title}
+          {title}
         </CardTitle>
         <div className="text-licorice/60 text-sm">
-          {new Date(post.createdAt).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-          })}
+          {new Date(post.createdAt).toLocaleDateString(
+            locale === "sv" ? "sv-SE" : "en-GB",
+            {
+              timeZone: "Europe/Stockholm",
+              year: "numeric",
+              month: "long",
+              day: "numeric"
+            }
+          )}
         </div>
       </CardHeader>
       <CardContent>
@@ -113,11 +123,14 @@ export function PostItem({ post }: { post: BlogPost }) {
               </a>
             )
           }}>
-          {post.text}
+          {localizedText(locale, post.text, post.textSv)}
         </ReactMarkdown>
       </CardContent>
       <CardFooter className="flex items-center justify-between border-t pt-4">
-        <div className="text-licorice/60 text-sm">By {post.author}</div>
+        <div className="text-licorice/60 text-sm">
+          <LocalizedText id="by" />
+          {post.author}
+        </div>
       </CardFooter>
     </Card>
   )

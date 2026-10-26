@@ -1,3 +1,5 @@
+import createNextIntlPlugin from "next-intl/plugin"
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts")
 /** @type {import('next').NextConfig} */
 import toolbar from "@vercel/toolbar/plugins/next"
 import path from "node:path"
@@ -126,4 +128,4 @@ const nextConfig = {
   }
 }
 
-export default withVercelToolbar(nextConfig)
+export default withNextIntl(withVercelToolbar(nextConfig))

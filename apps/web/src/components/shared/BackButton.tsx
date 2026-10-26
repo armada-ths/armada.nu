@@ -1,15 +1,19 @@
 "use client"
+import { uiText } from "@/i18n/ui"
+
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
 
 import { Button } from "@/components/ui/button"
-import { getLocaleFromPathname } from "@/lib/i18n"
-import { usePathname, useRouter } from "next/navigation"
+
+import { useRouter } from "next/navigation"
 
 export function BackButton() {
   const router = useRouter()
-  const locale = getLocaleFromPathname(usePathname())
+  const locale = normalizeLocale(useLocale())
   return (
     <Button variant="neutral" onClick={() => router.back()}>
-      {locale === "sv" ? "Gå tillbaka" : "Go Back"}
+      {uiText(locale, "goBack")}
     </Button>
   )
 }

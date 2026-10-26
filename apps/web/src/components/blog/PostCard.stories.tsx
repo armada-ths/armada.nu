@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect } from "storybook/test"
 
-import type { BlogPost } from "@/app/blog/_data/posts"
+import type { BlogPost } from "@/app/[locale]/blog/_data/posts"
 import { PostCard } from "./PostCard"
 
 const mockPost: BlogPost = {

@@ -1,7 +1,11 @@
 "use client"
+import { useTranslations } from "next-intl"
+
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
 
 import { MenuItem, Navbar1 } from "@/components/navbar1"
-import { COMING_SOON_TEXT } from "@/components/shared/ComingSoonPage"
+
 import {
   BookOpenIcon,
   BriefcaseIcon,
@@ -19,13 +23,8 @@ import {
   UsersRoundIcon
 } from "lucide-react"
 import { DateTime } from "luxon"
-import { usePathname } from "next/navigation"
 
-import {
-  createLocalePath,
-  getLocaleFromPathname,
-  translations
-} from "@/lib/i18n"
+import { translations } from "@/lib/i18n"
 
 interface NavigationMenuClientProps {
   signupUrl: string
@@ -45,14 +44,20 @@ interface NavigationMenuClientProps {
   historyTimelineEnabled: boolean
 }
 
-const applyComingSoonDescriptions = (items: MenuItem[]): MenuItem[] =>
+const applyComingSoonDescriptions = (
+  items: MenuItem[],
+  comingSoon: string
+): MenuItem[] =>
   items.map(item => {
     if (item.items) {
-      return { ...item, items: applyComingSoonDescriptions(item.items) }
+      return {
+        ...item,
+        items: applyComingSoonDescriptions(item.items, comingSoon)
+      }
     }
 
     if (item.disabled) {
-      return { ...item, description: COMING_SOON_TEXT }
+      return { ...item, description: comingSoon }
     }
 
     return item
@@ -75,16 +80,17 @@ export function NavigationMenuClient({
   blogEnabled,
   historyTimelineEnabled
 }: NavigationMenuClientProps) {
-  const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname)
+  const staticT = useTranslations("Static")
+  const commonT = useTranslations("Common")
+
+  const locale = normalizeLocale(useLocale())
   const dict = translations[locale]
   const descriptions = dict.navDescriptions
-  const withLocale = (path: string) => createLocalePath(path, locale)
 
   const companyLinks: MenuItem[] = [
     {
       title: dict.forExhibitors,
-      url: withLocale("/exhibitor"),
+      url: "/exhibitor",
       items: [
         {
           title: dict.registration,
@@ -99,28 +105,28 @@ export function NavigationMenuClient({
         },
         {
           title: dict.kits,
-          url: withLocale("/exhibitor/packages"),
+          url: "/exhibitor/packages",
           description: descriptions.kits,
           icon: <PackageIcon className="size-5 shrink-0" />,
           disabled: !exhibitorPackagesEnabled
         },
         {
           title: dict.whyArmada,
-          url: withLocale("/exhibitor"),
+          url: "/exhibitor",
           description: descriptions.whyArmada,
           icon: <HandshakeIcon className="size-5 shrink-0" />,
           disabled: !exhibitorMainEnabled
         },
         {
           title: dict.timeline,
-          url: withLocale("/exhibitor/timeline"),
+          url: "/exhibitor/timeline",
           description: descriptions.timeline,
           icon: <ClockIcon className="size-5 shrink-0" />,
           disabled: !exhibitorTimelineEnabled
         },
         {
           title: dict.events,
-          url: withLocale("/exhibitor/events"),
+          url: "/exhibitor/events",
           description: descriptions.exhibitorEvents,
           icon: <CalendarSearchIcon className="size-5 shrink-0" />,
           disabled: !exhibitorEventsEnabled
@@ -132,25 +138,25 @@ export function NavigationMenuClient({
   const studentLinks: MenuItem[] = [
     {
       title: dict.forStudents,
-      url: withLocale("/student/exhibitors"),
+      url: "/student/exhibitors",
       items: [
         {
           title: dict.exhibitorsList,
-          url: withLocale("/student/exhibitors"),
+          url: "/student/exhibitors",
           description: descriptions.exhibitorsList,
           icon: <Building2Icon className="size-5 shrink-0" />,
           disabled: !exhibitorPageEnabled
         },
         {
           title: dict.events,
-          url: withLocale("/student/events"),
+          url: "/student/events",
           description: descriptions.studentEvents,
           icon: <CalendarDaysIcon className="size-5 shrink-0" />,
           disabled: !eventsEnabled
         },
         {
           title: dict.recruitment,
-          url: withLocale("/student/recruitment"),
+          url: "/student/recruitment",
           description: `${descriptions.recruitment} ${DateTime.now().year}`,
           icon: <BriefcaseIcon className="size-5 shrink-0" />,
           tracking: {
@@ -161,14 +167,14 @@ export function NavigationMenuClient({
         },
         {
           title: dict.map,
-          url: withLocale("/student/map"),
+          url: "/student/map",
           description: descriptions.map,
           icon: <MapPinnedIcon className="size-5 shrink-0" />,
           disabled: !mapEnabled
         },
         {
           title: dict.atTheFair,
-          url: withLocale("/student/at-the-fair"),
+          url: "/student/at-the-fair",
           description: descriptions.atTheFair,
           icon: <CompassIcon className="size-5 shrink-0" />,
           disabled: !atFairEnabled
@@ -180,25 +186,25 @@ export function NavigationMenuClient({
   const aboutLinks: MenuItem[] = [
     {
       title: dict.aboutUs,
-      url: withLocale("/about"),
+      url: "/about",
       items: [
         {
           title: dict.aboutArmada,
-          url: withLocale("/about"),
+          url: "/about",
           description: descriptions.aboutArmada,
           icon: <SparklesIcon className="size-5 shrink-0" />,
           disabled: !aboutPageEnabled
         },
         {
           title: dict.team,
-          url: withLocale("/about/team"),
+          url: "/about/team",
           description: `${descriptions.team} ${DateTime.now().year}`,
           icon: <UsersRoundIcon className="size-5 shrink-0" />,
           disabled: !aboutTeamEnabled
         },
         {
           title: dict.blog,
-          url: withLocale("/blog"),
+          url: "/blog",
           description: descriptions.blog,
           icon: <NotebookPenIcon className="size-5 shrink-0" />,
           tracking: {
@@ -208,10 +214,9 @@ export function NavigationMenuClient({
           disabled: !blogEnabled
         },
         {
-          title: "History of Armada",
+          title: staticT("historyOfArmada"),
           url: "/about/history",
-          description:
-            "45 years of Scandinavia's largest student-run career fair",
+          description: staticT("45YearsOfScandinaviasLargestStudentrunCareer"),
           icon: <BookOpenIcon className="size-5 shrink-0" />,
           disabled: !historyTimelineEnabled
         }
@@ -220,7 +225,8 @@ export function NavigationMenuClient({
   ]
 
   const menuItems = applyComingSoonDescriptions(
-    studentLinks.concat(companyLinks.concat(aboutLinks))
+    studentLinks.concat(companyLinks.concat(aboutLinks)),
+    commonT("comingSoon")
   )
 
   return (

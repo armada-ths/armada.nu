@@ -1,12 +1,15 @@
 "use client"
+import { uiText } from "@/i18n/ui"
+
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
 
 import type { FairDate } from "@/components/shared/hooks/api/useDates"
 import { isExhibitorSignupOpen } from "@/components/shared/hooks/api/useDates"
 import { Button } from "@/components/ui/button"
-import { getLocaleFromPathname } from "@/lib/i18n"
+
 import { track } from "@vercel/analytics"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { Link } from "@armada/shared/i18n/navigation"
 
 export function CompanyRegistrationButton({
   signupUrl,
@@ -15,7 +18,7 @@ export function CompanyRegistrationButton({
   signupUrl: string
   dates: FairDate
 }) {
-  const locale = getLocaleFromPathname(usePathname())
+  const locale = normalizeLocale(useLocale())
 
   if (!isExhibitorSignupOpen(dates)) {
     return null
@@ -29,9 +32,7 @@ export function CompanyRegistrationButton({
           location: "exhibitor_page_registration"
         })
       }>
-      <Button>
-        {locale === "sv" ? "Anmälan för utställare" : "Exhibitor Signup"}
-      </Button>
+      <Button>{uiText(locale, "exhibitorSignup")}</Button>
     </Link>
   )
 }

@@ -1,5 +1,7 @@
+import createNextIntlPlugin from "next-intl/plugin"
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts")
 import path from "node:path"
-export default {
+const nextConfig = {
   transpilePackages: ["@armada/shared"],
   outputFileTracingRoot: path.resolve(import.meta.dirname, "../.."),
   turbopack: { root: path.resolve(import.meta.dirname, "../..") },
@@ -15,3 +17,5 @@ export default {
     ]
   }
 }
+
+export default withNextIntl(nextConfig)

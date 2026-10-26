@@ -1,4 +1,7 @@
 "use client"
+import { useLocale, useTranslations } from "next-intl"
+import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
+import { LocalizedText } from "@/i18n/text"
 
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
@@ -21,6 +24,7 @@ interface GoldExhibitorsProps {
 }
 
 export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
+  const accessibleT = useTranslations("Accessibility")
   const plugin = useRef(
     Autoplay({
       delay: 6000,
@@ -55,7 +59,7 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
       <Page.Header
         tier="secondary"
         className="text-pineapple relative mb-16 text-center text-3xl tracking-wide">
-        Gold Exhibitors
+        <LocalizedText id="goldExhibitors" />
       </Page.Header>
 
       <Carousel
@@ -82,7 +86,7 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
         {scrollSnaps.map((_, idx) => (
           <button
             key={idx}
-            aria-label={`Go to slide ${idx + 1}`}
+            aria-label={accessibleT("goToSlide", { index: idx + 1 })}
             aria-current={idx === selectedIndex}
             onClick={() => api?.scrollTo(idx)}
             className={`h-3 w-3 rounded-full transition ${
@@ -98,6 +102,8 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
 }
 
 function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
+  const locale = normalizeLocale(useLocale())
+  const accessibleT = useTranslations("Accessibility")
   const [expanded, setExpanded] = useState(false)
   const [maxLength, setMaxLength] = useState(600)
   const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(
@@ -115,7 +121,7 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
     return () => window.removeEventListener("resize", updateLength)
   }, [])
 
-  const about = exhibitor.about ?? ""
+  const about = localizedText(locale, exhibitor.about, exhibitor.aboutSv) ?? ""
   const isLong = about.length > maxLength
   const displayedText = expanded
     ? about
@@ -127,7 +133,7 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         <div className="mb-6 flex justify-center">
           <Image
             src={exhibitor.logoFreesize}
-            alt={`${exhibitor.name} logo`}
+            alt={accessibleT("companyLogo", { name: exhibitor.name })}
             unoptimized={shouldBypassLogoOptimization}
             width={200}
             height={90}

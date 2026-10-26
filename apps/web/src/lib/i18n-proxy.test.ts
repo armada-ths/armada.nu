@@ -6,6 +6,24 @@ import { config, proxy } from "../proxy"
 
 describe("locale proxy", () => {
   it.each([
+    ["/about", "sv-SE, en;q=0.8", null, "/sv/about"],
+    ["/about", "sv-SE", "locale=en", "/en/about"],
+    ["/sv/about", "en", "locale=en", null]
+  ])(
+    "uses URL, cookie and browser language priority",
+    (path, language, cookie, expected) => {
+      const headers = new Headers({ "accept-language": language })
+      if (cookie) headers.set("cookie", cookie)
+      const result = proxy(
+        new NextRequest("https://armada.nu" + path, { headers })
+      )
+      expect(result.headers.get("location")).toBe(
+        expected ? "https://armada.nu" + expected : null
+      )
+    }
+  )
+
+  it.each([
     "/api/revalidate",
     "/_next/static/chunks/app.js",
     "/_next/image",
@@ -35,13 +53,11 @@ describe("locale proxy", () => {
     )
   })
 
-  it("rewrites Swedish pages with the request locale header", () => {
+  it("keeps the locale prefix and forwards the request locale", () => {
     const response = proxy(new NextRequest("https://armada.nu/sv/about"))
-    expect(response.headers.get("x-middleware-rewrite")).toBe(
-      "https://armada.nu/about"
-    )
-    expect(response.headers.get("x-middleware-request-x-armada-locale")).toBe(
-      "sv"
-    )
+    expect(response.headers.get("x-middleware-rewrite")).toBeNull()
+    expect(
+      response.headers.get("x-middleware-request-x-next-intl-locale")
+    ).toBe("sv")
   })
 })

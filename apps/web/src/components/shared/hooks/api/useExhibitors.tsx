@@ -8,6 +8,7 @@ export interface Exhibitor {
   tier?: string
   companyWebsite?: string
   about?: string
+  aboutSv?: string | null
   purpose?: string
   logoSquared?: string
   logoFreesize?: string
@@ -35,26 +36,31 @@ export interface Exhibitor {
 export interface Industry {
   id: number
   name: string
+  nameSv?: string | null
 }
 
 export interface Employment {
   id: number
   name: string
+  nameSv?: string | null
 }
 
 export interface Program {
   id: number
   name: string
+  nameSv?: string | null
 }
 
 export interface Location {
   id: number
   name: string
+  nameSv?: string | null
 }
 
 export interface Group {
   id: number
   name: string
+  nameSv?: string | null
 }
 
 export interface ExhibitorFilters {
