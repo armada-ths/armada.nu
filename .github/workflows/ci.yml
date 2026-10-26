@@ -43,6 +43,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+      - run: pnpm lint:i18n
 
   type-check:
     runs-on: ubuntu-latest
