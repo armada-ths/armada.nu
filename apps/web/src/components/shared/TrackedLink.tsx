@@ -1,7 +1,7 @@
 "use client"
 
 import { track } from "@vercel/analytics"
-import Link from "next/link"
+import { Link } from "@armada/shared/i18n/navigation"
 import { ComponentPropsWithoutRef, forwardRef } from "react"
 
 export type TrackingConfig = {

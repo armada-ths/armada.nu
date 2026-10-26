@@ -1,3 +1,6 @@
+import { LocaleProvider } from "@armada/shared/i18n/client"
+import en from "../i18n/messages/en.json"
+import sv from "../i18n/messages/sv.json"
 import type { Metadata } from "next"
 import { fontVariables } from "@armada/shared/fonts"
 import { AppTelemetry } from "@armada/shared/telemetry"
@@ -20,12 +23,14 @@ export default function PhotosLayout({
   return (
     <html lang="en">
       <body className={fontVariables}>
-        <AppTelemetry app="photos" />
-        <div
-          data-photo-app
-          className="min-h-screen bg-[#f7f5f2] text-[#172b35]">
-          {children}
-        </div>
+        <LocaleProvider locale="en" messages={{ en, sv }}>
+          <AppTelemetry app="photos" />
+          <div
+            data-photo-app
+            className="min-h-screen bg-[#f7f5f2] text-[#172b35]">
+            {children}
+          </div>
+        </LocaleProvider>
       </body>
     </html>
   )

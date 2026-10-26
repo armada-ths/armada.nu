@@ -1,3 +1,14 @@
+import process from "node:process"
+import createNextIntlPlugin from "next-intl/plugin"
+const withNextIntl = createNextIntlPlugin(
+  "./" +
+    path
+      .relative(
+        process.cwd(),
+        path.join(import.meta.dirname, "src/i18n/request.ts")
+      )
+      .replaceAll("\\", "/")
+)
 /** @type {import('next').NextConfig} */
 import toolbar from "@vercel/toolbar/plugins/next"
 import path from "node:path"
@@ -15,7 +26,6 @@ const nextConfig = {
     return [
       // Preview builds also have NODE_ENV=production. VERCEL_ENV identifies
       // the deployment, and an absent value keeps local/self-hosted builds safe.
-      // eslint-disable-next-line no-undef
       ...(process.env.VERCEL_ENV !== "production"
         ? [{ source: "/:path*", headers: stagingHeaders }]
         : []),
@@ -60,7 +70,6 @@ const nextConfig = {
     return config
   },
   images: {
-    // eslint-disable-next-line no-undef
     unoptimized: process.env.NODE_ENV === "development",
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -126,4 +135,4 @@ const nextConfig = {
   }
 }
 
-export default withVercelToolbar(nextConfig)
+export default withNextIntl(withVercelToolbar(nextConfig))

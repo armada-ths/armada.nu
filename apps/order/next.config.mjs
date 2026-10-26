@@ -1,5 +1,16 @@
+import process from "node:process"
+import createNextIntlPlugin from "next-intl/plugin"
+const withNextIntl = createNextIntlPlugin(
+  "./" +
+    path
+      .relative(
+        process.cwd(),
+        path.join(import.meta.dirname, "src/i18n/request.ts")
+      )
+      .replaceAll("\\", "/")
+)
 import path from "node:path"
-export default {
+const nextConfig = {
   transpilePackages: ["@armada/shared"],
   outputFileTracingRoot: path.resolve(import.meta.dirname, "../.."),
   turbopack: { root: path.resolve(import.meta.dirname, "../..") },
@@ -15,3 +26,5 @@ export default {
     ]
   }
 }
+
+export default withNextIntl(nextConfig)

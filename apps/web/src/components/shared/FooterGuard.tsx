@@ -7,6 +7,7 @@ export function FooterGuard({ children }: React.PropsWithChildren) {
   /**
    * Ugly workaround, but we don't want the footer to be rendered on the map page
    */
-  if (pathname === "/student/map") return null
+  if (pathname?.replace(/^\/(en|sv)(?=\/|$)/, "") === "/student/map")
+    return null
   return children
 }

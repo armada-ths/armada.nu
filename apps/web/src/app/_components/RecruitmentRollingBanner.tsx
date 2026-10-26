@@ -1,4 +1,10 @@
 "use client"
+import { uiText } from "@/i18n/ui"
+
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
+
+import { type Locale } from "@/lib/i18n"
 
 import { useEffect, useState } from "react"
 
@@ -9,35 +15,38 @@ interface RecruitmentRollingBannerProps {
 
 const SEGMENT_COUNT = 8
 
-function formatTimeLeft(endDate: Date): string {
+function formatTimeLeft(endDate: Date, locale: Locale): string {
   const msLeft = endDate.getTime() - Date.now()
-  if (msLeft <= 0) return "OT APPLICATIONS ARE CLOSED"
+  if (msLeft <= 0) {
+    return uiText(locale, "oTAPPLICATIONSARECLOSED")
+  }
   const totalSeconds = Math.floor(msLeft / 1000)
   const days = Math.floor(totalSeconds / 86400)
   const hours = Math.floor((totalSeconds % 86400) / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
-  if (days > 3) return `HOST APPLICATIONS CLOSES IN ${days} DAYS`
-  if (days > 0)
-    return `HOST APPLICATIONS CLOSES IN ${days}D ${hours}H ${minutes}M`
-  if (hours > 0) return `HOST APPLICATIONS CLOSES IN ${hours}H ${minutes}M`
-  if (minutes > 0) return `HOST APPLICATIONS CLOSES IN ${minutes}M ${seconds}S`
-  return `HOST APPLICATIONS CLOSES IN ${seconds}S`
+  const prefix = uiText(locale, "hOSTAPPLICATIONSCLOSESIN")
+  if (days > 3) return `${prefix} ${days} ${uiText(locale, "dAYS")}`
+  if (days > 0) return `${prefix} ${days}D ${hours}H ${minutes}M`
+  if (hours > 0) return `${prefix} ${hours}H ${minutes}M`
+  if (minutes > 0) return `${prefix} ${minutes}M ${seconds}S`
+  return `${prefix} ${seconds}S`
 }
 
 export function RecruitmentRollingBanner({
   endDate,
   defaultVisible
 }: RecruitmentRollingBannerProps) {
+  const locale = normalizeLocale(useLocale())
   const parsedEnd = new Date(endDate)
-  const [label, setLabel] = useState(() => formatTimeLeft(parsedEnd))
+  const [label, setLabel] = useState(() => formatTimeLeft(parsedEnd, locale))
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setLabel(formatTimeLeft(parsedEnd))
+      setLabel(formatTimeLeft(parsedEnd, locale))
     }, 1000)
     return () => clearInterval(interval)
-  }, [endDate])
+  }, [endDate, locale])
 
   if (!defaultVisible) return null
 

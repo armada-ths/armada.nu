@@ -1,4 +1,5 @@
 "use client"
+import { LocalizedText } from "@/i18n/text"
 
 import {
   Carousel,
@@ -23,12 +24,12 @@ export default function DateCarousel() {
       <CarouselContent>
         <CarouselItem>
           <p className="text-melon mt-16 text-2xl mix-blend-normal">
-            November 18 10:00–16:00
+            <LocalizedText id="november1810001600" />
           </p>
         </CarouselItem>
         <CarouselItem>
           <p className="text-melon mt-16 text-2xl mix-blend-normal">
-            November 19 10:00–15:00
+            <LocalizedText id="november1910001500" />
           </p>
         </CarouselItem>
       </CarouselContent>

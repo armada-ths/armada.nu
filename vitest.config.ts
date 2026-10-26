@@ -27,6 +27,7 @@ export default defineConfig({
         extends: true,
         test: {
           name: "unit",
+          server: { deps: { inline: ["next-intl"] } },
           environment: "node",
           include: [
             "apps/*/src/lib/**/*.test.ts",

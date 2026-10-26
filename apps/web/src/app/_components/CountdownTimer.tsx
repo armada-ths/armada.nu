@@ -1,4 +1,6 @@
 "use client"
+import { LocalizedText } from "@/i18n/text"
+import { useTranslations } from "next-intl"
 
 import { COUNTDOWN_CONFETTI_COLORS } from "@/lib/colors"
 import { useEffect, useState } from "react"
@@ -109,6 +111,8 @@ interface CountdownTimerProps {
 }
 
 export function CountdownTimer({ targetDate }: CountdownTimerProps) {
+  const staticT = useTranslations("Static")
+
   const { displayTime, animationStage } = useCountdownAnimation(targetDate)
 
   return (
@@ -116,24 +120,28 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
       {animationStage === "celebration" && <ConfettiBurst />}
       {animationStage === "final-countdown" ? (
         <>
-          <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
+          <p className="p-2 text-3xl font-bold">
+            <LocalizedText id="fAIRSTARTSIN" />
+          </p>
           <div className="flex justify-center">
-            <TimeBox value={0} label="Days" />
-            <TimeBox value={0} label="Hours" />
-            <TimeBox value={displayTime.minutes} label="Minutes" />
-            <TimeBox value={displayTime.seconds} label="Seconds" />
+            <TimeBox value={0} label={staticT("days")} />
+            <TimeBox value={0} label={staticT("hours")} />
+            <TimeBox value={displayTime.minutes} label={staticT("minutes")} />
+            <TimeBox value={displayTime.seconds} label={staticT("seconds")} />
           </div>
         </>
       ) : animationStage === "celebration" ? (
         <Celebration />
       ) : (
         <>
-          <p className="p-2 text-3xl font-bold">FAIR STARTS IN</p>
+          <p className="p-2 text-3xl font-bold">
+            <LocalizedText id="fAIRSTARTSIN" />
+          </p>
           <div className="flex justify-center">
-            <TimeBox value={displayTime.days} label="Days" />
-            <TimeBox value={displayTime.hours} label="Hours" />
-            <TimeBox value={displayTime.minutes} label="Minutes" />
-            <TimeBox value={displayTime.seconds} label="Seconds" />
+            <TimeBox value={displayTime.days} label={staticT("days")} />
+            <TimeBox value={displayTime.hours} label={staticT("hours")} />
+            <TimeBox value={displayTime.minutes} label={staticT("minutes")} />
+            <TimeBox value={displayTime.seconds} label={staticT("seconds")} />
           </div>
         </>
       )}
@@ -152,15 +160,19 @@ function TimeBox({ value, label }: { value: number; label: string }) {
 }
 
 function Celebration() {
+  const staticT = useTranslations("Static")
+
   return (
     <div className="relative animate-[scale_1.5s_ease-in-out_1,subtlePulse_2s_ease-in-out_1.5s_infinite]">
       <div className="relative z-10">
-        <p className="p-2 text-3xl font-bold">THE FAIR IS LIVE!</p>
+        <p className="p-2 text-3xl font-bold">
+          <LocalizedText id="tHEFAIRISLIVE" />
+        </p>
         <div className="flex justify-center">
-          <TimeBox value={0} label="Days" />
-          <TimeBox value={0} label="Hours" />
-          <TimeBox value={0} label="Minutes" />
-          <TimeBox value={0} label="Seconds" />
+          <TimeBox value={0} label={staticT("days")} />
+          <TimeBox value={0} label={staticT("hours")} />
+          <TimeBox value={0} label={staticT("minutes")} />
+          <TimeBox value={0} label={staticT("seconds")} />
         </div>
       </div>
 

@@ -1,4 +1,8 @@
 "use client"
+import { uiSections } from "@/i18n/ui"
+
+import { useLocale } from "@armada/shared/i18n/client"
+import { normalizeLocale } from "@armada/shared/i18n/routing"
 
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import {
@@ -14,7 +18,9 @@ import {
   PopoverContent,
   PopoverTrigger
 } from "@/components/ui/popover"
+
 import { Search } from "lucide-react"
+
 import { useState } from "react"
 
 interface CompanySearchProps {
@@ -26,6 +32,8 @@ export default function CompanySearch({
   exhibitors,
   onSelect
 }: CompanySearchProps) {
+  const locale = normalizeLocale(useLocale())
+  const labels = uiSections[locale].companySearchLabels
   const [open, setOpen] = useState(false)
 
   const handleSelect = (exhibitor: Exhibitor) => {
@@ -48,12 +56,12 @@ export default function CompanySearch({
           className="w-80 rounded-md border p-0 shadow-xl">
           <Command className="bg-snow rounded-md">
             <CommandInput
-              placeholder="Search exhibitors..."
+              placeholder={labels.placeholder}
               className="text-licorice"
             />
             <CommandList className="max-h-64 overflow-y-auto">
-              <CommandEmpty>No companies found.</CommandEmpty>
-              <CommandGroup heading="Exhibitors">
+              <CommandEmpty>{labels.empty}</CommandEmpty>
+              <CommandGroup heading={labels.heading}>
                 {exhibitors.map(ex => (
                   <CommandItem key={ex.id} onSelect={() => handleSelect(ex)}>
                     {ex.name}

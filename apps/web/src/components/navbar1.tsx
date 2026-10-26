@@ -1,7 +1,10 @@
 "use client"
+import { Link } from "@armada/shared/i18n/navigation"
+import { LanguageSwitcher } from "@armada/shared/i18n/client"
 
 import { track } from "@vercel/analytics"
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
+import { Menu } from "lucide-react"
+
 import type { ComponentPropsWithRef } from "react"
 
 import { cn } from "@/lib/utils"
@@ -51,7 +54,7 @@ interface Navbar1Props {
 }
 
 const LogoLink = ({ logo }: { logo: NonNullable<Navbar1Props["logo"]> }) => (
-  <a href={logo.url} className="inline-flex items-center gap-1.5">
+  <Link href={logo.url} className="inline-flex items-center gap-1.5">
     <img
       src={logo.src}
       className="h-8 w-auto shrink-0"
@@ -67,88 +70,17 @@ const LogoLink = ({ logo }: { logo: NonNullable<Navbar1Props["logo"]> }) => (
         ARMADA
       </span>
     </div>
-  </a>
+  </Link>
 )
 
 const Navbar1 = ({
   logo = {
-    url: "https://www.shadcnblocks.com",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-    alt: "logo",
-    title: "Shadcnblocks.com"
+    url: "/",
+    src: "/armada_licorice.svg",
+    alt: "THS Armada",
+    title: "THS Armada"
   },
-  menu = [
-    { title: "Home", url: "#" },
-    {
-      title: "Products",
-      url: "#",
-      items: [
-        {
-          title: "Blog",
-          description: "The latest industry news, updates, and info",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Company",
-          description: "Our mission is to innovate and empower the world",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Careers",
-          description: "Browse job listing and discover our workspace",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Support",
-          description:
-            "Get in touch with our support team or visit community forums",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#"
-        }
-      ]
-    },
-    {
-      title: "Resources",
-      url: "#",
-      items: [
-        {
-          title: "Help Center",
-          description: "Get all the answers you need right here",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Contact Us",
-          description: "We are here to help you with any questions have",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Status",
-          description: "Check the current status of our services and APIs",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#"
-        },
-        {
-          title: "Terms of Service",
-          description: "Our terms and conditions for using our services",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#"
-        }
-      ]
-    },
-    {
-      title: "Pricing",
-      url: "#"
-    },
-    {
-      title: "Blog",
-      url: "#"
-    }
-  ]
+  menu = []
 }: Navbar1Props) => {
   return (
     <section className="bg-melon border-licorice flex h-20 items-center border-b-2">
@@ -170,7 +102,9 @@ const Navbar1 = ({
               </NavigationMenu>
             </div>
 
-            <div className="flex-1"></div>
+            <div className="flex flex-1 items-center justify-end">
+              <LanguageSwitcher />
+            </div>
           </div>
         </nav>
 
@@ -179,31 +113,34 @@ const Navbar1 = ({
           <div className="flex items-center justify-between">
             {/* Logo */}
             <LogoLink logo={logo} />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="neutral"
-                  size="icon"
-                  className="border-licorice">
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="bg-coconut overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>
-                    <LogoLink logo={logo} />
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-6 p-4">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="flex w-full flex-col gap-4">
-                    {menu.map(item => renderMobileMenuItem(item))}
-                  </Accordion>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="neutral"
+                    size="icon"
+                    className="border-licorice">
+                    <Menu className="size-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="bg-coconut overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>
+                      <LogoLink logo={logo} />
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-6 p-4">
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="flex w-full flex-col gap-4">
+                      {menu.map(item => renderMobileMenuItem(item))}
+                    </Accordion>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>
@@ -246,9 +183,9 @@ const renderMenuItem = (item: MenuItem) => {
   return (
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
-        href={item.url}
+        asChild
         className="group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium">
-        {item.title}
+        <Link href={item.url}>{item.title}</Link>
       </NavigationMenuLink>
     </NavigationMenuItem>
   )
@@ -282,7 +219,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
 
   return (
     <span key={item.title} className="text-md font-semibold">
-      <a
+      <Link
         href={item.url}
         onClick={
           item.tracking
@@ -290,7 +227,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
             : undefined
         }>
         {item.title}
-      </a>
+      </Link>
     </span>
   )
 }
@@ -326,7 +263,7 @@ const SubMenuLink = ({
   }
 
   return (
-    <a
+    <Link
       {...props}
       className={cn(
         className,
@@ -340,7 +277,7 @@ const SubMenuLink = ({
         }
       }}>
       {content}
-    </a>
+    </Link>
   )
 }
 

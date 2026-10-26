@@ -6,7 +6,8 @@
     "dev": "next dev -p 8002",
     "build": "next build",
     "start": "next start -p 8002",
-    "type-check": "next typegen && tsc --noEmit"
+    "type-check": "next typegen && tsc --noEmit",
+    "lint:i18n": "eloqnt lint --strict"
   },
   "dependencies": {
     "next": "16.4.1",
@@ -18,7 +19,8 @@
     "luxon": "^3.7.2",
     "sonner": "^2.0.8",
     "zod": "^4.6.7",
-    "@armada/shared": "workspace:*"
+    "@armada/shared": "workspace:*",
+    "next-intl": "^4.14.9"
   },
   "devDependencies": {
     "typescript": "^5.9.3",

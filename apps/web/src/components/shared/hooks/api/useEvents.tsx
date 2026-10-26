@@ -6,10 +6,15 @@ import { useQuery } from "@tanstack/react-query"
 export interface Event {
   id: number
   name: string
+  nameSv?: string | null
   description: string
+  descriptionSv?: string | null
   location?: string | null
+  locationSv?: string | null
   food?: string | null
+  foodSv?: string | null
   openTo?: string | null
+  openToSv?: string | null
   mapUrl?: string | null
   eventStart: number | string
   eventEnd: number | string
@@ -17,6 +22,7 @@ export interface Event {
   registrationEnd?: number | string
   imageUrl: string
   fee: string
+  feeSv?: string | null
   registrationRequired: boolean
   externalEventLink: string
   signupQuestions: SignupQuestion[]

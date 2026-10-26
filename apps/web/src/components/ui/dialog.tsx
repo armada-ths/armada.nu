@@ -1,4 +1,5 @@
 "use client"
+import { LocalizedText } from "@/i18n/text"
 
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
@@ -65,7 +66,9 @@ function DialogContent({
         {children}
         <DialogPrimitive.Close className="rounded-base absolute top-4 right-4 opacity-100 ring-offset-white focus:ring-2 focus:ring-black focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
           <X />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">
+            <LocalizedText id="close" />
+          </span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPortal>

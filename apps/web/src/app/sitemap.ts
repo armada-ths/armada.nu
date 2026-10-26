@@ -1,3 +1,4 @@
+import { fetchBlogPosts } from "@/components/shared/hooks/api/useBlogPosts"
 import { getDefaultFeatureFlags, type FeatureFlagKey } from "@/feature_flags"
 import { MetadataRoute } from "next"
 import { isProductionDeployment } from "@/lib/deployment"
@@ -25,6 +26,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.6,
       flag: "ABOUT_PAGE"
+    },
+    {
+      url: "https://armada.nu/about/team",
+      changeFrequency: "monthly",
+      priority: 0.6,
+      flag: "ABOUT_TEAM_PAGE"
     },
     {
       url: "https://armada.nu/student/recruitment",
@@ -100,12 +107,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   ]
 
+  if (flags.ARMADA_BLOG_PAGE) {
+    const posts = await fetchBlogPosts()
+    entries.push(
+      ...posts.map(post => ({
+        url: "https://armada.nu/blog/" + post.id,
+        changeFrequency: "monthly" as const,
+        priority: 0.35
+      }))
+    )
+  }
+
   return entries
     .filter(entry => (entry.flag ? flags[entry.flag] : true))
-    .map(({ url, changeFrequency, priority }) => ({
-      url,
-      lastModified,
-      changeFrequency,
-      priority
-    }))
+    .flatMap(({ url, changeFrequency, priority }) =>
+      ["en", "sv"].map(locale => ({
+        url: new URL(
+          "/" + locale + new URL(url).pathname.replace(/^\/$/, ""),
+          url
+        ).href,
+        alternates: {
+          languages: {
+            en: new URL("/en" + new URL(url).pathname.replace(/^\/$/, ""), url)
+              .href,
+            sv: new URL("/sv" + new URL(url).pathname.replace(/^\/$/, ""), url)
+              .href
+          }
+        },
+        lastModified,
+        changeFrequency,
+        priority
+      }))
+    )
 }

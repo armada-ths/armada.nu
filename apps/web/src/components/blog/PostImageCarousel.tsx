@@ -1,4 +1,5 @@
 "use client"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,6 +31,9 @@ export function PostImageCarousel({
   images: string[]
   title: string
 }) {
+  const staticT = useTranslations("Static")
+  const accessibleT = useTranslations("Accessibility")
+
   const [api, setApi] = useState<CarouselApi>()
   const [selected, setSelected] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -63,7 +67,7 @@ export function PostImageCarousel({
       setApi={setApi}
       opts={{ loop: true, duration: reducedMotion ? 0 : 25 }}
       className="-mt-6 w-full overflow-hidden"
-      aria-label={`${title} photos`}
+      aria-label={accessibleT("photosTitle", { title })}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={event => {
@@ -75,7 +79,10 @@ export function PostImageCarousel({
           <CarouselItem
             key={`${src}-${index}`}
             className="relative aspect-2/1 pl-0"
-            aria-label={`${index + 1} of ${images.length}`}
+            aria-label={accessibleT("photoIndex", {
+              index: index + 1,
+              total: images.length
+            })}
             aria-hidden={index !== selected}>
             <Image
               src={src}
@@ -104,7 +111,7 @@ export function PostImageCarousel({
           <div
             className="absolute right-14 bottom-0 left-14 overflow-x-auto sm:hidden"
             role="group"
-            aria-label="Choose photo">
+            aria-label={staticT("choosePhoto")}>
             <div className="flex w-max min-w-full justify-center">
               {images.map((_, index) => (
                 <Button
@@ -113,7 +120,10 @@ export function PostImageCarousel({
                   variant="noShadow"
                   size="icon"
                   className="h-11 w-8 shrink-0 cursor-pointer items-end rounded-full border-0 bg-transparent pb-2"
-                  aria-label={`Go to photo ${index + 1} of ${images.length}`}
+                  aria-label={accessibleT("goToPhoto", {
+                    index: index + 1,
+                    total: images.length
+                  })}
                   aria-current={index === selected ? "true" : undefined}
                   disabled={!api}
                   onClick={() => {

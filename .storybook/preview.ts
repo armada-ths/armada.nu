@@ -1,3 +1,11 @@
+import { createElement } from "react"
+import { NextIntlClientProvider } from "../packages/shared/src/i18n/client"
+import en from "../apps/web/src/i18n/messages/en.json"
+import sv from "../apps/web/src/i18n/messages/sv.json"
+import orderEn from "../apps/order/src/i18n/messages/en.json"
+import orderSv from "../apps/order/src/i18n/messages/sv.json"
+import photosEn from "../apps/photos/src/i18n/messages/en.json"
+import photosSv from "../apps/photos/src/i18n/messages/sv.json"
 import type { Preview } from "@storybook/nextjs-vite"
 import { sb } from "storybook/test"
 
@@ -6,7 +14,49 @@ import "./styles.css"
 sb.mock(import("@vercel/analytics"), { spy: true })
 
 const preview: Preview = {
+  globalTypes: {
+    locale: {
+      description: "Language",
+      toolbar: {
+        icon: "globe",
+        items: [
+          { value: "en", title: "English" },
+          { value: "sv", title: "Svenska" }
+        ]
+      }
+    }
+  },
+  initialGlobals: { locale: "en" },
+  decorators: [
+    (Story, context) =>
+      createElement(
+        NextIntlClientProvider,
+        {
+          locale: context.globals.locale ?? "en",
+          messages:
+            context.globals.locale === "sv"
+              ? {
+                  ...sv,
+                  ...orderSv,
+                  ...photosSv,
+                  Common: sv.Common,
+                  Metadata: sv.Metadata
+                }
+              : {
+                  ...en,
+                  ...orderEn,
+                  ...photosEn,
+                  Common: en.Common,
+                  Metadata: en.Metadata
+                },
+          timeZone: "Europe/Stockholm",
+          children: createElement(Story)
+        },
+        createElement(Story)
+      )
+  ],
   parameters: {
+    nextjs: { appDirectory: true },
     controls: {
       matchers: {
         color: /(background|color)$/i,
