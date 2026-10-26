@@ -134,6 +134,9 @@ try {
     .click()
   await page.getByRole("button", { name: sv.Common.switchLanguage }).click()
   await page.waitForURL("**/en?source=test#cart")
+  await page
+    .locator('meta[property="og:locale"][content="en_GB"]')
+    .waitFor({ state: "attached" })
   assert.equal(
     await page.locator('meta[property="og:locale"]').getAttribute("content"),
     "en_GB"
