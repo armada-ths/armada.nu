@@ -1,3 +1,6 @@
+import { LocaleProvider } from "@armada/shared/i18n/client"
+import en from "../i18n/messages/en.json"
+import sv from "../i18n/messages/sv.json"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { fontVariables } from "@armada/shared/fonts"
@@ -19,16 +22,18 @@ export default function OrderLayout({
   return (
     <html lang="en">
       <body className={fontVariables}>
-        <AppTelemetry app="order" />
-        <header className="border-border border-b px-5 py-4">
-          <Link
-            href="https://armada.nu"
-            className="font-bebas-neue text-melon text-3xl">
-            THS Armada
-          </Link>
-        </header>
-        {children}
-        <Toaster expand closeButton />
+        <LocaleProvider locale="en" messages={{ en, sv }}>
+          <AppTelemetry app="order" />
+          <header className="border-border border-b px-5 py-4">
+            <Link
+              href="https://armada.nu"
+              className="font-bebas-neue text-melon text-3xl">
+              THS Armada
+            </Link>
+          </header>
+          {children}
+          <Toaster expand closeButton />
+        </LocaleProvider>
       </body>
     </html>
   )
