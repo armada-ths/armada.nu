@@ -28,6 +28,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       flag: "ABOUT_PAGE"
     },
     {
+      url: "https://armada.nu/about/team",
+      changeFrequency: "monthly",
+      priority: 0.6,
+      flag: "ABOUT_TEAM_PAGE"
+    },
+    {
       url: "https://armada.nu/student/recruitment",
       changeFrequency: "weekly",
       priority: 0.75,
