@@ -29,7 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: dict.title,
-    description: dict.description
+    description: dict.description,
+    robots: {index: false, follow: false}
   }
 }
 

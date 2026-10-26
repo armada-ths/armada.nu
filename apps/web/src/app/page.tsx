@@ -1,6 +1,8 @@
 import { Countdown, CountdownCard } from "@/app/_components/Countdown"
+import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
+import RollingBannerSilver from "@/app/_components/RollingBannerSilver"
 import { Hero1 } from "@/components/hero7"
 import { HighlightCard } from "@/components/highlight-card"
 import { feature } from "@/components/shared/feature"
@@ -8,6 +10,7 @@ import {
   fetchDates,
   isExhibitorSignupOpen
 } from "@/components/shared/hooks/api/useDates"
+import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { fetchHighlightCards } from "@/components/shared/hooks/api/useHighlightCards"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { NavigationMenu } from "@/components/shared/NavigationMenu"
@@ -32,13 +35,30 @@ export default async function HomePage() {
   const sharedDict = translations[locale]
   const withLocale = (path: string) => createLocalePath(path, locale)
 
-  const [dates, exhibitorPackagesEnabled, highlightCards, recruitment] =
-    await Promise.all([
-      fetchDates(),
-      feature("EXHIBITOR_PACKAGES"),
-      fetchHighlightCards(),
-      fetchRecruitment({ next: { revalidate: 86400 } })
-    ])
+  const [
+    dates,
+    exhibitorPackagesEnabled,
+    highlightCards,
+    recruitment,
+    exhibitors
+  ] = await Promise.all([
+    fetchDates(),
+    feature("EXHIBITOR_PACKAGES"),
+    fetchHighlightCards(),
+    fetchRecruitment({ next: { revalidate: 86400 } }),
+    feature("EXHIBITOR_PAGE").then(enabled =>
+      enabled ? fetchExhibitors() : []
+    )
+  ])
+
+  const goldExhibitors = exhibitors.filter(
+    exhibitor => exhibitor.tier === "Gold"
+  )
+  const silverLogos = exhibitors
+    .filter(exhibitor => exhibitor.tier === "Silver")
+    .flatMap(exhibitor =>
+      exhibitor.logoFreesize ? [exhibitor.logoFreesize] : []
+    )
 
   const now = DateTime.now()
   const recruitmentOpen =
@@ -79,22 +99,30 @@ export default async function HomePage() {
           }
         },
         secondary: {
-          text: sharedDict.meetTheTeam,
-          url: withLocale("/about/team")
+          text: "Meet the Team",
+          url: "/about/team",
+          tracking: {
+            eventName: "team_click",
+            eventData: { location: "hero_secondary" }
+          }
         }
       }
     : {
         primary: {
-          text: sharedDict.readOurBlog,
-          url: withLocale("/blog"),
+          text: "Browse our events",
+          url: "/student/events",
           tracking: {
-            eventName: "blog_click",
+            eventName: "student_events_click",
             eventData: { location: "hero_primary" }
           }
         },
         secondary: {
-          text: sharedDict.meetTheTeam,
-          url: withLocale("/about/team")
+          text: "Read our blog",
+          url: "/blog",
+          tracking: {
+            eventName: "blog_click",
+            eventData: { location: "hero_secondary" }
+          }
         }
       }
 
@@ -203,6 +231,13 @@ export default async function HomePage() {
 
             {/* <MapWrapper /> */}
           </div>
+          {goldExhibitors.length > 0 && (
+            <GoldExhibitors exhibitors={goldExhibitors} />
+          )}
+          {silverLogos.length > 0 && (
+            <RollingBannerSilver logos={silverLogos} />
+          )}
+
           {/* About section */}
           <Page.Header className="mt-8">{pageDict.aboutHeading}</Page.Header>
           <P className="mt-4">

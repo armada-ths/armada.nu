@@ -1,3 +1,5 @@
+import { z } from "zod"
+import { readCmsResponse, highlightCardSchema } from "@/lib/cmsResponse"
 import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query"
 
@@ -19,8 +21,11 @@ export async function fetchHighlightCards(): Promise<HighlightCardData[]> {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/highlightcards`, {
     next: { revalidate: 86400, tags: ["highlight-cards"] }
   })
-  if (!res.ok) return []
-  return res.json() as Promise<HighlightCardData[]>
+  return readCmsResponse<HighlightCardData[]>(
+    res,
+    "highlight cards",
+    z.array(highlightCardSchema)
+  )
 }
 
 export function useHighlightCards() {

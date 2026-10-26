@@ -1,3 +1,5 @@
+import { z } from "zod"
+import { readCmsResponse, eventSchema } from "@/lib/cmsResponse"
 import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query"
 
@@ -5,8 +7,10 @@ export interface Event {
   id: number
   name: string
   description: string
-  location: string
-  food: string
+  location?: string | null
+  food?: string | null
+  openTo?: string | null
+  mapUrl?: string | null
   eventStart: number | string
   eventEnd: number | string
   eventStartString?: string
@@ -19,7 +23,7 @@ export interface Event {
   signupLink: string
   canCreateTeams: boolean
   canJoinTeams: boolean
-  openForSignupStudent: boolean
+  openForSignupStudent?: boolean
   openForSignupCompany: boolean
   eventMaxCapacity: number
   participantCount: number
@@ -41,15 +45,7 @@ export async function fetchEvents(options?: RequestInit) {
       next: { revalidate: 86400, tags: ["events"], ...options?.next }
     }
   )
-  try {
-    const result = await res.json()
-    return result as Event[]
-  } catch (error) {
-    console.error(
-      `Unable to fetch events. Error: ${(error as Error)?.message || error}`
-    )
-  }
-  return []
+  return readCmsResponse<Event[]>(res, "events", z.array(eventSchema))
 }
 
 export function useEvents(options?: RequestInit) {

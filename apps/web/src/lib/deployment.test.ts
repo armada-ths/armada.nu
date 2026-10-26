@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { isProductionDeployment } from "./deployment"
 import robots from "../app/robots"
 import sitemap from "../app/sitemap"
+import photosRobots from "../../../photos/src/app/robots"
+import orderRobots from "../../../order/src/app/robots"
 import { getDefaultFeatureFlags } from "@/feature_flags"
 
 vi.mock("@/feature_flags", () => ({
@@ -14,6 +16,26 @@ afterEach(() => {
 })
 
 describe("deployment indexing policy", () => {
+  it.each([
+    ["photos", photosRobots],
+    ["order", orderRobots]
+  ] as const)(
+    "allows crawlers to read the %s noindex header",
+    async (app, appRobots) => {
+      expect(appRobots()).toEqual({ rules: { userAgent: "*", allow: "/" } })
+      const configPath = `../../../${app}/next.config.mjs`
+      const { default: config } = await import(configPath)
+      expect(await config.headers()).toContainEqual(
+        expect.objectContaining({
+          source: "/:path*",
+          headers: expect.arrayContaining([
+            { key: "X-Robots-Tag", value: "noindex, nofollow" }
+          ])
+        })
+      )
+    }
+  )
+
   it.each(["preview", "development", "staging", undefined])(
     "does not expose a sitemap for %s deployments",
     async environment => {
@@ -26,17 +48,23 @@ describe("deployment indexing policy", () => {
     }
   )
 
-  it("preserves production robots and sitemap", async () => {
+  it("allows production crawling and excludes the team from the sitemap", async () => {
     vi.stubEnv("VERCEL_ENV", "production")
     expect(isProductionDeployment()).toBe(true)
     expect(robots()).toEqual({
-      rules: [{ userAgent: "*", disallow: "/about/team" }],
+      rules: { userAgent: "*", allow: "/" },
       sitemap: "https://armada.nu/sitemap.xml"
     })
     expect(await sitemap()).toContainEqual(
       expect.objectContaining({ url: "https://armada.nu" })
     )
-    expect(getDefaultFeatureFlags).toHaveBeenCalledOnce()
+    vi.mocked(getDefaultFeatureFlags, { partial: true }).mockResolvedValueOnce({
+      ABOUT_TEAM_PAGE: true
+    })
+    expect(await sitemap()).not.toContainEqual(
+      expect.objectContaining({ url: "https://armada.nu/about/team" })
+    )
+    expect(getDefaultFeatureFlags).toHaveBeenCalledTimes(2)
   })
 
   it.each(["preview", undefined, "production"])(

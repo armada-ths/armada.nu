@@ -48,10 +48,9 @@ const signupText: Record<
       "Thank you to everyone who signed up during Priority Registration! Standard Registration opens",
     betweenSuffix:
       "Invitations will be sent out to eligible companies - stay tuned.",
-    closedHeading: "Registration Has Closed",
-    closedPrefix: year =>
-      `Exhibitor registration for ${year} has now closed. We hope to see you at Armada ${year + 1}! In the meantime, feel free to reach out to`,
-    closedSuffix: "if you have any questions."
+    closedHeading: "Late Registration Possible",
+    closedPrefix: () => "Standard registration has closed. Late registration may still be possible if spots are available. Contact",
+    closedSuffix: "for more information about late registration."
   },
   sv: {
     title: "Utställaranmälan - Armada",
@@ -69,10 +68,9 @@ const signupText: Record<
     betweenPrefix:
       "Tack till alla som anmälde sig under prioritetsregistreringen! Standardregistreringen öppnar",
     betweenSuffix: "Inbjudningar skickas till behöriga företag - håll utkik.",
-    closedHeading: "Registreringen har stängt",
-    closedPrefix: year =>
-      `Utställarregistreringen för ${year} har nu stängt. Vi hoppas att vi ses på Armada ${year + 1}! Under tiden får ni gärna kontakta`,
-    closedSuffix: "om ni har några frågor."
+    closedHeading: "Sen anmälan kan vara möjlig",
+    closedPrefix: () => "Standardregistreringen har stängt. Sen anmälan kan fortfarande vara möjlig om platser finns kvar. Kontakta",
+    closedSuffix: "för mer information om sen anmälan."
   }
 }
 

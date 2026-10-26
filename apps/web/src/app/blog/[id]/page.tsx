@@ -1,17 +1,8 @@
-import { BlogPost } from "@/app/blog/_data/posts"
 import { PostItem } from "@/components/blog/PostItem"
 import { fetchBlogPostById } from "@/components/shared/hooks/api/useBlogPosts"
 import { Page } from "@/components/shared/Page"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-
-async function getPost(id: number): Promise<BlogPost | null> {
-  try {
-    return await fetchBlogPostById(id)
-  } catch {
-    return null
-  }
-}
 
 export default async function BlogPostPage({
   params
@@ -21,7 +12,7 @@ export default async function BlogPostPage({
   const { id } = await params
   const numId = Number(id)
   if (!Number.isFinite(numId)) notFound()
-  const post = await getPost(numId)
+  const post = await fetchBlogPostById(numId)
 
   if (!post) {
     notFound()

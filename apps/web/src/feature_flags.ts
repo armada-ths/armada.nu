@@ -93,6 +93,13 @@ export const FEATURE_FLAG_DEFINITIONS = {
       { value: true, label: "Show" },
       { value: false, label: "Hidden" }
     ]
+  },
+  ARMADA_TIMELINE_PAGE: {
+    description: "Show the History of Armada timeline page",
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hidden" }
+    ]
   }
 } satisfies FlagDefinitionsType
 

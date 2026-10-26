@@ -7,6 +7,11 @@ Keep this focused on the Web, Photos and Order monorepo; backend/admin guidance 
 
 See `README.md` for setup and scripts. Do not duplicate ArmadaCMS backend/admin guidance here; if a task touches the Go API or React-Admin app, also follow the sibling repo's `../ArmadaCMS/.github/copilot-instructions.md`.
 
+## Documentation
+
+- Add only relevant information to README files and match the document's existing level of detail. Keep summaries concise; create or extend focused documentation in a suitable subdirectory only when the extra detail is needed.
+- Keep shared, one-time infrastructure bootstrap and provisioning instructions out of committed files; provide them in the delivery chat. Keep per-developer setup instructions (local tools, authentication, backend initialization and local environment configuration) in the relevant repository documentation.
+
 ## Architecture
 
 This pnpm monorepo contains Web (`apps/web`), Photos (`apps/photos`), Order (`apps/order`) and `@armada/shared` (`packages/shared`): **Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4**, deployed as three Vercel projects.
@@ -72,6 +77,7 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 ## UI and styling notes
 
 - Tailwind v4 uses a **CSS-first** setup in `apps/web/src/app/globals.css`.
+- Prefer canonical Tailwind utility classes over arbitrary values whenever they express the same value in the current theme (e.g. `pt-13` instead of `pt-[52px]`, or `pt-11.5` instead of `pt-[46px]` with the default spacing scale). Check new or changed classes for `tailwindcss(suggestCanonicalClasses)` suggestions before finishing; use arbitrary values only when no equivalent canonical utility exists.
 - Brand tokens are defined with `@theme`; prefer classes such as `text-melon`, `bg-coconut`, and `text-licorice` over ad hoc colors.
 - Color values are intentionally split across **two files that must stay in sync**:
   - `packages/shared/src/theme.css` — CSS/Tailwind theme tokens (`--color-*`) used by utility classes and CSS variables.

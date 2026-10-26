@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react"
 import { ReactNode } from "react"
 
 import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
@@ -72,13 +71,9 @@ const Hero1 = ({
                       href={buttons.secondary.url}
                       tracking={buttons.secondary.tracking}>
                       {buttons.secondary.text}
-                      <ArrowRight className="size-4" />
                     </TrackedLink>
                   ) : (
-                    <a href={buttons.secondary.url}>
-                      {buttons.secondary.text}
-                      <ArrowRight className="size-4" />
-                    </a>
+                    <a href={buttons.secondary.url}>{buttons.secondary.text}</a>
                   )}
                 </Button>
               )}

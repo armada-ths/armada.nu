@@ -1,6 +1,7 @@
+import { env } from "@/env"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { track } from "@vercel/analytics"
-import { expect, userEvent, within } from "storybook/test"
+import { expect, userEvent, waitFor, within } from "storybook/test"
 
 import type { Event } from "@/components/shared/hooks/api/useEvents"
 
@@ -13,10 +14,12 @@ const eventDefaults: Event = {
     "<p>Meet inspiring engineers and discover new paths into the technology industry.</p>",
   location: "Nymble, KTH Campus",
   food: "Dinner included",
+  openTo: "All KTH students",
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=59.34736,18.07073",
   eventStart: "2026-10-08T17:30:00+02:00",
   eventEnd: "2026-10-08T20:00:00+02:00",
   registrationEnd: "2026-10-05T23:59:00+02:00",
-  imageUrl: "/fair_pictures/2.jpeg",
+  imageUrl: "/fair_pictures/53396623064_9fce4e05b3_c.jpg",
   fee: "Free",
   registrationRequired: true,
   externalEventLink: "",
@@ -57,6 +60,13 @@ const events: Event[] = [
 ]
 
 const meta = {
+  beforeEach: () => {
+    const previous = env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY
+    env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY = "storybook-maps-key"
+    return () => {
+      env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY = previous
+    }
+  },
   title: "Student/EventsTimeline",
   component: EventsTimeline,
   parameters: {
@@ -97,6 +107,20 @@ export const Default: Story = {
         level: 1
       })
     ).toBeInTheDocument()
+
+    await expect(
+      within(dialog).getByText("All KTH students")
+    ).toBeInTheDocument()
+    await expect(within(dialog).queryByText("Capacity")).not.toBeInTheDocument()
+    await expect(
+      within(dialog).queryByText("80 participants")
+    ).not.toBeInTheDocument()
+    await expect(
+      within(dialog).getByTitle("Map for Women in Tech Evening")
+    ).toHaveAttribute("src", expect.stringContaining("/maps/embed/v1/place?"))
+    await expect(
+      within(dialog).getByRole("link", { name: "Open map" })
+    ).toHaveAttribute("href", eventDefaults.mapUrl)
 
     await userEvent.click(within(dialog).getByRole("link", { name: "Sign up" }))
     await expect(track).toHaveBeenCalledWith("student_event_signup_click", {
@@ -153,5 +177,94 @@ export const UntrustedDescription: Story = {
     await expect(
       description.querySelector("[onclick], [onerror], [onload]")
     ).toBeNull()
+  }
+}
+
+export const WithoutOptionalDetails: Story = {
+  args: {
+    events: [
+      {
+        ...eventDefaults,
+        location: undefined,
+        food: null,
+        openTo: undefined,
+        mapUrl: null
+      }
+    ]
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("link", { name: /Women in Tech Evening/i })
+    )
+    const dialog = within(await within(document.body).findByRole("dialog"))
+    await expect(dialog.queryByText("Location")).not.toBeInTheDocument()
+    await expect(dialog.queryByText("Food")).not.toBeInTheDocument()
+    await expect(dialog.queryByText("Open to")).not.toBeInTheDocument()
+    await expect(
+      dialog.queryByRole("link", { name: "Open map" })
+    ).not.toBeInTheDocument()
+  }
+}
+
+export const MobileMap: Story = {
+  args: { events: [eventDefaults] },
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  play: async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("link", { name: /Women in Tech Evening/i })
+    )
+    const dialog = within(await within(document.body).findByRole("dialog"))
+    for (const name of ["Open map", "Sign up"]) {
+      const link = dialog.getByRole("link", { name })
+      link.scrollIntoView({ block: "center", behavior: "instant" })
+      await waitFor(async () => {
+        const bounds = link.getBoundingClientRect()
+        await expect(bounds.top).toBeGreaterThanOrEqual(0)
+        await expect(bounds.bottom).toBeLessThanOrEqual(window.innerHeight)
+      })
+    }
+  }
+}
+
+export const CmsRegistrationDeadline: Story = {
+  args: {
+    events: [{ ...eventDefaults, openForSignupStudent: undefined }]
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Registration closes 5 October")
+    ).toBeInTheDocument()
+    await userEvent.click(
+      canvas.getByRole("link", { name: /Women in Tech Evening/i })
+    )
+    const dialog = within(await within(document.body).findByRole("dialog"))
+    await expect(
+      dialog.getByText("Registration closes 5 October")
+    ).toBeInTheDocument()
+    await expect(dialog.getByRole("link", { name: "Sign up" })).toHaveAttribute(
+      "href",
+      eventDefaults.signupLink
+    )
+  }
+}
+
+export const WithoutRegistrationDeadline: Story = {
+  args: {
+    events: [{ ...eventDefaults, registrationEnd: undefined }]
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.queryByText(/Registration closes/)
+    ).not.toBeInTheDocument()
+    await userEvent.click(
+      canvas.getByRole("link", { name: /Women in Tech Evening/i })
+    )
+    const dialog = within(await within(document.body).findByRole("dialog"))
+    await expect(
+      dialog.queryByText(/Registration closes/)
+    ).not.toBeInTheDocument()
+    await expect(
+      dialog.getByRole("link", { name: "Sign up" })
+    ).toBeInTheDocument()
   }
 }

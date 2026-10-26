@@ -1,3 +1,4 @@
+import { readCmsResponse, fairDateSchema } from "@/lib/cmsResponse"
 import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query"
 import { DateTime } from "luxon"
@@ -21,15 +22,14 @@ export interface FairDate {
   }
 }
 
-export async function fetchDates(): Promise<FairDate | null> {
+export async function fetchDates(): Promise<FairDate> {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`, {
     next: {
       revalidate: 86400,
       tags: ["dates"]
     }
   })
-  if (!res.ok) return null
-  return res.json() as Promise<FairDate>
+  return readCmsResponse<FairDate>(res, "dates", fairDateSchema)
 }
 
 export function useDates() {

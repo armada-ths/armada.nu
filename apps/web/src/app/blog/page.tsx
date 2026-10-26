@@ -1,4 +1,3 @@
-import { BlogPost } from "@/app/blog/_data/posts"
 import { PostCard } from "@/components/blog/PostCard"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
@@ -32,14 +31,6 @@ const blogText: Record<
   }
 }
 
-async function getPosts(): Promise<BlogPost[]> {
-  try {
-    return await fetchBlogPosts()
-  } catch {
-    return []
-  }
-}
-
 export default async function BlogPage() {
   const locale = await getRequestLocale()
   const dict = blogText[locale]
@@ -48,7 +39,7 @@ export default async function BlogPage() {
     return <ComingSoonPage title={translations[locale].blog} />
   }
 
-  const posts = (await getPosts()).sort(
+  const posts = (await fetchBlogPosts()).sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
 

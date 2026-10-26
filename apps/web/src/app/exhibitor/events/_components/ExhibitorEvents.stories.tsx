@@ -10,7 +10,7 @@ async function findEnabledEventTrigger(
   return waitFor(async () => {
     // Hydration replaces the initial disabled card with a drawer/dialog trigger.
     const trigger = canvas.getByRole("button", {
-      name: `View ${title} details`
+      name: new RegExp(`^${title} .*View details$`)
     })
     await expect(trigger).toBeEnabled()
     return trigger
@@ -21,7 +21,13 @@ const meta = {
   title: "Exhibitor/Events",
   component: ExhibitorEvents,
   parameters: {
-    layout: "fullscreen"
+    layout: "fullscreen",
+    a11y: {
+      test: "error",
+      config: {
+        rules: [{ id: "label-content-name-mismatch", enabled: true }]
+      }
+    }
   },
   tags: ["autodocs"],
   play: async ({ canvas, canvasElement }) => {
@@ -73,7 +79,9 @@ const meta = {
     for (const event of events) {
       const trigger = await findEnabledEventTrigger(canvas, event.title)
       const photo = within(trigger).getByRole("img")
-      await expect(trigger).toHaveAccessibleDescription(event.summary.join(" "))
+      await expect(trigger).toHaveAccessibleName(
+        `${event.title} ${event.summary.join(" ")} View details`
+      )
       await expect(photo).toBeVisible()
       await expect(photo.getAttribute("alt")?.trim().length).toBeGreaterThan(0)
       await expect(photo.getAttribute("src")).toContain(

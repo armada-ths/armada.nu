@@ -52,7 +52,9 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
   return (
     <section className="w-full py-16">
       {/* gold glow */}
-      <Page.Header className="text-pineapple relative mb-16 text-center text-3xl tracking-wide">
+      <Page.Header
+        tier="secondary"
+        className="text-pineapple relative mb-16 text-center text-3xl tracking-wide">
         Gold Exhibitors
       </Page.Header>
 

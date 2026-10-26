@@ -52,6 +52,7 @@ export default async function RecruitmentPage() {
         <Page.Header>{dict.heading}</Page.Header>
         <PhotoSlideCarousel photoSrc={photoSrc} />
         <P className="mt-4">{dict.intro}</P>
+        <P><Link className="underline" href={`/${locale}/about/history`}>{locale === "sv" ? "Läs om Armadas historia" : "Explore the history of Armada"}</Link></P>
         <P className="mt-4">
           {dict.ownershipPrefix}{" "}
           <Link

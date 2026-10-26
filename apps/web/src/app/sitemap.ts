@@ -27,12 +27,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       flag: "ABOUT_PAGE"
     },
     {
-      url: "https://armada.nu/about/team",
-      changeFrequency: "monthly",
-      priority: 0.45,
-      flag: "ABOUT_TEAM_PAGE"
-    },
-    {
       url: "https://armada.nu/student/recruitment",
       changeFrequency: "weekly",
       priority: 0.75,
@@ -97,6 +91,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.4,
       flag: "ARMADA_BLOG_PAGE"
+    },
+    {
+      url: "https://armada.nu/about/history",
+      changeFrequency: "monthly",
+      priority: 0.5,
+      flag: "ARMADA_TIMELINE_PAGE"
     }
   ]
 
