@@ -6,7 +6,8 @@
     "dev": "next dev -p 8002",
     "build": "next build",
     "start": "next start -p 8002",
-    "type-check": "next typegen && tsc --noEmit"
+    "type-check": "next typegen && tsc --noEmit",
+    "lint:i18n": "eloqnt lint"
   },
   "dependencies": {
     "next": "16.4.1",

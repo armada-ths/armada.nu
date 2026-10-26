@@ -6,7 +6,8 @@
     "dev": "next dev -p 8001",
     "build": "next build",
     "start": "next start -p 8001",
-    "type-check": "next typegen && tsc --noEmit"
+    "type-check": "next typegen && tsc --noEmit",
+    "lint:i18n": "eloqnt lint"
   },
   "dependencies": {
     "@armada/shared": "workspace:*",
