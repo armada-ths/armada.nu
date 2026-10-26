@@ -4,6 +4,8 @@
     "loading": "Loading…",
     "error": "Something went wrong. Please try again.",
     "back": "Go back",
-    "comingSoon": "More information coming soon"
+    "comingSoon": "More information coming soon",
+    "notifications": "Notifications",
+    "closeToast": "Close notification"
   }
 }

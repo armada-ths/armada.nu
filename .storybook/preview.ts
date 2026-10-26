@@ -4,6 +4,10 @@ import { createElement } from "react"
 import { NextIntlClientProvider } from "../packages/shared/src/i18n/client"
 import en from "../apps/web/src/i18n/messages/en.json"
 import sv from "../apps/web/src/i18n/messages/sv.json"
+import orderEn from "../apps/order/src/i18n/messages/en.json"
+import orderSv from "../apps/order/src/i18n/messages/sv.json"
+import photosEn from "../apps/photos/src/i18n/messages/en.json"
+import photosSv from "../apps/photos/src/i18n/messages/sv.json"
 import type { Preview } from "@storybook/nextjs-vite"
 import { sb } from "storybook/test"
 
@@ -33,8 +37,25 @@ const preview: Preview = {
           locale: context.globals.locale ?? "en",
           messages:
             context.globals.locale === "sv"
+<<<<<<< HEAD
               ? { ...sv, ...orderSv }
               : { ...en, ...orderEn },
+=======
+              ? {
+                  ...sv,
+                  ...orderSv,
+                  ...photosSv,
+                  Common: sv.Common,
+                  Metadata: sv.Metadata
+                }
+              : {
+                  ...en,
+                  ...orderEn,
+                  ...photosEn,
+                  Common: en.Common,
+                  Metadata: en.Metadata
+                },
+>>>>>>> issue-295-phase-1-i18n
           timeZone: "Europe/Stockholm",
           children: createElement(Story)
         },
@@ -42,6 +63,7 @@ const preview: Preview = {
       )
   ],
   parameters: {
+    nextjs: { appDirectory: true },
     controls: {
       matchers: {
         color: /(background|color)$/i,

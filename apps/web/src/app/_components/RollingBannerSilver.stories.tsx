@@ -65,7 +65,7 @@ export const Default: Story = {
     await expect(
       canvas.getByRole("heading", { name: "Silver Exhibitors", level: 2 })
     ).toBeInTheDocument()
-    await expect(canvas.getAllByRole("img")).toHaveLength(144)
+    await expect(canvasElement.querySelectorAll("img")).toHaveLength(144)
     await checkAnimationCoverage(canvasElement)
   }
 }
@@ -80,8 +80,8 @@ export const SingleLogo: Story = {
     }
   },
   args: { logos: ["/armada_licorice.svg"] },
-  play: async ({ canvas }) => {
-    await expect(canvas.getAllByRole("img")).toHaveLength(2)
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelectorAll("img")).toHaveLength(2)
   }
 }
 
