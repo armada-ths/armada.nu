@@ -3,6 +3,7 @@ import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import RollingBannerSilver from "@/app/_components/RollingBannerSilver"
+import Sponsors from "@/app/_components/Sponsors"
 import { Hero1 } from "@/components/hero7"
 import { HighlightCard } from "@/components/highlight-card"
 import { feature } from "@/components/shared/feature"
@@ -286,6 +287,7 @@ export default async function HomePage() {
             </Card>
           </div>
         </Page.Boundary>
+        <Sponsors />
       </Page.Background>
     </>
   )
