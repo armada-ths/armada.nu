@@ -6,7 +6,9 @@
     "back": "Go back",
     "comingSoon": "Coming soon",
     "dialog": "Details",
-    "dialogDescription": "More information"
+    "dialogDescription": "More information",
+    "notifications": "Notifications",
+    "closeToast": "Close notification"
   },
   "teamText": {
     "title": "Armada Organization",
