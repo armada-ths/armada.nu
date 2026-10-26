@@ -125,15 +125,28 @@ export {
   useFormatter
 } from "next-intl"
 
-export function LocaleMetadata() {
+export function LocaleMetadata({
+  title: customTitle,
+  description: customDescription
+}: { title?: string; description?: string } = {}) {
+  const locale = useLocale()
   const t = useTranslations("Metadata")
-  const title = t("title"),
-    description = t("description")
+  const title = customTitle ?? t("title"),
+    description = customDescription ?? t("description")
   useEffect(() => {
     document.title = title
     const element = document.querySelector('meta[name="description"]')
     if (element) element.setAttribute("content", description)
-  }, [title, description])
+    for (const [property, content] of Object.entries({
+      "og:title": title,
+      "og:description": description,
+      "og:locale": locale === "sv" ? "sv_SE" : "en_GB"
+    })) {
+      document
+        .querySelector(`meta[property="${property}"]`)
+        ?.setAttribute("content", content)
+    }
+  }, [title, description, locale])
   return null
 }
 
