@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 import { PhotoText } from "@photos/i18n/text"
 import { Page } from "@armada/shared/Page"
 import type { Metadata } from "next"
@@ -8,6 +8,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Photos")
   return {
     title: t("privacyTitle"),
+    openGraph: {
+      title: t("privacyTitle"),
+      description: t("privacyDescription"),
+      locale: (await getLocale()) === "sv" ? "sv_SE" : "en_GB"
+    },
     description: t("privacyDescription"),
     robots: { index: false, follow: false }
   }

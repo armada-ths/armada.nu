@@ -234,6 +234,12 @@ try {
     })
     .waitFor()
   assert.equal(await page.title(), sv.Photos.privacyTitle)
+  assert.equal(
+    await page
+      .locator('meta[property="og:description"]')
+      .getAttribute("content"),
+    sv.Photos.privacyDescription
+  )
   await page.goto(origin + "/sv/e/invalid.token")
   await page
     .getByText(sv.PhotoErrors.invalid_event_link, { exact: true })

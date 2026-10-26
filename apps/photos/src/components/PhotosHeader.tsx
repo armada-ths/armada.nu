@@ -1,8 +1,7 @@
 "use client"
 import { useLocale, useTranslations } from "next-intl"
 import { usePathname } from "@armada/shared/i18n/navigation"
-import { LanguageSwitcher } from "@armada/shared/i18n/client"
-import { useEffect } from "react"
+import { LanguageSwitcher, LocaleMetadata } from "@armada/shared/i18n/client"
 export function PhotosHeader() {
   const locale = useLocale()
   return (
@@ -21,11 +20,5 @@ export function PhotosMetadata() {
   const privacy = pathname === "/privacy"
   const title = privacy ? photos("privacyTitle") : t("title"),
     description = privacy ? photos("privacyDescription") : t("description")
-  useEffect(() => {
-    document.title = title
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", description)
-  }, [title, description])
-  return null
+  return <LocaleMetadata title={title} description={description} />
 }
