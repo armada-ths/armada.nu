@@ -78,12 +78,12 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
     if (submissionLock.current) return
 
     if (!company.trim()) {
-      toast.warning(dict.emptyCompany)
+      toast.warning(<OrderFeedback code="emptyCompany" />)
       return
     }
 
     if (cartLines.length === 0) {
-      toast.warning(dict.emptyCart)
+      toast.warning(<OrderFeedback code="emptyCart" />)
       return
     }
 
@@ -98,7 +98,7 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
       setIsSubmitting(false)
 
       if (result.success) {
-        toast.success(dict.submittedToast)
+        toast.success(<OrderFeedback code="submittedToast" />)
         setSubmitted(true)
         setCompany("")
         setCart({})
@@ -227,4 +227,13 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
 function OrderErrorFeedback({ code }: { code?: OrderErrorCode }) {
   const t = useTranslations("OrderErrors")
   return <>{t(code ?? "submission_failed")}</>
+}
+
+function OrderFeedback({
+  code
+}: {
+  code: "emptyCompany" | "emptyCart" | "submittedToast"
+}) {
+  const t = useTranslations("Order")
+  return <>{t(code)}</>
 }

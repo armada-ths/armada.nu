@@ -115,6 +115,11 @@ try {
   assert.equal(new URL(page.url()).hash, "#cart")
   const cookie = (await context.cookies()).find(cookie => cookie.name === "_ea")
   assert.equal(cookie?.httpOnly, true)
+  await page.getByRole("button", { name: sv.Order.send, exact: true }).click()
+  await page.getByText(sv.Order.emptyCompany, { exact: true }).waitFor()
+  await page.getByRole("button", { name: sv.Common.switchLanguage }).click()
+  await page.getByText(en.Order.emptyCompany, { exact: true }).waitFor()
+  await page.getByRole("button", { name: en.Common.switchLanguage }).click()
   await page
     .getByRole("textbox", { name: sv.Order.companyLabel, exact: true })
     .fill("Example AB")
