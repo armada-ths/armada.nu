@@ -226,7 +226,7 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
 
 function OrderErrorFeedback({ code }: { code?: OrderErrorCode }) {
   const t = useTranslations("OrderErrors")
-  return <>{t(code ?? "submission_failed")}</>
+  return <>{t(code && t.has(code) ? code : "submission_failed")}</>
 }
 
 function OrderFeedback({

@@ -113,6 +113,10 @@ try {
   assert.equal(new URL(page.url()).pathname, "/sv")
   assert.equal(new URL(page.url()).search, "?source=test")
   assert.equal(new URL(page.url()).hash, "#cart")
+  assert.equal(
+    await page.locator('meta[property="og:locale"]').getAttribute("content"),
+    "sv_SE"
+  )
   const cookie = (await context.cookies()).find(cookie => cookie.name === "_ea")
   assert.equal(cookie?.httpOnly, true)
   await page.getByRole("button", { name: sv.Order.send, exact: true }).click()
@@ -130,6 +134,10 @@ try {
     .click()
   await page.getByRole("button", { name: sv.Common.switchLanguage }).click()
   await page.waitForURL("**/en?source=test#cart")
+  assert.equal(
+    await page.locator('meta[property="og:locale"]').getAttribute("content"),
+    "en_GB"
+  )
   assert.equal(
     await page
       .getByRole("textbox", { name: en.Order.companyLabel, exact: true })
