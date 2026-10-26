@@ -111,3 +111,26 @@ export const WithoutLogoOrWebsite: Story = {
     await expect(canvas.queryByRole("link")).not.toBeInTheDocument()
   }
 }
+
+export const Swedish: Story = {
+  globals: { locale: "sv" },
+  args: {
+    exhibitors: [
+      {
+        ...exhibitors[0],
+        aboutSv: "Träffa våra ingenjörer och utforska hållbar teknik."
+      }
+    ]
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("heading", { name: "Guldutställare" })
+    ).toBeVisible()
+    await expect(
+      canvas.getByRole("heading", { name: "Northstar Engineering" })
+    ).toBeVisible()
+    await expect(
+      canvas.getByText("Träffa våra ingenjörer och utforska hållbar teknik.")
+    ).toBeVisible()
+  }
+}

@@ -1,4 +1,5 @@
 "use client"
+import { useDraftState } from "@armada/shared/i18n/client"
 import { useLocale } from "next-intl"
 import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
 import {
@@ -8,7 +9,7 @@ import {
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
 import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import ExhibitorSortMenu from "./ExhibitorSortMenu"
 import type { ExhibitorSort } from "./exhibitorSort"
 
@@ -46,13 +47,16 @@ export default function ExhibitorFilterItem({
 }: Props) {
   const locale = normalizeLocale(useLocale())
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
-  const [selectedEmploymentIds, setSelectedEmploymentIds] = useState<string[]>(
+  const [selectedEmploymentIds, setSelectedEmploymentIds] = useDraftState<
+    string[]
+  >("employment", [])
+  const [selectedIndustriesIds, setSelectedIndustriesIds] = useDraftState<
+    string[]
+  >("industry", [])
+  const [selectedProgramsIds, setSelectedProgramsIds] = useDraftState<string[]>(
+    "program",
     []
   )
-  const [selectedIndustriesIds, setSelectedIndustriesIds] = useState<string[]>(
-    []
-  )
-  const [selectedProgramsIds, setSelectedProgramsIds] = useState<string[]>([])
 
   // 2. DATA TRANSFORMATION: Prepare the employments data for the MultiSelect component
   const employmentOptions: MultiSelectOption[] = useMemo(() => {
@@ -170,6 +174,7 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={employmentOptions}
             onValueChange={setSelectedEmploymentIds}
+            defaultValue={selectedEmploymentIds}
             placeholder={labels.filterEmployment}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}
@@ -181,6 +186,7 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={industriesOptions}
             onValueChange={setSelectedIndustriesIds}
+            defaultValue={selectedIndustriesIds}
             placeholder={labels.filterIndustry}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}
@@ -192,6 +198,7 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={programOptions}
             onValueChange={setSelectedProgramsIds}
+            defaultValue={selectedProgramsIds}
             placeholder={labels.filterProgram}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}

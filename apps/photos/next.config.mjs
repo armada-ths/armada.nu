@@ -1,5 +1,13 @@
 import createNextIntlPlugin from "next-intl/plugin"
-const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts")
+const withNextIntl = createNextIntlPlugin(
+  "./" +
+    path
+      .relative(
+        process.cwd(),
+        path.join(import.meta.dirname, "src/i18n/request.ts")
+      )
+      .replaceAll("\\", "/")
+)
 import path from "node:path"
 import process from "node:process"
 import { networkInterfaces } from "node:os"

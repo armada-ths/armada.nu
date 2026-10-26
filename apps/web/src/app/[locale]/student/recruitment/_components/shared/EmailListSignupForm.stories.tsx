@@ -89,3 +89,21 @@ export const DisabledUntilEmailEntered: Story = {
     ).toBeDisabled()
   }
 }
+
+export const Swedish: Story = {
+  globals: { locale: "sv" },
+  play: async ({ canvas, args }) => {
+    await userEvent.type(canvas.getByLabelText(/^e-post$/i), "asa@example.com")
+    await userEvent.type(canvas.getByLabelText(/^förnamn/i), "Åsa")
+    await userEvent.click(canvas.getByRole("button", { name: "Meddela mig" }))
+    await waitFor(() =>
+      expect(args.onSubmit).toHaveBeenCalledWith({
+        email: "asa@example.com",
+        firstName: "Åsa"
+      })
+    )
+    await expect(await canvas.findByRole("alert")).toHaveTextContent(
+      "Vi kunde inte registrera dig just nu."
+    )
+  }
+}

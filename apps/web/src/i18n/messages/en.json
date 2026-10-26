@@ -4,7 +4,9 @@
     "loading": "Loading…",
     "error": "Something went wrong. Please try again.",
     "back": "Go back",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "dialog": "Details",
+    "dialogDescription": "More information"
   },
   "teamText": {
     "title": "Armada Organization",

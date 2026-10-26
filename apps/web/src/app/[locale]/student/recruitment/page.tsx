@@ -1,3 +1,4 @@
+import { RecruitmentRoles } from "./_components/shared/RecruitmentRoles"
 import { pageMetadata } from "@/i18n/metadata"
 import { localeAlternates } from "@/i18n/metadata"
 import { localizedText } from "@armada/shared/i18n/routing"
@@ -13,7 +14,6 @@ import { feature } from "@/components/shared/feature"
 import { fetchRecruitment } from "@/components/shared/hooks/api/useRecruitment"
 import { Page } from "@/components/shared/Page"
 import {
-  Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
@@ -150,7 +150,7 @@ export default async function RecruitmentPage() {
               </Page.Header>
               {hasAvailableRoles ? (
                 <div>
-                  <Accordion type="multiple">
+                  <RecruitmentRoles>
                     {groupEntries.map(([name, group], index) => (
                       <div
                         key={index}
@@ -228,7 +228,7 @@ export default async function RecruitmentPage() {
                         ))}
                       </div>
                     ))}
-                  </Accordion>
+                  </RecruitmentRoles>
                 </div>
               ) : null}
               <div className="mt-6">

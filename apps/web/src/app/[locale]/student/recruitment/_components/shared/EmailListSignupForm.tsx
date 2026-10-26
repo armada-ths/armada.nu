@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { CircleAlert, CircleCheck, Mail } from "lucide-react"
-import { type SubmitEvent, useState } from "react"
+import { type SubmitEvent } from "react"
 
 export interface EmailListSignupFields {
   email: string
@@ -35,9 +35,9 @@ export function EmailListSignupForm({
 
   const [firstName, setFirstName] = useDraftState("firstName", "")
   const [email, setEmail] = useDraftState("email", "")
-  const [status, setStatus] = useState<
+  const [status, setStatus] = useDraftState<
     "idle" | "submitting" | "success" | "error"
-  >("idle")
+  >("status", "idle")
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()

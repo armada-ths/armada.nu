@@ -1,4 +1,5 @@
 "use client"
+import { useDraftState } from "@armada/shared/i18n/client"
 import { useLocale, useTranslations } from "next-intl"
 import { localizedText, normalizeLocale } from "@armada/shared/i18n/routing"
 import { LocalizedText } from "@/i18n/text"
@@ -7,12 +8,11 @@ import PersonCard from "@/app/[locale]/about/_components/PersonCard"
 import { Organization } from "@/components/shared/hooks/api/useOrganization"
 import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
-import { useState } from "react"
 
 const OrganizationList = ({ group }: { group: Organization }) => {
   const locale = normalizeLocale(useLocale())
   const t = useTranslations("Organization")
-  const [showOTs, setShowOTs] = useState(false)
+  const [showOTs, setShowOTs] = useDraftState("members:" + group.name, false)
 
   const handleButtonClick = () => {
     setShowOTs(prevState => !prevState)
