@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 8001",
     "type-check": "next typegen && tsc --noEmit",
-    "lint:i18n": "eloqnt lint"
+    "lint:i18n": "eloqnt lint --strict"
   },
   "dependencies": {
     "@armada/shared": "workspace:*",
