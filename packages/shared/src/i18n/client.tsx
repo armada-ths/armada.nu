@@ -30,7 +30,9 @@ export function LocaleProvider({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const current = pathname?.match(/^\/(en|sv)(?:\/|$)/)?.[1] ?? locale
+  const current = normalizeLocale(
+    pathname?.match(/^\/(en|sv)(?:\/|$)/)?.[1] ?? locale
+  )
   const [drafts, setDrafts] = useState<Drafts>({})
   const store = useMemo(() => ({ drafts, setDrafts }), [drafts])
   useEffect(() => {

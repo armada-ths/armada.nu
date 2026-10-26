@@ -6,7 +6,9 @@
     "back": "Gå tillbaka",
     "comingSoon": "Kommer snart",
     "dialog": "Information",
-    "dialogDescription": "Mer information"
+    "dialogDescription": "Mer information",
+    "notifications": "Meddelanden",
+    "closeToast": "Stäng meddelandet"
   },
   "teamText": {
     "title": "Armadas organisation",

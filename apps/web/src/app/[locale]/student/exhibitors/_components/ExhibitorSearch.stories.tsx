@@ -97,7 +97,7 @@ export const FilteringAndSorting: Story = {
 
     await userEvent.click(sortTrigger)
     await userEvent.click(
-      await within(document.body).findByRole("option", { name: "Name: A-Z" })
+      await within(document.body).findByRole("option", { name: "Name: A–Z" })
     )
 
     await waitFor(() => {
@@ -174,7 +174,7 @@ export const ClosingCompanyModal: Story = {
       expect(body.queryByRole("dialog")).not.toBeInTheDocument()
     })
     await expect(getRouter().replace).toHaveBeenCalledWith(
-      "/student/exhibitors",
+      "/en/student/exhibitors",
       { scroll: false }
     )
 

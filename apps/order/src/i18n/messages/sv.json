@@ -4,6 +4,8 @@
     "loading": "Laddar…",
     "error": "Något gick fel. Försök igen.",
     "back": "Gå tillbaka",
-    "comingSoon": "Mer information kommer snart"
+    "comingSoon": "Mer information kommer snart",
+    "notifications": "Meddelanden",
+    "closeToast": "Stäng meddelandet"
   }
 }
