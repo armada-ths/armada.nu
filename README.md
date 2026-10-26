@@ -156,3 +156,5 @@ Keep fixed interface text in each app's English and Swedish message catalogs, wi
 State that must survive a locale route change belongs in the root LocaleProvider through useDraftState. Photo files and uploads must remain in memory. Order and Photos switch locale through the History API so active uploads and form actions stay mounted; their fixed text must therefore be translated by client components. Keep stable error codes in application state and translate them at rendering time.
 
 Storybook has a language toolbar. Verify English and Swedish stories, message key parity, routing precedence, CMS fallback, and state preservation when changing a localized component.
+
+See [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md) for English/Swedish catalogs, CMS fallback, locale navigation and localization checks.

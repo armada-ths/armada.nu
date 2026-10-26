@@ -13,7 +13,6 @@ export interface Organization {
 export interface Person {
   id: number
   name: string
-  nameSv?: string | null
   rank?: null | string
   email: null | string
   picture: string
