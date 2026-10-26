@@ -32,7 +32,7 @@ function FooterAffiliations({
         <Link href="https://sture.se/">
           <Image
             src="/sture-logo-up.png"
-            alt="Sture Logo"
+            alt="Sture"
             width={70}
             height={70}
             className="object-contain"
@@ -45,7 +45,7 @@ function FooterAffiliations({
         <Link href="https://diversitycharter.se/">
           <Image
             src="/LogoDCS-300dpi.png"
-            alt="Diversity Charter Sweden logo"
+            alt="Diversity Charter Sweden"
             width={150}
             height={103}
             className="object-contain"

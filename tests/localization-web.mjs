@@ -232,6 +232,22 @@ try {
       await page.getByText("Bygg webbplatser", { exact: true }).waitFor()
     }
   }
+  await page.getByRole("button", { name: "Byt språk till engelska" }).click()
+  await page.waitForURL("**/en/student/recruitment")
+  await page.getByText("Build websites", { exact: true }).waitFor()
+  await page.goto(origin + "/en/student/exhibitors")
+  await page.getByPlaceholder("Search by company name").fill("Example")
+  await page
+    .getByRole("button", { name: english.Common.switchLanguage })
+    .click()
+  await page.waitForURL("**/sv/student/exhibitors")
+  assert.equal(
+    await page
+      .locator("input[type=search],input[placeholder]")
+      .first()
+      .inputValue(),
+    "Example"
+  )
   await page.goto(origin + "/sv/student/events?id=1#details")
   await page
     .getByRole("dialog")
@@ -291,7 +307,10 @@ try {
     await page.locator("#message").inputValue(),
     "A preserved contact message"
   )
+  await page.goto(origin + "/sv/missing-page")
+  await page.getByRole("heading", { name: "Sidan hittades inte" }).waitFor()
   await page.goto(origin + "/sv")
+  await delay(1200)
   await mkdir(path.join(root, "output/playwright"), { recursive: true })
   await page.screenshot({
     path: path.join(root, "output/playwright/web-swedish.png"),
