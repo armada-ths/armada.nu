@@ -4,8 +4,9 @@
     "loading": "Loading…",
     "error": "Something went wrong. Please try again.",
     "back": "Go back",
-<<<<<<< HEAD
-    "comingSoon": "More information coming soon"
+    "comingSoon": "More information coming soon",
+    "notifications": "Notifications",
+    "closeToast": "Close notification"
   },
   "Order": {
     "emptyCompany": "Please enter a company name.",
@@ -92,10 +93,5 @@
   "Metadata": {
     "title": "Order Form – Exhibitor Lounge",
     "description": "Order drinks and snacks from the exhibitor lounge."
-=======
-    "comingSoon": "More information coming soon",
-    "notifications": "Notifications",
-    "closeToast": "Close notification"
->>>>>>> issue-295-phase-1-i18n
   }
 }

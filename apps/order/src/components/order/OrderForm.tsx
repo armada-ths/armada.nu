@@ -13,7 +13,7 @@ import { useRef, useState } from "react"
 import { toast } from "sonner"
 
 import { ITEMS } from "@order/lib/catalogue"
-import type { OrderInput, OrderResult } from "@order/lib/orders"
+import type { OrderInput, OrderResult, OrderErrorCode } from "@order/lib/orders"
 
 type OrderFormProps = {
   exhibitors: string[]
@@ -26,13 +26,15 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
   const products = useTranslations("Products")
   const dict = useMessages().Order as typeof en.Order
   const items = ITEMS.map(item => {
+    const nameKey = (item.id + ".name") as Parameters<typeof products>[0]
+    const descriptionKey = (item.id + ".description") as Parameters<
+      typeof products
+    >[0]
     return {
       ...item,
-      name: products.has(item.id + ".name")
-        ? products(item.id + ".name")
-        : item.name,
-      description: products.has(item.id + ".description")
-        ? products(item.id + ".description")
+      name: products.has(nameKey) ? products(nameKey) : item.name,
+      description: products.has(descriptionKey)
+        ? products(descriptionKey)
         : item.description
     }
   })
@@ -222,7 +224,7 @@ export function OrderForm({ exhibitors, submitOrder }: OrderFormProps) {
   )
 }
 
-function OrderErrorFeedback({ code }: { code?: string }) {
+function OrderErrorFeedback({ code }: { code?: OrderErrorCode }) {
   const t = useTranslations("OrderErrors")
-  return <>{t(code && t.has(code) ? code : "submission_failed")}</>
+  return <>{t(code ?? "submission_failed")}</>
 }

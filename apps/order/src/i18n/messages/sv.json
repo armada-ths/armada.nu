@@ -4,8 +4,9 @@
     "loading": "Laddar…",
     "error": "Något gick fel. Försök igen.",
     "back": "Gå tillbaka",
-<<<<<<< HEAD
-    "comingSoon": "Mer information kommer snart"
+    "comingSoon": "Mer information kommer snart",
+    "notifications": "Meddelanden",
+    "closeToast": "St�ng meddelandet"
   },
   "Order": {
     "emptyCompany": "Ange ett företagsnamn.",
@@ -92,10 +93,5 @@
   "Metadata": {
     "title": "Beställning – Utställarloungen",
     "description": "Beställ dryck och tilltugg från utställarloungen."
-=======
-    "comingSoon": "Mer information kommer snart",
-    "notifications": "Meddelanden",
-    "closeToast": "St�ng meddelandet"
->>>>>>> issue-295-phase-1-i18n
   }
 }

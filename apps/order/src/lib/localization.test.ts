@@ -20,7 +20,10 @@ describe("order translations", () => {
   })
   it("has matching messages and valid placeholders", () => {
     expect(Object.keys(flat(en)).sort()).toEqual(Object.keys(flat(sv)).sort())
-    for (const [locale, messages] of Object.entries({ en, sv })) {
+    for (const [locale, messages] of Object.entries({ en, sv }) as [
+      "en" | "sv",
+      typeof en
+    ][]) {
       const errors: unknown[] = []
       const t = createTranslator({
         locale,

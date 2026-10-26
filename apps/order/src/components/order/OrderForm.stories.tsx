@@ -6,6 +6,7 @@ import { OrderForm } from "./OrderForm"
 const meta = {
   title: "Order/OrderForm",
   component: OrderForm,
+  tags: ["autodocs"],
   args: {
     exhibitors: ["Example AB"],
     submitOrder: fn().mockResolvedValue({ success: true })
@@ -88,7 +89,6 @@ export const DeliveryFailure: Story = {
     await expect(args.submitOrder).toHaveBeenCalledTimes(2)
   }
 }
-<<<<<<< HEAD
 
 export const SwedishSubmit: Story = {
   globals: { locale: "sv" },
@@ -115,5 +115,3 @@ export const SwedishSubmit: Story = {
     })
   }
 }
-=======
->>>>>>> issue-295-phase-1-i18n
