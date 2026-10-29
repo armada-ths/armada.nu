@@ -47,6 +47,23 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+export const ThumbnailOnly: Story = {
+  args: {
+    exhibitors: [
+      {
+        ...exhibitors[0],
+        logoFreesize: undefined,
+        logoThumbnail: "/armada_licorice.svg"
+      }
+    ]
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("img", { name: "Northstar Engineering logo" })
+    ).toHaveAttribute("src", expect.stringContaining("armada_licorice.svg"))
+  }
+}
+
 export const Default: Story = {
   play: async ({ canvas }) => {
     await expect(

@@ -19,7 +19,11 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const pathname = usePathname()
   const [modalOpen, setModalOpen] = useState(false)
   const isClosing = useRef(false)
-  const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
+  const logoSrc =
+    exhibitor.logoSquared ??
+    exhibitor.logoThumbnail ??
+    exhibitor.logoFreesize ??
+    ""
   const shouldBypassLogoOptimization =
     shouldBypassNextImageOptimization(logoSrc)
 
@@ -69,7 +73,9 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
             {exhibitor.name}
           </h3>
 
-          {exhibitor.logoSquared || exhibitor.logoFreesize ? (
+          {exhibitor.logoSquared ||
+          exhibitor.logoThumbnail ||
+          exhibitor.logoFreesize ? (
             <div className="relative my-2 flex h-20 w-full flex-initial justify-center overflow-hidden">
               <Image
                 className="h-full w-full object-contain"
