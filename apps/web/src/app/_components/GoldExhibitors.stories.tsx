@@ -169,3 +169,32 @@ export const IndependentExpansion: Story = {
     await expectActiveHeight(0)
   }
 }
+
+export const EqualCollapsedHeights: Story = {
+  args: {
+    exhibitors: [
+      { ...exhibitors[0], about: "Meet us at Armada." },
+      {
+        ...exhibitors[1],
+        name: "Harbour Systems Engineering and Sustainable Technology",
+        about: "Explore careers in sustainable technology. ".repeat(40)
+      },
+      {
+        ...exhibitors[0],
+        id: 3,
+        name: "Without logo",
+        logoFreesize: undefined,
+        about: "Welcome!"
+      }
+    ]
+  },
+  play: async ({ canvasElement }) => {
+    const cards = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>('[data-slot="card"]')
+    )
+    await waitFor(async () => {
+      await expect(cards[0].offsetHeight).toBeGreaterThan(0)
+      await expect(new Set(cards.map(card => card.offsetHeight)).size).toBe(1)
+    })
+  }
+}
