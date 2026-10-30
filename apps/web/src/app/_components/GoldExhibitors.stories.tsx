@@ -170,7 +170,7 @@ export const IndependentExpansion: Story = {
   }
 }
 
-export const EqualCollapsedHeights: Story = {
+export const EqualDescriptionRows: Story = {
   args: {
     exhibitors: [
       { ...exhibitors[0], about: "Meet us at Armada." },
@@ -189,12 +189,14 @@ export const EqualCollapsedHeights: Story = {
     ]
   },
   play: async ({ canvasElement }) => {
-    const cards = Array.from(
-      canvasElement.querySelectorAll<HTMLElement>('[data-slot="card"]')
+    const descriptions = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>('[data-slot="card"] p')
     )
     await waitFor(async () => {
-      await expect(cards[0].offsetHeight).toBeGreaterThan(0)
-      await expect(new Set(cards.map(card => card.offsetHeight)).size).toBe(1)
+      for (const description of descriptions) {
+        const lineHeight = parseFloat(getComputedStyle(description).lineHeight)
+        await expect(description.clientHeight).toBe(lineHeight * 6)
+      }
     })
   }
 }
