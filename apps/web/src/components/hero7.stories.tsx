@@ -46,3 +46,26 @@ export const WithoutTracking: Story = {
     }
   }
 }
+
+export const ExhibitorsWithRecruitment: Story = {
+  args: {
+    buttons: {
+      primary: {
+        text: "Explore exhibitors",
+        url: "/student/exhibitors",
+        tracking: {
+          eventName: "student_exhibitors_click",
+          eventData: { location: "hero_primary" }
+        }
+      },
+      secondary: {
+        text: "Join Armada",
+        url: "/student/recruitment",
+        tracking: {
+          eventName: "student_signup_click",
+          eventData: { location: "hero_secondary" }
+        }
+      }
+    }
+  }
+}

@@ -29,12 +29,16 @@ export default async function HomePage() {
     exhibitorPackagesEnabled,
     highlightCards,
     recruitment,
+    exhibitorPageEnabled,
+    studentRecruitmentEnabled,
     exhibitors
   ] = await Promise.all([
     fetchDates(),
     feature("EXHIBITOR_PACKAGES"),
     fetchHighlightCards(),
     fetchRecruitment({ next: { revalidate: 86400 } }),
+    feature("EXHIBITOR_PAGE"),
+    feature("STUDENT_RECRUITMENT_PAGE"),
     feature("EXHIBITOR_PAGE").then(enabled =>
       enabled ? fetchExhibitors() : []
     )
@@ -52,6 +56,7 @@ export default async function HomePage() {
 
   const now = DateTime.now()
   const recruitmentOpen =
+    studentRecruitmentEnabled &&
     recruitment != null &&
     DateTime.fromISO(recruitment.start_date) <= now &&
     DateTime.fromISO(recruitment.end_date) >= now
@@ -62,7 +67,7 @@ export default async function HomePage() {
     : "/exhibitor/signup"
   const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
 
-  const heroButtons = recruitmentOpen
+  const fallbackHeroButtons = recruitmentOpen
     ? {
         primary: {
           text: "Join Armada",
@@ -99,6 +104,26 @@ export default async function HomePage() {
           }
         }
       }
+
+  const heroButtons = exhibitorPageEnabled
+    ? {
+        primary: {
+          text: "Explore exhibitors",
+          url: "/student/exhibitors",
+          tracking: {
+            eventName: "student_exhibitors_click",
+            eventData: { location: "hero_primary" }
+          }
+        },
+        secondary: {
+          ...fallbackHeroButtons.primary,
+          tracking: {
+            ...fallbackHeroButtons.primary.tracking,
+            eventData: { location: "hero_secondary" }
+          }
+        }
+      }
+    : fallbackHeroButtons
 
   return (
     <>

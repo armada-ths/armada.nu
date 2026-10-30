@@ -34,7 +34,7 @@ export default async function ExhibitorsPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary>
-        <Page.Header>Companies at the fair 2026</Page.Header>{" "}
+        <Page.Header>Companies at ARMADA 2026</Page.Header>{" "}
         {/* TODO: Make year dynamic based on CMS data */}
         <Suspense>
           <ExhibitorSearch
