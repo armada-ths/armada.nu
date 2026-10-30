@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, userEvent } from "storybook/test"
+import { expect, userEvent, waitFor } from "storybook/test"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import GoldExhibitors from "./GoldExhibitors"
 
@@ -126,5 +126,77 @@ export const WithoutLogoOrWebsite: Story = {
     ).toBeInTheDocument()
     await expect(canvas.queryByRole("img")).not.toBeInTheDocument()
     await expect(canvas.queryByRole("link")).not.toBeInTheDocument()
+  }
+}
+
+export const IndependentExpansion: Story = {
+  args: {
+    exhibitors: exhibitors.map(exhibitor => ({
+      ...exhibitor,
+      about:
+        "Explore careers in engineering and sustainable technology. ".repeat(40)
+    }))
+  },
+  play: async ({ canvas, canvasElement }) => {
+    const cards =
+      canvasElement.querySelectorAll<HTMLElement>('[data-slot="card"]')
+    const secondHeight = cards[1].getBoundingClientRect().height
+    const buttons = canvas.getAllByRole("button", { name: "Read more" })
+    await expect(buttons[1]).toHaveAttribute("aria-expanded", "false")
+    await userEvent.click(buttons[0])
+    await expect(buttons[0]).toHaveAttribute("aria-expanded", "true")
+    await expect(buttons[1]).toHaveAttribute("aria-expanded", "false")
+    await expect(cards[1].getBoundingClientRect().height).toBe(secondHeight)
+    await expect(cards[0].getBoundingClientRect().height).toBeGreaterThan(
+      secondHeight
+    )
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      '[data-slot="carousel-content"]'
+    )!
+    const expectActiveHeight = async (index: number) => {
+      await waitFor(async () => {
+        await expect(viewport.clientHeight).toBe(cards[index].offsetHeight + 4)
+      })
+    }
+    await expectActiveHeight(0)
+    await userEvent.click(canvas.getByRole("button", { name: "Go to slide 2" }))
+    await expectActiveHeight(1)
+    await userEvent.click(canvas.getByRole("button", { name: "Go to slide 1" }))
+    await expectActiveHeight(0)
+    await expect(buttons[0]).toHaveAttribute("aria-expanded", "true")
+    await userEvent.click(buttons[0])
+    await expect(buttons[0]).toHaveAttribute("aria-expanded", "false")
+    await expectActiveHeight(0)
+  }
+}
+
+export const EqualDescriptionRows: Story = {
+  args: {
+    exhibitors: [
+      { ...exhibitors[0], about: "Meet us at Armada." },
+      {
+        ...exhibitors[1],
+        name: "Harbour Systems Engineering and Sustainable Technology",
+        about: "Explore careers in sustainable technology. ".repeat(40)
+      },
+      {
+        ...exhibitors[0],
+        id: 3,
+        name: "Without logo",
+        logoFreesize: undefined,
+        about: "Welcome!"
+      }
+    ]
+  },
+  play: async ({ canvasElement }) => {
+    const descriptions = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>('[data-slot="card"] p')
+    )
+    await waitFor(async () => {
+      for (const description of descriptions) {
+        const lineHeight = parseFloat(getComputedStyle(description).lineHeight)
+        await expect(description.clientHeight).toBe(lineHeight * 6)
+      }
+    })
   }
 }

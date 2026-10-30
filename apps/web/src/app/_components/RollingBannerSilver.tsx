@@ -1,5 +1,6 @@
 "use client"
 
+import { Page } from "@/components/shared/Page"
 import Image from "next/image"
 
 interface RollingBannerProps {
@@ -51,10 +52,12 @@ export default function RollingBanner({ logos }: RollingBannerProps) {
   const row3 = logos.slice(perRow * 2)
 
   return (
-    <section className="relative right-1/2 left-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible py-12">
-      <h2 className="mb-8 text-center text-2xl font-semibold text-gray-700">
+    <section className="bg-silver border-licorice relative right-1/2 left-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible border-y-2 border-solid py-8">
+      <Page.Header
+        tier="secondary"
+        className="text-licorice mx-auto mb-6 w-fit px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
         Silver Exhibitors
-      </h2>
+      </Page.Header>
 
       <div className="space-y-10">
         <RollingRow logos={row1} duration={25} />
