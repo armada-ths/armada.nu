@@ -299,16 +299,29 @@ export default async function HomePage() {
                 For Students
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
-                <Button asChild className="bg-grapefruit text-snow">
-                  <TrackedLink
-                    href="/student/recruitment"
-                    tracking={{
-                      eventName: "student_signup_click",
-                      eventData: { location: "for_students_card" }
-                    }}>
-                    Join Us!
-                  </TrackedLink>
-                </Button>
+                {Object.entries(heroButtons).map(([position, button]) => (
+                  <Button
+                    key={position}
+                    asChild
+                    variant={position === "primary" ? "default" : "neutral"}
+                    className={
+                      position === "primary"
+                        ? "bg-grapefruit text-snow"
+                        : undefined
+                    }>
+                    <TrackedLink
+                      href={button.url}
+                      tracking={{
+                        ...button.tracking,
+                        eventData: {
+                          location: "for_students_card",
+                          button: position
+                        }
+                      }}>
+                      {button.text}
+                    </TrackedLink>
+                  </Button>
+                ))}
               </div>
             </Card>
           </div>

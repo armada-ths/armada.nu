@@ -14,7 +14,7 @@ import {
 import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import Autoplay from "embla-carousel-autoplay"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 
 interface GoldExhibitorsProps {
   exhibitors: Exhibitor[]
@@ -50,11 +50,10 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
   const visibleExhibitors = exhibitors.slice(0, 8)
 
   return (
-    <section className="w-full py-16">
-      {/* gold glow */}
+    <section className="w-full pt-8 pb-6">
       <Page.Header
         tier="secondary"
-        className="text-pineapple relative mb-16 text-center text-3xl tracking-wide">
+        className="bg-licorice text-pineapple mx-auto mb-6 w-fit rounded-md px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
         Gold Exhibitors
       </Page.Header>
 
@@ -65,10 +64,10 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
           align: "center",
           loop: true
         }}
-        className="w-full select-none">
-        <CarouselContent>
-          {visibleExhibitors.map((ex, index) => (
-            <CarouselItem key={index} className="mb-1">
+        className="mx-auto w-full max-w-3xl select-none">
+        <CarouselContent className="items-start">
+          {visibleExhibitors.map(ex => (
+            <CarouselItem key={ex.id} className="mb-1">
               <ExhibitorCard exhibitor={ex} />
             </CarouselItem>
           ))}
@@ -78,7 +77,7 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
       </Carousel>
 
       {/* dot navigation */}
-      <div className="mt-8 flex justify-center gap-2">
+      <div className="mt-4 flex justify-center gap-2">
         {scrollSnaps.map((_, idx) => (
           <button
             key={idx}
@@ -99,16 +98,17 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
 
 function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const [expanded, setExpanded] = useState(false)
-  const [maxLength, setMaxLength] = useState(600)
+  const descriptionId = useId()
+  const [maxLength, setMaxLength] = useState(350)
   const logoSrc = exhibitor.logoThumbnail ?? exhibitor.logoFreesize
   const shouldBypassLogoOptimization =
     shouldBypassNextImageOptimization(logoSrc)
 
   useEffect(() => {
     const updateLength = () => {
-      if (window.innerWidth < 640) setMaxLength(300)
-      else if (window.innerWidth < 1024) setMaxLength(600)
-      else setMaxLength(800)
+      if (window.innerWidth < 640) setMaxLength(220)
+      else if (window.innerWidth < 1024) setMaxLength(350)
+      else setMaxLength(500)
     }
     updateLength()
     window.addEventListener("resize", updateLength)
@@ -122,16 +122,16 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
     : about.slice(0, maxLength) + (isLong ? "..." : "")
 
   return (
-    <Card className="bg-pineapple mr-1 flex h-full flex-col items-center rounded p-8 text-center transition sm:p-10">
+    <Card className="bg-pineapple mr-1 flex flex-col items-center gap-3 rounded p-6 text-center transition sm:p-8">
       {logoSrc && (
-        <div className="mb-6 flex justify-center">
+        <div className="mb-2 flex justify-center">
           <Image
             src={logoSrc}
             alt={`${exhibitor.name} logo`}
             unoptimized={shouldBypassLogoOptimization}
-            width={200}
-            height={90}
-            className="h-20 object-contain"
+            width={180}
+            height={72}
+            className="h-16 w-auto max-w-full object-contain"
           />
         </div>
       )}
@@ -150,12 +150,16 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
         )}
       </h3>
 
-      <p className="text-licorice mb-3 max-w-prose text-sm leading-relaxed sm:text-base">
+      <p
+        id={descriptionId}
+        className="text-licorice mb-3 max-w-prose text-sm leading-relaxed sm:text-base">
         {displayedText}
       </p>
 
       {isLong && (
         <button
+          aria-expanded={expanded}
+          aria-controls={descriptionId}
           onClick={() => setExpanded(prev => !prev)}
           className="text-licorice hover:text-snow text-sm font-medium underline underline-offset-2 transition">
           {expanded ? "Read less" : "Read more"}

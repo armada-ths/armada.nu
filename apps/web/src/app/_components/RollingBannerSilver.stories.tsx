@@ -115,3 +115,10 @@ export const Empty: Story = {
     await expect(canvas.queryByRole("img")).not.toBeInTheDocument()
   }
 }
+
+export const LightLogos: Story = {
+  args: { logos: Array.from({ length: 36 }, () => "/armada_white.svg") },
+  play: async ({ canvas }) => {
+    await expect(canvas.getAllByRole("img")).toHaveLength(72)
+  }
+}

@@ -128,3 +128,29 @@ export const WithoutLogoOrWebsite: Story = {
     await expect(canvas.queryByRole("link")).not.toBeInTheDocument()
   }
 }
+
+export const IndependentExpansion: Story = {
+  args: {
+    exhibitors: exhibitors.map(exhibitor => ({
+      ...exhibitor,
+      about:
+        "Explore careers in engineering and sustainable technology. ".repeat(40)
+    }))
+  },
+  play: async ({ canvas, canvasElement }) => {
+    const cards =
+      canvasElement.querySelectorAll<HTMLElement>('[data-slot="card"]')
+    const secondHeight = cards[1].getBoundingClientRect().height
+    const buttons = canvas.getAllByRole("button", { name: "Read more" })
+    await expect(buttons[1]).toHaveAttribute("aria-expanded", "false")
+    await userEvent.click(buttons[0])
+    await expect(buttons[0]).toHaveAttribute("aria-expanded", "true")
+    await expect(buttons[1]).toHaveAttribute("aria-expanded", "false")
+    await expect(cards[1].getBoundingClientRect().height).toBe(secondHeight)
+    await expect(cards[0].getBoundingClientRect().height).toBeGreaterThan(
+      secondHeight
+    )
+    await userEvent.click(buttons[0])
+    await expect(buttons[0]).toHaveAttribute("aria-expanded", "false")
+  }
+}
