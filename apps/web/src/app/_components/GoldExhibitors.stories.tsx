@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, userEvent } from "storybook/test"
+import { expect, userEvent, waitFor } from "storybook/test"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import GoldExhibitors from "./GoldExhibitors"
 
@@ -150,7 +150,22 @@ export const IndependentExpansion: Story = {
     await expect(cards[0].getBoundingClientRect().height).toBeGreaterThan(
       secondHeight
     )
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      '[data-slot="carousel-content"]'
+    )!
+    const expectActiveHeight = async (index: number) => {
+      await waitFor(async () => {
+        await expect(viewport.clientHeight).toBe(cards[index].offsetHeight + 4)
+      })
+    }
+    await expectActiveHeight(0)
+    await userEvent.click(canvas.getByRole("button", { name: "Go to slide 2" }))
+    await expectActiveHeight(1)
+    await userEvent.click(canvas.getByRole("button", { name: "Go to slide 1" }))
+    await expectActiveHeight(0)
+    await expect(buttons[0]).toHaveAttribute("aria-expanded", "true")
     await userEvent.click(buttons[0])
     await expect(buttons[0]).toHaveAttribute("aria-expanded", "false")
+    await expectActiveHeight(0)
   }
 }

@@ -52,10 +52,10 @@ export default function RollingBanner({ logos }: RollingBannerProps) {
   const row3 = logos.slice(perRow * 2)
 
   return (
-    <section className="bg-silver relative right-1/2 left-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible py-8">
+    <section className="bg-silver border-licorice relative right-1/2 left-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible border-y-2 border-solid py-8">
       <Page.Header
         tier="secondary"
-        className="bg-licorice text-snow mx-auto mb-6 w-fit rounded-md px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
+        className="text-licorice mx-auto mb-6 w-fit px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
         Silver Exhibitors
       </Page.Header>
 

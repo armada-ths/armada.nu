@@ -14,7 +14,7 @@ import {
 import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import Autoplay from "embla-carousel-autoplay"
 import Image from "next/image"
-import { useEffect, useId, useRef, useState } from "react"
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react"
 
 interface GoldExhibitorsProps {
   exhibitors: Exhibitor[]
@@ -31,6 +31,7 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
 
   const [api, setApi] = useState<CarouselApi | null>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [carouselHeight, setCarouselHeight] = useState<number>()
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
   useEffect(() => {
@@ -47,13 +48,36 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
     }
   }, [api])
 
+  useLayoutEffect(() => {
+    if (!api) return
+
+    const updateHeight = () => {
+      const slide = api.slideNodes()[api.selectedScrollSnap()]
+      if (!slide) return
+      const marginBottom = parseFloat(getComputedStyle(slide).marginBottom) || 0
+      setCarouselHeight(slide.offsetHeight + marginBottom)
+    }
+
+    const observer = new ResizeObserver(updateHeight)
+    api.slideNodes().forEach(slide => observer.observe(slide))
+    api.on("select", updateHeight)
+    api.on("reInit", updateHeight)
+    updateHeight()
+
+    return () => {
+      observer.disconnect()
+      api.off("select", updateHeight)
+      api.off("reInit", updateHeight)
+    }
+  }, [api])
+
   const visibleExhibitors = exhibitors.slice(0, 8)
 
   return (
-    <section className="w-full pt-8 pb-6">
+    <section className="w-full pt-8 pb-10">
       <Page.Header
         tier="secondary"
-        className="bg-licorice text-pineapple mx-auto mb-6 w-fit rounded-md px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
+        className="text-licorice mx-auto mb-6 w-fit px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
         Gold Exhibitors
       </Page.Header>
 
@@ -65,7 +89,9 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
           loop: true
         }}
         className="mx-auto w-full max-w-3xl select-none">
-        <CarouselContent className="items-start">
+        <CarouselContent
+          className="items-start"
+          style={{ height: carouselHeight }}>
           {visibleExhibitors.map(ex => (
             <CarouselItem key={ex.id} className="mb-1">
               <ExhibitorCard exhibitor={ex} />
