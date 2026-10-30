@@ -45,9 +45,10 @@ export default async function HomePage() {
   )
   const silverLogos = exhibitors
     .filter(exhibitor => exhibitor.tier === "Silver")
-    .flatMap(exhibitor =>
-      exhibitor.logoFreesize ? [exhibitor.logoFreesize] : []
-    )
+    .flatMap(exhibitor => {
+      const logo = exhibitor.logoThumbnail ?? exhibitor.logoFreesize
+      return logo ? [logo] : []
+    })
 
   const now = DateTime.now()
   const recruitmentOpen =

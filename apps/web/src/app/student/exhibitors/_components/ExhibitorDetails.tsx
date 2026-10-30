@@ -16,7 +16,11 @@ export default function ExhibitorDetails({
 }: {
   exhibitor: Exhibitor
 }) {
-  const logoSrc = exhibitor.logoSquared ?? exhibitor.logoFreesize ?? ""
+  const logoSrc =
+    exhibitor.logoSquared ??
+    exhibitor.logoThumbnail ??
+    exhibitor.logoFreesize ??
+    ""
   const shouldBypassLogoOptimization =
     shouldBypassNextImageOptimization(logoSrc)
   const shouldBypassMapOptimization = shouldBypassNextImageOptimization(
@@ -39,7 +43,9 @@ export default function ExhibitorDetails({
     <div className="pb-5">
       {/* --- HEADER + LOGO --- */}
       <div className="flex flex-col-reverse items-center gap-6 sm:h-25 sm:flex-row">
-        {(exhibitor.logoSquared || exhibitor.logoFreesize) && (
+        {(exhibitor.logoSquared ||
+          exhibitor.logoThumbnail ||
+          exhibitor.logoFreesize) && (
           <Image
             className="h-20 w-auto object-contain sm:h-full sm:max-w-[25%] sm:min-w-28"
             src={logoSrc}
@@ -93,6 +99,15 @@ export default function ExhibitorDetails({
           </div>
         )}
       </div>
+
+      {exhibitor.cities && (
+        <div className="mt-8">
+          <Page.Header tier="secondary" className="mt-2 pl-1">
+            Locations
+          </Page.Header>
+          <P className="mt-2">{exhibitor.cities}</P>
+        </div>
+      )}
 
       {/* --- INDUSTRIES / EMPLOYMENTS / PROGRAMS --- */}
       <div

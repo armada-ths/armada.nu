@@ -100,9 +100,9 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
 function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const [expanded, setExpanded] = useState(false)
   const [maxLength, setMaxLength] = useState(600)
-  const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(
-    exhibitor.logoFreesize
-  )
+  const logoSrc = exhibitor.logoThumbnail ?? exhibitor.logoFreesize
+  const shouldBypassLogoOptimization =
+    shouldBypassNextImageOptimization(logoSrc)
 
   useEffect(() => {
     const updateLength = () => {
@@ -123,10 +123,10 @@ function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
 
   return (
     <Card className="bg-pineapple mr-1 flex h-full flex-col items-center rounded p-8 text-center transition sm:p-10">
-      {exhibitor.logoFreesize && (
+      {logoSrc && (
         <div className="mb-6 flex justify-center">
           <Image
-            src={exhibitor.logoFreesize}
+            src={logoSrc}
             alt={`${exhibitor.name} logo`}
             unoptimized={shouldBypassLogoOptimization}
             width={200}

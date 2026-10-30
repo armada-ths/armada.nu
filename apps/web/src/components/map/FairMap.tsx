@@ -135,7 +135,8 @@ export default function FairMap({
         const cx = bbox.x + bbox.width / 2
         const cy = bbox.y + bbox.height / 2
 
-        if (ex.logoFreesize) {
+        const logoSrc = ex.logoThumbnail ?? ex.logoFreesize
+        if (logoSrc) {
           const logo = document.createElementNS(
             "http://www.w3.org/2000/svg",
             "image"
@@ -143,11 +144,7 @@ export default function FairMap({
           const sizeFactor = 0.9
           const width = bbox.width * sizeFactor
           const height = bbox.height * sizeFactor
-          logo.setAttributeNS(
-            "http://www.w3.org/1999/xlink",
-            "href",
-            ex.logoFreesize
-          )
+          logo.setAttributeNS("http://www.w3.org/1999/xlink", "href", logoSrc)
           logo.setAttribute("data-logo", "true")
           logo.setAttribute("width", String(width))
           logo.setAttribute("height", String(height))

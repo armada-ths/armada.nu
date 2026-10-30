@@ -11,6 +11,7 @@ export interface Exhibitor {
   purpose?: string
   logoSquared?: string
   logoFreesize?: string
+  logoThumbnail?: string
   mapImg?: string
   industries?: Industry[]
   //values?: unknown[] // TODO Define this
