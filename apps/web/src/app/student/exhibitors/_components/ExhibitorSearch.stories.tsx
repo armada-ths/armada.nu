@@ -148,12 +148,7 @@ const meta = {
       </div>
     )
   ],
-  args: {
-    exhibitors,
-    employments: [internship],
-    industries: [software],
-    programs: [engineering]
-  }
+  args: { exhibitors }
 } satisfies Meta<typeof ExhibitorSearch>
 
 export default meta
@@ -423,5 +418,95 @@ export const MobileModalClosesOnce: Story = {
     await expect(body.queryByRole("dialog")).not.toBeInTheDocument()
     await expect(navigationUrl.searchParams.has("id")).toBe(false)
     await expect(navigationUrl.searchParams.get("source")).toBe("kept")
+  }
+}
+
+export const FiltersUseCurrentExhibitorCategories: Story = {
+  args: {
+    exhibitors: [
+      {
+        ...exhibitors[0],
+        employments: [{ id: 101, name: "Full-time employment" }],
+        industries: [{ id: 201, name: "Consulting & Advisory" }],
+        programs: [{ id: 301, name: "Computer Science" }]
+      },
+      {
+        ...exhibitors[1],
+        employments: [{ id: 101, name: "Full-time employment" }],
+        industries: [{ id: 201, name: "Consulting & Advisory" }],
+        programs: [{ id: 301, name: "Computer Science" }]
+      },
+      {
+        ...exhibitors[2],
+        employments: [{ id: 102, name: "Internship" }],
+        industries: [],
+        programs: []
+      }
+    ]
+  },
+  play: async ({ canvas }) => {
+    await canvas.findByRole("combobox", { name: /Filter by Employment/ })
+    for (const { trigger, expected, legacy, count } of [
+      {
+        trigger: /Filter by Employment/,
+        expected: "Full-time employment",
+        legacy: "Full Time",
+        count: 2
+      },
+      {
+        trigger: /Filter by Industry/,
+        expected: "Consulting & Advisory",
+        legacy: "consulting",
+        count: 1
+      },
+      {
+        trigger: /Filter by Program/,
+        expected: "Computer Science",
+        legacy: "Computer Engineering",
+        count: 1
+      }
+    ]) {
+      await userEvent.click(canvas.getByRole("combobox", { name: trigger }))
+      const listbox = await within(document.body).findByRole("listbox", {
+        name: "Available options"
+      })
+      // The list also contains the shared Select All option.
+      await expect(within(listbox).getAllByRole("option")).toHaveLength(
+        count + 1
+      )
+      await expect(
+        within(listbox).getByRole("option", {
+          name: `${expected}, not selected`
+        })
+      ).toBeInTheDocument()
+      await expect(
+        within(listbox).queryByRole("option", {
+          name: `${legacy}, not selected`
+        })
+      ).not.toBeInTheDocument()
+      await userEvent.click(
+        within(document.body).getByRole("button", { name: "Close" })
+      )
+    }
+    await userEvent.click(
+      canvas.getByRole("combobox", { name: /Filter by Employment/ })
+    )
+    const listbox = await within(document.body).findByRole("listbox", {
+      name: "Available options"
+    })
+    await userEvent.click(
+      within(listbox).getByRole("option", {
+        name: "Full-time employment, not selected"
+      })
+    )
+    await userEvent.click(
+      within(document.body).getByRole("button", { name: "Close" })
+    )
+    await waitFor(() => {
+      expect(canvas.getAllByRole("heading", { level: 3 })).toHaveLength(2)
+      expect(
+        canvas.queryByRole("heading", { name: "Gamma Group" })
+      ).not.toBeInTheDocument()
+    })
   }
 }

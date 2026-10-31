@@ -1,12 +1,7 @@
 import ExhibitorSearch from "@/app/student/exhibitors/_components/ExhibitorSearch"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
-import {
-  fetchEmployments,
-  fetchExhibitors,
-  fetchIndustries,
-  fetchPrograms
-} from "@/components/shared/hooks/api/useExhibitors"
+import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
 import { Suspense } from "react"
 
@@ -20,29 +15,13 @@ export default async function ExhibitorsPage() {
     next: { revalidate: 86400 }
   })
 
-  const employments = await fetchEmployments({
-    next: { revalidate: 86400 }
-  })
-
-  const industries = await fetchIndustries({
-    next: { revalidate: 86400 }
-  })
-
-  const programs = await fetchPrograms({
-    next: { revalidate: 86400 }
-  })
   return (
     <Page.Background withIndents>
       <Page.Boundary>
         <Page.Header>Companies at ARMADA 2026</Page.Header>{" "}
         {/* TODO: Make year dynamic based on CMS data */}
         <Suspense>
-          <ExhibitorSearch
-            exhibitors={exhibitors}
-            employments={employments}
-            industries={industries}
-            programs={programs}
-          />
+          <ExhibitorSearch exhibitors={exhibitors} />
         </Suspense>
       </Page.Boundary>
     </Page.Background>
