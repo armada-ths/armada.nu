@@ -1,27 +1,19 @@
 "use client"
 
+import { useCarouselRotation } from "@/components/shared/hooks/useCarouselRotation"
 import { Button } from "@/components/ui/button"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious,
-  type CarouselApi
+  CarouselPrevious
 } from "@/components/ui/carousel"
 import { Pause, Play } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useState, useSyncExternalStore } from "react"
 
 const controlClassName =
   "isolate size-11 cursor-pointer rounded-base border-0 bg-transparent text-licorice before:pointer-events-none before:absolute before:inset-1 before:-z-10 before:rounded-base before:bg-snow/25 before:transition-colors before:duration-200 hover:before:bg-snow/90 focus-visible:before:bg-snow/90 motion-reduce:before:transition-none [&_svg]:drop-shadow-sm"
-
-const reducedMotionQuery = "(prefers-reduced-motion: reduce)"
-const subscribeToMotion = (callback: () => void) => {
-  const query = window.matchMedia(reducedMotionQuery)
-  query.addEventListener("change", callback)
-  return () => query.removeEventListener("change", callback)
-}
 
 export function PostImageCarousel({
   images,
@@ -30,46 +22,23 @@ export function PostImageCarousel({
   images: string[]
   title: string
 }) {
-  const [api, setApi] = useState<CarouselApi>()
-  const [selected, setSelected] = useState(0)
-  const [paused, setPaused] = useState(false)
-  const [hovered, setHovered] = useState(false)
-  const reducedMotion = useSyncExternalStore(
-    subscribeToMotion,
-    () => window.matchMedia(reducedMotionQuery).matches,
-    () => true
-  )
-  const rotating = images.length > 1 && !paused && !hovered && !reducedMotion
-
-  useEffect(() => {
-    if (!api) return
-    const onSelect = () => setSelected(api.selectedScrollSnap())
-    api.on("select", onSelect)
-    return () => {
-      api.off("select", onSelect)
-    }
-  }, [api])
-
-  useEffect(() => {
-    if (!api || !rotating) return
-    const timer = window.setInterval(() => {
-      if (!document.hidden) api.scrollNext()
-    }, 5000)
-    return () => window.clearInterval(timer)
-  }, [api, rotating])
+  const {
+    api,
+    selected,
+    paused,
+    rotating,
+    reducedMotion,
+    toggleRotation,
+    scrollTo,
+    carouselProps
+  } = useCarouselRotation({ itemCount: images.length })
 
   return (
     <Carousel
-      setApi={setApi}
+      {...carouselProps}
       opts={{ loop: true, duration: reducedMotion ? 0 : 25 }}
       className="-mt-6 w-full overflow-hidden"
-      aria-label={`${title} photos`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocusCapture={event => {
-        if (!(event.target as HTMLElement).closest("[data-rotation-control]"))
-          setPaused(true)
-      }}>
+      aria-label={`${title} photos`}>
       <CarouselContent className="ml-0" aria-live={rotating ? "off" : "polite"}>
         {images.map((src, index) => (
           <CarouselItem
@@ -116,10 +85,7 @@ export function PostImageCarousel({
                   aria-label={`Go to photo ${index + 1} of ${images.length}`}
                   aria-current={index === selected ? "true" : undefined}
                   disabled={!api}
-                  onClick={() => {
-                    setPaused(true)
-                    api?.scrollTo(index)
-                  }}>
+                  onClick={() => scrollTo(index)}>
                   <span
                     aria-hidden="true"
                     className={`size-1.5 rounded-full shadow-sm transition-colors motion-reduce:transition-none ${index === selected ? "bg-snow" : "bg-snow/50"}`}
@@ -136,7 +102,7 @@ export function PostImageCarousel({
               data-rotation-control
               className={`${controlClassName} absolute right-1 bottom-1 before:inset-2 sm:right-3 sm:bottom-3 sm:before:inset-1 [&_svg]:size-3.5 sm:[&_svg]:size-4`}
               aria-label={paused ? "Play slideshow" : "Pause slideshow"}
-              onClick={() => setPaused(value => !value)}>
+              onClick={toggleRotation}>
               {paused ? (
                 <Play aria-hidden="true" />
               ) : (
