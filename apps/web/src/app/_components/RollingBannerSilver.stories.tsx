@@ -122,3 +122,47 @@ export const LightLogos: Story = {
     await expect(canvas.getAllByRole("img")).toHaveLength(72)
   }
 }
+
+export const RandomizedOrder: Story = {
+  args: {
+    logos: [
+      "/armada_licorice.svg",
+      "/armada_white.svg",
+      "/sture-logo-up.png",
+      "/LogoDCS-300dpi.png",
+      "/fair_pictures/2.jpeg",
+      "/logonotext.svg"
+    ]
+  },
+  beforeEach: () => {
+    const original = Math.random
+    Math.random = () => 0
+    return () => {
+      Math.random = original
+    }
+  },
+  play: async ({ canvas }) => {
+    const expected = [
+      "armada_white.svg",
+      "sture-logo-up.png",
+      "armada_white.svg",
+      "sture-logo-up.png",
+      "LogoDCS-300dpi.png",
+      "2.jpeg",
+      "LogoDCS-300dpi.png",
+      "2.jpeg",
+      "logonotext.svg",
+      "armada_licorice.svg",
+      "logonotext.svg",
+      "armada_licorice.svg"
+    ]
+    const images = canvas.getAllByRole("img")
+    await expect(images).toHaveLength(expected.length)
+    for (let index = 0; index < expected.length; index++) {
+      await expect(images[index]).toHaveAttribute(
+        "src",
+        expect.stringContaining(expected[index])
+      )
+    }
+  }
+}

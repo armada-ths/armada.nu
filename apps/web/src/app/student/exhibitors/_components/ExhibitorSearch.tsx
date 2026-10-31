@@ -7,9 +7,10 @@ import {
   Industry,
   Program
 } from "@/components/shared/hooks/api/useExhibitors"
+import { useShuffledItems } from "@/components/shared/hooks/useShuffledItems"
 import { Input } from "@/components/ui/input"
 import { useMemo, useState } from "react"
-import { ExhibitorCard } from "./ExhibitorCard"
+import ExhibitorList from "./ExhibitorList"
 import { sortExhibitors, type ExhibitorSort } from "./exhibitorSort"
 
 interface Props {
@@ -19,16 +20,18 @@ interface Props {
   programs: Program[]
 }
 
+const getExhibitorId = (exhibitor: Exhibitor) => exhibitor.id
+
 export default function ExhibitorSearch({
   exhibitors,
   employments,
   industries,
   programs
 }: Props) {
+  const shuffledExhibitors = useShuffledItems(exhibitors, getExhibitorId)
   const [searchQueryName, setSearchQueryName] = useState("")
   const [sortBy, setSortBy] = useState<ExhibitorSort>("tier-gold")
-  const [filteredExhibitors, setFilteredExhibitors] =
-    useState<Exhibitor[]>(exhibitors)
+  const [filteredExhibitors, setFilteredExhibitors] = useState<Exhibitor[]>([])
 
   const sortedExhibitors = useMemo(
     () => sortExhibitors(filteredExhibitors, sortBy),
@@ -45,23 +48,24 @@ export default function ExhibitorSearch({
         className="grow rounded-sm border p-2"
       />
 
-      <ExhibitorFilterItem
-        exhibitors={exhibitors}
-        employments={employments}
-        industries={industries}
-        programs={programs}
-        searchQueryName={searchQueryName}
-        onFilterChange={setFilteredExhibitors}
-        sortBy={sortBy}
-        onSortChange={setSortBy}
-      />
+      {shuffledExhibitors && (
+        <ExhibitorFilterItem
+          exhibitors={shuffledExhibitors}
+          employments={employments}
+          industries={industries}
+          programs={programs}
+          searchQueryName={searchQueryName}
+          onFilterChange={setFilteredExhibitors}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
+      )}
 
-      <div className="w-full">
-        <div className="mx-auto grid max-w-300 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {sortedExhibitors.map(exhibitor => (
-            <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
-          ))}
-        </div>
+      <div className="w-full" aria-busy={shuffledExhibitors === null}>
+        <ExhibitorList
+          exhibitors={exhibitors}
+          visibleExhibitors={sortedExhibitors}
+        />
       </div>
     </div>
   )
