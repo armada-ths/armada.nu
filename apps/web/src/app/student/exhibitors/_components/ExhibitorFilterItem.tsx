@@ -1,9 +1,4 @@
-import {
-  Employment,
-  Exhibitor,
-  Industry,
-  Program
-} from "@/components/shared/hooks/api/useExhibitors"
+import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
 import { useEffect, useMemo, useState } from "react"
 import ExhibitorSortMenu from "./ExhibitorSortMenu"
@@ -14,11 +9,18 @@ const filterTriggerClassName =
 
 const filterPopoverClassName = "w-(--radix-popover-trigger-width) max-w-[95vw]"
 
+function categoryOptions(
+  categories: { id: number; name: string }[]
+): MultiSelectOption[] {
+  const unique = new Map(categories.map(category => [category.id, category]))
+  return Array.from(unique.values(), category => ({
+    value: String(category.id),
+    label: category.name
+  })).sort((a, b) => a.label.localeCompare(b.label))
+}
+
 interface Props {
   exhibitors: Exhibitor[]
-  employments: Employment[]
-  industries: Industry[]
-  programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
   sortBy?: ExhibitorSort
@@ -27,9 +29,6 @@ interface Props {
 
 export default function ExhibitorFilterItem({
   exhibitors,
-  employments,
-  industries,
-  programs,
   searchQueryName,
   onFilterChange,
   sortBy = "tier-gold",
@@ -44,28 +43,28 @@ export default function ExhibitorFilterItem({
   )
   const [selectedProgramsIds, setSelectedProgramsIds] = useState<string[]>([])
 
-  // 2. DATA TRANSFORMATION: Prepare the employments data for the MultiSelect component
-  const employmentOptions: MultiSelectOption[] = useMemo(() => {
-    return employments.map(employment => ({
-      // value must be a string for the MultiSelect component
-      value: String(employment.id),
-      label: employment.name
-    }))
-  }, [employments])
-
-  const industriesOptions: MultiSelectOption[] = useMemo(() => {
-    return industries.map(industry => ({
-      value: String(industry.id),
-      label: industry.name
-    }))
-  }, [industries])
-
-  const programOptions: MultiSelectOption[] = useMemo(() => {
-    return programs.map(program => ({
-      value: String(program.id),
-      label: program.name
-    }))
-  }, [programs])
+  // Use the current exhibitor relationships, not historical standalone taxonomy rows.
+  const employmentOptions = useMemo(
+    () =>
+      categoryOptions(
+        exhibitors.flatMap(exhibitor => exhibitor.employments ?? [])
+      ),
+    [exhibitors]
+  )
+  const industriesOptions = useMemo(
+    () =>
+      categoryOptions(
+        exhibitors.flatMap(exhibitor => exhibitor.industries ?? [])
+      ),
+    [exhibitors]
+  )
+  const programOptions = useMemo(
+    () =>
+      categoryOptions(
+        exhibitors.flatMap(exhibitor => exhibitor.programs ?? [])
+      ),
+    [exhibitors]
+  )
 
   const filtered = useMemo(() => {
     let currentFilteredList = exhibitors

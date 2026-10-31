@@ -1,12 +1,7 @@
 "use client"
 
 import ExhibitorFilterItem from "@/app/student/exhibitors/_components/ExhibitorFilterItem"
-import {
-  Employment,
-  Exhibitor,
-  Industry,
-  Program
-} from "@/components/shared/hooks/api/useExhibitors"
+import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { useShuffledItems } from "@/components/shared/hooks/useShuffledItems"
 import { Input } from "@/components/ui/input"
 import { useMemo, useState } from "react"
@@ -15,19 +10,11 @@ import { sortExhibitors, type ExhibitorSort } from "./exhibitorSort"
 
 interface Props {
   exhibitors: Exhibitor[]
-  employments: Employment[]
-  industries: Industry[]
-  programs: Program[]
 }
 
 const getExhibitorId = (exhibitor: Exhibitor) => exhibitor.id
 
-export default function ExhibitorSearch({
-  exhibitors,
-  employments,
-  industries,
-  programs
-}: Props) {
+export default function ExhibitorSearch({ exhibitors }: Props) {
   const shuffledExhibitors = useShuffledItems(exhibitors, getExhibitorId)
   const [searchQueryName, setSearchQueryName] = useState("")
   const [sortBy, setSortBy] = useState<ExhibitorSort>("tier-gold")
@@ -51,9 +38,6 @@ export default function ExhibitorSearch({
       {shuffledExhibitors && (
         <ExhibitorFilterItem
           exhibitors={shuffledExhibitors}
-          employments={employments}
-          industries={industries}
-          programs={programs}
           searchQueryName={searchQueryName}
           onFilterChange={setFilteredExhibitors}
           sortBy={sortBy}

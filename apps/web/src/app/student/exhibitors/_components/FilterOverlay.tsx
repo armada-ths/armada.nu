@@ -1,12 +1,7 @@
 "use client"
 
 import ExhibitorFilterItem from "@/app/student/exhibitors/_components/ExhibitorFilterItem"
-import {
-  Employment,
-  Exhibitor,
-  Industry,
-  Program
-} from "@/components/shared/hooks/api/useExhibitors"
+import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { cn } from "@/lib/utils"
 import React from "react"
 
@@ -15,9 +10,6 @@ interface FilterOverlayProps {
   onClose: () => void
   headerHeight?: string
   exhibitors: Exhibitor[]
-  employments: Employment[]
-  industries: Industry[]
-  programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
 }
@@ -27,9 +19,6 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
   onClose,
   headerHeight = "0",
   exhibitors,
-  employments,
-  industries,
-  programs,
   searchQueryName,
   onFilterChange
 }) => {
@@ -79,9 +68,6 @@ export const FilterOverlay: React.FC<FilterOverlayProps> = ({
 
           <ExhibitorFilterItem
             exhibitors={exhibitors}
-            employments={employments}
-            industries={industries}
-            programs={programs}
             searchQueryName={searchQueryName}
             onFilterChange={onFilterChange}
           />
