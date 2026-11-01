@@ -48,3 +48,15 @@ export const Desktop: Story = {
     ).toBeVisible()
   }
 }
+
+export const Swedish: Story = {
+  globals: { locale: "sv" },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("heading", { name: "Dela dina foton" })
+    ).toBeVisible()
+    await expect(
+      canvas.getByRole("button", { name: "Öppna kameran" })
+    ).toBeDisabled()
+  }
+}

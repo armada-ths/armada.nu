@@ -1,3 +1,8 @@
+import {
+  photoAPIError,
+  photoErrorCode,
+  type PhotoErrorCode
+} from "@photos/lib/photoErrors"
 import { useCallback, useEffect, useRef, useState } from "react"
 import {
   usePhotoLinks,
@@ -21,7 +26,7 @@ export function usePhotoGallery({
   const [selected, setSelected] = useState<number | null>(null)
   const [playing, setPlaying] = useState(false)
   const [galleryBusy, setGalleryBusy] = useState(false)
-  const [error, setError] = useState("")
+  const [error, setError] = useState<PhotoErrorCode | null>(null)
   const gridRef = useRef<PhotoGridHandle>(null)
   const photosRef = useRef<Photo[]>([])
   const galleryBusyRef = useRef(false)
@@ -38,7 +43,7 @@ export function usePhotoGallery({
         const response = await fetch(`${base}/gallery${query}`, {
           cache: "no-store"
         })
-        if (!response.ok) throw new Error("The gallery could not be loaded.")
+        if (!response.ok) throw photoAPIError(response)
         const page = (await response.json()) as Gallery
         setPhotos(previous => {
           const next = nextCursor
@@ -60,11 +65,9 @@ export function usePhotoGallery({
           )
         }
         setCursor(page.next_cursor)
-        setError("")
+        setError(null)
       } catch (cause) {
-        setError(
-          cause instanceof Error ? cause.message : "Something went wrong."
-        )
+        setError(photoErrorCode(cause, "network_error"))
       } finally {
         galleryBusyRef.current = false
         setGalleryBusy(false)
@@ -89,13 +92,13 @@ export function usePhotoGallery({
         const response = await fetch(`${base}/gallery${query}`, {
           cache: "no-store"
         })
-        if (!response.ok) throw new Error("Live gallery update failed.")
+        if (!response.ok) throw photoAPIError(response)
         const page = (await response.json()) as Gallery
         if (knownIds.size === 0) {
           photosRef.current = page.items
           setPhotos(page.items)
           setCursor(page.next_cursor)
-          setError("")
+          setError(null)
           return
         }
         for (const photo of page.items) {
@@ -115,11 +118,9 @@ export function usePhotoGallery({
         setPhotos(photosRef.current)
         if (playing && newPhotos.length > 0) setSelected(newPhotos[0].id)
       }
-      setError("")
+      setError(null)
     } catch (cause) {
-      setError(
-        cause instanceof Error ? cause.message : "Live gallery update failed."
-      )
+      setError(photoErrorCode(cause, "network_error"))
     } finally {
       galleryBusyRef.current = false
       setGalleryBusy(false)
@@ -149,7 +150,7 @@ export function usePhotoGallery({
         cache: "no-store",
         signal
       })
-      if (!response.ok) throw new Error("Photo links could not be renewed.")
+      if (!response.ok) throw photoAPIError(response)
       return (await response.json()) as RenewedPhotoLinks
     },
     [base]

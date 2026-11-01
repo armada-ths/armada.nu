@@ -1,6 +1,9 @@
+import type { PhotoErrorCode } from "@photos/lib/photoErrors"
 export type EventInfo = {
   name: string
+  nameSv?: string | null
   description: string
+  descriptionSv?: string | null
   uploads_open: boolean
   gallery_open: boolean
   remaining: number
@@ -22,6 +25,6 @@ export type Upload = {
   progress: number
   state: "queued" | "uploading" | "done" | "error"
   approval?: "approved" | "pending"
-  error?: string
+  error?: PhotoErrorCode
 }
 export type StagedPhoto = { id: string; file: File; preview: string }

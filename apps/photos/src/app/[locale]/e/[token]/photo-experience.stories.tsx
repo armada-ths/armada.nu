@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, fn, userEvent } from "storybook/test"
+import { PhotoError } from "@photos/lib/photoErrors"
 import { HEX_COLORS } from "@armada/shared/colors"
 
 import { PhotoExperience } from "./photo-experience"
@@ -225,7 +226,7 @@ export const BatchUpload: Story = {
 export const VerificationUnavailable: Story = {
   args: {
     getVerificationToken: fn(async () => {
-      throw new Error("Verification could not be loaded.")
+      throw new PhotoError("verification_unavailable")
     })
   },
   play: async ({ canvas }) => {
@@ -239,7 +240,9 @@ export const VerificationUnavailable: Story = {
       canvas.getByRole("button", { name: "Upload photos (1)" })
     )
     await expect(
-      await canvas.findByText("Verification could not be loaded.")
+      await canvas.findByText(
+        "Verification could not be loaded. Please try again."
+      )
     ).toBeInTheDocument()
     await expect(
       canvas.queryByText("Awaiting approval")
