@@ -6,7 +6,7 @@ import { normalizeLocale } from "@armada/shared/i18n/routing"
 
 import { TrackingConfig } from "@/components/shared/TrackedLink"
 import { Button } from "@/components/ui/button"
-import { type Locale } from "@/lib/i18n"
+import type { Locale } from "@armada/shared/i18n/routing"
 import { track } from "@vercel/analytics"
 import { Link } from "@armada/shared/i18n/navigation"
 

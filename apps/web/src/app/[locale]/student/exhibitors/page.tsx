@@ -11,7 +11,7 @@ import {
   fetchPrograms
 } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
-import { translations } from "@/lib/i18n"
+import { translations } from "@/i18n/dictionaries"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { Suspense } from "react"
 

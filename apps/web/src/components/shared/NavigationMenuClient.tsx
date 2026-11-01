@@ -24,7 +24,7 @@ import {
 } from "lucide-react"
 import { DateTime } from "luxon"
 
-import { translations } from "@/lib/i18n"
+import { translations } from "@/i18n/dictionaries"
 
 interface NavigationMenuClientProps {
   signupUrl: string

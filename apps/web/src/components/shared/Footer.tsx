@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/accordion"
 import Image from "next/image"
 
-import { translations } from "@/lib/i18n"
+import { translations } from "@/i18n/dictionaries"
 
 function FooterAffiliations({
   inPartnershipWith,

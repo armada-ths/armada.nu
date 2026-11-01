@@ -21,11 +21,8 @@ import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import {
-  pageTranslations,
-  resolveLocalizedHighlightCardCopy,
-  translations
-} from "@/lib/i18n"
+import { pageTranslations, translations } from "@/i18n/dictionaries"
+import { localizedText } from "@armada/shared/i18n/routing"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { DateTime } from "luxon"
 import { Link } from "@armada/shared/i18n/navigation"
@@ -77,9 +74,6 @@ export default async function HomePage() {
     ? "https://app.eventro.se/register/armada"
     : "/exhibitor/signup"
   const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
-  const localizedHighlight = highlightCard
-    ? resolveLocalizedHighlightCardCopy(locale, highlightCard)
-    : null
 
   const heroButtons = recruitmentOpen
     ? {
@@ -131,16 +125,28 @@ export default async function HomePage() {
             sideContent={
               highlightCard ? (
                 <HighlightCard
-                  title={localizedHighlight?.title ?? highlightCard.title}
-                  subtitle={
-                    localizedHighlight?.subtitle ?? highlightCard.subtitle
-                  }
-                  description={
-                    localizedHighlight?.description ?? highlightCard.description
-                  }
+                  title={localizedText(
+                    locale,
+                    highlightCard.title,
+                    highlightCard.titleSv
+                  )}
+                  subtitle={localizedText(
+                    locale,
+                    highlightCard.subtitle,
+                    highlightCard.subtitleSv
+                  )}
+                  description={localizedText(
+                    locale,
+                    highlightCard.description,
+                    highlightCard.descriptionSv
+                  )}
                   brand={highlightCard.brand}
                   ctaText={
-                    localizedHighlight?.linkText ?? highlightCard.linkText
+                    localizedText(
+                      locale,
+                      highlightCard.linkText,
+                      highlightCard.linkTextSv
+                    ) ?? undefined
                   }
                   ctaUrl={highlightCard.linkUrl}
                   ctaTracking={
