@@ -33,18 +33,12 @@ export default function PhotoPrivacyPage() {
             <PhotoText id="photoPrivacyNotice" />
           </Page.Header>
           <p className="mt-4 text-lg leading-7">
-            <PhotoText id="thisNoticeExplainsHowGuestPhotosFromArmada" />
+            <PhotoText id="privacyNoticeIntro" />
+          </p>
+          <p className="mt-3 text-sm">
+            <PhotoText id="privacyLastUpdated" />
           </p>
         </div>
-
-        <aside className="rounded-2xl border border-amber-300 bg-amber-50 p-5 text-sm leading-6">
-          <p className="font-semibold">
-            <PhotoText id="draftForReviewNotYetApproved" />
-          </p>
-          <p className="mt-2">
-            <PhotoText id="beforeUsingThisNoticeForALiveEvent" />
-          </p>
-        </aside>
 
         <div className="space-y-8 leading-7">
           <section className={sectionClass}>
@@ -52,68 +46,100 @@ export default function PhotoPrivacyPage() {
               <PhotoText id="whoIsResponsible" />
             </h2>
             <p>
-              <PhotoText id="tekniskaHgskolansStudentkrTHSOrganisationNumber8020059153Ref" />{" "}
+              <PhotoText id="privacyControllerDetails" />{" "}
               <a className="underline" href="mailto:a@armada.nu">
-                <PhotoText id="aarmadanu" />
+                a@armada.nu
               </a>
-              <PhotoText id="tHSIsTheControllerOfThisPhotoService" />
+              .
             </p>
           </section>
 
           <section className={sectionClass}>
             <h2 className={headingClass}>
-              <PhotoText id="whatDoWeCollect" />
+              <PhotoText id="whatInformationIsProcessed" />
             </h2>
             <p>
-              <PhotoText id="weProcessThePhotosGuestsSubmitWhichMay" />
+              <PhotoText id="privacyGuestPhotoData" />
             </p>
             <p>
-              <PhotoText id="cameraImagesAreConvertedToSmallerJPEGFiles" />
+              <PhotoText id="privacyImageProcessing" />
             </p>
           </section>
 
           <section className={sectionClass}>
             <h2 className={headingClass}>
-              <PhotoText id="whyDoWeUseTheData" />
+              <PhotoText id="howArePhotosUsedAndShared" />
             </h2>
             <p>
-              <PhotoText id="weUsePhotosToLetEventGuestsShare" />
+              <PhotoText id="privacyPhotoPurposes" />
             </p>
             <p>
-              <PhotoText id="tHSProposesLegitimateInterestsUnderGDPRArticle61f" />
+              <PhotoText id="privacyGalleryAccess" />
+            </p>
+            <p>
+              <PhotoText id="privacyAutomaticChecks" />
             </p>
           </section>
 
-          <section className={sectionClass}>
+          <section id="cookies" className={sectionClass}>
             <h2 className={headingClass}>
-              <PhotoText id="whoCanSeeThePhotos" />
+              <PhotoText id="browserStorageAndAbusePrevention" />
             </h2>
             <p>
-              <PhotoText id="armadaModeratorsCanReviewSubmittedPhotosGoogleCloud" />
+              <PhotoText id="privacyGuestIdentifierPrefix" />{" "}
+              <code>armada-photo-guest</code>
+              <PhotoText id="privacyGuestIdentifierDetails" />
             </p>
             <p>
-              <PhotoText id="vercelServesTheWebsiteAndCurrentlyProvidesWebsite" />{" "}
+              <PhotoText id="privacyRecaptchaPrefix" /> <code>_GRECAPTCHA</code>{" "}
+              <PhotoText id="privacyRecaptchaAnalysis" />{" "}
               <a
                 className="underline"
-                href="https://cloud.google.com/vision/docs/data-usage">
-                <PhotoText id="dataUsageInformation" />
-              </a>
-              <PhotoText id="supabaseHostsThePhotoDatabaseAndPrivateImage" />
-            </p>
-            <p>
-              <PhotoText id="theseProvidersAndTheirSubprocessorsMayProcessLimited" />
+                href="https://cloud.google.com/recaptcha/docs/faq">
+                <PhotoText id="recaptchaInformation" />
+              </a>{" "}
+              <PhotoText id="privacyRecaptchaDetails" />
             </p>
           </section>
 
           <section className={sectionClass}>
             <h2 className={headingClass}>
-              <PhotoText id="howLongDoWeKeepTheData" />
+              <PhotoText id="serviceProviders" />
             </h2>
             <p>
-              <PhotoText id="eachEventHasAnUploadClosingTimeAnd" />
+              <PhotoText id="privacyServiceProviders" />
             </p>
             <p>
-              <PhotoText id="tHSCanRemoveCopiesItControlsAfterThe" />
+              <PhotoText id="privacyInternationalTransfers" />{" "}
+              <a
+                className="underline"
+                href="https://cloud.google.com/terms/data-processing-addendum">
+                Google Cloud
+              </a>
+              ,{" "}
+              <a className="underline" href="https://supabase.com/legal/dpa">
+                Supabase
+              </a>{" "}
+              <PhotoText id="privacyAnd" />{" "}
+              <a className="underline" href="https://vercel.com/legal/dpa">
+                Vercel
+              </a>
+              <PhotoText id="privacyProviderTerms" />
+            </p>
+          </section>
+
+          <section className={sectionClass}>
+            <h2 className={headingClass}>
+              <PhotoText id="howLongIsInformationKept" />
+            </h2>
+            <p>
+              <PhotoText id="privacyEventRetention" />
+            </p>
+            <p>
+              <PhotoText id="privacyRejectedPhotoRetention" />
+            </p>
+            <p>
+              <PhotoText id="privacyCopiesOutsideControl" />
             </p>
           </section>
 
@@ -122,33 +148,39 @@ export default function PhotoPrivacyPage() {
               <PhotoText id="yourChoicesAndRights" />
             </h2>
             <p>
-              <PhotoText id="uploadingIsOptionalPleaseAvoidSharingPhotosOf" />{" "}
+              <PhotoText id="privacyOptionalUpload" />{" "}
               <a className="underline" href="mailto:a@armada.nu">
-                <PhotoText id="aarmadanu" />
+                a@armada.nu
               </a>{" "}
-              <PhotoText id="toAskAboutAPhotoObjectToIts" />
+              <PhotoText id="privacyRightsRequests" />
             </p>
             <p>
-              <PhotoText id="youCanAlsoComplainToTheSwedishAuthority" />{" "}
+              <PhotoText id="privacyImyInformation" />{" "}
               <a
                 className="underline"
-                href="https://www.imy.se/verksamhet/dataskydd/det-har-galler-enligt-gdpr/de-registrerades-rattigheter/">
-                <PhotoText id="dataSubjectRights" />
+                href="https://www.imy.se/privatperson/dataskydd/dina-rattigheter/">
+                <PhotoText id="yourRights" />
+              </a>{" "}
+              <PhotoText id="privacyAnd" />{" "}
+              <a
+                className="underline"
+                href="https://www.imy.se/privatperson/utfora-arenden/lamna-ett-klagomal/">
+                <PhotoText id="howToMakeAComplaint" />
               </a>
-              <PhotoText id="confirmWhetherAnyOtherRightsOrContactChannels" />
+              .
             </p>
           </section>
 
           <section className={sectionClass}>
             <h2 className={headingClass}>
-              <PhotoText id="questionsOrChanges" />
+              <PhotoText id="questionsAndUpdates" />
             </h2>
             <p>
-              <PhotoText id="contact" />{" "}
+              <PhotoText id="privacyContact" />{" "}
               <a className="underline" href="mailto:a@armada.nu">
-                <PhotoText id="aarmadanu" />
-              </a>{" "}
-              <PhotoText id="beforeTheEventIfYouHaveQuestionsAbout" />
+                a@armada.nu
+              </a>
+              <PhotoText id="privacyNoticeUpdates" />
             </p>
           </section>
         </div>

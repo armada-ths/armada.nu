@@ -19,7 +19,7 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { translations } from "@/lib/i18n"
+import { translations } from "@/i18n/dictionaries"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { Sparkles } from "lucide-react"
 import { DateTime } from "luxon"

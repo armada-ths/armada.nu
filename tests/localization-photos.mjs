@@ -240,6 +240,27 @@ try {
       .getAttribute("content"),
     sv.Photos.privacyDescription
   )
+  await page
+    .getByText(sv.PhotosStatic.privacyRejectedPhotoRetention, { exact: true })
+    .waitFor()
+  await page
+    .getByText(sv.PhotosStatic.privacyLastUpdated, { exact: true })
+    .waitFor()
+  assert.equal(
+    await page.getByText(/Draft for review|Utkast för granskning/i).count(),
+    0
+  )
+  await page.getByRole("button", { name: sv.Common.switchLanguage }).click()
+  await page
+    .getByText(en.PhotosStatic.privacyRejectedPhotoRetention, { exact: true })
+    .waitFor()
+  await page
+    .getByText(en.PhotosStatic.privacyLastUpdated, { exact: true })
+    .waitFor()
+  assert.equal(
+    await page.locator('a[href="https://supabase.com/legal/dpa"]').count(),
+    1
+  )
   await page.goto(origin + "/sv/e/invalid.token")
   await page
     .getByText(sv.PhotoErrors.invalid_event_link, { exact: true })

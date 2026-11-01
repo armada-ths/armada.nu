@@ -13,6 +13,7 @@ import {
 import { usePathname, useRouter } from "next/navigation"
 import type { AbstractIntlMessages } from "next-intl"
 import { Link } from "./navigation"
+import { Button } from "../ui/button"
 import { localePath, normalizeLocale, stripLocalePrefix } from "./routing"
 
 type Drafts = Record<string, unknown>
@@ -96,9 +97,11 @@ export function LanguageSwitcher({ refresh = true }: { refresh?: boolean }) {
   const t = useTranslations("Common")
   const next = locale === "sv" ? "en" : "sv"
   return (
-    <button
+    <Button
       type="button"
-      className="rounded-full border px-3 py-1 text-sm"
+      variant="neutral"
+      size="sm"
+      className="font-bold"
       aria-label={t("switchLanguage")}
       onClick={() => {
         const url = new URL(window.location.href)
@@ -115,7 +118,7 @@ export function LanguageSwitcher({ refresh = true }: { refresh?: boolean }) {
         else window.history.replaceState(null, "", url)
       }}>
       {locale === "sv" ? "English" : "Svenska"}
-    </button>
+    </Button>
   )
 }
 export {

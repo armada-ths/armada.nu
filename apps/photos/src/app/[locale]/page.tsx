@@ -11,7 +11,7 @@ export default function PhotosHome() {
         <PhotoText id="scanYourEventsQRCodeToUploadAnd" />
       </p>
       <Link className="mt-8 text-sm underline" href="/privacy">
-        <PhotoText id="photoPrivacyNoticeDraft" />
+        <PhotoText id="photoPrivacyNotice" />
       </Link>
     </main>
   )

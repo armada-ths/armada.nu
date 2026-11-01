@@ -4,7 +4,7 @@ import { uiText } from "@/i18n/ui"
 import { useLocale } from "@armada/shared/i18n/client"
 import { normalizeLocale } from "@armada/shared/i18n/routing"
 
-import { type Locale } from "@/lib/i18n"
+import type { Locale } from "@armada/shared/i18n/routing"
 
 import { useEffect, useState } from "react"
 

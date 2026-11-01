@@ -5,7 +5,7 @@ import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
 import { Page } from "@/components/shared/Page"
-import { translations } from "@/lib/i18n"
+import { translations } from "@/i18n/dictionaries"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { Metadata } from "next"
 

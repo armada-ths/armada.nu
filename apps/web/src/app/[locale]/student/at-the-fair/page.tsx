@@ -4,7 +4,7 @@ import { QuestionGenerator } from "@/app/[locale]/student/at-the-fair/_component
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
 import { feature } from "@/components/shared/feature"
-import { translations } from "@/lib/i18n"
+import { translations } from "@/i18n/dictionaries"
 import { getRequestLocale } from "@/lib/i18n-server"
 
 import { atFairTranslations } from "@/i18n/dictionaries"

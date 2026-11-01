@@ -7,7 +7,7 @@ import { OrganisationMembersGraphic } from "@/app/[locale]/about/_components/Org
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
 import { Page } from "@/components/shared/Page"
-import { pageTranslations } from "@/lib/i18n"
+import { pageTranslations } from "@/i18n/dictionaries"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { Metadata } from "next"
 import { Link } from "@armada/shared/i18n/navigation"

@@ -1,42 +1,29 @@
 "use client"
-import { useDraftState } from "@armada/shared/i18n/client"
-import { useLocale } from "@armada/shared/i18n/client"
+import { useDraftState, useLocale } from "@armada/shared/i18n/client"
 import { normalizeLocale } from "@armada/shared/i18n/routing"
+import { exhibitorSearchText } from "@/i18n/dictionaries"
 
 import ExhibitorFilterItem from "@/app/[locale]/student/exhibitors/_components/ExhibitorFilterItem"
-import {
-  Employment,
-  Exhibitor,
-  Industry,
-  Program
-} from "@/components/shared/hooks/api/useExhibitors"
+import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { useShuffledItems } from "@/components/shared/hooks/useShuffledItems"
 import { Input } from "@/components/ui/input"
-
 import { useMemo, useState } from "react"
-import { ExhibitorCard } from "./ExhibitorCard"
+import ExhibitorList from "./ExhibitorList"
 import { sortExhibitors, type ExhibitorSort } from "./exhibitorSort"
-
-import { exhibitorSearchText } from "@/i18n/dictionaries"
 
 interface Props {
   exhibitors: Exhibitor[]
-  employments: Employment[]
-  industries: Industry[]
-  programs: Program[]
 }
 
-export default function ExhibitorSearch({
-  exhibitors,
-  employments,
-  industries,
-  programs
-}: Props) {
+const getExhibitorId = (exhibitor: Exhibitor) => exhibitor.id
+
+export default function ExhibitorSearch({ exhibitors }: Props) {
   const locale = normalizeLocale(useLocale())
   const dict = exhibitorSearchText[locale]
+  const shuffledExhibitors = useShuffledItems(exhibitors, getExhibitorId)
   const [searchQueryName, setSearchQueryName] = useDraftState("search", "")
   const [sortBy, setSortBy] = useDraftState<ExhibitorSort>("sort", "tier-gold")
-  const [filteredExhibitors, setFilteredExhibitors] =
-    useState<Exhibitor[]>(exhibitors)
+  const [filteredExhibitors, setFilteredExhibitors] = useState<Exhibitor[]>([])
 
   const sortedExhibitors = useMemo(
     () => sortExhibitors(filteredExhibitors, sortBy, locale),
@@ -53,24 +40,22 @@ export default function ExhibitorSearch({
         className="grow rounded-sm border p-2"
       />
 
-      <ExhibitorFilterItem
-        exhibitors={exhibitors}
-        employments={employments}
-        industries={industries}
-        programs={programs}
-        searchQueryName={searchQueryName}
-        onFilterChange={setFilteredExhibitors}
-        labels={dict}
-        sortBy={sortBy}
-        onSortChange={setSortBy}
-      />
+      {shuffledExhibitors && (
+        <ExhibitorFilterItem
+          exhibitors={shuffledExhibitors}
+          searchQueryName={searchQueryName}
+          onFilterChange={setFilteredExhibitors}
+          labels={dict}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
+      )}
 
-      <div className="w-full">
-        <div className="mx-auto grid max-w-300 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {sortedExhibitors.map(exhibitor => (
-            <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
-          ))}
-        </div>
+      <div className="w-full" aria-busy={shuffledExhibitors === null}>
+        <ExhibitorList
+          exhibitors={exhibitors}
+          visibleExhibitors={sortedExhibitors}
+        />
       </div>
     </div>
   )

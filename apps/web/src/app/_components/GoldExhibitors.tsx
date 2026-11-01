@@ -3,6 +3,9 @@ import { useLocale, useTranslations } from "next-intl"
 import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
 import { LocalizedText } from "@/i18n/text"
 
+import { useShuffledItems } from "@/components/shared/hooks/useShuffledItems"
+import { useCarouselRotation } from "@/components/shared/hooks/useCarouselRotation"
+import { Button } from "@/components/ui/button"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { Page } from "@/components/shared/Page"
 import { Card } from "@/components/ui/card"
@@ -11,86 +14,134 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious,
-  type CarouselApi
+  CarouselPrevious
 } from "@/components/ui/carousel"
 import { shouldBypassNextImageOptimization } from "@/lib/utils"
-import Autoplay from "embla-carousel-autoplay"
+import { Pause, Play } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { useId, useLayoutEffect, useRef, useState } from "react"
 
 interface GoldExhibitorsProps {
   exhibitors: Exhibitor[]
 }
 
+const getExhibitorId = (exhibitor: Exhibitor) => exhibitor.id
+
 export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
   const accessibleT = useTranslations("Accessibility")
-  const plugin = useRef(
-    Autoplay({
-      delay: 6000,
-      stopOnInteraction: false,
-      stopOnMouseEnter: true
-    })
-  )
+  const staticT = useTranslations("Static")
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(() => new Set())
+  const shuffledExhibitors = useShuffledItems(exhibitors, getExhibitorId)
+  const visibleExhibitors = shuffledExhibitors ?? exhibitors
+  const {
+    api,
+    selected,
+    scrollSnaps,
+    paused,
+    pause,
+    rotating,
+    reducedMotion,
+    toggleRotation,
+    scrollTo,
+    carouselProps
+  } = useCarouselRotation({
+    itemCount: visibleExhibitors.length,
+    delay: 6000
+  })
+  const [carouselHeight, setCarouselHeight] = useState<number>()
 
-  const [api, setApi] = useState<CarouselApi | null>(null)
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!api) return
 
-    const handleSelect = () => setSelectedIndex(api.selectedScrollSnap())
+    const updateHeight = () => {
+      const slide = api.slideNodes()[api.selectedScrollSnap()]
+      if (!slide) return
+      const marginBottom = parseFloat(getComputedStyle(slide).marginBottom) || 0
+      setCarouselHeight(slide.offsetHeight + marginBottom)
+    }
 
-    setScrollSnaps(api.scrollSnapList())
-    api.on("select", handleSelect)
+    const observer = new ResizeObserver(updateHeight)
+    api.slideNodes().forEach(slide => observer.observe(slide))
+    api.on("select", updateHeight)
+    api.on("reInit", updateHeight)
+    updateHeight()
 
-    // ✅ Return void-cleanup function
     return () => {
-      api.off("select", handleSelect)
+      observer.disconnect()
+      api.off("select", updateHeight)
+      api.off("reInit", updateHeight)
     }
   }, [api])
 
-  const visibleExhibitors = exhibitors.slice(0, 8)
-
   return (
-    <section className="w-full py-16">
-      {/* gold glow */}
+    <section className="w-full pt-8 pb-10">
       <Page.Header
         tier="secondary"
-        className="text-pineapple relative mb-16 text-center text-3xl tracking-wide">
+        className="text-licorice mx-auto mb-6 w-fit px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
         <LocalizedText id="goldExhibitors" />
       </Page.Header>
 
       <Carousel
-        setApi={setApi}
-        plugins={[plugin.current]}
+        {...carouselProps}
+        aria-label={staticT("goldExhibitors")}
         opts={{
           align: "center",
-          loop: true
+          loop: true,
+          duration: reducedMotion ? 0 : 25
         }}
-        className="w-full select-none">
-        <CarouselContent>
-          {visibleExhibitors.map((ex, index) => (
-            <CarouselItem key={index} className="mb-1">
-              <ExhibitorCard exhibitor={ex} />
+        className={`mx-auto w-full max-w-3xl select-none ${carouselHeight === undefined || !shuffledExhibitors ? "invisible" : ""}`}>
+        <CarouselContent
+          aria-live={rotating ? "off" : "polite"}
+          className="items-start"
+          style={{ height: carouselHeight }}>
+          {visibleExhibitors.map(ex => (
+            <CarouselItem key={ex.id} className="mb-1">
+              <ExhibitorCard
+                exhibitor={ex}
+                expanded={expandedIds.has(ex.id)}
+                onExpandedChange={expanded => {
+                  if (expanded) pause()
+                  setExpandedIds(previous => {
+                    const next = new Set(previous)
+                    if (expanded) next.add(ex.id)
+                    else next.delete(ex.id)
+                    return next
+                  })
+                }}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
+        {visibleExhibitors.length > 1 && !reducedMotion && (
+          <Button
+            type="button"
+            variant="noShadow"
+            size="icon"
+            data-rotation-control
+            className="text-licorice rounded-base before:rounded-base before:bg-snow/25 hover:before:bg-snow/90 focus-visible:before:bg-snow/90 absolute right-1 bottom-1 isolate size-11 cursor-pointer border-0 bg-transparent before:pointer-events-none before:absolute before:inset-2 before:-z-10 before:transition-colors before:duration-200 motion-reduce:before:transition-none sm:right-3 sm:bottom-3 sm:before:inset-1 [&_svg]:size-3.5 [&_svg]:drop-shadow-sm sm:[&_svg]:size-4"
+            aria-label={staticT(paused ? "playSlideshow" : "pauseSlideshow")}
+            onClick={toggleRotation}>
+            {paused ? (
+              <Play aria-hidden="true" />
+            ) : (
+              <Pause aria-hidden="true" />
+            )}
+          </Button>
+        )}
         <CarouselPrevious size="icon" className="bg-snow hidden sm:flex" />
         <CarouselNext size="icon" className="bg-snow hidden sm:flex" />
       </Carousel>
 
       {/* dot navigation */}
-      <div className="mt-8 flex justify-center gap-2">
+      <div className="mt-4 flex items-center justify-center gap-2">
         {scrollSnaps.map((_, idx) => (
           <button
             key={idx}
             aria-label={accessibleT("goToSlide", { index: idx + 1 })}
-            aria-current={idx === selectedIndex}
-            onClick={() => api?.scrollTo(idx)}
-            className={`h-3 w-3 rounded-full transition ${
-              idx === selectedIndex
+            aria-current={idx === selected}
+            onClick={() => scrollTo(idx)}
+            className={`h-3 w-3 rounded-full transition motion-reduce:transition-none ${
+              idx === selected
                 ? "bg-pineapple scale-110"
                 : "bg-pineapple/30 hover:bg-pineapple/60"
             }`}
@@ -101,72 +152,106 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
   )
 }
 
-function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
+function ExhibitorCard({
+  exhibitor,
+  expanded,
+  onExpandedChange
+}: {
+  exhibitor: Exhibitor
+  expanded: boolean
+  onExpandedChange: (expanded: boolean) => void
+}) {
   const locale = normalizeLocale(useLocale())
   const accessibleT = useTranslations("Accessibility")
-  const [expanded, setExpanded] = useState(false)
-  const [maxLength, setMaxLength] = useState(600)
-  const shouldBypassLogoOptimization = shouldBypassNextImageOptimization(
-    exhibitor.logoFreesize
-  )
-
-  useEffect(() => {
-    const updateLength = () => {
-      if (window.innerWidth < 640) setMaxLength(300)
-      else if (window.innerWidth < 1024) setMaxLength(600)
-      else setMaxLength(800)
-    }
-    updateLength()
-    window.addEventListener("resize", updateLength)
-    return () => window.removeEventListener("resize", updateLength)
-  }, [])
-
+  const staticT = useTranslations("Static")
+  const [isLong, setIsLong] = useState(false)
+  const [descriptionLines, setDescriptionLines] = useState(1)
+  const descriptionId = useId()
+  const descriptionRef = useRef<HTMLParagraphElement>(null)
+  const descriptionSpaceRef = useRef<HTMLDivElement>(null)
   const about = localizedText(locale, exhibitor.about, exhibitor.aboutSv) ?? ""
-  const isLong = about.length > maxLength
-  const displayedText = expanded
-    ? about
-    : about.slice(0, maxLength) + (isLong ? "..." : "")
+  const logoSrc = exhibitor.logoThumbnail ?? exhibitor.logoFreesize
+  const shouldBypassLogoOptimization =
+    shouldBypassNextImageOptimization(logoSrc)
+
+  useLayoutEffect(() => {
+    const description = descriptionRef.current
+    const space = descriptionSpaceRef.current
+    if (!description || !space || expanded) return
+
+    const updateOverflow = () => {
+      const lineHeight = parseFloat(getComputedStyle(description).lineHeight)
+      const lines = Math.max(1, Math.floor(space.clientHeight / lineHeight))
+      setDescriptionLines(lines)
+      setIsLong(description.scrollHeight > lines * lineHeight)
+    }
+    const observer = new ResizeObserver(updateOverflow)
+    observer.observe(space)
+    observer.observe(description)
+    updateOverflow()
+    return () => observer.disconnect()
+  }, [about, expanded])
 
   return (
-    <Card className="bg-pineapple mr-1 flex h-full flex-col items-center rounded p-8 text-center transition sm:p-10">
-      {exhibitor.logoFreesize && (
-        <div className="mb-6 flex justify-center">
-          <Image
-            src={exhibitor.logoFreesize}
-            alt={accessibleT("companyLogo", { name: exhibitor.name })}
-            unoptimized={shouldBypassLogoOptimization}
-            width={200}
-            height={90}
-            className="h-20 object-contain"
-          />
-        </div>
-      )}
-
-      <h3 className="text-licorice mb-3 text-2xl font-semibold">
-        {exhibitor.companyWebsite ? (
-          <a
-            href={exhibitor.companyWebsite}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-snow underline-offset-4 transition hover:underline">
-            {exhibitor.name}
-          </a>
-        ) : (
-          exhibitor.name
+    <Card
+      className={`bg-pineapple mr-1 flex flex-col items-center rounded p-6 text-center transition motion-reduce:transition-none sm:p-8 ${expanded ? "" : "h-120 sm:h-104"}`}>
+      <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-3">
+        {logoSrc && (
+          <div className="mb-2 flex shrink-0 justify-center">
+            <Image
+              src={logoSrc}
+              alt={accessibleT("companyLogo", { name: exhibitor.name })}
+              unoptimized={shouldBypassLogoOptimization}
+              width={180}
+              height={72}
+              className="h-16 w-auto max-w-full object-contain"
+            />
+          </div>
         )}
-      </h3>
 
-      <p className="text-licorice mb-3 max-w-prose text-sm leading-relaxed sm:text-base">
-        {displayedText}
-      </p>
+        <h3 className="text-licorice mb-3 shrink-0 text-2xl font-semibold">
+          {exhibitor.companyWebsite ? (
+            <a
+              href={exhibitor.companyWebsite}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-snow underline-offset-4 transition hover:underline">
+              {exhibitor.name}
+            </a>
+          ) : (
+            exhibitor.name
+          )}
+        </h3>
 
-      {isLong && (
-        <button
-          onClick={() => setExpanded(prev => !prev)}
-          className="text-licorice hover:text-snow text-sm font-medium underline underline-offset-2 transition">
-          {expanded ? "Read less" : "Read more"}
-        </button>
-      )}
+        <div
+          ref={descriptionSpaceRef}
+          data-gold-description
+          className={`mb-3 w-full max-w-prose ${expanded ? "" : "min-h-0 flex-1"}`}>
+          <p
+            ref={descriptionRef}
+            id={descriptionId}
+            style={expanded ? undefined : { WebkitLineClamp: descriptionLines }}
+            className={`text-licorice text-sm leading-6 sm:text-base ${
+              expanded
+                ? ""
+                : "[display:-webkit-box] overflow-hidden [-webkit-box-orient:vertical]"
+            }`}>
+            {about}
+          </p>
+        </div>
+
+        <div className="min-h-5 shrink-0">
+          {isLong && (
+            <button
+              aria-expanded={expanded}
+              aria-controls={descriptionId}
+              onClick={() => onExpandedChange(!expanded)}
+              className="text-licorice hover:text-snow text-sm font-medium underline underline-offset-2 transition">
+              {staticT(expanded ? "readLess" : "readMore")}
+            </button>
+          )}
+        </div>
+      </div>
     </Card>
   )
 }
