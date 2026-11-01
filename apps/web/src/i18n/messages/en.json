@@ -578,7 +578,12 @@
     "nameAZ": "Name: A-Z",
     "nameZA": "Name: Z-A",
     "tierGoldToBronze": "Tier: Gold to Bronze",
-    "tierBronzeToGold": "Tier: Bronze to Gold"
+    "tierBronzeToGold": "Tier: Bronze to Gold",
+    "playSlideshow": "Play slideshow",
+    "pauseSlideshow": "Pause slideshow",
+    "readMore": "Read more",
+    "readLess": "Read less",
+    "ourSponsors": "Our sponsors"
   },
   "Accessibility": {
     "emailPerson": "Email {name}",
@@ -588,7 +593,8 @@
     "photosTitle": "{title} photos",
     "photoIndex": "{index} of {total}",
     "goToPhoto": "Go to photo {index} of {total}",
-    "mapFor": "Map for {name}"
+    "mapFor": "Map for {name}",
+    "photoAlt": "{title} — photo {index}"
   },
   "Organization": {
     "projectManagers": "Project Managers",
@@ -606,7 +612,7 @@
     "dateTBA": "Date TBA",
     "detailsAndRegistrationInformationForName": "Details and registration information for {name}",
     "registrationCloses": "Registration closes",
-    "companiesAtTheFair2026": "Companies at the Fair 2026",
+    "companiesAtTheFair2026": "Companies at ARMADA 2026",
     "mapOfExhibitorLocation": "Map of exhibitor location",
     "industries": "Industries",
     "employments": "Employments",
@@ -623,7 +629,8 @@
     "dAYS": "DAYS",
     "loadingTheMap": "Loading the map...",
     "goBack": "Go Back",
-    "fairDaysLabel": "Fair Days ({dates}):"
+    "fairDaysLabel": "Fair Days ({dates}):",
+    "locations": "Locations"
   },
   "Sections": {
     "registerPromptDict": {

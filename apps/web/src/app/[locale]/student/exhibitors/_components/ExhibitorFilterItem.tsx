@@ -1,13 +1,11 @@
 "use client"
-import { useDraftState } from "@armada/shared/i18n/client"
-import { useLocale } from "next-intl"
-import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
+import { useDraftState, useLocale } from "@armada/shared/i18n/client"
 import {
-  Employment,
-  Exhibitor,
-  Industry,
-  Program
-} from "@/components/shared/hooks/api/useExhibitors"
+  localizedText,
+  normalizeLocale,
+  type Locale
+} from "@armada/shared/i18n/routing"
+import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
 import { useEffect, useMemo } from "react"
 import ExhibitorSortMenu from "./ExhibitorSortMenu"
@@ -18,11 +16,19 @@ const filterTriggerClassName =
 
 const filterPopoverClassName = "w-(--radix-popover-trigger-width) max-w-[95vw]"
 
+function categoryOptions(
+  categories: { id: number; name: string; nameSv?: string | null }[],
+  locale: Locale
+): MultiSelectOption[] {
+  const unique = new Map(categories.map(category => [category.id, category]))
+  return Array.from(unique.values(), category => ({
+    value: String(category.id),
+    label: localizedText(locale, category.name, category.nameSv)
+  })).sort((a, b) => a.label.localeCompare(b.label, locale))
+}
+
 interface Props {
   exhibitors: Exhibitor[]
-  employments: Employment[]
-  industries: Industry[]
-  programs: Program[]
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
   labels: {
@@ -36,9 +42,6 @@ interface Props {
 
 export default function ExhibitorFilterItem({
   exhibitors,
-  employments,
-  industries,
-  programs,
   searchQueryName,
   onFilterChange,
   labels,
@@ -58,28 +61,31 @@ export default function ExhibitorFilterItem({
     []
   )
 
-  // 2. DATA TRANSFORMATION: Prepare the employments data for the MultiSelect component
-  const employmentOptions: MultiSelectOption[] = useMemo(() => {
-    return employments.map(employment => ({
-      // value must be a string for the MultiSelect component
-      value: String(employment.id),
-      label: localizedText(locale, employment.name, employment.nameSv)
-    }))
-  }, [employments, locale])
-
-  const industriesOptions: MultiSelectOption[] = useMemo(() => {
-    return industries.map(industry => ({
-      value: String(industry.id),
-      label: localizedText(locale, industry.name, industry.nameSv)
-    }))
-  }, [industries, locale])
-
-  const programOptions: MultiSelectOption[] = useMemo(() => {
-    return programs.map(program => ({
-      value: String(program.id),
-      label: localizedText(locale, program.name, program.nameSv)
-    }))
-  }, [programs, locale])
+  // Use the current exhibitor relationships, not historical standalone taxonomy rows.
+  const employmentOptions = useMemo(
+    () =>
+      categoryOptions(
+        exhibitors.flatMap(exhibitor => exhibitor.employments ?? []),
+        locale
+      ),
+    [exhibitors, locale]
+  )
+  const industriesOptions = useMemo(
+    () =>
+      categoryOptions(
+        exhibitors.flatMap(exhibitor => exhibitor.industries ?? []),
+        locale
+      ),
+    [exhibitors, locale]
+  )
+  const programOptions = useMemo(
+    () =>
+      categoryOptions(
+        exhibitors.flatMap(exhibitor => exhibitor.programs ?? []),
+        locale
+      ),
+    [exhibitors, locale]
+  )
 
   const filtered = useMemo(() => {
     let currentFilteredList = exhibitors
@@ -174,7 +180,6 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={employmentOptions}
             onValueChange={setSelectedEmploymentIds}
-            defaultValue={selectedEmploymentIds}
             placeholder={labels.filterEmployment}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}
@@ -186,7 +191,6 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={industriesOptions}
             onValueChange={setSelectedIndustriesIds}
-            defaultValue={selectedIndustriesIds}
             placeholder={labels.filterIndustry}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}
@@ -198,7 +202,6 @@ export default function ExhibitorFilterItem({
           <MultiSelect
             options={programOptions}
             onValueChange={setSelectedProgramsIds}
-            defaultValue={selectedProgramsIds}
             placeholder={labels.filterProgram}
             popoverClassName={filterPopoverClassName}
             className={filterTriggerClassName}

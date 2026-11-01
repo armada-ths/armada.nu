@@ -1,6 +1,8 @@
 "use client"
 import { LocalizedText } from "@/i18n/text"
 
+import { useShuffledItems } from "@/components/shared/hooks/useShuffledItems"
+import { Page } from "@/components/shared/Page"
 import Image from "next/image"
 
 interface RollingBannerProps {
@@ -31,7 +33,7 @@ function RollingRow({
           <div key={index} className="mx-12 shrink-0">
             <Image
               src={logo}
-              alt=""
+              alt={`Logo ${index + 1}`}
               width={0}
               height={0}
               sizes="100vw"
@@ -46,18 +48,22 @@ function RollingRow({
 }
 
 export default function RollingBanner({ logos }: RollingBannerProps) {
-  const perRow = Math.ceil(logos.length / 3)
-  const row1 = logos.slice(0, perRow)
-  const row2 = logos.slice(perRow, perRow * 2)
-  const row3 = logos.slice(perRow * 2)
+  const shuffledLogos = useShuffledItems(logos)
+  const orderedLogos = shuffledLogos ?? logos
+  const perRow = Math.ceil(orderedLogos.length / 3)
+  const row1 = orderedLogos.slice(0, perRow)
+  const row2 = orderedLogos.slice(perRow, perRow * 2)
+  const row3 = orderedLogos.slice(perRow * 2)
 
   return (
-    <section className="relative right-1/2 left-1/2 -mx-[50vw] w-screen max-w-none overflow-y-visible py-12">
-      <h2 className="mb-8 text-center text-2xl font-semibold text-gray-700">
+    <section className="bg-silver border-licorice relative right-1/2 left-1/2 mx-[-50vw] my-4 w-screen max-w-none overflow-y-visible border-y-2 border-solid pt-8 pb-12">
+      <Page.Header
+        tier="secondary"
+        className="text-licorice mx-auto mb-8 w-fit px-6 py-2 text-center text-3xl tracking-wide sm:text-4xl">
         <LocalizedText id="silverExhibitors" />
-      </h2>
+      </Page.Header>
 
-      <div className="space-y-10">
+      <div className={`space-y-10 ${shuffledLogos ? "" : "invisible"}`}>
         <RollingRow logos={row1} duration={25} />
         <RollingRow logos={row2} duration={35} reverse />
         <RollingRow logos={row3} duration={28} />

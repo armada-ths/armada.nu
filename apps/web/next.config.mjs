@@ -76,6 +76,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "eventro.se",
+        port: "",
+        pathname: "/api/assets/**"
+      },
+      {
+        protocol: "https",
         hostname: "*.supabase.co",
         port: "",
         pathname: "/storage/v1/object/public/**"
