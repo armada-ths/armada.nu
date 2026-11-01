@@ -129,8 +129,7 @@ export function PostItem({ post }: { post: BlogPost }) {
       </CardContent>
       <CardFooter className="flex items-center justify-between border-t pt-4">
         <div className="text-licorice/60 text-sm">
-          <LocalizedText id="by" />
-          {post.author}
+          <LocalizedText id="by" /> {post.author}
         </div>
       </CardFooter>
     </Card>

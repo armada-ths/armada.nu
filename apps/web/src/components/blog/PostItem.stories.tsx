@@ -23,6 +23,7 @@ type Story = StoryObj<typeof meta>
 
 export const ExistingPost: Story = {
   play: async ({ canvas }) => {
+    await expect(canvas.getByText("By Armada team")).toBeVisible()
     await expect(canvas.getByRole("img")).toBeVisible()
     await expect(canvas.queryByRole("button")).not.toBeInTheDocument()
   }
@@ -69,6 +70,7 @@ export const Swedish: Story = {
     }
   },
   play: async ({ canvas }) => {
+    await expect(canvas.getByText("Av Armada team")).toBeVisible()
     await expect(
       canvas.getByRole("heading", { name: "En dag på Armada" })
     ).toBeVisible()

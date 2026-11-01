@@ -24,7 +24,7 @@
     "title": "Guide till infografiken",
     "body": "Varje år går fler än 200 studenter med i Armada för att göra mässan möjlig! Varje cirkel i grafiken representerar en av våra medlemmar, och färgen visar deras roll.",
     "hosts": "Värdar",
-    "operationsTeam": "Operations team",
+    "operationsTeam": "Operations Team",
     "projectGroup": "Projektgruppen",
     "projectManager": "Projektledare"
   },
@@ -41,7 +41,7 @@
     "heading": "Utställarkit",
     "intro": "THS Armada strävar efter att ge alla utställare bästa möjliga upplevelse genom våra utställarkit. Brons täcker grunderna, Silver breddar er närvaro och Guld gör att ni verkligen syns med extra marknadsföring och ett eget event.",
     "didYouKnowTitle": "Visste du?",
-    "didYouKnowBody": "När vi frågade studenterna efter mässan vilka utställare de kom ihåg var guldsponsorer 3 gånger så sannolika att bli ihågkomna jämfört med bronsutställare!",
+    "didYouKnowBody": "När vi frågade studenterna efter mässan vilka utställare de kom ihåg var guldutställare 3 gånger så sannolika att bli ihågkomna jämfört med bronsutställare!",
     "standardRegistrationPrice": "Pris vid standardregistrering:",
     "bronzeItems": {
       "0": "2x3 kvm mässyta med matta",
@@ -96,8 +96,8 @@
     },
     "customKitContactPrefix": "Kontakta",
     "customKitContactSuffix": "för anpassade alternativ och priser.",
-    "focusRoomsHeading": "Focus Rooms",
-    "focusRoomsIntro": "För att visa vårt engagemang för våra kärnvärden hållbarhet och mångfald har vi skapat Focus Rooms under mässan för företag som delar våra värderingar. Dessa rum får extra marknadsföring och lyfts fram under mässan.",
+    "focusRoomsHeading": "Fokusrum",
+    "focusRoomsIntro": "För att visa vårt engagemang för våra kärnvärden hållbarhet och mångfald har vi skapat Fokusrum under mässan för företag som delar våra värderingar. Dessa rum får extra marknadsföring och lyfts fram under mässan.",
     "focusRoomItems": {
       "0": {
         "title": "Green Room",
@@ -146,7 +146,7 @@
       "networking": "med nätverkande"
     },
     "newStudentsHeading": "Nya studenter, varje år!",
-    "newStudentsBody": "Varje år börjar omkring 4000 nya studenter på KTH. Nästan lika många studenter får sitt första heltidsjobb eller sin första praktikplats. Genom att delta i Armada får ni tillgång till dem alla, kan bygga kännedom hos yngre studenter och vara top of mind när äldre studenter börjar söka jobb. Välkomna!",
+    "newStudentsBody": "Varje år börjar omkring 4000 nya studenter på KTH. Nästan lika många studenter får sitt första heltidsjobb eller sin första praktikplats. Genom att delta i Armada får ni tillgång till dem alla, kan bygga kännedom hos yngre studenter och vara ett självklart val när studenterna senare börjar söka jobb. Välkomna!",
     "characterHeading": "Skriver ni \"vi lägger stor vikt vid personlig lämplighet\" i era jobbannonser?",
     "characterBody": "Armada vet att vad man studerar inte alltid avgör var man hamnar i karriären. Dagens arbetsgivare behöver vara attraktiva för en bred grupp kandidater för att kunna rekrytera mångsidiga team. Man vet aldrig - nästa stjärnmedarbetare kanske har en annan examen än ni först tänkte er!",
     "skillsHeading": "Kompetensen ni behöver, från hela KTH",
@@ -164,7 +164,7 @@
     "beforeContactSuffix": "om ni vill komma i kontakt med oss under tiden.",
     "betweenHeading": "Prioritetsregistreringen har stängt",
     "betweenPrefix": "Tack till alla som anmälde sig under prioritetsregistreringen! Standardregistreringen öppnar",
-    "betweenSuffix": "Inbjudningar skickas till behöriga företag - håll utkik.",
+    "betweenSuffix": "Inbjudningar skickas till utvalda företag - håll utkik.",
     "closedHeading": "Sen anmälan kan vara möjlig",
     "closedPrefix": "Standardregistreringen har stängt. Sen anmälan kan fortfarande vara möjlig om platser finns kvar. Kontakta",
     "closedSuffix": "för mer information om sen anmälan."
@@ -229,11 +229,11 @@
     "acceptanceTitle": "Antagningsdatum",
     "acceptanceBody": {
       "0": "Vi återkommer till alla som gjort en prioritetsregistrering senast",
-      "1": "Ni kan alltid kontrollera statusen för er registrering i dashboarden och kontakta"
+      "1": "Ni kan alltid kontrollera statusen för er registrering i portalen och kontakta"
     },
     "standardStartTitle": "Standardregistreringen startar",
     "standardBody": {
-      "0": "Under standardregistreringen väljer ni kit, event, antal bankettbiljetter och andra produkter. Allt görs i registreringsportalen, samma plats som ni använde vid prioritetsregistreringen. Standardregistreringen kan göras av en annan person än prioritetsregistreringen.",
+      "0": "Under standardregistreringen väljer ni kit, event, antal bankettbiljetter och andra produkter. Allt görs i registreringsportalen, samma plattform som ni använde vid prioritetsregistreringen. Standardregistreringen kan göras av en annan person än prioritetsregistreringen.",
       "1": "Vi har många olika produkter som hjälper er att nå studenter på KTH på olika sätt. Om ni vill ha hjälp att hitta det bästa kitet för er, kontakta gärna"
     },
     "standardEndTitle": "Standardregistreringen slutar",
@@ -250,25 +250,25 @@
       "0": "Inför mässan har vi tre veckor fyllda med event som bygger upp energi inför mässan och ger studenter och utställare möjlighet att mötas i en fokuserad miljö.",
       "1": "Armada Run, loppet på 5 km som vi arrangerar med studenter och utställarrepresentanter, sker också under eventveckorna."
     },
-    "fairStartTitle": "Armada-mässan startar",
+    "fairStartTitle": "Mässan startar",
     "fairStartBody": {
-      "0": "Dagarna vi alla har väntat på! Armada har arbetat tillsammans för att bygga mässlokalerna och förbereda allt. När ni kommer på morgonen möter er värd er och visar er till er plats. Ni bygger upp montern med materialet som redan finns på plats. Sedan kan ni gå till Exhibitor Lounge, ta en smörgås och en kopp kaffe, läsa några mejl och ladda inför mässan.",
+      "0": "Dagarna vi alla har väntat på! Armada har arbetat tillsammans för att bygga mässlokalerna och förbereda allt. När ni kommer på morgonen möter er värd er och visar er till er plats. Ni bygger upp montern med materialet som redan finns på plats. Sedan kan ni gå till utställarloungen, ta en smörgås och en kopp kaffe, läsa några mejl och ladda inför mässan.",
       "1": "Klockan 10 börjar studenterna komma in och ert varumärke syns på plats. Vissa söker allmänna karriärråd, yngre studenter vill veta vilka ni är, andra undrar vad konsulter egentligen gör och några har ett tydligt mål: att hitta ett examensarbete.",
       "2": "Lycka till, vi ser fram emot att träffa er där!"
     },
-    "banquetTitle": "Armada Grand Banquet",
+    "banquetTitle": "Banketten",
     "banquetBody": {
-      "0": "Kvällen efter den första mässdagen arrangerar Armada Grand Banquet, en glamorös kväll där vi firar tillsammans med er. Silver- och guldutställare har biljetter inkluderade, och fler biljetter kan köpas under standardregistreringen.",
+      "0": "Kvällen efter den första mässdagen arrangerar Armada en bankett, en glamorös kväll där vi firar tillsammans med er. Silver- och guldutställare har biljetter inkluderade, och fler biljetter kan köpas under standardregistreringen.",
       "1": "Det är ett perfekt tillfälle att träffa de talangfulla och ambitiösa studenterna som gör Armada möjligt i en mer informell miljö. Välkomna!"
     },
-    "fairEndTitle": "Armada-mässan slutar"
+    "fairEndTitle": "Mässan slutar"
   },
   "atFairTranslations": {
     "heading": "På mässan",
     "intro": "Att gå fram till en representant från ett företag du verkligen vill jobba för kan kännas nervöst. Här har vi samlat några tips på hur du kan få ut så mycket som möjligt av samtalet.",
     "tips": {
-      "0": "Formulera dig tydligt och prata klart.",
-      "1": "Se det som ett vänligt samtal.",
+      "0": "Fundera i förväg på vad du vill få ut av samtalet.",
+      "1": "Se det som att du pratar med en vän.",
       "2": "Visa intresse och ställ frågor."
     },
     "reminder": "Kom ihåg att du inte pratar med en AI som bara kan fakta om företaget, utan med en annan person. Tänk på det som en dejt med ett företag!",
@@ -299,7 +299,8 @@
       "18": "Vilken roll har du på företaget?",
       "19": "Varför sökte du jobbet från början?",
       "20": "Vad är dina tips för att sticka ut under en intervju?",
-      "21": "Hur arbetar ert företag med de globala målen för hållbar utveckling?"
+      "21": "Hur arbetar ert företag med de globala målen för hållbar utveckling?",
+      "22": "Kan jag få en goodie bag?"
     }
   },
   "eventsText": {
@@ -376,14 +377,14 @@
       "2": "Du får också några materiella förmåner, till exempel:"
     },
     "benefits": {
-      "0": "Plats på Grand Banquet - den finaste studentfesten på KTH. Tidigare platser har varit Münchenbryggeriet, Globen och Berns.",
+      "0": "Plats på Armadas bankett - den finaste sittningen på KTH. Tidigare år har banketten ägt rum på platser som Münchenbryggeriet, Globen och Berns.",
       "1": "Armada-merch.",
       "2": "Teambuilding tillsammans med ditt team.",
-      "3": "Stort avslutningsevent efter mässan. Tidigare event har till exempel varit en kryssning."
+      "3": "Stort avslutningsevent efter mässan. Tidigare år har detta till exempel varit en kryssning."
     },
-    "closingPrefix": "Nedan kan du läsa mer om olika roller och lära känna Armada-organisationen bättre",
+    "closingPrefix": "Nedan kan du läsa mer om olika roller eller lära känna Armada-organisationen bättre",
     "here": "här",
-    "closingMiddle": "Om du har frågor kan du kontakta vår",
+    "closingMiddle": "Om du har frågor är du välkommen att kontakta vår",
     "hrLabel": "Head of Human Resources"
   },
   "translations": {
@@ -434,7 +435,7 @@
   "pageTranslations": {
     "home": {
       "heroHeading": "Ditt nästa kapitel börjar här",
-      "heroDescription": "Nordens största studentdrivna arbetsmarknadsmässa",
+      "heroDescription": "Skandinaviens största studentdrivna arbetsmarknadsmässa",
       "visitorLabels": {
         "visits": "besökare",
         "students": "Studenter",
@@ -452,7 +453,7 @@
       "thsLinkLabel": "THS",
       "aboutSuffix": ", studentkåren vid KTH, går eventuell vinst tillbaka till studenterna och finansierar THS initiativ för ett bättre studentliv.",
       "newStudentsHeading": "Nya studenter, varje år!",
-      "newStudentsBody": "Varje år börjar omkring 4000 nya studenter på KTH. Nästan lika många studenter får sitt första heltidsjobb eller sin första praktikplats. Genom att delta i Armada får ni tillgång till dem alla, kan bygga kännedom hos yngre studenter och vara top of mind när äldre studenter börjar söka jobb. Välkomna!",
+      "newStudentsBody": "Varje år börjar omkring 4000 nya studenter på KTH. Nästan lika många studenter får sitt första heltidsjobb eller sin första praktikplats. Genom att delta i Armada får ni tillgång till dem alla, kan bygga kännedom hos yngre studenter och vara ett självklart val när studenterna senare börjar söka jobb. Välkomna!",
       "exhibitorSignup": "Anmälan för utställare",
       "joinUs": "Gå med!"
     },
@@ -468,17 +469,17 @@
         "3": "Student interagerar med robot"
       },
       "intro": "Armada grundades 1981 och har sedan dess arrangerat en arbetsmarknadsmässa som har vuxit till en av de största i Skandinavien. Vi finns till för att koppla samman studenter med deras drömarbetsgivare och har utvecklat olika event och aktiviteter som skapar personliga möten mellan studenter och arbetsgivare.",
-      "ownershipPrefix": "Varje år växer Armada från 1 student, projektledaren, till över 200 studentvolontärer som driver en två dagar lång mässa på flera platser med 20 000 besökare. Eftersom Armada ägs helt av",
+      "ownershipPrefix": "Varje år växer Armada från 1 student, projektledaren, till över 200 studentvolontärer som driver en två dagar lång mässa med 20 000 besökare på flera platser runtom KTH. Eftersom Armada ägs helt av",
       "thsLinkLabel": "THS",
       "ownershipSuffix": ", studentkåren vid KTH, går eventuell vinst tillbaka till studenterna och finansierar THS initiativ för ett bättre studentliv.",
       "pmHeading": "Projektledare",
       "pmBody": "Projektledaren väljs av THS styrelse i november. Projektledaren arbetar heltid med Armada och ansvarar för hela projektet. Oftast har personen varit en del av Armada innan den kliver in i rollen.",
       "projectGroupHeading": "Projektgruppen",
       "projectGroupBody": "Projektgruppen väljs av projektledaren i december eller januari. Därefter arbetar de med Armada under hela kalenderåret. Det är studenter som lägger omkring 10 timmar i veckan på att göra varje Armada till den bästa mässan hittills. Projektgruppen lär känna varandra nära, får ta stort ansvar i en stöttande och samarbetsinriktad miljö och har framför allt väldigt roligt tillsammans. Alla som har varit med i projektgruppen vet att det finns ett före och ett efter Armada.",
-      "operationsTeamHeading": "Operations team",
-      "operationsTeamBody": "Operations team består av volontärer som rekryteras under våren, omkring april eller maj. De är koordinatorer med ansvar för särskilda frågor eller processer, teamledare med ansvar för värdar och utvecklare som arbetar med Armadas IT-svit. Att vara en del av OT ger en god förståelse för hur Armada fungerar inifrån och är en perfekt första ledarskapserfarenhet. Det är roligt, lärorikt och innebär en lagom arbetsinsats.",
+      "operationsTeamHeading": "Operations Team",
+      "operationsTeamBody": "Operations Team består av volontärer som rekryteras under våren, omkring april eller maj. De är koordinatorer med ansvar för särskilda frågor eller processer, teamledare med ansvar för värdar och utvecklare som arbetar med Armadas IT-system. Att vara en del av Operations Team ger en god förståelse för hur Armada fungerar inifrån och är en perfekt första ledarskapserfarenhet. Det är roligt, lärorikt och innebär en lagom arbetsinsats.",
       "hostsHeading": "Värdar",
-      "hostsBody": "Värdarna går med i Armada under hösten, och att vara värd är en speciell upplevelse. De flesta värdar är mässvärdar som hjälper ett par utställare till mässan och bygger upp mässan. Du lär känna ditt team, går på teambuilding tillsammans och får vara en del av Armada Grand Banquet - KTH:s finaste fest."
+      "hostsBody": "Värdarna går med i Armada under hösten, och att vara värd är en speciell upplevelse. De flesta värdar är mässvärdar som hjälper ett par utställare till mässan och bygger upp mässan. Du lär känna ditt team, går på teambuilding tillsammans och får vara en del av Armadas bankett - KTH:s finaste sittning."
     }
   },
   "Static": {
@@ -486,7 +487,7 @@
     "signupDescription": "Ange din e-postadress för att få information om kommande rekrytering till Armada.",
     "signupError": "Vi kunde inte registrera dig just nu. Försök igen om en stund.",
     "theHistoryOfArmada": "Armadas historia",
-    "aTimelineOver45YearsOfScandinavias": "En tidslinje över 45 år med Nordens största studentdrivna arbetsmarknadsmässa",
+    "aTimelineOver45YearsOfScandinavias": "En tidslinje över 45 år med Skandinaviens största studentdrivna arbetsmarknadsmässa",
     "hideAdditionalMembers": "Dölj fler medlemmar",
     "showAdditionalMembers": "Visa fler medlemmar",
     "backToBlog": "Tillbaka till bloggen",
@@ -566,7 +567,7 @@
     "choosePhoto": "Välj foto",
     "fairLogo": "Mässlogotyp",
     "historyOfArmada": "Armadas historia",
-    "45YearsOfScandinaviasLargestStudentrunCareer": "45 år med Nordens största studentdrivna arbetsmarknadsmässa",
+    "45YearsOfScandinaviasLargestStudentrunCareer": "45 år med Skandinaviens största studentdrivna arbetsmarknadsmässa",
     "searchOptions": "Sök alternativ...",
     "searchThroughAvailableOptions": "Sök bland tillgängliga alternativ",
     "availableOptions": "Tillgängliga alternativ",
@@ -652,7 +653,7 @@
       "signUp": "Anmäl dig",
       "signupComingSoon": "Anmälan öppnar snart!",
       "registrationClosed": "Anmälan stängd",
-      "noRegistrationRequired": "Ingen anmälan krävs"
+      "noRegistrationRequired": "Ingen föranmälan krävs"
     },
     "companySearchLabels": {
       "placeholder": "Sök utställare...",

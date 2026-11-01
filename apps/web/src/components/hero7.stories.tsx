@@ -85,7 +85,7 @@ export const ExhibitorsSwedish: Story = {
   globals: { locale: "sv" },
   args: {
     heading: "Ditt nästa kapitel börjar här",
-    description: "Nordens största studentdrivna arbetsmarknadsmässa",
+    description: sv.pageTranslations.home.heroDescription,
     buttons: {
       primary: {
         text: sv.Static.exploreExhibitors,
