@@ -1,5 +1,5 @@
 "use client"
-import { LanguageSwitcher, useTranslations } from "@armada/shared/i18n/client"
+import { useTranslations } from "@armada/shared/i18n/client"
 
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import {
@@ -50,9 +50,6 @@ export default function Modal({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent
           className={cn("max-h-[80%] w-[80%] overflow-y-auto", className)}>
-          <div className="absolute top-3 right-14 z-20 rounded-full bg-white/95">
-            <LanguageSwitcher />
-          </div>
           <DialogHeader className="sr-only">
             <DialogTitle>{title ?? t("dialog")}</DialogTitle>
             <DialogDescription>
@@ -71,9 +68,6 @@ export default function Modal({
           "max-h-[90%] min-h-[50%] pt-0 focus-visible:outline-hidden",
           className
         )}>
-        <div className="absolute top-3 right-4 z-20 rounded-full bg-white/95">
-          <LanguageSwitcher />
-        </div>
         <DrawerTitle className="sr-only">{title ?? t("dialog")}</DrawerTitle>
         <DrawerDescription className="sr-only">
           {description ?? t("dialogDescription")}

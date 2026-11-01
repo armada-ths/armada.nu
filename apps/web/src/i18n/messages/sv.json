@@ -143,7 +143,7 @@
     "visitorLabels": {
       "visits": "besök",
       "students": "Studenter",
-      "networking": "dagar med nätverkande"
+      "networking": "med nätverkande"
     },
     "newStudentsHeading": "Nya studenter, varje år!",
     "newStudentsBody": "Varje år börjar omkring 4000 nya studenter på KTH. Nästan lika många studenter får sitt första heltidsjobb eller sin första praktikplats. Genom att delta i Armada får ni tillgång till dem alla, kan bygga kännedom hos yngre studenter och vara top of mind när äldre studenter börjar söka jobb. Välkomna!",
@@ -438,7 +438,7 @@
       "visitorLabels": {
         "visits": "besökare",
         "students": "Studenter",
-        "networking": "dagar med nätverkande"
+        "networking": "med nätverkande"
       },
       "countdownLabels": {
         "days": "Dagar",
@@ -552,6 +552,7 @@
     "afterWork": "After work",
     "collaborativeEvents": "Skräddarsydda event",
     "meetTheTeam": "Träffa teamet",
+    "exploreExhibitors": "Utforska utställare",
     "browseOurEvents": "Utforska våra event",
     "readOurBlog": "Läs vår blogg",
     "openTo": "Målgrupp",

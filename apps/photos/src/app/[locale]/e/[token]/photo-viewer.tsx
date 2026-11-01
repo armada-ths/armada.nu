@@ -1,5 +1,4 @@
 "use client"
-import { LanguageSwitcher } from "@armada/shared/i18n/client"
 import { PhotoText } from "@photos/i18n/text"
 import { useTranslations } from "next-intl"
 import { photoStorageURL } from "@photos/lib/photoClient"
@@ -44,7 +43,6 @@ export function PhotoViewer({
         if (Math.abs(delta) > 60) onMove(delta < 0 ? 1 : -1)
       }}>
       <div className="flex justify-end gap-3 p-4">
-        <LanguageSwitcher refresh={false} />
         <button type="button" onClick={onTogglePlaying}>
           {playing ? t("pause") : t("slideshow")}
         </button>

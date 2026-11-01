@@ -1,5 +1,5 @@
 "use client"
-import { useFormatter } from "next-intl"
+import { useFormatter, useTranslations } from "next-intl"
 import CountUp from "react-countup"
 
 export function NumberCountUp(props: {
@@ -10,6 +10,7 @@ export function NumberCountUp(props: {
   isDays?: boolean
 }) {
   const format = useFormatter()
+  const t = useTranslations("Static")
   return (
     <p className="place-content-end text-2xl md:text-4xl">
       <CountUp
@@ -21,6 +22,7 @@ export function NumberCountUp(props: {
         }
       />
       {props.isVisit && "+"}
+      {props.isDays && ` ${t("days")}`}
     </p>
   )
 }

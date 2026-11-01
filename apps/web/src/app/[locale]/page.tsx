@@ -123,7 +123,7 @@ export default async function HomePage() {
   const heroButtons = exhibitorPageEnabled
     ? {
         primary: {
-          text: "Explore exhibitors",
+          text: staticT("exploreExhibitors"),
           url: "/student/exhibitors",
           tracking: {
             eventName: "student_exhibitors_click",
