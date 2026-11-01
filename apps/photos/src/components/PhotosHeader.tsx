@@ -9,7 +9,11 @@ export function PhotosHeader() {
       <a href={"https://armada.nu/" + locale} className="text-sm font-semibold">
         THS Armada
       </a>
-      <LanguageSwitcher refresh={false} />
+      <LanguageSwitcher
+        refresh={false}
+        variant="plain"
+        className="rounded-xl bg-[#172b35] font-semibold text-white hover:bg-[#243f4c] focus-visible:ring-[#172b35]"
+      />
     </header>
   )
 }

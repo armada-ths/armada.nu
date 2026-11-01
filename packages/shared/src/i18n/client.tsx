@@ -14,6 +14,7 @@ import { usePathname, useRouter } from "next/navigation"
 import type { AbstractIntlMessages } from "next-intl"
 import { Link } from "./navigation"
 import { Button } from "../ui/button"
+import { cn } from "../cn"
 import { localePath, normalizeLocale, stripLocalePrefix } from "./routing"
 
 type Drafts = Record<string, unknown>
@@ -91,7 +92,15 @@ export function useDraftState<T>(
   return [current, set]
 }
 
-export function LanguageSwitcher({ refresh = true }: { refresh?: boolean }) {
+export function LanguageSwitcher({
+  refresh = true,
+  variant = "neutral",
+  className
+}: {
+  refresh?: boolean
+  variant?: "neutral" | "plain"
+  className?: string
+}) {
   const locale = useLocale()
   const router = useRouter()
   const t = useTranslations("Common")
@@ -99,9 +108,9 @@ export function LanguageSwitcher({ refresh = true }: { refresh?: boolean }) {
   return (
     <Button
       type="button"
-      variant="neutral"
+      variant={variant === "plain" ? null : "neutral"}
       size="sm"
-      className="font-bold"
+      className={cn("font-bold", className)}
       aria-label={t("switchLanguage")}
       onClick={() => {
         const url = new URL(window.location.href)
