@@ -116,7 +116,9 @@ export const Mobile: Story = {
         dot.querySelector("span")?.getBoundingClientRect().width
       ).toBe(6)
     }
-    const pause = canvas.getByRole("button", { name: "Pause slideshow" })
+    const pause = canvas.getByRole("button", {
+      name: /^(Play|Pause) slideshow$/
+    })
     await expect(getComputedStyle(pause, "::before").width).toBe("28px")
     await userEvent.click(third)
     await waitFor(() => expect(third).toHaveAttribute("aria-current", "true"))

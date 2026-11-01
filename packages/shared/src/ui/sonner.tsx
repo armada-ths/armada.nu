@@ -9,12 +9,16 @@ import {
 } from "lucide-react"
 import { Toaster as Sonner } from "sonner"
 
+import { useTranslations } from "next-intl"
+
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
+  const t = useTranslations("Common")
   return (
     <Sonner
       theme="light"
+      containerAriaLabel={t("notifications")}
       className="toaster group"
       icons={{
         success: <CircleCheck className="h-4 w-4" />,
@@ -24,6 +28,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         loading: <LoaderCircle className="h-4 w-4 animate-spin" />
       }}
       toastOptions={{
+        closeButtonAriaLabel: t("closeToast"),
         classNames: {
           toast:
             "group toast group-[.toaster]:bg-snow group-[.toaster]:text-stone-950 group-[.toaster]:border-stone-200 group-[.toaster]:shadow-lg",

@@ -58,3 +58,22 @@ export const FallbackImage: Story = {
     )
   }
 }
+
+export const Swedish: Story = {
+  globals: { locale: "sv" },
+  args: {
+    post: {
+      ...meta.args.post,
+      titleSv: "En dag på Armada",
+      textSv: "Studenter träffade arbetsgivare på mässan."
+    }
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("heading", { name: "En dag på Armada" })
+    ).toBeVisible()
+    await expect(
+      canvas.getByText("Studenter träffade arbetsgivare på mässan.")
+    ).toBeVisible()
+  }
+}

@@ -1,4 +1,7 @@
 "use client"
+import { useLocale, useTranslations } from "next-intl"
+import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
+import { LocalizedText } from "@/i18n/text"
 
 import { useShuffledItems } from "@/components/shared/hooks/useShuffledItems"
 import { useCarouselRotation } from "@/components/shared/hooks/useCarouselRotation"
@@ -25,6 +28,8 @@ interface GoldExhibitorsProps {
 const getExhibitorId = (exhibitor: Exhibitor) => exhibitor.id
 
 export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
+  const accessibleT = useTranslations("Accessibility")
+  const staticT = useTranslations("Static")
   const [expandedIds, setExpandedIds] = useState<Set<number>>(() => new Set())
   const shuffledExhibitors = useShuffledItems(exhibitors, getExhibitorId)
   const visibleExhibitors = shuffledExhibitors ?? exhibitors
@@ -73,12 +78,12 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
       <Page.Header
         tier="secondary"
         className="text-licorice mx-auto mb-6 w-fit px-6 py-2 text-center text-4xl tracking-wide sm:text-5xl">
-        Gold Exhibitors
+        <LocalizedText id="goldExhibitors" />
       </Page.Header>
 
       <Carousel
         {...carouselProps}
-        aria-label="Gold exhibitors"
+        aria-label={staticT("goldExhibitors")}
         opts={{
           align: "center",
           loop: true,
@@ -114,7 +119,7 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
             size="icon"
             data-rotation-control
             className="text-licorice rounded-base before:rounded-base before:bg-snow/25 hover:before:bg-snow/90 focus-visible:before:bg-snow/90 absolute right-1 bottom-1 isolate size-11 cursor-pointer border-0 bg-transparent before:pointer-events-none before:absolute before:inset-2 before:-z-10 before:transition-colors before:duration-200 motion-reduce:before:transition-none sm:right-3 sm:bottom-3 sm:before:inset-1 [&_svg]:size-3.5 [&_svg]:drop-shadow-sm sm:[&_svg]:size-4"
-            aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+            aria-label={staticT(paused ? "playSlideshow" : "pauseSlideshow")}
             onClick={toggleRotation}>
             {paused ? (
               <Play aria-hidden="true" />
@@ -132,7 +137,7 @@ export default function GoldExhibitors({ exhibitors }: GoldExhibitorsProps) {
         {scrollSnaps.map((_, idx) => (
           <button
             key={idx}
-            aria-label={`Go to slide ${idx + 1}`}
+            aria-label={accessibleT("goToSlide", { index: idx + 1 })}
             aria-current={idx === selected}
             onClick={() => scrollTo(idx)}
             className={`h-3 w-3 rounded-full transition motion-reduce:transition-none ${
@@ -156,12 +161,15 @@ function ExhibitorCard({
   expanded: boolean
   onExpandedChange: (expanded: boolean) => void
 }) {
+  const locale = normalizeLocale(useLocale())
+  const accessibleT = useTranslations("Accessibility")
+  const staticT = useTranslations("Static")
   const [isLong, setIsLong] = useState(false)
   const [descriptionLines, setDescriptionLines] = useState(1)
   const descriptionId = useId()
   const descriptionRef = useRef<HTMLParagraphElement>(null)
   const descriptionSpaceRef = useRef<HTMLDivElement>(null)
-  const about = exhibitor.about ?? ""
+  const about = localizedText(locale, exhibitor.about, exhibitor.aboutSv) ?? ""
   const logoSrc = exhibitor.logoThumbnail ?? exhibitor.logoFreesize
   const shouldBypassLogoOptimization =
     shouldBypassNextImageOptimization(logoSrc)
@@ -192,7 +200,7 @@ function ExhibitorCard({
           <div className="mb-2 flex shrink-0 justify-center">
             <Image
               src={logoSrc}
-              alt={`${exhibitor.name} logo`}
+              alt={accessibleT("companyLogo", { name: exhibitor.name })}
               unoptimized={shouldBypassLogoOptimization}
               width={180}
               height={72}
@@ -239,7 +247,7 @@ function ExhibitorCard({
               aria-controls={descriptionId}
               onClick={() => onExpandedChange(!expanded)}
               className="text-licorice hover:text-snow text-sm font-medium underline underline-offset-2 transition">
-              {expanded ? "Read less" : "Read more"}
+              {staticT(expanded ? "readLess" : "readMore")}
             </button>
           )}
         </div>

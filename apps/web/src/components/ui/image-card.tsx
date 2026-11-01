@@ -13,7 +13,7 @@ export default function ImageCard({ imageUrl, caption, className }: Props) {
         "rounded-base bg-main font-base shadow-shadow w-62.5 overflow-hidden border-2 border-stone-800",
         className
       )}>
-      <img className="aspect-4/3 w-full" src={imageUrl} alt="image" />
+      <img className="aspect-4/3 w-full" src={imageUrl} alt={caption} />
       <figcaption className="text-main-foreground border-t-2 border-stone-800 p-4">
         {caption}
       </figcaption>

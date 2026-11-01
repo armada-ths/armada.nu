@@ -1,9 +1,14 @@
-import { BlogPost } from "@/app/blog/_data/posts"
+"use client"
+import { useLocale } from "next-intl"
+import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
+import { BlogPost } from "@/app/[locale]/blog/_data/posts"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"
-import Link from "next/link"
+import { Link } from "@armada/shared/i18n/navigation"
 
 export function PostCard({ post }: { post: BlogPost }) {
+  const locale = normalizeLocale(useLocale())
+  const title = localizedText(locale, post.title, post.titleSv)
   const coverImage = post.imageUrl ?? "/armada_licorice.svg"
   return (
     <Link href={`/blog/${post.id}`} className="group block">
@@ -11,7 +16,7 @@ export function PostCard({ post }: { post: BlogPost }) {
         <div className="relative aspect-square w-full overflow-hidden">
           <Image
             src={coverImage}
-            alt={post.title}
+            alt={title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -19,14 +24,18 @@ export function PostCard({ post }: { post: BlogPost }) {
           <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute right-0 bottom-0 left-0 p-4">
             <h3 className="font-bebas-neue text-xl leading-tight text-white drop-shadow-md sm:text-2xl">
-              {post.title}
+              {title}
             </h3>
             <p className="mt-1 text-xs text-white/80">
-              {new Date(post.createdAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric"
-              })}
+              {new Date(post.createdAt).toLocaleDateString(
+                locale === "sv" ? "sv-SE" : "en-GB",
+                {
+                  timeZone: "Europe/Stockholm",
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric"
+                }
+              )}
             </p>
           </div>
         </div>

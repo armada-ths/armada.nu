@@ -56,3 +56,11 @@ The pnpm workspace contains `apps/web` (main website), `apps/photos` (guest phot
 - Order fetches dates/exhibitors with no-store; it does not use the Web revalidation webhook. Order actions validate access, dates and catalogue inputs server-side; unlike the Web sales contact form, they do not use reCAPTCHA.
 
 See `README.md` for app domains, environment configuration and deployment ownership. The repository root contains shared development tooling; application code and assets belong in `apps/*` or `packages/shared`.
+
+## Internationalization
+
+- Public UI supports English and Swedish. Keep both app message catalogs in sync; use next-intl and the shared locale-aware navigation helpers.
+- Use short semantic message keys and ICU arguments/plurals for complete sentences. Do not translate CMS text by matching English strings; use localizedText per field.
+- Keep IDs, group keys, order validation, files and API error codes independent of the display language. Preserve root provider state during language changes.
+- Run `pnpm lint:i18n`, type checks and the affected app's localization tests. Add Swedish Storybook coverage for changed public components.
+- CMS content translations are edited in ArmadaCMS; fixed UI copy lives in app catalogs. Names, brands and user input stay unchanged.

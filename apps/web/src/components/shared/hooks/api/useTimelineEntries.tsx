@@ -4,9 +4,12 @@ import { useQuery } from "@tanstack/react-query"
 export type TimelineEntry = {
   id: number
   title: string
+  titleSv?: string | null
   body: string
+  bodySv?: string | null
   eraId: number
   eraTitle: string
+  eraTitleSv?: string | null
   sortOrder: number
   imageUrl?: string | null
 }

@@ -1,4 +1,5 @@
 "use client"
+import { LocalizedText } from "@/i18n/text"
 
 import { useShuffledItems } from "@/components/shared/hooks/useShuffledItems"
 import { Page } from "@/components/shared/Page"
@@ -59,7 +60,7 @@ export default function RollingBanner({ logos }: RollingBannerProps) {
       <Page.Header
         tier="secondary"
         className="text-licorice mx-auto mb-8 w-fit px-6 py-2 text-center text-3xl tracking-wide sm:text-4xl">
-        Silver Exhibitors
+        <LocalizedText id="silverExhibitors" />
       </Page.Header>
 
       <div className={`space-y-10 ${shuffledLogos ? "" : "invisible"}`}>
