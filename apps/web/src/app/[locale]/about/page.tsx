@@ -57,7 +57,7 @@ export default async function RecruitmentPage() {
         <PhotoSlideCarousel photoSrc={photoSrc} />
         <P className="mt-4">{dict.intro}</P>
         <P>
-          <Link className="underline" href={`/${locale}/about/history`}>
+          <Link className="underline" href="/about/history">
             {uiText(locale, "exploreTheHistoryOfArmada")}
           </Link>
         </P>
@@ -65,7 +65,7 @@ export default async function RecruitmentPage() {
           {dict.ownershipPrefix}{" "}
           <Link
             className="underline hover:no-underline"
-            href="https://thskth.se/en/">
+            href={`https://thskth.se/${locale}/`}>
             {dict.thsLinkLabel}
           </Link>
           {dict.ownershipSuffix}

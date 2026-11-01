@@ -1,4 +1,5 @@
 "use client"
+import { Link } from "@armada/shared/i18n/navigation"
 import { useTranslations } from "next-intl"
 
 import { X } from "lucide-react"
@@ -45,7 +46,7 @@ const Banner1 = ({
             <span className="text-snow">
               {description}
               {""}
-              <a
+              <Link
                 href={linkUrl}
                 className="underline underline-offset-2 hover:text-stone-50"
                 onClick={
@@ -55,7 +56,7 @@ const Banner1 = ({
                     : undefined
                 }>
                 {linkText}
-              </a>
+              </Link>
               .
             </span>
           </span>

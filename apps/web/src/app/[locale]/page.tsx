@@ -270,7 +270,7 @@ export default async function HomePage() {
             {pageDict.aboutBody}{" "}
             <Link
               className="underline hover:no-underline"
-              href="https://thskth.se/en/">
+              href={`https://thskth.se/${locale}/`}>
               {pageDict.thsLinkLabel}
             </Link>
             {pageDict.aboutSuffix}

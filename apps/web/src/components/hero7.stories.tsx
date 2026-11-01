@@ -47,6 +47,14 @@ export const WithoutTracking: Story = {
       primary: { text: "Join Armada", url: "/student/recruitment" },
       secondary: { text: "Meet the Team", url: "/about/team" }
     }
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("link", { name: "Join Armada" })
+    ).toHaveAttribute("href", "/en/student/recruitment")
+    await expect(
+      canvas.getByRole("link", { name: "Meet the Team" })
+    ).toHaveAttribute("href", "/en/about/team")
   }
 }
 
@@ -97,6 +105,12 @@ export const ExhibitorsSwedish: Story = {
     await expect(
       canvas.getByRole("link", { name: "Utforska utställare" })
     ).toBeVisible()
+    await expect(
+      canvas.getByRole("link", { name: sv.Static.exploreExhibitors })
+    ).toHaveAttribute("href", "/sv/student/exhibitors")
+    await expect(
+      canvas.getByRole("link", { name: sv.Static.browseOurEvents })
+    ).toHaveAttribute("href", "/sv/student/events")
     await expect(
       canvas.queryByRole("link", { name: "Explore exhibitors" })
     ).not.toBeInTheDocument()
