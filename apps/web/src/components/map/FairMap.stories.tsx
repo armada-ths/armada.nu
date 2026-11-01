@@ -52,6 +52,9 @@ export const ThumbnailAndCompanyDetails: Story = {
     const booth = canvasElement.querySelector<SVGElement>("#example__booth1")!
     await userEvent.click(booth)
     const dialog = await within(document.body).findByRole("dialog")
-    await expect(await within(dialog).findByText("Stockholm")).toBeVisible()
+    // The content mounts before the modal's opening animation makes it visible.
+    await waitFor(() =>
+      expect(within(dialog).getByText("Stockholm")).toBeVisible()
+    )
   }
 }
