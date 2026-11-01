@@ -12,3 +12,6 @@ allowBuilds:
 
 overrides:
   path-to-regexp@>=4.0.0 <6.3.0: ">=6.3.0"
+
+  # Newer native carriers reject Windows cache ACLs: swc-project/swc#12442.
+  "@swc/core": "1.15.33"
