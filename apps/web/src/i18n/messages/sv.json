@@ -578,7 +578,12 @@
     "nameAZ": "Namn: A–Ö",
     "nameZA": "Namn: Ö–A",
     "tierGoldToBronze": "Nivå: guld till brons",
-    "tierBronzeToGold": "Nivå: brons till guld"
+    "tierBronzeToGold": "Nivå: brons till guld",
+    "playSlideshow": "Spela bildspel",
+    "pauseSlideshow": "Pausa bildspel",
+    "readMore": "Läs mer",
+    "readLess": "Läs mindre",
+    "ourSponsors": "Våra sponsorer"
   },
   "Accessibility": {
     "emailPerson": "Mejla {name}",
@@ -588,7 +593,8 @@
     "photosTitle": "Bilder: {title}",
     "photoIndex": "{index} av {total}",
     "goToPhoto": "Gå till bild {index} av {total}",
-    "mapFor": "Karta för {name}"
+    "mapFor": "Karta för {name}",
+    "photoAlt": "{title} – foto {index}"
   },
   "Organization": {
     "projectManagers": "Projektledare",
@@ -606,7 +612,7 @@
     "dateTBA": "Datum kommer",
     "detailsAndRegistrationInformationForName": "Detaljer och anmälningsinformation för {name}",
     "registrationCloses": "Anmälan stänger",
-    "companiesAtTheFair2026": "Företag på mässan 2026",
+    "companiesAtTheFair2026": "Företag på ARMADA 2026",
     "mapOfExhibitorLocation": "Karta över utställarens plats",
     "industries": "Branscher",
     "employments": "Anställningsformer",
@@ -623,7 +629,8 @@
     "dAYS": "DAGAR",
     "loadingTheMap": "Laddar kartan...",
     "goBack": "Gå tillbaka",
-    "fairDaysLabel": "Mässdagar ({dates}):"
+    "fairDaysLabel": "Mässdagar ({dates}):",
+    "locations": "Orter"
   },
   "Sections": {
     "registerPromptDict": {

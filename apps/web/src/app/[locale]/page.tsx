@@ -5,6 +5,7 @@ import GoldExhibitors from "@/app/_components/GoldExhibitors"
 import { P } from "@/app/_components/Paragraph"
 import { RecruitmentBanner } from "@/app/_components/Recruitment"
 import RollingBannerSilver from "@/app/_components/RollingBannerSilver"
+import Sponsors from "@/app/_components/Sponsors"
 import { Hero1 } from "@/components/hero7"
 import { HighlightCard } from "@/components/highlight-card"
 import { feature } from "@/components/shared/feature"
@@ -21,11 +22,8 @@ import { TrackedLink } from "@/components/shared/TrackedLink"
 import { VisitorNumberBar } from "@/components/shared/VisitorNumberBar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import {
-  pageTranslations,
-  resolveLocalizedHighlightCardCopy,
-  translations
-} from "@/lib/i18n"
+import { pageTranslations, translations } from "@/i18n/dictionaries"
+import { localizedText } from "@armada/shared/i18n/routing"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { DateTime } from "luxon"
 import { Link } from "@armada/shared/i18n/navigation"
@@ -46,12 +44,16 @@ export default async function HomePage() {
     exhibitorPackagesEnabled,
     highlightCards,
     recruitment,
+    exhibitorPageEnabled,
+    studentRecruitmentEnabled,
     exhibitors
   ] = await Promise.all([
     fetchDates(),
     feature("EXHIBITOR_PACKAGES"),
     fetchHighlightCards(),
     fetchRecruitment({ next: { revalidate: 86400 } }),
+    feature("EXHIBITOR_PAGE"),
+    feature("STUDENT_RECRUITMENT_PAGE"),
     feature("EXHIBITOR_PAGE").then(enabled =>
       enabled ? fetchExhibitors() : []
     )
@@ -62,12 +64,14 @@ export default async function HomePage() {
   )
   const silverLogos = exhibitors
     .filter(exhibitor => exhibitor.tier === "Silver")
-    .flatMap(exhibitor =>
-      exhibitor.logoFreesize ? [exhibitor.logoFreesize] : []
-    )
+    .flatMap(exhibitor => {
+      const logo = exhibitor.logoThumbnail ?? exhibitor.logoFreesize
+      return logo ? [logo] : []
+    })
 
   const now = DateTime.now()
   const recruitmentOpen =
+    studentRecruitmentEnabled &&
     recruitment != null &&
     DateTime.fromISO(recruitment.start_date) <= now &&
     DateTime.fromISO(recruitment.end_date) >= now
@@ -77,11 +81,8 @@ export default async function HomePage() {
     ? "https://app.eventro.se/register/armada"
     : "/exhibitor/signup"
   const highlightCard = highlightCards.length > 0 ? highlightCards[0] : null
-  const localizedHighlight = highlightCard
-    ? resolveLocalizedHighlightCardCopy(locale, highlightCard)
-    : null
 
-  const heroButtons = recruitmentOpen
+  const fallbackHeroButtons = recruitmentOpen
     ? {
         primary: {
           text: sharedDict.joinArmada,
@@ -119,6 +120,26 @@ export default async function HomePage() {
         }
       }
 
+  const heroButtons = exhibitorPageEnabled
+    ? {
+        primary: {
+          text: "Explore exhibitors",
+          url: "/student/exhibitors",
+          tracking: {
+            eventName: "student_exhibitors_click",
+            eventData: { location: "hero_primary" }
+          }
+        },
+        secondary: {
+          ...fallbackHeroButtons.primary,
+          tracking: {
+            ...fallbackHeroButtons.primary.tracking,
+            eventData: { location: "hero_secondary" }
+          }
+        }
+      }
+    : fallbackHeroButtons
+
   return (
     <>
       <NavigationMenu />
@@ -131,16 +152,28 @@ export default async function HomePage() {
             sideContent={
               highlightCard ? (
                 <HighlightCard
-                  title={localizedHighlight?.title ?? highlightCard.title}
-                  subtitle={
-                    localizedHighlight?.subtitle ?? highlightCard.subtitle
-                  }
-                  description={
-                    localizedHighlight?.description ?? highlightCard.description
-                  }
+                  title={localizedText(
+                    locale,
+                    highlightCard.title,
+                    highlightCard.titleSv
+                  )}
+                  subtitle={localizedText(
+                    locale,
+                    highlightCard.subtitle,
+                    highlightCard.subtitleSv
+                  )}
+                  description={localizedText(
+                    locale,
+                    highlightCard.description,
+                    highlightCard.descriptionSv
+                  )}
                   brand={highlightCard.brand}
                   ctaText={
-                    localizedHighlight?.linkText ?? highlightCard.linkText
+                    localizedText(
+                      locale,
+                      highlightCard.linkText,
+                      highlightCard.linkTextSv
+                    ) ?? undefined
                   }
                   ctaUrl={highlightCard.linkUrl}
                   ctaTracking={
@@ -291,20 +324,34 @@ export default async function HomePage() {
                 {sharedDict.forStudents}
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
-                <Button asChild className="bg-grapefruit text-snow">
-                  <TrackedLink
-                    href={"/student/recruitment"}
-                    tracking={{
-                      eventName: "student_signup_click",
-                      eventData: { location: "for_students_card" }
-                    }}>
-                    {pageDict.joinUs}
-                  </TrackedLink>
-                </Button>
+                {Object.entries(heroButtons).map(([position, button]) => (
+                  <Button
+                    key={position}
+                    asChild
+                    variant={position === "primary" ? "default" : "neutral"}
+                    className={
+                      position === "primary"
+                        ? "bg-grapefruit text-snow"
+                        : undefined
+                    }>
+                    <TrackedLink
+                      href={button.url}
+                      tracking={{
+                        ...button.tracking,
+                        eventData: {
+                          location: "for_students_card",
+                          button: position
+                        }
+                      }}>
+                      {button.text}
+                    </TrackedLink>
+                  </Button>
+                ))}
               </div>
             </Card>
           </div>
         </Page.Boundary>
+        <Sponsors />
       </Page.Background>
     </>
   )

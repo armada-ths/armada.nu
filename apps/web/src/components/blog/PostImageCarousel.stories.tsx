@@ -63,9 +63,8 @@ export const AutomaticRotation: Story = {
     await waitFor(() => expect(canvas.getByText("2 / 3")).toBeInTheDocument(), {
       timeout: 7000
     })
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Pause slideshow" })
-    )
+    canvas.getByRole("button", { name: "Pause slideshow" }).focus()
+    await userEvent.keyboard("[Space]")
     await expect(
       canvas.getByRole("button", { name: "Play slideshow" })
     ).toBeInTheDocument()
@@ -117,7 +116,9 @@ export const Mobile: Story = {
         dot.querySelector("span")?.getBoundingClientRect().width
       ).toBe(6)
     }
-    const pause = canvas.getByRole("button", { name: "Pause slideshow" })
+    const pause = canvas.getByRole("button", {
+      name: /^(Play|Pause) slideshow$/
+    })
     await expect(getComputedStyle(pause, "::before").width).toBe("28px")
     await userEvent.click(third)
     await waitFor(() => expect(third).toHaveAttribute("aria-current", "true"))
@@ -151,6 +152,67 @@ export const ControlAppearance: Story = {
           )?.[1]
         )
       ).toBeGreaterThanOrEqual(0.85)
+    )
+  }
+}
+
+export const ReducedMotion: Story = {
+  beforeEach: () => {
+    const original = window.matchMedia
+    window.matchMedia = query => {
+      const media = original.call(window, query)
+      if (query === "(prefers-reduced-motion: reduce)") {
+        Object.defineProperty(media, "matches", { value: true })
+      }
+      return media
+    }
+    return () => {
+      window.matchMedia = original
+    }
+  },
+  play: async ({ canvas, canvasElement }) => {
+    await expect(
+      canvas.queryByRole("button", { name: "Pause slideshow" })
+    ).not.toBeInTheDocument()
+    await expect(
+      canvas.queryByRole("button", { name: "Play slideshow" })
+    ).not.toBeInTheDocument()
+    await expect(canvasElement.querySelector("[aria-live]")).toHaveAttribute(
+      "aria-live",
+      "polite"
+    )
+    await new Promise(resolve => setTimeout(resolve, 5200))
+    await expect(canvas.getByText("1 / 3")).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole("button", { name: "Next slide" }))
+    await expect(canvas.getByText("2 / 3")).toBeInTheDocument()
+  }
+}
+
+export const HoverReflectsPlayback: Story = {
+  play: async ({ canvas, canvasElement }) => {
+    const carousel = canvas.getByRole("region")
+    await userEvent.hover(carousel)
+    await expect(
+      canvas.getByRole("button", { name: "Play slideshow" })
+    ).toBeEnabled()
+    await expect(canvasElement.querySelector("[aria-live]")).toHaveAttribute(
+      "aria-live",
+      "polite"
+    )
+    await userEvent.unhover(carousel)
+    await expect(
+      canvas.getByRole("button", { name: "Pause slideshow" })
+    ).toBeEnabled()
+    await userEvent.hover(carousel)
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Play slideshow" })
+    )
+    await expect(
+      canvas.getByRole("button", { name: "Pause slideshow" })
+    ).toBeEnabled()
+    await expect(canvasElement.querySelector("[aria-live]")).toHaveAttribute(
+      "aria-live",
+      "off"
     )
   }
 }

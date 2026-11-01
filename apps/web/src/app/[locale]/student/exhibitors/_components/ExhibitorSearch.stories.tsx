@@ -1,5 +1,6 @@
+import { useState, useSyncExternalStore, type ComponentProps } from "react"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { getRouter } from "@storybook/nextjs-vite/navigation.mock"
+import { useSearchParams } from "@storybook/nextjs-vite/navigation.mock"
 import { expect, userEvent, waitFor, within } from "storybook/test"
 
 import type {
@@ -10,6 +11,87 @@ import type {
 } from "@/components/shared/hooks/api/useExhibitors"
 
 import ExhibitorSearch from "./ExhibitorSearch"
+
+let navigationUrl = new URL("https://example.test/en/student/exhibitors")
+
+const subscribeToHistory = (callback: () => void) => {
+  window.addEventListener("exhibitor-history-change", callback)
+  return () => window.removeEventListener("exhibitor-history-change", callback)
+}
+
+function useHistorySearchParams() {
+  const query = useSyncExternalStore(
+    subscribeToHistory,
+    () => navigationUrl.search,
+    () => ""
+  )
+  return new URLSearchParams(query) as ReturnType<typeof useSearchParams>
+}
+
+// Model Next's History API integration without navigating the Storybook preview itself.
+function mockNativeNavigation(query: string) {
+  const originalSearchParams = useSearchParams.getMockImplementation()
+  const methods = {
+    pushState: window.history.pushState,
+    replaceState: window.history.replaceState,
+    back: window.history.back,
+    forward: window.history.forward
+  }
+  navigationUrl = new URL(
+    `/en/student/exhibitors${query}`,
+    window.location.origin
+  )
+  const entries = [navigationUrl]
+  let position = 0
+  const notify = () =>
+    window.dispatchEvent(new Event("exhibitor-history-change"))
+  window.history.pushState = (_data, _unused, url) => {
+    navigationUrl = new URL(String(url), navigationUrl)
+    entries.splice(position + 1, entries.length, navigationUrl)
+    position++
+    notify()
+  }
+  window.history.replaceState = (_data, _unused, url) => {
+    navigationUrl = new URL(String(url), navigationUrl)
+    entries[position] = navigationUrl
+    notify()
+  }
+  window.history.back = () => {
+    if (position > 0) {
+      navigationUrl = entries[--position]
+      notify()
+    }
+  }
+  window.history.forward = () => {
+    if (position < entries.length - 1) {
+      navigationUrl = entries[++position]
+      notify()
+    }
+  }
+  useSearchParams.mockImplementation(useHistorySearchParams)
+  return () => {
+    if (originalSearchParams)
+      useSearchParams.mockImplementation(originalSearchParams)
+    Object.assign(window.history, methods)
+  }
+}
+
+function RefreshableExhibitorSearch(
+  props: ComponentProps<typeof ExhibitorSearch>
+) {
+  const [data, setData] = useState(props.exhibitors)
+  return (
+    <>
+      <button
+        onClick={() =>
+          setData(previous => previous.map(exhibitor => ({ ...exhibitor })))
+        }>
+        Refresh server data
+      </button>
+      <ExhibitorSearch {...props} exhibitors={data} />
+    </>
+  )
+}
 
 const internship: Employment = { id: 1, name: "Internship" }
 const software: Industry = {
@@ -69,12 +151,7 @@ const meta = {
       </div>
     )
   ],
-  args: {
-    exhibitors,
-    employments: [internship],
-    industries: [software],
-    programs: [engineering]
-  }
+  args: { exhibitors }
 } satisfies Meta<typeof ExhibitorSearch>
 
 export default meta
@@ -155,11 +232,12 @@ export const FilteringAndSorting: Story = {
 }
 
 export const ClosingCompanyModal: Story = {
+  beforeEach: () => mockNativeNavigation("?id=1&source=kept"),
   parameters: {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/student/exhibitors",
+        pathname: "/en/student/exhibitors",
         query: { id: "1" }
       }
     }
@@ -173,12 +251,292 @@ export const ClosingCompanyModal: Story = {
     await waitFor(() => {
       expect(body.queryByRole("dialog")).not.toBeInTheDocument()
     })
-    await expect(getRouter().replace).toHaveBeenCalledWith(
-      "/en/student/exhibitors",
-      { scroll: false }
-    )
+    await expect(navigationUrl.searchParams.has("id")).toBe(false)
+    await expect(navigationUrl.searchParams.get("source")).toBe("kept")
 
     await new Promise(resolve => setTimeout(resolve, 300))
     await expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+  }
+}
+
+export const RandomizedWithinTiers: Story = {
+  render: args => <RefreshableExhibitorSearch {...args} />,
+  args: {
+    exhibitors: ["Gold", "Silver", "Bronze"].flatMap((tier, tierIndex) =>
+      ["Zulu", "Alpha"].map((name, index) => ({
+        ...exhibitors[0],
+        id: 100 + tierIndex * 2 + index,
+        tier,
+        name: `${tier} ${name}`
+      }))
+    )
+  },
+  beforeEach: () => {
+    const original = Math.random
+    Math.random = () => 0
+    return () => {
+      Math.random = original
+    }
+  },
+  play: async ({ canvas }) => {
+    const goldFirst = [
+      "Gold Alpha",
+      "Gold Zulu",
+      "Silver Zulu",
+      "Silver Alpha",
+      "Bronze Zulu",
+      "Bronze Alpha"
+    ]
+    const names = () =>
+      canvas
+        .getAllByRole("heading", { level: 3 })
+        .map(heading => heading.textContent)
+    const chooseSort = async (name: string) => {
+      await userEvent.click(
+        canvas.getByRole("combobox", { name: "Sort exhibitors by" })
+      )
+      await userEvent.click(
+        await within(document.body).findByRole("option", { name })
+      )
+    }
+    await waitFor(() => expect(names()).toEqual(goldFirst))
+    await chooseSort("Name: A–Z")
+    await waitFor(() =>
+      expect(names()).toEqual([...goldFirst].sort((a, b) => a.localeCompare(b)))
+    )
+    await chooseSort("Name: Z–A")
+    await waitFor(() =>
+      expect(names()).toEqual([...goldFirst].sort((a, b) => b.localeCompare(a)))
+    )
+    await chooseSort("Tier: Bronze to Gold")
+    await waitFor(() =>
+      expect(names()).toEqual([
+        "Bronze Zulu",
+        "Bronze Alpha",
+        "Silver Zulu",
+        "Silver Alpha",
+        "Gold Alpha",
+        "Gold Zulu"
+      ])
+    )
+    await chooseSort("Tier: Gold to Bronze")
+    await waitFor(() => expect(names()).toEqual(goldFirst))
+    const search = canvas.getByPlaceholderText("Search by company name")
+    await userEvent.type(search, "Gold")
+    await waitFor(() => expect(names()).toEqual(["Gold Alpha", "Gold Zulu"]))
+    await userEvent.clear(search)
+    await waitFor(() => expect(names()).toEqual(goldFirst))
+    Math.random = () => 0.999
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Refresh server data" })
+    )
+    await waitFor(() => expect(names()).toEqual(goldFirst))
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Refresh server data" })
+    )
+    await waitFor(() => expect(names()).toEqual(goldFirst))
+  }
+}
+
+export const ModalNavigationStaysStable: Story = {
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: { pathname: "/en/student/exhibitors" }
+    }
+  },
+  beforeEach: () => mockNativeNavigation("?source=kept"),
+  play: async ({ canvas, canvasElement }) => {
+    await canvas.findByRole("link", { name: /Alpha Systems/ })
+    const names = () =>
+      Array.from(
+        canvasElement.querySelectorAll("[data-exhibitor-list] h3"),
+        heading => heading.textContent
+      )
+    const order = names()
+    const body = within(canvasElement.ownerDocument.body)
+    const findModal = (stage: string) =>
+      body.findByRole(
+        "dialog",
+        {},
+        {
+          onTimeout: () =>
+            new Error(`Missing modal at ${stage}; URL: ${navigationUrl.href}`)
+        }
+      )
+    await userEvent.click(canvas.getByRole("link", { name: /Alpha Systems/ }))
+    await findModal("first open")
+    await expect(navigationUrl.searchParams.get("id")).toBe("2")
+    await expect(names()).toEqual(order)
+    await userEvent.click(body.getByRole("button", { name: "Close" }))
+    await waitFor(() =>
+      expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+    )
+    let reopened = false
+    const observer = new MutationObserver(() => {
+      if (document.querySelector('[role="dialog"]')) reopened = true
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      await expect(reopened).toBe(false)
+      await expect(names()).toEqual(order)
+    } finally {
+      observer.disconnect()
+    }
+    await userEvent.click(canvas.getByRole("link", { name: /Alpha Systems/ }))
+    await findModal("reopen")
+    window.history.back()
+    await waitFor(() =>
+      expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+    )
+    window.history.forward()
+    await findModal("forward")
+    await userEvent.keyboard("{Escape}")
+    await waitFor(() =>
+      expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+    )
+    await expect(names()).toEqual(order)
+    await expect(navigationUrl.searchParams.get("source")).toBe("kept")
+  }
+}
+
+export const MobileModalClosesOnce: Story = {
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: { pathname: "/en/student/exhibitors" }
+    }
+  },
+  beforeEach: () => mockNativeNavigation("?id=1&source=kept"),
+  play: async () => {
+    const body = within(document.body)
+    await body.findByRole("dialog")
+    await userEvent.keyboard("{Escape}")
+    await waitFor(() =>
+      expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+    )
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    await expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+    await expect(navigationUrl.searchParams.has("id")).toBe(false)
+    await expect(navigationUrl.searchParams.get("source")).toBe("kept")
+  }
+}
+
+export const FiltersUseCurrentExhibitorCategories: Story = {
+  args: {
+    exhibitors: [
+      {
+        ...exhibitors[0],
+        employments: [{ id: 101, name: "Full-time employment" }],
+        industries: [{ id: 201, name: "Consulting & Advisory" }],
+        programs: [{ id: 301, name: "Computer Science" }]
+      },
+      {
+        ...exhibitors[1],
+        employments: [{ id: 101, name: "Full-time employment" }],
+        industries: [{ id: 201, name: "Consulting & Advisory" }],
+        programs: [{ id: 301, name: "Computer Science" }]
+      },
+      {
+        ...exhibitors[2],
+        employments: [{ id: 102, name: "Internship" }],
+        industries: [],
+        programs: []
+      }
+    ]
+  },
+  play: async ({ canvas }) => {
+    await canvas.findByRole("combobox", { name: /Filter by Employment/ })
+    for (const { trigger, expected, legacy, count } of [
+      {
+        trigger: /Filter by Employment/,
+        expected: "Full-time employment",
+        legacy: "Full Time",
+        count: 2
+      },
+      {
+        trigger: /Filter by Industry/,
+        expected: "Consulting & Advisory",
+        legacy: "consulting",
+        count: 1
+      },
+      {
+        trigger: /Filter by Program/,
+        expected: "Computer Science",
+        legacy: "Computer Engineering",
+        count: 1
+      }
+    ]) {
+      await userEvent.click(canvas.getByRole("combobox", { name: trigger }))
+      const listbox = await within(document.body).findByRole("listbox", {
+        name: "Available options"
+      })
+      // The list also contains the shared Select All option.
+      await expect(within(listbox).getAllByRole("option")).toHaveLength(
+        count + 1
+      )
+      await expect(
+        within(listbox).getByRole("option", {
+          name: `${expected}, not selected`
+        })
+      ).toBeInTheDocument()
+      await expect(
+        within(listbox).queryByRole("option", {
+          name: `${legacy}, not selected`
+        })
+      ).not.toBeInTheDocument()
+      await userEvent.click(
+        within(document.body).getByRole("button", { name: "Close" })
+      )
+    }
+    await userEvent.click(
+      canvas.getByRole("combobox", { name: /Filter by Employment/ })
+    )
+    const listbox = await within(document.body).findByRole("listbox", {
+      name: "Available options"
+    })
+    await userEvent.click(
+      within(listbox).getByRole("option", {
+        name: "Full-time employment, not selected"
+      })
+    )
+    await userEvent.click(
+      within(document.body).getByRole("button", { name: "Close" })
+    )
+    await waitFor(() => {
+      expect(canvas.getAllByRole("heading", { level: 3 })).toHaveLength(2)
+      expect(
+        canvas.queryByRole("heading", { name: "Gamma Group" })
+      ).not.toBeInTheDocument()
+    })
+  }
+}
+
+export const Swedish: Story = {
+  globals: { locale: "sv" },
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: { pathname: "/sv/student/exhibitors" }
+    }
+  },
+  args: {
+    exhibitors: [
+      { ...exhibitors[0], employments: [{ ...internship, nameSv: "Praktik" }] }
+    ]
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByPlaceholderText("Sök efter företagsnamn")
+    ).toBeVisible()
+    await userEvent.click(
+      canvas.getByRole("combobox", { name: /anställning/i })
+    )
+    const option = await within(document.body).findByRole("option", {
+      name: /Praktik/
+    })
+    await waitFor(() => expect(option).toBeVisible())
   }
 }
