@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest"
 import { DateTime } from "luxon"
-import { formatOrder, hasOrderAccess, isOrderOpen } from "./orders"
+import { validateOrder, hasOrderAccess, isOrderOpen } from "./orders"
+import type { OrderData } from "./catalogue"
+const data: OrderData = {
+  exhibitors: [{ id: 1, name: "Gold AB", tier: "Gold" }],
+  items: [
+    { id: 1, name: "Coffee", sortOrder: 0, soldOut: false, maxPerOrder: 3 }
+  ]
+}
 
 const dates = { fair: { days: ["2026-11-17", "2026-11-18"] } }
 describe("order access and opening times", () => {
@@ -36,26 +43,51 @@ describe("order access and opening times", () => {
   })
 })
 describe("order payload", () => {
-  it("formats known items and allows a custom company", () => {
+  it("formats canonical CMS item and Gold company names", () => {
     expect(
-      formatOrder({
-        company: " Custom AB ",
-        items: [{ id: "coffee", quantity: 2 }]
-      })
-    ).toBe("Order for Custom AB:\n- Black Coffee x2")
+      validateOrder(
+        {
+          exhibitorId: 1,
+          items: [{ id: "1", quantity: 2 }]
+        },
+        data
+      )
+    ).toEqual({ success: true, message: "Order for Gold AB:\n- Coffee x2" })
   })
   it.each([
-    { company: "", items: [{ id: "coffee", quantity: 1 }] },
-    { company: "AB", items: [] },
-    { company: "AB", items: [{ id: "unknown", quantity: 1 }] },
-    { company: "AB", items: [{ id: "coffee", quantity: 0 }] },
-    { company: "AB", items: [{ id: "coffee", quantity: 1.5 }] },
+    { exhibitorId: 0, items: [{ id: "1", quantity: 1 }] },
+    { exhibitorId: 1, items: [] },
+    { exhibitorId: 1, items: [{ id: "unknown", quantity: 1 }] },
+    { exhibitorId: 1, items: [{ id: "1", quantity: 0 }] },
+    { exhibitorId: 1, items: [{ id: "1", quantity: 1.5 }] },
+    { exhibitorId: 1, items: [{ id: "1", quantity: 4 }] },
+    { company: "Custom AB", items: [{ id: "1", quantity: 1 }] },
+    { exhibitorId: 2, items: [{ id: "1", quantity: 1 }] },
     {
-      company: "AB",
+      exhibitorId: 1,
       items: [
-        { id: "coffee", quantity: 1 },
-        { id: "coffee", quantity: 2 }
+        { id: "1", quantity: 1 },
+        { id: "1", quantity: 2 }
       ]
     }
-  ])("rejects invalid input", input => expect(formatOrder(input)).toBeNull())
+  ])("rejects invalid input", input =>
+    expect(validateOrder(input, data).success).toBe(false)
+  )
+  it("rejects sold-out or deleted items and revoked eligibility", () => {
+    const input = { exhibitorId: 1, items: [{ id: "1", quantity: 1 }] }
+    expect(
+      validateOrder(input, {
+        ...data,
+        items: [{ ...data.items[0], soldOut: true }]
+      })
+    ).toEqual({ success: false, errorCode: "items_changed" })
+    expect(validateOrder(input, { ...data, items: [] })).toEqual({
+      success: false,
+      errorCode: "items_changed"
+    })
+    expect(validateOrder(input, { ...data, exhibitors: [] })).toEqual({
+      success: false,
+      errorCode: "company_ineligible"
+    })
+  })
 })

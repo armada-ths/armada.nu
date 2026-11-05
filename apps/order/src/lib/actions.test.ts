@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 const state = vi.hoisted(() => ({
   cookie: "secret",
   available: true,
+  soldOut: false,
+  eligible: true,
   dates: { fair: { days: ["2026-11-17", "2026-11-18"] } },
   env: {
     EXPO_ACCESS_TOKEN: "secret",
@@ -15,15 +17,28 @@ vi.mock("next/headers", () => ({
 }))
 vi.mock("@order/env", () => ({ env: state.env }))
 vi.mock("@order/lib/cms", () => ({
-  fetchDates: async () => (state.available ? state.dates : null)
+  fetchDates: async () => (state.available ? state.dates : null),
+  fetchOrderData: async () =>
+    state.available
+      ? {
+          items: [
+            { id: 1, name: "Coffee", sortOrder: 0, soldOut: state.soldOut }
+          ],
+          exhibitors: state.eligible
+            ? [{ id: 1, name: "Gold AB", tier: "Gold" }]
+            : []
+        }
+      : null
 }))
 import { sendOrder } from "../app/actions"
 
-const input = { company: "Test AB", items: [{ id: "coffee", quantity: 1 }] }
+const input = { exhibitorId: 1, items: [{ id: "1", quantity: 1 }] }
 describe("order submission", () => {
   beforeEach(() => {
     state.cookie = "secret"
     state.available = true
+    state.soldOut = false
+    state.eligible = true
     state.env.SLACK_ORDER_TEST_HOOK_URL =
       "https://hooks.slack.com/services/test"
     vi.useFakeTimers()
@@ -62,6 +77,22 @@ describe("order submission", () => {
         body: expect.stringContaining("[STAGING TEST]")
       })
     )
+  })
+  it("rechecks sold-out status before Slack delivery", async () => {
+    state.soldOut = true
+    expect(await sendOrder(input)).toMatchObject({
+      success: false,
+      errorCode: "items_changed"
+    })
+    expect(fetch).not.toHaveBeenCalled()
+  })
+  it("rechecks Gold eligibility before Slack delivery", async () => {
+    state.eligible = false
+    expect(await sendOrder(input)).toMatchObject({
+      success: false,
+      errorCode: "company_ineligible"
+    })
+    expect(fetch).not.toHaveBeenCalled()
   })
   it("does not fall back to production when the test hook is absent", async () => {
     state.env.SLACK_ORDER_TEST_HOOK_URL = ""

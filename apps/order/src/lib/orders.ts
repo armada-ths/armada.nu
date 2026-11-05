@@ -1,6 +1,6 @@
 import { DateTime } from "luxon"
 import { z } from "zod"
-import { ITEMS } from "./catalogue"
+import type { OrderData } from "./catalogue"
 
 export type OrderErrorCode =
   | "access_required"
@@ -10,15 +10,20 @@ export type OrderErrorCode =
   | "delivery_unavailable"
   | "delivery_failed"
   | "submission_failed"
+  | "company_ineligible"
+  | "items_changed"
 export type OrderResult = {
   success: boolean
   error?: string
   errorCode?: OrderErrorCode
 }
 export type OrderInput = {
-  company: string
+  exhibitorId: number
   items: { id: string; quantity: number }[]
 }
+export type OrderDataResult =
+  | { success: true; data: OrderData }
+  | { success: false; errorCode: OrderErrorCode }
 export type FairDates = { fair: { days: string[] } }
 
 export function hasOrderAccess(
@@ -55,7 +60,7 @@ export function isOrderOpen(dates: unknown, now: DateTime = DateTime.now()) {
 }
 
 const schema = z.object({
-  company: z.string().trim().min(1),
+  exhibitorId: z.number().int().positive().safe(),
   items: z
     .array(
       z.object({
@@ -66,21 +71,35 @@ const schema = z.object({
     .min(1)
 })
 
-export function formatOrder(input: unknown): string | null {
+export function validateOrder(
+  input: unknown,
+  data: OrderData
+):
+  | { success: true; message: string }
+  | { success: false; errorCode: OrderErrorCode } {
   const parsed = schema.safeParse(input)
-  if (!parsed.success) return null
+  if (!parsed.success) return { success: false, errorCode: "invalid_order" }
+  const exhibitor = data.exhibitors.find(
+    item => item.id === parsed.data.exhibitorId
+  )
+  if (!exhibitor || exhibitor.tier !== "Gold")
+    return { success: false, errorCode: "company_ineligible" }
   const seen = new Set<string>()
   const lines: string[] = []
   for (const line of parsed.data.items) {
-    const item = ITEMS.find(item => item.id === line.id)
+    const item = data.items.find(item => String(item.id) === line.id)
     if (
       !item ||
+      item.soldOut ||
       seen.has(line.id) ||
-      (item.max !== undefined && line.quantity > item.max)
+      (item.maxPerOrder != null && line.quantity > item.maxPerOrder)
     )
-      return null
+      return { success: false, errorCode: "items_changed" }
     seen.add(line.id)
     lines.push(`- ${item.name} x${line.quantity}`)
   }
-  return `Order for ${parsed.data.company}:\n${lines.join("\n")}`
+  return {
+    success: true,
+    message: `Order for ${exhibitor.name}:\n${lines.join("\n")}`
+  }
 }

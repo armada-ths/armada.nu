@@ -147,6 +147,14 @@ Set `NEXT_PUBLIC_API_URL` in the owning app's `.env.local` to one of these origi
 | Staging     | `https://staging.cms.armada.nu` |
 | Production  | `https://cms.armada.nu`         |
 
+## Lounge orders
+
+The Order app reads the `lounge-items` catalogue and the complete Gold exhibitor list from ArmadaCMS with no-store requests. Staff manage names, translations, optional pictures, display order, quantity limits, and sold-out status in the CMS. Sold-out cards remain visible with ordering disabled; deleted items disappear. There is no price or inventory tracking.
+
+The form refreshes every 30 seconds while visible and on focus. Unavailable cart items stay flagged until explicitly removed, and the server rechecks Gold eligibility, opening times, and the current menu before delivering to Slack. Custom company names are not accepted. The shared access link does not verify company identity.
+
+Deploy the CMS migration/API/admin first and have HoSS populate and approve this year's menu before releasing the Order app. There is no seeded menu or hardcoded fallback. Preview testing must use the test Slack webhook. Run `pnpm exec vitest run --project unit apps/order/src/lib` and the Order Storybook interactions for focused validation.
+
 ## Localization
 
 Public pages use the shared next-intl routing in packages/shared/src/i18n, with /en and /sv URLs and a host-only locale cookie. Keep API routes, static assets and storage proxies outside locale segments. Use the shared navigation helpers for internal links and include the current locale in links between apps.
