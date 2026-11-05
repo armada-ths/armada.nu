@@ -1,0 +1,31 @@
+/* The frame loop sets each slide's transform, opacity and z-index every frame. */
+.slideshow-slide {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: 50%;
+  width: 60%;
+  will-change: transform, opacity;
+}
+
+/* Portrait screens: wider slides, with room above and below for the controls. */
+@media (max-aspect-ratio: 4/5) {
+  .slideshow-slide {
+    top: 14%;
+    bottom: 14%;
+    width: 78%;
+  }
+}
+
+.slideshow-track {
+  animation: slideshow-track-in 700ms ease-out both;
+}
+
+@keyframes slideshow-track-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

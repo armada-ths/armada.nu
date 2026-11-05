@@ -1,6 +1,6 @@
+import { HEX_COLORS } from "@armada/shared/colors"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, fn, userEvent } from "storybook/test"
-import { HEX_COLORS } from "@armada/shared/colors"
 
 import { PhotoExperience } from "./photo-experience"
 
@@ -63,15 +63,13 @@ const meta = {
       const data = String(input).includes("/gallery")
         ? {
             items: parameters.galleryPhoto
-              ? [
-                  {
-                    id: 1,
-                    url: "/icons/armada-icon.svg",
-                    width: 64,
-                    height: 64,
-                    approved_at: "2026-10-07T12:00:00Z"
-                  }
-                ]
+              ? [1, 2, 3].map(id => ({
+                  id,
+                  url: "/icons/armada-icon.svg",
+                  width: 64,
+                  height: 64,
+                  approved_at: "2026-10-07T12:00:00Z"
+                }))
               : [],
             next_cursor: ""
           }
@@ -272,13 +270,18 @@ export const DesktopGallery: Story = {
     const photo = await canvas.findByAltText("Photo 1 from Banquet test event")
     await userEvent.click(photo)
     await expect(
-      canvas.getByRole("dialog", { name: "Photo viewer" })
+      await canvas.findByRole("dialog", { name: "Photo slideshow" })
     ).toBeInTheDocument()
-    await userEvent.click(canvas.getByRole("button", { name: "Slideshow" }))
     await expect(
-      canvas.getByRole("button", { name: "Pause" })
+      await canvas.findByTestId("slideshow-counter")
+    ).toHaveTextContent("1 / 3")
+    await userEvent.click(canvas.getByRole("button", { name: "Pause" }))
+    await expect(
+      canvas.getByRole("button", { name: "Play" })
     ).toBeInTheDocument()
-    await userEvent.click(canvas.getByRole("button", { name: "Close" }))
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close slideshow" })
+    )
     await expect(canvas.queryByRole("dialog")).not.toBeInTheDocument()
   }
 }

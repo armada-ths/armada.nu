@@ -1,5 +1,10 @@
 "use client"
 
+import { env } from "@photos/env"
+import { isMobilePhotoDevice } from "@photos/lib/photoDevice"
+import { shouldSkipPhotoRecaptcha } from "@photos/lib/photoRecaptcha"
+import { Play, X } from "lucide-react"
+import Script from "next/script"
 import {
   useCallback,
   useEffect,
@@ -8,11 +13,7 @@ import {
   useSyncExternalStore,
   type ChangeEvent
 } from "react"
-import Script from "next/script"
-import { X } from "lucide-react"
-import { shouldSkipPhotoRecaptcha } from "@photos/lib/photoRecaptcha"
-import { isMobilePhotoDevice } from "@photos/lib/photoDevice"
-import { env } from "@photos/env"
+import { Slideshow } from "./slideshow"
 
 type EventInfo = {
   name: string
@@ -29,6 +30,8 @@ type Photo = {
   approved_at: string
 }
 type Gallery = { items: Photo[]; next_cursor: string }
+type GalleryResult =
+  { status: "ok"; next: string } | { status: "busy" | "error" }
 type Upload = {
   id: string
   file: File
@@ -106,8 +109,7 @@ export function PhotoExperience({
   const [uploads, setUploads] = useState<Upload[]>([])
   const [photos, setPhotos] = useState<Photo[]>([])
   const [cursor, setCursor] = useState("")
-  const [selected, setSelected] = useState<number | null>(null)
-  const [playing, setPlaying] = useState(false)
+  const [slideshowStart, setSlideshowStart] = useState<number | null>(null)
   const [confirmed, setConfirmed] = useState(false)
   const [loading, setLoading] = useState(true)
   const [galleryBusy, setGalleryBusy] = useState(false)
@@ -118,6 +120,7 @@ export function PhotoExperience({
   const uploadsRef = useRef<Upload[]>([])
   const photosRef = useRef<Photo[]>([])
   const galleryBusyRef = useRef(false)
+  const slideshowActiveRef = useRef(false)
   const stagedPhotosRef = useRef<StagedPhoto[]>([])
   const cameraInputRef = useRef<HTMLInputElement | null>(null)
   const base = `${api}/api/v1/photo-events/access/${encodeURIComponent(token)}`
@@ -149,8 +152,8 @@ export function PhotoExperience({
   }, [base])
 
   const fetchGallery = useCallback(
-    async (nextCursor = "") => {
-      if (galleryBusyRef.current) return
+    async (nextCursor = ""): Promise<GalleryResult> => {
+      if (galleryBusyRef.current) return { status: "busy" }
       galleryBusyRef.current = true
       setGalleryBusy(true)
       try {
@@ -163,23 +166,21 @@ export function PhotoExperience({
         if (!response.ok) throw new Error("The gallery could not be loaded.")
         const page = (await response.json()) as Gallery
         setPhotos(previous => {
-          const next = nextCursor ? [...previous, ...page.items] : page.items
+          const known = new Set(previous.map(photo => photo.id))
+          const next = nextCursor
+            ? [...previous, ...page.items.filter(photo => !known.has(photo.id))]
+            : page.items
           photosRef.current = next
           return next
         })
-        if (!nextCursor) {
-          setSelected(current =>
-            current !== null && !page.items.some(photo => photo.id === current)
-              ? null
-              : current
-          )
-        }
         setCursor(page.next_cursor)
         setError("")
+        return { status: "ok", next: page.next_cursor }
       } catch (cause) {
         setError(
           cause instanceof Error ? cause.message : "Something went wrong."
         )
+        return { status: "error" }
       } finally {
         galleryBusyRef.current = false
         setGalleryBusy(false)
@@ -228,7 +229,6 @@ export function PhotoExperience({
         const newPhotos = incoming.filter(photo => !existingIds.has(photo.id))
         photosRef.current = [...newPhotos, ...photosRef.current]
         setPhotos(photosRef.current)
-        if (playing && newPhotos.length > 0) setSelected(newPhotos[0].id)
       }
       setError("")
     } catch (cause) {
@@ -239,7 +239,7 @@ export function PhotoExperience({
       galleryBusyRef.current = false
       setGalleryBusy(false)
     }
-  }, [base, playing])
+  }, [base])
 
   useEffect(() => {
     let mounted = true
@@ -483,40 +483,30 @@ export function PhotoExperience({
     window.setTimeout(drain, 0)
   }
 
-  const moveSelection = useCallback((direction: number) => {
-    setSelected(current => {
-      if (current === null || photosRef.current.length === 0) return null
-      const index = photosRef.current.findIndex(photo => photo.id === current)
-      if (index < 0) return photosRef.current[0]?.id ?? null
-      const next =
-        (index + direction + photosRef.current.length) %
-        photosRef.current.length
-      return photosRef.current[next]?.id ?? null
-    })
-  }, [])
-
-  useEffect(() => {
-    if (selected === null) return
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setSelected(null)
-        setPlaying(false)
+  const loadRemainingPhotos = useCallback(
+    async (from: string) => {
+      let next = from
+      while (next && slideshowActiveRef.current) {
+        const result = await fetchGallery(next)
+        if (result.status === "ok") next = result.next
+        else if (result.status === "busy")
+          await new Promise(resolve => window.setTimeout(resolve, 250))
+        else break
       }
-      if (event.key === "ArrowRight") moveSelection(1)
-      if (event.key === "ArrowLeft") moveSelection(-1)
-    }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
-  }, [selected, moveSelection])
-  useEffect(() => {
-    if (!playing || selected === null || photos.length < 2) return
-    const timer = window.setInterval(() => moveSelection(1), 6000)
-    return () => window.clearInterval(timer)
-  }, [playing, selected, photos.length, moveSelection])
+    },
+    [fetchGallery]
+  )
 
-  const selectedIndex =
-    selected === null ? -1 : photos.findIndex(photo => photo.id === selected)
-  const selectedPhoto = selectedIndex < 0 ? null : photos[selectedIndex]
+  // The slideshow covers every approved photo, so the remaining pages load in the background.
+  const startSlideshow = (id: number) => {
+    slideshowActiveRef.current = true
+    setSlideshowStart(id)
+    void loadRemainingPhotos(cursor)
+  }
+  const closeSlideshow = useCallback(() => {
+    slideshowActiveRef.current = false
+    setSlideshowStart(null)
+  }, [])
 
   if (loading) return <div className="p-8 text-center">Loading event…</div>
   if (!info)
@@ -721,15 +711,26 @@ export function PhotoExperience({
         </section>
       ) : (
         <section>
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-2xl font-bold">Gallery</h2>
-            <button
-              type="button"
-              onClick={() => void fetchGallery()}
-              disabled={galleryBusy}
-              className="rounded-xl bg-white px-4 py-2 font-semibold shadow-sm">
-              Refresh gallery
-            </button>
+            <div className="flex gap-2">
+              {photos.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => startSlideshow(photos[0].id)}
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#172b35] px-4 py-2 font-semibold text-white shadow-sm">
+                  <Play aria-hidden="true" size={18} />
+                  Start slideshow
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => void fetchGallery()}
+                disabled={galleryBusy}
+                className="rounded-xl bg-white px-4 py-2 font-semibold shadow-sm">
+                Refresh gallery
+              </button>
+            </div>
           </div>
           {error && (
             <p role="alert" className="mb-4 text-red-700">
@@ -744,7 +745,7 @@ export function PhotoExperience({
                 <button
                   key={photo.id}
                   type="button"
-                  onClick={() => setSelected(photo.id)}
+                  onClick={() => startSlideshow(photo.id)}
                   className="aspect-square overflow-hidden rounded-lg bg-gray-200">
                   <img
                     src={photo.url}
@@ -766,61 +767,12 @@ export function PhotoExperience({
           )}
         </section>
       )}
-      {selectedPhoto && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Photo viewer"
-          className="fixed inset-0 z-50 flex flex-col bg-black/95 text-white"
-          onTouchStart={event => {
-            ;(event.currentTarget as HTMLElement).dataset.startX = String(
-              event.touches[0]?.clientX ?? 0
-            )
-          }}
-          onTouchEnd={event => {
-            const delta =
-              event.changedTouches[0]?.clientX -
-              Number((event.currentTarget as HTMLElement).dataset.startX)
-            if (Math.abs(delta) > 60) moveSelection(delta < 0 ? 1 : -1)
-          }}>
-          <div className="flex justify-end gap-3 p-4">
-            <button type="button" onClick={() => setPlaying(value => !value)}>
-              {playing ? "Pause" : "Slideshow"}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setSelected(null)
-                setPlaying(false)
-              }}>
-              Close
-            </button>
-          </div>
-          <div className="flex min-h-0 flex-1 items-center justify-between">
-            <button
-              type="button"
-              aria-label="Previous photo"
-              className="p-4 text-3xl"
-              onClick={() => moveSelection(-1)}>
-              ‹
-            </button>
-            <img
-              src={selectedPhoto.url}
-              alt={`Photo ${selectedIndex + 1}`}
-              className="max-h-full max-w-[85vw] min-w-0 object-contain"
-            />
-            <button
-              type="button"
-              aria-label="Next photo"
-              className="p-4 text-3xl"
-              onClick={() => moveSelection(1)}>
-              ›
-            </button>
-          </div>
-          <p className="p-4 text-center">
-            {selectedIndex + 1} / {photos.length}
-          </p>
-        </div>
+      {slideshowStart !== null && (
+        <Slideshow
+          photos={photos}
+          startId={slideshowStart}
+          onClose={closeSlideshow}
+        />
       )}
     </main>
   )
