@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { DateTime } from "luxon"
-import { formatOrder, hasOrderAccess, isOrderOpen } from "./orders"
+import { hasOrderAccess, isOrderOpen } from "./orders"
 
 const dates = { fair: { days: ["2026-11-17", "2026-11-18"] } }
 describe("order access and opening times", () => {
@@ -34,28 +34,4 @@ describe("order access and opening times", () => {
     ])
       expect(isOrderOpen(input)).toBe(false)
   })
-})
-describe("order payload", () => {
-  it("formats known items and allows a custom company", () => {
-    expect(
-      formatOrder({
-        company: " Custom AB ",
-        items: [{ id: "coffee", quantity: 2 }]
-      })
-    ).toBe("Order for Custom AB:\n- Black Coffee x2")
-  })
-  it.each([
-    { company: "", items: [{ id: "coffee", quantity: 1 }] },
-    { company: "AB", items: [] },
-    { company: "AB", items: [{ id: "unknown", quantity: 1 }] },
-    { company: "AB", items: [{ id: "coffee", quantity: 0 }] },
-    { company: "AB", items: [{ id: "coffee", quantity: 1.5 }] },
-    {
-      company: "AB",
-      items: [
-        { id: "coffee", quantity: 1 },
-        { id: "coffee", quantity: 2 }
-      ]
-    }
-  ])("rejects invalid input", input => expect(formatOrder(input)).toBeNull())
 })

@@ -1,6 +1,6 @@
 import { DateTime } from "luxon"
 import { z } from "zod"
-import { ITEMS } from "./catalogue"
+import type { OrderData } from "./catalogue"
 
 export type OrderErrorCode =
   | "access_required"
@@ -10,15 +10,22 @@ export type OrderErrorCode =
   | "delivery_unavailable"
   | "delivery_failed"
   | "submission_failed"
+  | "company_ineligible"
+  | "items_changed"
 export type OrderResult = {
   success: boolean
+  orderId?: number
   error?: string
   errorCode?: OrderErrorCode
 }
 export type OrderInput = {
-  company: string
+  idempotencyKey: string
+  exhibitorId: number
   items: { id: string; quantity: number }[]
 }
+export type OrderDataResult =
+  | { success: true; data: OrderData }
+  | { success: false; errorCode: OrderErrorCode }
 export type FairDates = { fair: { days: string[] } }
 
 export function hasOrderAccess(
@@ -52,35 +59,4 @@ export function isOrderOpen(dates: unknown, now: DateTime = DateTime.now()) {
       localNow <= second.set({ hour: 14, minute: 30 })
     )
   return false
-}
-
-const schema = z.object({
-  company: z.string().trim().min(1),
-  items: z
-    .array(
-      z.object({
-        id: z.string(),
-        quantity: z.number().int().positive().safe()
-      })
-    )
-    .min(1)
-})
-
-export function formatOrder(input: unknown): string | null {
-  const parsed = schema.safeParse(input)
-  if (!parsed.success) return null
-  const seen = new Set<string>()
-  const lines: string[] = []
-  for (const line of parsed.data.items) {
-    const item = ITEMS.find(item => item.id === line.id)
-    if (
-      !item ||
-      seen.has(line.id) ||
-      (item.max !== undefined && line.quantity > item.max)
-    )
-      return null
-    seen.add(line.id)
-    lines.push(`- ${item.name} x${line.quantity}`)
-  }
-  return `Order for ${parsed.data.company}:\n${lines.join("\n")}`
 }
