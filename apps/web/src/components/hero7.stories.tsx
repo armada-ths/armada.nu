@@ -84,7 +84,7 @@ export const ExhibitorsWithRecruitment: Story = {
 export const ExhibitorsSwedish: Story = {
   globals: { locale: "sv" },
   args: {
-    heading: "Ditt nästa kapitel börjar här",
+    heading: "Sätt kurs mot framgång",
     description: sv.pageTranslations.home.heroDescription,
     buttons: {
       primary: {
