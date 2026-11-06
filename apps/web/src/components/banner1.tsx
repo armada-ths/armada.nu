@@ -1,4 +1,6 @@
 "use client"
+import { Link } from "@armada/shared/i18n/navigation"
+import { useTranslations } from "next-intl"
 
 import { X } from "lucide-react"
 import { useState } from "react"
@@ -24,6 +26,8 @@ const Banner1 = ({
   defaultVisible = true,
   linkTracking
 }: Banner1Props) => {
+  const staticT = useTranslations("Static")
+
   const [isVisible, setIsVisible] = useState(defaultVisible)
 
   const handleClose = () => {
@@ -42,7 +46,7 @@ const Banner1 = ({
             <span className="text-snow">
               {description}
               {""}
-              <a
+              <Link
                 href={linkUrl}
                 className="underline underline-offset-2 hover:text-stone-50"
                 onClick={
@@ -52,7 +56,7 @@ const Banner1 = ({
                     : undefined
                 }>
                 {linkText}
-              </a>
+              </Link>
               .
             </span>
           </span>
@@ -62,7 +66,7 @@ const Banner1 = ({
           variant="noShadow"
           size="icon"
           className="bg-snow -mr-2 h-8 w-8 flex-none"
-          aria-label="Dismiss banner"
+          aria-label={staticT("dismissBanner")}
           onClick={handleClose}>
           <X className="h-4 w-4" />
         </Button>

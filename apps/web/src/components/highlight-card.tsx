@@ -1,3 +1,4 @@
+import { Link } from "@armada/shared/i18n/navigation"
 import { P } from "@/app/_components/Paragraph"
 import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
 import { NauticalCard } from "@/components/ui/nautical-card"
@@ -39,9 +40,9 @@ const HighlightCard = ({
               {ctaText}
             </TrackedLink>
           ) : (
-            <a href={ctaUrl} className="underline hover:no-underline">
+            <Link href={ctaUrl} className="underline hover:no-underline">
               {ctaText}
-            </a>
+            </Link>
           ))}
       </h2>
       <P className="pb-3 text-sm">{description}</P>

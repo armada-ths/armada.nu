@@ -31,26 +31,26 @@ export const Default: Story = {
       canvas.getByRole("link", {
         name: "Registration"
       })
-    ).toHaveAttribute("href", "/exhibitor/signup")
+    ).toHaveAttribute("href", "/en/exhibitor/signup")
     await expect(
       canvas.getByRole("img", {
-        name: "Sture Logo"
+        name: "Sture"
       })
     ).toBeInTheDocument()
     await expect(canvas.getAllByText("Member of:")).toHaveLength(2)
     await expect(
       canvas.getByRole("img", {
-        name: "Diversity Charter Sweden logo"
+        name: "Diversity Charter Sweden"
       })
     ).toBeInTheDocument()
     await expect(
       canvas.getByRole("link", {
-        name: /Sture Logo/
+        name: /Sture/
       })
     ).toHaveAttribute("href", "https://sture.se/")
     await expect(
       canvas.getByRole("link", {
-        name: /Diversity Charter Sweden logo/
+        name: /Diversity Charter Sweden/
       })
     ).toHaveAttribute("href", "https://diversitycharter.se/")
   }

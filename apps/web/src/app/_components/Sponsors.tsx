@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { LocalizedText } from "@/i18n/text"
 
 import { Page } from "@/components/shared/Page"
 
@@ -41,7 +42,7 @@ export default function Sponsors() {
         <h2
           id="sponsors-heading"
           className="font-bebas-neue text-center text-4xl">
-          Our sponsors
+          <LocalizedText id="ourSponsors" />
         </h2>
         <ul className="mt-8 grid grid-cols-1 items-center gap-6 sm:grid-cols-3 sm:gap-8">
           {sponsors.map(sponsor => (

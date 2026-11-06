@@ -1,3 +1,4 @@
+import { Link } from "@armada/shared/i18n/navigation"
 import { ReactNode } from "react"
 
 import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
@@ -60,7 +61,9 @@ const Hero1 = ({
                       {buttons.primary.text}
                     </TrackedLink>
                   ) : (
-                    <a href={buttons.primary.url}>{buttons.primary.text}</a>
+                    <Link href={buttons.primary.url}>
+                      {buttons.primary.text}
+                    </Link>
                   )}
                 </Button>
               )}
@@ -73,7 +76,9 @@ const Hero1 = ({
                       {buttons.secondary.text}
                     </TrackedLink>
                   ) : (
-                    <a href={buttons.secondary.url}>{buttons.secondary.text}</a>
+                    <Link href={buttons.secondary.url}>
+                      {buttons.secondary.text}
+                    </Link>
                   )}
                 </Button>
               )}

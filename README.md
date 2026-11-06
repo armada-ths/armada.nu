@@ -146,3 +146,15 @@ Set `NEXT_PUBLIC_API_URL` in the owning app's `.env.local` to one of these origi
 | Local dev   | `http://localhost:8080`         |
 | Staging     | `https://staging.cms.armada.nu` |
 | Production  | `https://cms.armada.nu`         |
+
+## Localization
+
+Public pages use the shared next-intl routing in packages/shared/src/i18n, with /en and /sv URLs and a host-only locale cookie. Keep API routes, static assets and storage proxies outside locale segments. Use the shared navigation helpers for internal links and include the current locale in links between apps.
+
+Keep fixed interface text in each app's English and Swedish message catalogs, with matching keys and ICU placeholders. Format dates in Europe/Stockholm. Public CMS responses include optional Swedish fields: use localizedText per field and retain original IDs, group keys and business values. Editors can leave translations blank to display the original text.
+
+State that must survive a locale route change belongs in the root LocaleProvider through useDraftState. Photo files and uploads must remain in memory. Order and Photos switch locale through the History API so active uploads and form actions stay mounted; their fixed text must therefore be translated by client components. Keep stable error codes in application state and translate them at rendering time.
+
+Storybook has a language toolbar. Verify English and Swedish stories, message key parity, routing precedence, CMS fallback, and state preservation when changing a localized component.
+
+See [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md) for English/Swedish catalogs, CMS fallback, locale navigation and localization checks.

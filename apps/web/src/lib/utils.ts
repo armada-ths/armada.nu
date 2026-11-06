@@ -15,8 +15,10 @@ export function getDateFormatString(date: DateTime) {
   return `d MMMM ${date.year !== DateTime.now().year ? " yyyy" : ""}`
 }
 
-export function formatDate(isoString: string) {
-  const date = DateTime.fromISO(isoString)
+export function formatDate(isoString: string, locale = "en") {
+  const date = DateTime.fromISO(isoString, {
+    zone: "Europe/Stockholm"
+  }).setLocale(locale)
   return date.toFormat(getDateFormatString(date))
 }
 
@@ -27,8 +29,11 @@ function getOrdinalSuffix(day: number) {
   return "th"
 }
 
-export function formatHumanDate(isoString: string) {
-  const date = DateTime.fromISO(isoString)
+export function formatHumanDate(isoString: string, locale = "en") {
+  const date = DateTime.fromISO(isoString, {
+    zone: "Europe/Stockholm"
+  }).setLocale(locale)
+  if (locale === "sv") return date.toFormat(getDateFormatString(date))
   const day = date.day
   return `${day}${getOrdinalSuffix(day)} of ${date.toFormat("MMMM")}${
     date.year !== DateTime.now().year ? ` ${date.year}` : ""
@@ -60,11 +65,12 @@ function parseEventDate(input: EventDateInput) {
 
 export function formatTimestampAsDate(
   input: EventDateInput,
-  fallback = "Date TBA"
+  fallback = "Date TBA",
+  locale = "en"
 ) {
   const date = parseEventDate(input)
   if (!date) return fallback
-  return date.toFormat(getDateFormatString(date))
+  return date.setLocale(locale).toFormat(getDateFormatString(date))
 }
 
 export function formatTimestampAsTime(

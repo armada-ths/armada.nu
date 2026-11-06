@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 const state = vi.hoisted(() => ({
   cookie: "secret",
+  available: true,
   dates: { fair: { days: ["2026-11-17", "2026-11-18"] } },
   env: {
     EXPO_ACCESS_TOKEN: "secret",
@@ -13,13 +14,16 @@ vi.mock("next/headers", () => ({
   cookies: async () => ({ get: () => ({ value: state.cookie }) })
 }))
 vi.mock("@order/env", () => ({ env: state.env }))
-vi.mock("@order/lib/cms", () => ({ fetchDates: async () => state.dates }))
+vi.mock("@order/lib/cms", () => ({
+  fetchDates: async () => (state.available ? state.dates : null)
+}))
 import { sendOrder } from "../app/actions"
 
 const input = { company: "Test AB", items: [{ id: "coffee", quantity: 1 }] }
 describe("order submission", () => {
   beforeEach(() => {
     state.cookie = "secret"
+    state.available = true
     state.env.SLACK_ORDER_TEST_HOOK_URL =
       "https://hooks.slack.com/services/test"
     vi.useFakeTimers()
@@ -35,6 +39,14 @@ describe("order submission", () => {
   it("rejects direct submission without access", async () => {
     state.cookie = "wrong"
     expect((await sendOrder(input)).success).toBe(false)
+    expect(fetch).not.toHaveBeenCalled()
+  })
+  it("reports unavailable CMS data without sending an order", async () => {
+    state.available = false
+    expect(await sendOrder(input)).toMatchObject({
+      success: false,
+      errorCode: "availability_unavailable"
+    })
     expect(fetch).not.toHaveBeenCalled()
   })
   it("rejects direct submission when closed", async () => {
@@ -65,7 +77,8 @@ describe("order submission", () => {
     vi.mocked(fetch).mockResolvedValue({ ok: false } as Response)
     expect(await sendOrder(input)).toEqual({
       success: false,
-      error: "Could not deliver your order. Please try again."
+      error: "Could not deliver your order. Please try again.",
+      errorCode: "delivery_failed"
     })
   })
 })

@@ -3,14 +3,18 @@ import { useQuery } from "@tanstack/react-query"
 
 export interface RecruitmentGroup {
   name: string
+  nameSv?: string | null
   description: string
+  descriptionSv?: string | null
 }
 
 export interface Recruitment {
   name: string
+  nameSv?: string | null
   link: string
   start_date: string
   end_date: string
+  groupNamesSv?: Record<string, string>
   groups: Record<string, RecruitmentGroup[]>
 }
 

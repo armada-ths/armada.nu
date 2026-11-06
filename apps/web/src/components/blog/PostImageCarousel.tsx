@@ -1,4 +1,5 @@
 "use client"
+import { useTranslations } from "next-intl"
 
 import { useCarouselRotation } from "@/components/shared/hooks/useCarouselRotation"
 import { Button } from "@/components/ui/button"
@@ -22,6 +23,8 @@ export function PostImageCarousel({
   images: string[]
   title: string
 }) {
+  const staticT = useTranslations("Static")
+  const accessibleT = useTranslations("Accessibility")
   const {
     api,
     selected,
@@ -38,17 +41,24 @@ export function PostImageCarousel({
       {...carouselProps}
       opts={{ loop: true, duration: reducedMotion ? 0 : 25 }}
       className="-mt-6 w-full overflow-hidden"
-      aria-label={`${title} photos`}>
+      aria-label={accessibleT("photosTitle", { title })}>
       <CarouselContent className="ml-0" aria-live={rotating ? "off" : "polite"}>
         {images.map((src, index) => (
           <CarouselItem
             key={`${src}-${index}`}
             className="relative aspect-2/1 pl-0"
-            aria-label={`${index + 1} of ${images.length}`}
+            aria-label={accessibleT("photoIndex", {
+              index: index + 1,
+              total: images.length
+            })}
             aria-hidden={index !== selected}>
             <Image
               src={src}
-              alt={images.length > 1 ? `${title} — photo ${index + 1}` : title}
+              alt={
+                images.length > 1
+                  ? accessibleT("photoAlt", { title, index: index + 1 })
+                  : title
+              }
               fill
               className="object-cover"
               sizes="(max-width: 1000px) 100vw, 1000px"
@@ -73,7 +83,7 @@ export function PostImageCarousel({
           <div
             className="absolute right-14 bottom-0 left-14 overflow-x-auto sm:hidden"
             role="group"
-            aria-label="Choose photo">
+            aria-label={staticT("choosePhoto")}>
             <div className="flex w-max min-w-full justify-center">
               {images.map((_, index) => (
                 <Button
@@ -82,7 +92,10 @@ export function PostImageCarousel({
                   variant="noShadow"
                   size="icon"
                   className="h-11 w-8 shrink-0 cursor-pointer items-end rounded-full border-0 bg-transparent pb-2"
-                  aria-label={`Go to photo ${index + 1} of ${images.length}`}
+                  aria-label={accessibleT("goToPhoto", {
+                    index: index + 1,
+                    total: images.length
+                  })}
                   aria-current={index === selected ? "true" : undefined}
                   disabled={!api}
                   onClick={() => scrollTo(index)}>
@@ -101,7 +114,7 @@ export function PostImageCarousel({
               size="icon"
               data-rotation-control
               className={`${controlClassName} absolute right-1 bottom-1 before:inset-2 sm:right-3 sm:bottom-3 sm:before:inset-1 [&_svg]:size-3.5 sm:[&_svg]:size-4`}
-              aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+              aria-label={staticT(paused ? "playSlideshow" : "pauseSlideshow")}
               onClick={toggleRotation}>
               {paused ? (
                 <Play aria-hidden="true" />

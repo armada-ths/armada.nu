@@ -1,4 +1,5 @@
 "use client"
+import { LocalizedText } from "@/i18n/text"
 
 import useEmblaCarousel, {
   type UseEmblaCarouselType
@@ -204,7 +205,9 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}>
       <ArrowLeft />
-      <span className="sr-only">Previous slide</span>
+      <span className="sr-only">
+        <LocalizedText id="previousSlide" />
+      </span>
     </Button>
   )
 }
@@ -233,7 +236,9 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}>
       <ArrowRight />
-      <span className="sr-only">Next slide</span>
+      <span className="sr-only">
+        <LocalizedText id="nextSlide" />
+      </span>
     </Button>
   )
 }

@@ -15,6 +15,10 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
+vi.mock("next-intl/plugin", () => ({
+  default: () => (config: unknown) => config
+}))
+
 describe("deployment indexing policy", () => {
   it.each([
     ["photos", photosRobots],
@@ -56,7 +60,7 @@ describe("deployment indexing policy", () => {
       sitemap: "https://armada.nu/sitemap.xml"
     })
     expect(await sitemap()).toContainEqual(
-      expect.objectContaining({ url: "https://armada.nu" })
+      expect.objectContaining({ url: "https://armada.nu/en" })
     )
     vi.mocked(getDefaultFeatureFlags, { partial: true }).mockResolvedValueOnce({
       ABOUT_TEAM_PAGE: true

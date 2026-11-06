@@ -23,6 +23,7 @@ type Story = StoryObj<typeof meta>
 
 export const ExistingPost: Story = {
   play: async ({ canvas }) => {
+    await expect(canvas.getByText("By Armada team")).toBeVisible()
     await expect(canvas.getByRole("img")).toBeVisible()
     await expect(canvas.queryByRole("button")).not.toBeInTheDocument()
   }
@@ -56,5 +57,25 @@ export const FallbackImage: Story = {
       "src",
       expect.stringMatching(/^\/armada_licorice\.svg(?:\?.*)?$/)
     )
+  }
+}
+
+export const Swedish: Story = {
+  globals: { locale: "sv" },
+  args: {
+    post: {
+      ...meta.args.post,
+      titleSv: "En dag på Armada",
+      textSv: "Studenter träffade arbetsgivare på mässan."
+    }
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Av Armada team")).toBeVisible()
+    await expect(
+      canvas.getByRole("heading", { name: "En dag på Armada" })
+    ).toBeVisible()
+    await expect(
+      canvas.getByText("Studenter träffade arbetsgivare på mässan.")
+    ).toBeVisible()
   }
 }

@@ -1,4 +1,5 @@
 "use client"
+import { useTranslations } from "@armada/shared/i18n/client"
 
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
 import {
@@ -23,8 +24,8 @@ export default function Modal({
   setOpen,
   onClose,
   className,
-  title = "Dialog",
-  description = "Dialog content"
+  title,
+  description
 }: {
   children: ReactNode
   open: boolean
@@ -34,6 +35,7 @@ export default function Modal({
   title?: string
   description?: string
 }) {
+  const t = useTranslations("Common")
   const { width } = useScreenSize()
 
   function onOpenChange(open: boolean) {
@@ -52,8 +54,10 @@ export default function Modal({
             className
           )}>
           <DialogHeader className="sr-only">
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            <DialogTitle>{title ?? t("dialog")}</DialogTitle>
+            <DialogDescription>
+              {description ?? t("dialogDescription")}
+            </DialogDescription>
           </DialogHeader>
           <div className="h-full min-h-0 overflow-hidden">{children}</div>
         </DialogContent>
@@ -68,8 +72,10 @@ export default function Modal({
           className,
           "w-full max-w-none"
         )}>
-        <DrawerTitle className="sr-only">{title}</DrawerTitle>
-        <DrawerDescription className="sr-only">{description}</DrawerDescription>
+        <DrawerTitle className="sr-only">{title ?? t("dialog")}</DrawerTitle>
+        <DrawerDescription className="sr-only">
+          {description ?? t("dialogDescription")}
+        </DrawerDescription>
         <div className="pb-4">{children}</div>
       </DrawerContent>
     </Drawer>

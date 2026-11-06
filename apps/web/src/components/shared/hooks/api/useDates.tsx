@@ -6,6 +6,7 @@ import { DateTime } from "luxon"
 export interface FairDate {
   fair: {
     description: string
+    descriptionSv?: string | null
     days: string[]
   }
   ir: {
