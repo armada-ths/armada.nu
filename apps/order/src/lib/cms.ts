@@ -1,7 +1,12 @@
 import { env } from "@order/env"
 import type { FairDates } from "./orders"
 import { z } from "zod"
-import { exhibitorSchema, loungeItemSchema, type OrderData } from "./catalogue"
+import {
+  exhibitorSchema,
+  loungeItemSchema,
+  loungeCategorySchema,
+  type OrderData
+} from "./catalogue"
 
 async function fetchValidated<T>(
   path: string,
@@ -32,35 +37,47 @@ async function fetchValidated<T>(
 }
 
 export async function fetchDates(): Promise<FairDates | null> {
-  try {
-    const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/dates`, {
-      cache: "no-store",
-      signal: AbortSignal.timeout(10000)
-    })
-    return response.ok ? ((await response.json()) as FairDates) : null
-  } catch {
-    return null
-  }
+  return fetchValidated(
+    "dates",
+    z.object({ fair: z.object({ days: z.array(z.string()).min(2) }) })
+  )
 }
 
 export async function fetchOrderData(): Promise<OrderData | null> {
   const filter = encodeURIComponent(JSON.stringify({ tier: "Gold" }))
-  const [items, exhibitors] = await Promise.all([
-    fetchValidated("lounge-items", z.array(loungeItemSchema)),
+  const [catalogue, exhibitors] = await Promise.all([
+    fetchValidated(
+      "lounge-catalogue",
+      z.object({
+        revision: z.number().int().nonnegative().safe(),
+        items: z.array(loungeItemSchema),
+        categories: z.array(loungeCategorySchema)
+      })
+    ),
     fetchValidated(
       `exhibitors?all=true&filter=${filter}`,
       z.array(exhibitorSchema)
     )
   ])
-  if (!items || !exhibitors) return null
+  if (!catalogue || !exhibitors) return null
+  const { items, categories } = catalogue
   if (
     new Set(items.map(item => item.id)).size !== items.length ||
-    new Set(exhibitors.map(item => item.id)).size !== exhibitors.length
+    new Set(exhibitors.map(item => item.id)).size !== exhibitors.length ||
+    new Set(categories.map(category => category.id)).size !== categories.length
   ) {
     console.error("Order CMS response contains duplicate IDs")
     return null
   }
+  const categoryIds = new Set(categories.map(category => category.id))
+  if (items.some(item => !categoryIds.has(item.categoryId))) {
+    console.error("Order CMS response contains an unknown category")
+    return null
+  }
   return {
+    categories: categories.sort(
+      (a, b) => a.sortOrder - b.sortOrder || a.id - b.id
+    ),
     items: items.sort((a, b) => a.sortOrder - b.sortOrder || a.id - b.id),
     exhibitors: exhibitors.sort((a, b) => a.name.localeCompare(b.name))
   }

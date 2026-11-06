@@ -7,7 +7,7 @@ import { Page } from "@armada/shared/Page"
 import { Button } from "@armada/shared/ui/button"
 import { Card } from "@armada/shared/ui/card"
 import { Input } from "@armada/shared/ui/input"
-import { Check } from "lucide-react"
+import { Check, Trash2 } from "lucide-react"
 import {
   startTransition,
   useCallback,
@@ -57,6 +57,11 @@ export function OrderForm({
     {}
   )
   const [submitted, setSubmitted] = useDraftState("submitted", false)
+  const [orderId, setOrderId] = useDraftState<number | null>("orderId", null)
+  const [attempt, setAttempt] = useDraftState<{
+    key: string
+    payload: string
+  } | null>("submissionAttempt", null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
   const [activeOption, setActiveOption] = useState(-1)
@@ -166,19 +171,31 @@ export function OrderForm({
     }
     submissionLock.current = true
     setIsSubmitting(true)
+    const payload = {
+      exhibitorId: selectedCompany.id,
+      items: lines.map(({ id, quantity }) => ({ id, quantity }))
+    }
+    const signature = JSON.stringify(payload)
+    const key =
+      attempt?.payload === signature ? attempt.key : crypto.randomUUID()
+    setAttempt({ key, payload: signature })
     try {
       const result = await submitOrder({
-        exhibitorId: selectedCompany.id,
-        items: lines.map(({ id, quantity }) => ({ id, quantity }))
+        ...payload,
+        idempotencyKey: key
       })
       if (result.success) {
         toast.success(<OrderFeedback code="submittedToast" />)
         setSubmitted(true)
+        setOrderId(result.orderId ?? null)
+        setAttempt(null)
         setCompany("")
         setExhibitorId(null)
         setCart({})
         setCartItems({})
       } else {
+        if (result.errorCode && result.errorCode !== "submission_failed")
+          setAttempt(null)
         toast.error(
           <OrderErrorFeedback code={result.errorCode ?? "submission_failed"} />
         )
@@ -203,6 +220,9 @@ export function OrderForm({
             {t("submittedHeading")}
           </h2>
           <p>{t("submittedBody")}</p>
+          {orderId != null && (
+            <p className="mt-2">{t("orderReference", { id: orderId })}</p>
+          )}
           <Button
             size="sm"
             className="mt-6"
@@ -324,70 +344,98 @@ export function OrderForm({
           {t("allSoldOut")}
         </p>
       )}
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {data.items.map(item => (
-          <Card key={item.id} className="bg-snow text-licorice p-4">
-            <OrderItem
-              name={nameOf(item)}
-              description={
-                localizedText(locale, item.description, item.descriptionSv) ??
-                undefined
-              }
-              imageUrl={item.imageUrl ?? undefined}
-              max={item.maxPerOrder ?? undefined}
-              unavailable={item.soldOut || blocked}
-              soldOutLabel={item.soldOut ? t("soldOut") : undefined}
-              quantity={cart[String(item.id)] ?? 0}
-              onIncrease={() =>
-                updateCart(item, (cart[String(item.id)] ?? 0) + 1)
-              }
-              onDecrease={() =>
-                updateCart(item, Math.max(0, (cart[String(item.id)] ?? 0) - 1))
-              }
-              onChange={quantity => updateCart(item, quantity)}
-              labels={{
-                decrease: t("controls.decrease"),
-                quantity: t("controls.quantity"),
-                increase: t("controls.increase")
-              }}
-            />
-          </Card>
-        ))}
-      </div>
+      {data.categories.map(category => {
+        const items = data.items.filter(item => item.categoryId === category.id)
+        if (!items.length) return null
+        return (
+          <section
+            key={category.id}
+            className="mt-8"
+            aria-labelledby={`category-${category.id}`}>
+            <h2
+              id={`category-${category.id}`}
+              className="text-xl font-semibold">
+              {localizedText(locale, category.name, category.nameSv)}
+            </h2>
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {items.map(item => (
+                <Card
+                  key={item.id}
+                  className="bg-snow text-licorice min-w-0 p-3">
+                  <OrderItem
+                    name={nameOf(item)}
+                    description={
+                      localizedText(
+                        locale,
+                        item.description,
+                        item.descriptionSv
+                      ) ?? undefined
+                    }
+                    max={item.maxPerOrder ?? undefined}
+                    unavailable={item.soldOut || blocked}
+                    soldOutLabel={item.soldOut ? t("soldOut") : undefined}
+                    quantity={cart[String(item.id)] ?? 0}
+                    onIncrease={() =>
+                      updateCart(item, (cart[String(item.id)] ?? 0) + 1)
+                    }
+                    onDecrease={() =>
+                      updateCart(
+                        item,
+                        Math.max(0, (cart[String(item.id)] ?? 0) - 1)
+                      )
+                    }
+                    onChange={quantity => updateCart(item, quantity)}
+                    labels={{
+                      decrease: t("controls.decrease"),
+                      quantity: t("controls.quantity"),
+                      increase: t("controls.increase"),
+                      readMore: t("readMore"),
+                      close: t("closeDetails")
+                    }}
+                  />
+                </Card>
+              ))}
+            </div>
+          </section>
+        )
+      })}
       <section
-        className="text-licorice mt-6 text-sm"
+        className="text-licorice mt-8 text-sm"
         aria-label={t("cartLabel")}>
-        <h2 className="font-medium">{t("cartLabel")}</h2>
+        <h2 className="mb-3 text-xl font-semibold">{t("cartLabel")}</h2>
         {!lines.length ? (
           <p>{t("empty")}</p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="border-licorice/20 divide-licorice/15 divide-y border-y">
             {lines.map(line => (
-              <li key={line.id} className="flex flex-wrap items-center gap-2">
-                <span>
-                  {line.item ? nameOf(line.item) : t("removedItem")} ×{" "}
-                  {format.number(line.quantity)}
-                </span>
-                {line.invalid && (
-                  <span role="status">
-                    {!line.current
-                      ? t("removedItem")
-                      : line.current.soldOut
-                        ? t("soldOut")
-                        : t("limitChanged")}
+              <li key={line.id} className="flex items-center gap-3 py-3">
+                <div className="min-w-0 flex-1">
+                  <span className="block font-semibold wrap-break-word">
+                    {line.item ? nameOf(line.item) : t("removedItem")}
                   </span>
-                )}
-                <Button
+                  {line.invalid && (
+                    <span role="status" className="mt-1 block text-xs">
+                      {!line.current
+                        ? t("removedItem")
+                        : line.current.soldOut
+                          ? t("soldOut")
+                          : t("limitChanged")}
+                    </span>
+                  )}
+                </div>
+                <span className="shrink-0 tabular-nums">
+                  × {format.number(line.quantity)}
+                </span>
+                <button
                   type="button"
-                  size="sm"
-                  variant="neutral"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-md text-red-700 hover:bg-red-700/5 focus-visible:ring-2 focus-visible:ring-red-700 disabled:opacity-50"
                   disabled={isSubmitting}
                   onClick={() => removeLine(line.id)}
                   aria-label={t("removeItem", {
                     name: line.item ? nameOf(line.item) : t("removedItem")
                   })}>
-                  {t("remove")}
-                </Button>
+                  <Trash2 className="size-4" aria-hidden="true" />
+                </button>
               </li>
             ))}
           </ul>

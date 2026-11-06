@@ -2,8 +2,9 @@
 import { cookies } from "next/headers"
 import { env } from "@order/env"
 import { fetchDates, fetchOrderData } from "@order/lib/cms"
+import { z } from "zod"
+import { saveOrder, deliverSavedOrder } from "@order/lib/delivery"
 import {
-  validateOrder,
   hasOrderAccess,
   isOrderOpen,
   type OrderInput,
@@ -34,50 +35,29 @@ export async function refreshOrderData(): Promise<OrderDataResult> {
 }
 
 export async function sendOrder(input: OrderInput): Promise<OrderResult> {
-  const current = await refreshOrderData()
-  if (!current.success) return current
-  const validated = validateOrder(input, current.data)
-  if (!validated.success) return validated
-  const message = validated.message
-  const production = process.env.VERCEL_ENV === "production"
-  const webhook = production
-    ? env.SLACK_ORDER_HOOK_URL
-    : env.SLACK_ORDER_TEST_HOOK_URL
-  if (!webhook || (!production && webhook === env.SLACK_ORDER_HOOK_URL)) {
-    return {
-      success: false,
-      errorCode: "delivery_unavailable",
-      error: "Order delivery is not configured."
-    }
-  }
-  try {
-    const url = new URL(webhook)
-    if (url.protocol !== "https:" || url.hostname !== "hooks.slack.com")
-      return {
-        success: false,
-        errorCode: "delivery_unavailable",
-        error: "Order delivery is not configured."
-      }
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: production ? message : `[STAGING TEST] ${message}`
-      }),
-      signal: AbortSignal.timeout(10000)
+  if (
+    !hasOrderAccess((await cookies()).get("_ea")?.value, env.EXPO_ACCESS_TOKEN)
+  )
+    return { success: false, errorCode: "access_required" }
+  const parsed = z
+    .object({
+      idempotencyKey: z.uuid(),
+      exhibitorId: z.number().int().positive().safe(),
+      items: z
+        .array(
+          z.object({
+            id: z.string().regex(/^[1-9]\d*$/),
+            quantity: z.number().int().positive().safe()
+          })
+        )
+        .min(1)
+        .max(1000)
     })
-    return response.ok
-      ? { success: true }
-      : {
-          success: false,
-          errorCode: "delivery_failed",
-          error: "Could not deliver your order. Please try again."
-        }
-  } catch {
-    return {
-      success: false,
-      errorCode: "delivery_failed",
-      error: "Could not deliver your order. Please try again."
-    }
-  }
+    .safeParse(input)
+  if (!parsed.success) return { success: false, errorCode: "invalid_order" }
+  const saved = await saveOrder(parsed.data)
+  if (!saved.success) return saved
+  // Persistence is authoritative; a notification failure never loses the order.
+  await deliverSavedOrder(saved.data.id)
+  return { success: true, orderId: saved.data.id }
 }

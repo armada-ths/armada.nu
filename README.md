@@ -149,11 +149,15 @@ Set `NEXT_PUBLIC_API_URL` in the owning app's `.env.local` to one of these origi
 
 ## Lounge orders
 
-The Order app reads the `lounge-items` catalogue and the complete Gold exhibitor list from ArmadaCMS with no-store requests. Staff manage names, translations, optional pictures, display order, quantity limits, and sold-out status in the CMS. Sold-out cards remain visible with ordering disabled; deleted items disappear. There is no price or inventory tracking.
+The Order app reads lounge categories/items and the complete Gold exhibitor list from ArmadaCMS with no-store requests. Staff manage localized categories and drag categories/items into order in the CMS. Item cards have compact, equal heights without pictures and bold titles; a chevron appears only beside truncated descriptions to show complete text. The cart shows aligned quantities and trash icons for removing items. Sold-out cards remain visible with ordering disabled; deleted items disappear. There is no price or inventory tracking.
 
-The form refreshes every 30 seconds while visible and on focus. Unavailable cart items stay flagged until explicitly removed, and the server rechecks Gold eligibility, opening times, and the current menu before delivering to Slack. Custom company names are not accepted. The shared access link does not verify company identity.
+The form refreshes every 30 seconds while visible and on focus. Unavailable cart items stay flagged until explicitly removed. CMS submission rechecks Gold eligibility, Stockholm opening times, and the current menu, then saves an immutable order with an idempotency key before the Order app sends Slack. Submission success means the order is saved, even if Slack fails; CMS staff can track/retry notifications and change order status. Custom company names are not accepted. The shared access link does not verify company identity.
 
-Deploy the CMS migration/API/admin first and have HoSS populate and approve this year's menu before releasing the Order app. There is no seeded menu or hardcoded fallback. Preview testing must use the test Slack webhook. Run `pnpm exec vitest run --project unit apps/order/src/lib` and the Order Storybook interactions for focused validation.
+Deploy the CMS migration/API/admin first and have HoSS populate and approve this year's menu before releasing the Order app. The category migration intentionally clears existing lounge items; storage files and other data are untouched. There is no seeded menu or hardcoded fallback. Preview/local orders are saved as test orders and only use test Slack.
+
+Set the server-only `LOUNGE_ORDER_SUBMISSION_SECRET` / `LOUNGE_ORDER_TEST_SUBMISSION_SECRET` to match the CMS environment; live and test secrets must differ. `ORDER_INTERNAL_SECRET` authenticates CMS retries at `POST /api/internal/order-delivery`; the CMS must use the matching environment's Order origin and secret. Slack webhooks remain configured only in Order. Never expose these secrets to browsers. Missing Slack configuration does not prevent persistence, but is reported as a failed notification in CMS.
+
+Run `pnpm exec vitest run --project unit apps/order/src/lib` and the Order Storybook interactions for focused validation.
 
 ## Localization
 

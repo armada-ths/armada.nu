@@ -5,10 +5,19 @@ import { OrderForm } from "./OrderForm"
 import type { OrderData } from "@order/lib/catalogue"
 
 const data: OrderData = {
+  categories: [
+    {
+      id: 1,
+      name: "Drinks and snacks",
+      nameSv: "Dryck och snacks",
+      sortOrder: 0
+    }
+  ],
   exhibitors: [{ id: 1, name: "Example AB", tier: "Gold" }],
   items: [
     {
       id: 1,
+      categoryId: 1,
       name: "Coffee",
       nameSv: "Kaffe",
       description: "Fresh coffee",
@@ -19,6 +28,7 @@ const data: OrderData = {
     },
     {
       id: 2,
+      categoryId: 1,
       name: "Cinnamon bun",
       nameSv: "Kanelbulle",
       sortOrder: 1,
@@ -33,14 +43,14 @@ const meta = {
   args: {
     data,
     refreshData: fn().mockResolvedValue({ success: true, data }),
-    submitOrder: fn().mockResolvedValue({ success: true })
+    submitOrder: fn().mockResolvedValue({ success: true, orderId: 42 })
   },
   beforeEach: ({ args }) => {
     mocked(args.refreshData).mockResolvedValue({
       success: true,
       data: args.data
     })
-    mocked(args.submitOrder).mockResolvedValue({ success: true })
+    mocked(args.submitOrder).mockResolvedValue({ success: true, orderId: 42 })
   },
   decorators: [
     Story => (
@@ -82,6 +92,7 @@ export const Submit: Story = {
     await expect(await canvas.findByText("Order submitted!")).toBeVisible()
     await expect(args.submitOrder).toHaveBeenCalledWith({
       exhibitorId: 1,
+      idempotencyKey: expect.any(String),
       items: [{ id: "1", quantity: 1 }]
     })
     await userEvent.click(canvas.getByRole("button", { name: "New order" }))
@@ -117,17 +128,17 @@ export const KeyboardSelection: Story = {
   }
 }
 
-export const DeliveryFailure: Story = {
+export const PersistenceFailure: Story = {
   beforeEach: ({ args }) => {
     mocked(args.submitOrder).mockResolvedValue({
       success: false,
-      errorCode: "delivery_failed"
+      errorCode: "submission_failed"
     })
   },
   args: {
     submitOrder: fn().mockResolvedValue({
       success: false,
-      errorCode: "delivery_failed"
+      errorCode: "submission_failed"
     })
   },
   play: async ({ canvas, canvasElement, args }) => {
@@ -139,7 +150,7 @@ export const DeliveryFailure: Story = {
     await waitFor(() =>
       expect(
         within(canvasElement.ownerDocument.body).getByText(
-          "Could not deliver your order. Please try again."
+          "Could not submit your order. Check your connection and try again."
         )
       ).toBeVisible()
     )
@@ -148,6 +159,8 @@ export const DeliveryFailure: Story = {
     )
     await userEvent.click(canvas.getByRole("button", { name: "Send" }))
     await expect(args.submitOrder).toHaveBeenCalledTimes(2)
+    const calls = mocked(args.submitOrder).mock.calls
+    await expect(calls[0][0].idempotencyKey).toBe(calls[1][0].idempotencyKey)
   }
 }
 
@@ -249,11 +262,136 @@ export const SwedishSubmit: Story = {
     ).toBeVisible()
     await expect(args.submitOrder).toHaveBeenCalledWith({
       exhibitorId: 1,
+      idempotencyKey: expect.any(String),
       items: [{ id: "1", quantity: 1 }]
     })
   }
 }
 export const EmptyMenu: Story = { args: { data: { ...data, items: [] } } }
+export const CartRows: Story = {
+  args: {
+    data: {
+      ...data,
+      items: data.items.map(item => ({ ...item, soldOut: false }))
+    }
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "Increase" })[0]
+    )
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "Increase" })[1]
+    )
+    const cart = within(canvas.getByRole("region", { name: "Cart:" }))
+    const removeCoffee = cart.getByRole("button", { name: "Remove Coffee" })
+    const removeBun = cart.getByRole("button", { name: "Remove Cinnamon bun" })
+    await expect(removeCoffee.textContent).toBe("")
+    const icon = removeCoffee.querySelector("svg")
+    if (!icon) throw new Error("Missing trash icon")
+    await expect(removeCoffee).toHaveClass("text-red-700")
+    await expect(getComputedStyle(icon).color).toBe(
+      getComputedStyle(removeCoffee).color
+    )
+    const row = removeCoffee.closest("li")
+    if (!row) throw new Error("Missing cart row")
+    await expect(getComputedStyle(icon).color).not.toBe(
+      getComputedStyle(row).color
+    )
+    await expect(removeCoffee.getBoundingClientRect().right).toBe(
+      removeBun.getBoundingClientRect().right
+    )
+    await userEvent.click(removeCoffee)
+    await expect(cart.queryByText("Coffee")).not.toBeInTheDocument()
+    await expect(cart.getByText("Cinnamon bun")).toBeVisible()
+    await userEvent.click(removeBun)
+    await expect(cart.getByText("(empty)")).toBeVisible()
+  }
+}
+export const SwedishCart: Story = {
+  globals: { locale: "sv" },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getAllByRole("button", { name: "Öka" })[0])
+    const cart = within(canvas.getByRole("region", { name: "Varukorg:" }))
+    await userEvent.click(cart.getByRole("button", { name: "Ta bort Kaffe" }))
+    await expect(cart.getByText("(tom)")).toBeVisible()
+  }
+}
+export const EqualSizedCategories: Story = {
+  args: {
+    data: {
+      ...data,
+      categories: [
+        ...data.categories,
+        { id: 2, name: "Fruit", nameSv: "Frukt", sortOrder: 1 }
+      ],
+      items: [
+        ...data.items,
+        {
+          id: 3,
+          categoryId: 2,
+          name: "Fresh seasonal fruit with a very long product name",
+          nameSv: "Säsongens färska frukt med ett mycket långt produktnamn",
+          description: "A changing selection of seasonal fruit. ".repeat(15),
+          descriptionSv: "Ett varierat urval av säsongens frukt. ".repeat(15),
+          sortOrder: 0,
+          soldOut: false
+        }
+      ]
+    }
+  },
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByRole("heading", { name: "Fruit" })).toBeVisible()
+    const cards = [...canvasElement.querySelectorAll('[data-slot="card"]')]
+    const height = cards[0].getBoundingClientRect().height
+    await expect(height).toBe(128)
+    for (const card of cards) {
+      await expect(card.getBoundingClientRect().height).toBe(height)
+      await expect(card.scrollHeight).toBeLessThanOrEqual(card.clientHeight)
+      await expect(card.scrollWidth).toBeLessThanOrEqual(card.clientWidth)
+      const title = card.querySelector<HTMLElement>(".font-bold")
+      const controls = card.querySelector<HTMLInputElement>("input")
+      const firstTitle = cards[0].querySelector<HTMLElement>(".font-bold")
+      const firstControls = cards[0].querySelector<HTMLInputElement>("input")
+      if (!title || !controls || !firstTitle || !firstControls)
+        throw new Error("Missing card title or quantity controls")
+      await expect(getComputedStyle(title).fontSize).toBe("16px")
+      await expect(
+        title.getBoundingClientRect().top - card.getBoundingClientRect().top
+      ).toBe(
+        firstTitle.getBoundingClientRect().top -
+          cards[0].getBoundingClientRect().top
+      )
+      await expect(
+        controls.getBoundingClientRect().bottom -
+          card.getBoundingClientRect().top
+      ).toBe(
+        firstControls.getBoundingClientRect().bottom -
+          cards[0].getBoundingClientRect().top
+      )
+    }
+    const details = canvas.getAllByRole("button", { name: "Read more" })
+    await userEvent.click(details[details.length - 1])
+    await expect(canvas.getByRole("dialog")).toBeVisible()
+    await userEvent.keyboard("{Escape}")
+    await waitFor(() =>
+      expect(canvas.queryByRole("dialog")).not.toBeInTheDocument()
+    )
+  }
+}
+export const SwedishCategories: Story = {
+  ...EqualSizedCategories,
+  globals: { locale: "sv" },
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByRole("heading", { name: "Frukt" })).toBeVisible()
+    const cards = [...canvasElement.querySelectorAll('[data-slot="card"]')]
+    for (const card of cards)
+      await expect(card.getBoundingClientRect().height).toBe(128)
+    const details = canvas.getAllByRole("button", { name: "Läs mer" })
+    await userEvent.click(details[details.length - 1])
+    await expect(canvas.getByRole("dialog")).toBeVisible()
+    await userEvent.click(canvas.getByRole("button", { name: "Stäng" }))
+  }
+}
 export const NoGoldCompanies: Story = {
   args: { data: { ...data, exhibitors: [] } }
 }
@@ -310,6 +448,11 @@ export const ContrastAndLayout: Story = {
       if (!parent) throw new Error("Missing quantity controls")
       await expect(parent.scrollWidth).toBeLessThanOrEqual(parent.clientWidth)
     }
+    const cards = [...canvasElement.querySelectorAll("[data-order-item]")]
+    await expect(cards.length).toBeGreaterThan(1)
+    const height = cards[0].getBoundingClientRect().height
+    for (const item of cards)
+      await expect(item.getBoundingClientRect().height).toBe(height)
   }
 }
 

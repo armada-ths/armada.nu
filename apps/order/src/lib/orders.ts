@@ -14,10 +14,12 @@ export type OrderErrorCode =
   | "items_changed"
 export type OrderResult = {
   success: boolean
+  orderId?: number
   error?: string
   errorCode?: OrderErrorCode
 }
 export type OrderInput = {
+  idempotencyKey: string
   exhibitorId: number
   items: { id: string; quantity: number }[]
 }
@@ -57,49 +59,4 @@ export function isOrderOpen(dates: unknown, now: DateTime = DateTime.now()) {
       localNow <= second.set({ hour: 14, minute: 30 })
     )
   return false
-}
-
-const schema = z.object({
-  exhibitorId: z.number().int().positive().safe(),
-  items: z
-    .array(
-      z.object({
-        id: z.string(),
-        quantity: z.number().int().positive().safe()
-      })
-    )
-    .min(1)
-})
-
-export function validateOrder(
-  input: unknown,
-  data: OrderData
-):
-  | { success: true; message: string }
-  | { success: false; errorCode: OrderErrorCode } {
-  const parsed = schema.safeParse(input)
-  if (!parsed.success) return { success: false, errorCode: "invalid_order" }
-  const exhibitor = data.exhibitors.find(
-    item => item.id === parsed.data.exhibitorId
-  )
-  if (!exhibitor || exhibitor.tier !== "Gold")
-    return { success: false, errorCode: "company_ineligible" }
-  const seen = new Set<string>()
-  const lines: string[] = []
-  for (const line of parsed.data.items) {
-    const item = data.items.find(item => String(item.id) === line.id)
-    if (
-      !item ||
-      item.soldOut ||
-      seen.has(line.id) ||
-      (item.maxPerOrder != null && line.quantity > item.maxPerOrder)
-    )
-      return { success: false, errorCode: "items_changed" }
-    seen.add(line.id)
-    lines.push(`- ${item.name} x${line.quantity}`)
-  }
-  return {
-    success: true,
-    message: `Order for ${exhibitor.name}:\n${lines.join("\n")}`
-  }
 }

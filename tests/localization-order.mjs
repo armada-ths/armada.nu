@@ -6,7 +6,7 @@ import { once } from "node:events"
 import { readFile, mkdir } from "node:fs/promises"
 import { setTimeout as delay } from "node:timers/promises"
 import path from "node:path"
-import { fileURLToPath } from "node:url"
+import { fileURLToPath, pathToFileURL } from "node:url"
 import { chromium } from "playwright"
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const en = JSON.parse(
@@ -21,12 +21,27 @@ const sv = JSON.parse(
     "utf8"
   )
 )
-let delivery = "fail",
+let storage = "fail",
   closed = false,
   app,
   browser,
   logs = ""
 const delivered = []
+const saved = new Map()
+const attempts = []
+const categories = [{ id: 1, name: "Drinks", nameSv: "Dryck", sortOrder: 0 }]
+const items = [
+  {
+    id: 1,
+    categoryId: 1,
+    name: "Coffee",
+    nameSv: "Kaffe",
+    description: "Fresh coffee",
+    descriptionSv: "Nybryggt kaffe",
+    sortOrder: 0,
+    soldOut: false
+  }
+]
 const cms = createServer(async (request, response) => {
   response.setHeader("Content-Type", "application/json")
   if (request.url === "/api/v1/dates") {
@@ -41,26 +56,81 @@ const cms = createServer(async (request, response) => {
     )
     return
   }
-  if (request.url === "/api/v1/exhibitors") {
-    response.end(JSON.stringify([{ name: "Example AB" }]))
+  if (request.url?.startsWith("/api/v1/exhibitors?")) {
+    response.end(JSON.stringify([{ id: 1, name: "Example AB", tier: "Gold" }]))
+    return
+  }
+  if (request.url === "/api/v1/lounge-items") {
+    response.end(JSON.stringify(items))
+    return
+  }
+  if (request.url === "/api/v1/lounge-catalogue") {
+    response.end(JSON.stringify({ revision: 0, items, categories }))
+    return
+  }
+  if (request.url === "/api/v1/lounge-categories") {
+    response.end(JSON.stringify(categories))
+    return
+  }
+  if (request.url === "/api/v1/lounge-orders/submit") {
+    assert.equal(request.headers.authorization, "Bearer fixture-test-service")
+    let body = ""
+    for await (const chunk of request) body += chunk
+    const input = JSON.parse(body)
+    attempts.push(input)
+    if (storage === "fail") {
+      response.statusCode = 503
+      response.end(JSON.stringify({ errorCode: "submission_failed" }))
+      return
+    }
+    if (!saved.has(input.idempotencyKey))
+      saved.set(input.idempotencyKey, {
+        id: 42,
+        companyName: "Example AB",
+        isTest: true,
+        status: "pending",
+        deliveryStatus: "pending",
+        lines: [
+          {
+            itemId: 1,
+            categoryId: 1,
+            itemName: "Coffee",
+            categoryName: "Drinks",
+            quantity: 1
+          }
+        ]
+      })
+    response.end(JSON.stringify(saved.get(input.idempotencyKey)))
+    return
+  }
+  if (request.url === "/api/v1/lounge-orders/42/claim") {
+    const order = [...saved.values()][0]
+    response.end(
+      JSON.stringify({ claimed: true, claimToken: "fixture-claim", order })
+    )
+    return
+  }
+  if (request.url === "/api/v1/lounge-orders/42/delivery") {
+    let body = ""
+    for await (const chunk of request) body += chunk
+    const outcome = JSON.parse(body)
+    const order = [...saved.values()][0]
+    order.deliveryStatus = outcome.status
+    response.end(JSON.stringify({ success: true }))
     return
   }
   if (request.url === "/__slack") {
     let body = ""
     for await (const chunk of request) body += chunk
-    if (delivery === "fail") {
-      response.statusCode = 503
-      response.end("{}")
-      return
-    }
     delivered.push(JSON.parse(body))
+    response.statusCode = 503
     response.end("{}")
     return
   }
   response.statusCode = 404
   response.end("{}")
 })
-const origin = "http://127.0.0.1:8001"
+const origin = "http://127.0.0.1:18002"
 try {
   cms.listen(19080, "127.0.0.1")
   await once(cms, "listening")
@@ -68,13 +138,13 @@ try {
     process.execPath,
     [
       "--import",
-      path.join(root, "tests/order-fetch-fixture.mjs"),
+      pathToFileURL(path.join(root, "tests/order-fetch-fixture.mjs")).href,
       path.join(root, "node_modules/next/dist/bin/next"),
       "start",
       "-H",
       "127.0.0.1",
       "-p",
-      "8001"
+      "18002"
     ],
     {
       cwd: path.join(root, "apps/order"),
@@ -83,6 +153,7 @@ try {
         NEXT_PUBLIC_API_URL: "http://127.0.0.1:19080",
         ORDER_FIXTURE_URL: "http://127.0.0.1:19080",
         EXPO_ACCESS_TOKEN: "local-order-fixture",
+        LOUNGE_ORDER_TEST_SUBMISSION_SECRET: "fixture-test-service",
         SLACK_ORDER_TEST_HOOK_URL:
           "https://hooks.slack.com/services/local-fixture",
         VERCEL_ENV: "preview",
@@ -95,6 +166,8 @@ try {
   app.stdout.on("data", data => (logs += data))
   app.stderr.on("data", data => (logs += data))
   for (let attempt = 0; attempt < 100; attempt++) {
+    if (app.exitCode !== null)
+      throw new Error("Order fixture server exited during startup")
     try {
       if ((await fetch(origin + "/robots.txt")).ok) break
     } catch {
@@ -119,15 +192,17 @@ try {
   )
   const cookie = (await context.cookies()).find(cookie => cookie.name === "_ea")
   assert.equal(cookie?.httpOnly, true)
-  await page.getByRole("button", { name: sv.Order.send, exact: true }).click()
-  await page.getByText(sv.Order.emptyCompany, { exact: true }).waitFor()
+  await page
+    .getByRole("button", { name: sv.Order.send, exact: true })
+    .isDisabled()
+  await page.getByRole("heading", { name: "Dryck", exact: true }).waitFor()
   await page.getByRole("button", { name: sv.Common.switchLanguage }).click()
-  await page.getByText(en.Order.emptyCompany, { exact: true }).waitFor()
+  await page.getByRole("heading", { name: "Drinks", exact: true }).waitFor()
   await page.getByRole("button", { name: en.Common.switchLanguage }).click()
   await page
-    .getByRole("textbox", { name: sv.Order.companyLabel, exact: true })
+    .getByRole("combobox", { name: sv.Order.companyLabel, exact: true })
     .fill("Example AB")
-  await page.getByRole("button", { name: "Example AB", exact: true }).click()
+  await page.getByRole("option", { name: "Example AB", exact: true }).click()
   await page
     .getByRole("button", { name: sv.Order.controls.increase, exact: true })
     .first()
@@ -143,7 +218,7 @@ try {
   )
   assert.equal(
     await page
-      .getByRole("textbox", { name: en.Order.companyLabel, exact: true })
+      .getByRole("combobox", { name: en.Order.companyLabel, exact: true })
       .inputValue(),
     "Example AB"
   )
@@ -156,12 +231,12 @@ try {
   )
   await page.getByRole("button", { name: en.Order.send, exact: true }).click()
   await page
-    .getByText(en.OrderErrors.delivery_failed, { exact: true })
+    .getByText(en.OrderErrors.submission_failed, { exact: true })
     .waitFor()
   await page.getByRole("button", { name: en.Common.switchLanguage }).click()
   await page.waitForURL("**/sv?source=test#cart")
   await page
-    .getByText(sv.OrderErrors.delivery_failed, { exact: true })
+    .getByText(sv.OrderErrors.submission_failed, { exact: true })
     .waitFor()
   assert.equal(
     await page
@@ -170,14 +245,18 @@ try {
       .inputValue(),
     "1"
   )
-  delivery = "ok"
+  storage = "ok"
   await page.getByRole("button", { name: sv.Order.send, exact: true }).click()
   await page
     .getByRole("heading", { name: sv.Order.submittedHeading, exact: true })
     .waitFor()
   assert.equal(delivered.length, 1)
-  assert.match(delivered[0].text, /Order for Example AB:/)
-  assert.match(delivered[0].text, /- Sandwich \(Turkey\) x1/)
+  assert.match(delivered[0].text, /Order #42 for Example AB:/)
+  assert.match(delivered[0].text, /- Coffee x1/)
+  assert.equal(saved.size, 1)
+  assert.equal([...saved.values()][0].deliveryStatus, "failed")
+  assert.equal(attempts[0].idempotencyKey, attempts[1].idempotencyKey)
+  await page.getByText("Beställningsnummer: #42", { exact: true }).waitFor()
   closed = true
   await page.goto(origin + "/sv")
   await page.getByText(sv.OrderErrors.orders_closed, { exact: true }).waitFor()
@@ -201,7 +280,7 @@ try {
   })
   assert.deepEqual(errors, [])
   console.log(
-    "PASS: localized access, cart preservation, reactive errors, real server action with mocked delivery, closed and denied states"
+    "PASS: localized categories/access, cart and idempotency preservation, persisted acceptance despite failed Slack, closed and denied states"
   )
 } catch (error) {
   console.error(logs)
