@@ -92,10 +92,10 @@ export const CompactSection: Story = {
 export const ExhibitorKitMargins: Story = {
   globals: { viewport: { value: "desktop", isRotated: false } },
   render: () => (
-    <Page.Background withIndents className="px-5">
-      <Page.Boundary className="px-0 pb-20">
+    <Page.Background withIndents>
+      <Page.Boundary className="pb-20">
         <div
-          className="flex flex-col-reverse gap-10 md:flex-row"
+          className="flex flex-col-reverse gap-10 md:flex-row md:gap-3"
           data-testid="kit-row">
           <Card className="min-w-48 flex-1 p-5">
             <LocalizedText id="bronze" />
@@ -118,7 +118,13 @@ export const ExhibitorKitMargins: Story = {
     const pageWidth = document.documentElement.clientWidth
 
     await expect(cards).toHaveLength(3)
-    await expect(rowBounds.width).toBeCloseTo(Math.min(1000, pageWidth - 40), 0)
+    await expect(rowBounds.width).toBeCloseTo(Math.min(1000, pageWidth) - 48, 0)
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      await expect(getComputedStyle(row).columnGap).toBe("12px")
+      for (const card of cardBounds) {
+        await expect(card.width).toBeCloseTo((rowBounds.width - 24) / 3, 0)
+      }
+    }
     await expect(rowBounds.left).toBeCloseTo(pageWidth - rowBounds.right, 0)
     await expect(Math.min(...cardBounds.map(card => card.left))).toBeCloseTo(
       rowBounds.left,
