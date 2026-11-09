@@ -9,15 +9,24 @@
     </defs>
 
     <g fill="none" stroke="#232424" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke-width="5" d="M 265 378 L 286 265 Q 292 238 315 238 H 410 M 438 237 L 464 377 M 464 237 H 574 M 597 237 L 572 377 M 624 246 Q 649 214 707 213 Q 767 213 796 238 Q 830 266 853 359 M 134 448 L 116 504 M 271 473 L 177 455 L 172 474 L 239 502 M 902 45 L 908 70"/>
-      <path stroke-width="2" d="M 912 90 Q 924 92 917 106 L 912 112"/>
+      <path stroke-width="5" d="M 265 378 L 286 265 Q 292 238 315 238 H 410 M 438 237 L 464 377 M 464 237 H 574 M 597 237 L 572 377 M 624 246 Q 649 214 707 213 Q 767 213 796 238 Q 830 266 853 359 M 134 448 L 116 504 M 271 473 L 177 455 L 172 474 L 239 502"/>
+      <path stroke-width="1.5" d="M 908 69 L 917 79 M 913 91 L 922 94 L 917 109"/>
     </g>
-    <!-- Stair treads and landings follow the original two flights. -->
-    <g fill="none" stroke="#356b53" stroke-width="1.5" clip-path="url(#floor-clip)">
-      <path transform="translate(951 35) rotate(-14)" d="M 0 0 v 42 M 5 0 v 42 M 10 0 v 42 M 15 0 v 42 M 20 0 v 42 M 25 0 v 70 M 30 0 v 70 M 35 0 v 70 M 40 0 v 70 M 45 0 v 70 M 50 0 v 70 M 55 0 v 70 M 60 0 v 70 M 65 0 v 70 M 70 0 v 70 M 75 0 v 70"/>
-      <path transform="translate(143 487) rotate(22)" d="M 0 0 v 66 M 5 0 v 66 M 10 0 v 66 M 15 0 v 66 M 20 0 v 66 M 25 0 v 66 M 30 0 v 66 M 35 0 v 66 M 40 0 v 66 M 45 0 v 66 M 50 0 v 66 M 55 0 v 66 M 60 0 v 66 M 65 0 v 66 M 70 0 v 66 M 75 0 v 66 M 80 0 v 66 M 85 0 v 66 M 90 0 v 66"/>
+    <!-- Align each flight and its landing in the same local coordinates. -->
+    <g clip-path="url(#floor-clip)">
+      <g transform="translate(951 37) rotate(-14)">
+        <path fill="none" stroke="#356b53" stroke-width="1.35"
+          d="M 0 0 v 36 M 5 0 v 36 M 10 0 v 36 M 15 0 v 36 M 20 0 v 36 M 25 0 v 36 M 30 0 v 36 M 35 0 v 36 M 40 0 v 36 M 45 0 v 36 M 50 0 v 36 M 55 0 v 36 M 60 0 v 36 M 65 0 v 36 M 70 0 v 36 M 75 0 v 36 M 80 0 v 36 M 53 48 v 38 M 58 48 v 38 M 63 48 v 38 M 68 48 v 38 M 73 48 v 38 M 78 48 v 38 M 83 48 v 38"/>
+        <path fill="#232424" fill-rule="evenodd"
+          d="M 1 35 H 91 Q 94 35 94 38 V 45 Q 94 48 91 48 H 49 V 86 H 46 V 65 H 1 Z M 24 48 h 3 v 14 h -3 Z M 29 48 h 3 v 14 h -3 Z M 34 48 h 3 v 14 h -3 Z M 39 48 h 3 v 14 h -3 Z"/>
+      </g>
+      <g transform="translate(122 490) rotate(21.2)">
+        <path fill="none" stroke="#356b53" stroke-width="1.35"
+          d="M 42 -31 v 31 M 47 -31 v 31 M 52 -31 v 31 M 57 -31 v 31 M 62 -31 v 31 M 67 -31 v 31 M 72 -31 v 31 M 77 -31 v 31 M 82 -31 v 31 M 87 -31 v 31 M 92 -31 v 31 M 97 -31 v 31 M 8 14 v 50 M 13 14 v 50 M 18 14 v 50 M 23 14 v 50 M 28 14 v 50 M 33 14 v 50 M 38 14 v 50 M 43 14 v 50 M 48 14 v 50 M 53 14 v 50 M 58 14 v 50 M 63 14 v 50 M 68 14 v 50 M 73 14 v 50 M 78 14 v 50 M 83 14 v 50 M 88 14 v 50 M 93 14 v 50 M 98 14 v 50"/>
+        <path fill="#232424" d="M 0 0 H 100 V 14 H 0 Z"/>
+      </g>
+      <path fill="#232424" d="M 897 37 L 904 35 L 911 67 L 905 70 Z M 910 107 L 917 105 L 921 129 L 914 129 Z"/>
     </g>
-    <path fill="#232424" d="M 964 70 L 1047 54 L 1050 67 L 997 78 L 1002 96 L 970 103 Z M 124 491 L 213 527 L 208 540 L 119 504 Z"/>
   </g>
   <!-- Route and photo markers from the original artwork. -->
   <g transform="scale(2.833995) translate(-1735.0781 1.86252)">

@@ -2,28 +2,46 @@
   <title>Nymble floor 2</title>
   <g transform="translate(45 620) scale(2.1)">
     <!-- Floor outline traced from the 2026 plan. -->
-    <path id="floor-outline" fill="#ace1ba" d="M 316 55 H 514 V 99 H 531 V 32 H 826 V 200 H 731 V 377 H 854 L 983 351 L 1050 674 L 965 692 L 943 608 L 914 561 L 888 567 L 899 610 H 415 L 405 666 L 310 646 L 295 690 L 341 708 L 332 739 L 76 645 V 610 L 165 642 L 226 615 L 249 576 L 149 529 L 190 410 L 202 414 L 299 146 L 316 151 Z"/>
+    <path id="floor-outline" fill="#ace1ba" d="M 316 55 H 514 V 99 H 532 V 32 H 826 V 199 H 731 V 377 H 854 L 983 351 L 1050 674 L 965 692 L 943 608 L 914 561 L 888 567 L 899 610 H 415 L 405 666 L 289 645 L 277 686 L 337 709 L 330 738 L 76 645 V 610 L 165 642 L 226 615 L 249 576 L 149 529 L 190 410 L 202 414 L 299 146 L 316 151 Z"/>
     <path fill="#79cf98" d="M 299 146 L 487 198 L 430 473 L 332 453 L 336 439 L 306 429 L 299 443 L 200 410 Z"/>
-    <rect x="531" y="32" width="295" height="168" fill="#c7a0d5"/>
+    <rect x="532" y="32" width="294" height="167" fill="#c7a0d5"/>
 
     <defs>
       <clipPath id="floor-clip"><use href="#floor-outline"/></clipPath>
     </defs>
 
-    <!-- Room divisions, walls, stairs and door swings. -->
+    <!-- Room divisions, walls and door swings. -->
     <g fill="none" stroke="#232424" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke-width="4" d="M 308 148 L 362 161 M 426 181 L 487 198 L 476 250 M 531 177 V 200 H 683 M 199 408 L 298 443 L 304 430 M 336 439 L 332 453 L 430 474 M 418 527 L 402 608 L 382 677 M 853 378 L 868 427 M 879 431 L 993 395"/>
-      <path stroke-width="4" d="M 433 473 L 444 434 H 498 M 507 450 H 852 M 388 513 Q 388 504 403 504 H 425 M 430 526 H 786 V 553 H 809"/>
-      <path stroke-width="2" d="M 796 553 H 808 A 27 27 0 1 1 839 591 L 819 610 M 430 477 Q 416 487 424 498 L 415 509 M 226 615 L 210 646"/>
+      <path stroke-width="4" d="M 308 148 L 362 161 M 426 181 L 487 198 L 476 250 M 199 408 L 298 443 L 304 430 M 336 439 L 332 453 L 429 473 M 853 378 L 862 426"/>
+      <path stroke-width="4" d="M 387 513 Q 388 504 403 504 H 426 L 403 609 M 422 526 H 786 V 553 H 809"/>
+      <path stroke-width="0.8" d="M 426 474 L 415 487 L 423 491 L 416 495 L 425 504 M 863 424 L 879 416 L 884 430"/>
+      <path stroke-width="1.5" d="M 786 545 H 809 V 553 M 796 545 V 553 M 803 545 V 553 M 809 553 A 27 27 0 1 1 839 591 L 819 610 M 226 615 L 210 646"/>
     </g>
-    <path fill="#232424" d="M 349 503 L 369 508 L 367 514 L 359 512 L 344 591 L 368 597 L 367 603 L 333 595 Z M 486 434 H 503 V 451 H 486 Z M 562 433 H 578 V 451 H 562 Z M 645 433 H 661 V 451 H 645 Z M 727 433 H 743 V 451 H 727 Z M 805 433 H 822 V 451 H 805 Z M 829 440 L 841 437 L 855 495 L 843 499 Z M 850 436 L 864 432 L 888 518 L 874 521 Z M 887 511 L 927 500 L 935 533 L 895 546 Z M 811 508 H 824 V 516 H 811 Z"/>
-    <!-- Stair treads use clean lines at the original landings. -->
+    <path fill="#232424" d="M 529 173 H 532 V 197 H 551 V 201 H 529 Z"/>
+    <path fill="#232424" d="M 437 431 H 499 Q 503 431 503 435 V 449 H 489 V 438 H 450 L 445 473 H 429 Z"/>
+    <path d="M 501 449 H 842" stroke="#232424" stroke-width="1"/>
+    <g fill="#232424">
+      <rect x="563" y="431" width="15" height="18" rx="2"/>
+      <rect x="645" y="431" width="16" height="18" rx="2"/>
+      <rect x="727" y="431" width="16" height="18" rx="2"/>
+      <rect x="805" y="430" width="16" height="19" rx="2"/>
+      <path d="M 349 503 L 369 508 L 367 514 L 359 512 L 344 591 L 368 597 L 367 603 L 333 595 Z"/>
+      <path d="M 828 454 L 844 451 L 857 501 L 841 505 Z M 811 509 H 824 V 516 H 811 Z"/>
+      <path d="M 842 429 L 884 425 L 885 431 L 869 433 L 875 470 L 868 472 L 870 481 L 878 479 L 884 512 L 926 502 L 936 534 L 884 546 L 871 493 L 861 495 L 857 484 L 866 481 L 854 434 L 842 434 Z"/>
+    </g>
+
+    <!-- Stair treads stop at the landings. -->
     <g fill="none" stroke="#356b53" stroke-width="1.35" clip-path="url(#floor-clip)">
       <path d="M 82 610 l -12 31 M 87 612 l -12 31 M 92 614 l -12 31 M 97 616 l -12 31 M 102 618 l -12 31 M 107 620 l -12 31 M 112 622 l -12 31 M 117 624 l -12 31"/>
-      <path d="M 272 685 l -12 34 M 277 687 l -12 34 M 282 689 l -12 34 M 287 691 l -12 34 M 292 693 l -12 34 M 297 695 l -12 34 M 302 697 l -12 34 M 307 699 l -12 34"/>
-      <path transform="translate(904 367) rotate(-13)" d="M 0 0 v 62 M 5 0 v 62 M 10 0 v 62 M 15 0 v 62 M 20 0 v 62 M 25 0 v 62 M 30 0 v 62 M 35 0 v 62 M 40 0 v 62 M 45 0 v 62"/>
+      <path transform="translate(278 686) rotate(21)" d="M 0 0 v 33 M 5 0 v 33 M 10 0 v 33 M 15 0 v 33 M 20 0 v 33 M 25 0 v 33 M 30 0 v 33 M 35 0 v 33"/>
+      <g transform="translate(890 369) rotate(-13)">
+        <path d="M 21 0 v 31 M 26 0 v 31 M 31 0 v 31 M 36 0 v 31 M 41 0 v 31 M 46 0 v 31 M 51 0 v 31 M 56 0 v 31 M 61 0 v 31"/>
+        <path d="M 0 35 v 27 M 5 35 v 27 M 10 35 v 27 M 15 35 v 27 M 20 35 v 27 M 25 35 v 27 M 30 35 v 27 M 35 35 v 27 M 40 35 v 27 M 45 35 v 27 M 50 35 v 27 M 55 35 v 27 M 60 35 v 27 M 65 35 v 27"/>
+      </g>
     </g>
-    <path d="M 895 399 L 962 384" fill="none" stroke="#232424" stroke-width="4" stroke-linecap="round"/>
+    <g fill="#232424" clip-path="url(#floor-clip)">
+      <path transform="translate(890 369) rotate(-13)" d="M -2 31 H 68 V 35 H -2 Z M 46 -10 H 51 V 32 H 46 Z M -1 61 H 104 V 65 H -1 Z"/>
+    </g>
   </g>
   <!-- Route and photo markers from the original artwork. -->
   <g transform="scale(2.833995) translate(-2302.9541 -2213.8252)">
