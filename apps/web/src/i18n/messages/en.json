@@ -693,5 +693,20 @@
     "selectedSuffix": ", selected",
     "notSelectedSuffix": ", not selected",
     "disabledSuffix": ", disabled"
+  },
+  "FairMap": {
+    "title": "2026 fair map",
+    "floor": "Nymble floor {floor}",
+    "floors": "Map floors",
+    "search": "Find an exhibitor",
+    "noResults": "No exhibitors found.",
+    "exhibitors": "Exhibitors",
+    "booth": "Booth {booth}",
+    "day": "{day} November",
+    "searchResult": "{name} · Floor {floor} · Booth {booth} · {room}",
+    "instructions": "Choose a booth or search for an exhibitor.",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom"
   }
 }

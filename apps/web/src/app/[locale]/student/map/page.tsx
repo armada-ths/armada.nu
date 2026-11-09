@@ -23,10 +23,14 @@ export default async function StudentMap() {
     return <ComingSoonPage title={translations[locale].map} />
   }
 
-  const exhibitors = await fetchExhibitors()
+  const exhibitors = await fetchExhibitors().catch((error: unknown) => {
+    console.error("Failed to load exhibitors for the fair map", error)
+    return []
+  })
 
   return (
-    <Page.Boundary className="mt-0">
+    <Page.Boundary>
+      <Page.Header>{translations[locale].map}</Page.Header>
       <InteractiveMapClient exhibitors={exhibitors} />
     </Page.Boundary>
   )

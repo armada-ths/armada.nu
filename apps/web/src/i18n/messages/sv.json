@@ -693,5 +693,20 @@
     "selectedSuffix": ", valt",
     "notSelectedSuffix": ", inte valt",
     "disabledSuffix": ", inaktiverat"
+  },
+  "FairMap": {
+    "title": "Mässkarta 2026",
+    "floor": "Nymble plan {floor}",
+    "floors": "Kartans våningar",
+    "search": "Hitta en utställare",
+    "noResults": "Inga utställare hittades.",
+    "exhibitors": "Utställare",
+    "booth": "Monter {booth}",
+    "day": "{day} november",
+    "searchResult": "{name} · Plan {floor} · Monter {booth} · {room}",
+    "instructions": "Välj en monter eller sök efter en utställare.",
+    "zoomIn": "Zooma in",
+    "zoomOut": "Zooma ut",
+    "resetZoom": "Återställ zoom"
   }
 }

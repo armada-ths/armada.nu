@@ -25,7 +25,6 @@ export interface Exhibitor {
   //average_age?: unknown // TODO Define this
   //founded?: unknown // TODO Define this
   //groups?: Group[]
-  fairLocation: string
   vyerPosition?: string
   locationSpecial?: string
   climateCompensation: boolean

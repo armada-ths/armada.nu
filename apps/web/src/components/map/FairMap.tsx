@@ -1,276 +1,203 @@
 "use client"
-import { uiText } from "@/i18n/ui"
-
-import { useTranslations } from "next-intl"
-
-import { useLocale } from "@armada/shared/i18n/client"
-import { normalizeLocale } from "@armada/shared/i18n/routing"
 
 import ExhibitorDetails from "@/app/[locale]/student/exhibitors/_components/ExhibitorDetails"
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { Button } from "@/components/ui/button"
 import Modal from "@/components/ui/Modal"
-import { HEX_COLORS } from "@/lib/colors"
-
-import Image from "next/image"
-
+import { Link } from "@armada/shared/i18n/navigation"
+import { Minus, Plus, RotateCcw } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 import {
-  ReactZoomPanPinchRef,
   TransformComponent,
-  TransformWrapper
+  TransformWrapper,
+  type ReactZoomPanPinchRef
 } from "react-zoom-pan-pinch"
-
-const fadeOutDelay = 500
-
-interface FairMapProps {
-  exhibitors: Exhibitor[]
-  MapComponent: React.FC<React.SVGProps<SVGSVGElement>>
-  currentFloorIndex: number
-  selectedExhibitor?: Exhibitor | null
-  onRequestFloorChange?: (floorIndex: number) => void
-}
-
-const tierColors: Record<string, { fill: string; stroke: string }> = {
-  gold: { fill: "var(--color-pineapple)", stroke: "var(--color-pineapple)" },
-  silver: { fill: "var(--color-silver)", stroke: "var(--color-silver)" },
-  bronze: { fill: "var(--color-bronze)", stroke: "var(--color-bronze)" },
-  default: { fill: HEX_COLORS.lightGray, stroke: HEX_COLORS.mediumGray }
-}
-
-// function parseRotation(transform?: string | null) {
-//   if (!transform?.startsWith("rotate(")) return null
-//   const match = transform.match(
-//     /rotate\(([-0-9.]+)[ ,]([-0-9.]+)?[ ,]([-0-9.]+)?\)/
-//   )
-//   if (!match) return null
-//   return {
-//     angle: parseFloat(match[1]),
-//     cx: match[2] ? parseFloat(match[2]) : undefined,
-//     cy: match[3] ? parseFloat(match[3]) : undefined
-//   }
-// }
+import { boothId, type MapDefinition, type MappedExhibitor } from "./maps"
 
 export default function FairMap({
-  exhibitors,
-  MapComponent,
-  selectedExhibitor = null
-}: FairMapProps) {
-  const staticT = useTranslations("Static")
-
-  const locale = normalizeLocale(useLocale())
-  const [modalOpen, setModalOpen] = useState(false)
-  const [activeExhibitor, setActiveExhibitor] = useState<Exhibitor | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  const svgRef = useRef<SVGSVGElement | null>(null)
-  const transformRef = useRef<ReactZoomPanPinchRef | null>(null)
-
-  const [isMobile, setIsMobile] = useState<boolean>(
-    typeof window !== "undefined" && window.innerWidth < 768
-  )
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  useEffect(() => {
-    if (!selectedExhibitor?.fairLocation) return
-    const svg = svgRef.current
-    const api = transformRef.current
-    if (!svg || !api) return
-
-    const timeout = setTimeout(() => {
-      const booth = svg.querySelector<SVGGraphicsElement>(
-        `[id$="__${selectedExhibitor.fairLocation}"]`
-      )
-      if (!booth) return
-
-      api.zoomToElement(booth as unknown as HTMLElement, isMobile ? 4 : 3, 300)
-
-      // Highlight glow
-      const tier = (selectedExhibitor.tier || "").toLowerCase()
-      const colors = tierColors[tier] || tierColors.default
-      const highlightColor = colors.stroke
-
-      const glow = booth.cloneNode(true) as SVGGraphicsElement
-      glow.setAttribute("stroke", highlightColor)
-      glow.setAttribute("opacity", "1")
-      glow.style.pointerEvents = "none"
-      glow.style.filter = `drop-shadow(0 0 4px ${highlightColor}) drop-shadow(0 0 8px ${highlightColor})`
-      glow.classList.add("animate-pulse")
-      glow.style.animationDuration = "1.5s"
-
-      booth.parentNode?.appendChild(glow)
-      setTimeout(() => glow.remove(), 3000)
-    }, 350)
-
-    return () => clearTimeout(timeout)
-  }, [selectedExhibitor])
-
-  // Draw map + exhibitors
-  useEffect(() => {
-    const svg = svgRef.current
-    if (!svg) return
-
-    setIsLoading(true)
-    requestAnimationFrame(() => {
-      svg
-        .querySelectorAll("image[data-logo], text[data-initial]")
-        .forEach(el => el.remove())
-
-      const booths = svg.querySelectorAll<SVGElement>("[id*='__booth']")
-      booths.forEach(el => {
-        el.setAttribute("fill", HEX_COLORS.snow)
-        el.setAttribute("stroke", HEX_COLORS.boothStroke)
-        el.setAttribute("stroke-width", "1")
-        el.classList.add("cursor-pointer", "transition-all", "duration-200")
-      })
-
-      exhibitors.forEach(ex => {
-        if (!ex.fairLocation) return
-        const booth = svg.querySelector<SVGGraphicsElement>(
-          `[id$="__${ex.fairLocation}"]`
-        )
-        if (!booth) return
-
-        const tier = (ex.tier || "").toLowerCase()
-        const colors = tierColors[tier] || tierColors.default
-        booth.setAttribute("fill", colors.fill)
-        booth.setAttribute("stroke", colors.stroke)
-        booth.setAttribute("stroke-width", "1.2")
-
-        const bbox = booth.getBBox()
-        const boothTransform = booth.getAttribute("transform")
-        const cx = bbox.x + bbox.width / 2
-        const cy = bbox.y + bbox.height / 2
-
-        const logoSrc = ex.logoThumbnail ?? ex.logoFreesize
-        if (logoSrc) {
-          const logo = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "image"
-          )
-          const sizeFactor = 0.9
-          const width = bbox.width * sizeFactor
-          const height = bbox.height * sizeFactor
-          logo.setAttributeNS("http://www.w3.org/1999/xlink", "href", logoSrc)
-          logo.setAttribute("data-logo", "true")
-          logo.setAttribute("width", String(width))
-          logo.setAttribute("height", String(height))
-          logo.setAttribute("x", String(cx - width / 2))
-          logo.setAttribute("y", String(cy - height / 2))
-          logo.setAttribute("preserveAspectRatio", "xMidYMid meet")
-          logo.style.pointerEvents = "none"
-
-          logo.setAttribute("transform", boothTransform || "")
-
-          svg.appendChild(logo)
-        }
-      })
-
-      // delay a bit for smooth fade-out
-      setTimeout(() => setIsLoading(false), fadeOutDelay)
-    })
-  }, [exhibitors])
-
-  const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
-    const target = event.target as SVGElement
-    const rawId = target.id
-    if (!rawId) return
-    const boothId = rawId.replace(/^.*__/, "")
-    if (!boothId.startsWith("booth")) return
-    const exhibitor = exhibitors.find(e => e.fairLocation === boothId)
-    if (!exhibitor) return
-
-    setActiveExhibitor(exhibitor)
-    setModalOpen(true)
-    const api = transformRef.current
-    if (api) {
-      setTimeout(() => {
-        api.zoomToElement(
-          target as unknown as HTMLElement,
-          isMobile ? 4 : 3,
-          200
-        )
-      }, 100) // small delay for mobile gesture processing
-    }
+  floor,
+  placements,
+  focus
+}: {
+  floor: MapDefinition
+  placements: MappedExhibitor[]
+  focus: MappedExhibitor | null
+}) {
+  const t = useTranslations("FairMap")
+  const [activeBooth, setActiveBooth] = useState<number | null>(null)
+  const [ready, setReady] = useState(false)
+  const transform = useRef<ReactZoomPanPinchRef | null>(null)
+  const panned = useRef(false)
+  const markers = new Map<number, MappedExhibitor[]>()
+  for (const placement of placements) {
+    const existing = markers.get(placement.booth) ?? []
+    markers.set(placement.booth, [...existing, placement])
   }
+  const activeExhibitors =
+    activeBooth === null ? [] : (markers.get(activeBooth) ?? [])
+  const single = activeExhibitors.length === 1 ? activeExhibitors[0] : undefined
+  const [x, y, width, height] = floor.box
+
+  useEffect(() => {
+    if (!focus || !ready) return
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+    transform.current?.zoomToElement(
+      boothId(floor.floor, focus.booth),
+      window.innerWidth < 768 ? 4 : 2.5,
+      reduceMotion ? 0 : 250
+    )
+  }, [floor.floor, focus, ready])
 
   return (
-    <div className="relative size-full overflow-hidden bg-black">
+    <>
       <TransformWrapper
-        ref={transformRef}
-        initialScale={isMobile ? 1.8 : 1}
-        centerOnInit
+        ref={transform}
+        onInit={() => setReady(true)}
+        onPanningStart={() => {
+          panned.current = false
+        }}
+        onPanning={() => {
+          panned.current = true
+        }}
         minScale={1}
         maxScale={5}
-        limitToBounds
-        smooth>
-        <TransformComponent wrapperClass="size-full!" contentClass="size-full!">
-          <MapComponent
-            ref={svgRef}
-            className="size-full"
-            onClick={handleClick}
-          />
-        </TransformComponent>
+        wheel={{ disabled: true }}
+        doubleClick={{ disabled: true }}
+        centerOnInit>
+        {({ zoomIn, zoomOut, resetTransform }) => (
+          <>
+            <div className="bg-fair-map-background relative aspect-4/3 min-h-72 overflow-hidden rounded-xl md:aspect-16/10">
+              <TransformComponent
+                wrapperClass="size-full!"
+                contentClass="size-full!">
+                <svg
+                  aria-label={t("floor", { floor: floor.floor })}
+                  className="block size-full select-none"
+                  viewBox={floor.box.join(" ")}>
+                  <image
+                    href={`/fair-map/nymble-${floor.floor}.svg`}
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height}
+                    aria-hidden="true"
+                    pointerEvents="none"
+                  />
+                  {floor.markers.map(([booth, cx, cy]) => {
+                    const entries = markers.get(booth)
+                    if (!entries) return null
+
+                    const selected = focus?.booth === booth
+                    const isGold = entries.some(
+                      entry => entry.exhibitor?.tier?.toLowerCase() === "gold"
+                    )
+                    return (
+                      <g
+                        key={booth}
+                        id={boothId(floor.floor, booth)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`${t("booth", { booth })}, ${entries.map(entry => entry.name).join(", ")}`}
+                        className="group cursor-pointer outline-none"
+                        onPointerDown={() => {
+                          panned.current = false
+                        }}
+                        onClick={() => {
+                          if (!panned.current) setActiveBooth(booth)
+                        }}
+                        onKeyDown={event => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault()
+                            setActiveBooth(booth)
+                          }
+                        }}>
+                        <rect
+                          x={cx - 33}
+                          y={cy - 32}
+                          width={66}
+                          height={64}
+                          rx={12}
+                          className={
+                            selected
+                              ? "fill-pineapple/30 stroke-licorice stroke-3"
+                              : `group-hover:stroke-licorice group-focus-visible:stroke-licorice fill-transparent stroke-3 ${isGold ? "stroke-pineapple" : "stroke-transparent"}`
+                          }
+                        />
+                      </g>
+                    )
+                  })}
+                </svg>
+              </TransformComponent>
+            </div>
+            <div className="mt-2 flex justify-end gap-2">
+              <Button
+                type="button"
+                size="icon"
+                variant="neutral"
+                aria-label={t("zoomIn")}
+                onClick={() => zoomIn()}>
+                <Plus aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="neutral"
+                aria-label={t("zoomOut")}
+                onClick={() => zoomOut()}>
+                <Minus aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="neutral"
+                aria-label={t("resetZoom")}
+                onClick={() => resetTransform()}>
+                <RotateCcw aria-hidden="true" />
+              </Button>
+            </div>
+          </>
+        )}
       </TransformWrapper>
 
-      {isLoading && (
-        <div className="text-snow absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-xs transition-opacity duration-500">
-          <div className="flex flex-col items-center space-y-6">
-            {/* Spinner with logo inside */}
-            <div className="relative flex h-20 w-20 items-center justify-center">
-              {/* Logo */}
-              <Image
-                src="/armada_white.svg"
-                alt={staticT("fairLogo")}
-                width={50}
-                height={50}
-                priority
-                className="opacity-95 drop-shadow-[0_0_6px_rgba(255,255,255,0.4)] select-none"
-              />
-
-              {/* Rotating ring */}
-              <svg
-                className="absolute inset-0 h-full w-full"
-                viewBox="0 0 100 100"
-                xmlns="http://www.w3.org/2000/svg">
-                <g className="origin-center animate-[spin_1.5s_linear_infinite]">
-                  <path
-                    d="M50 5 a45 45 0 0 1 0 90 a45 45 0 0 1 0 -90"
-                    fill="none"
-                    stroke={HEX_COLORS.emeraldAccent}
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray="70 270"
-                  />
-                </g>
-              </svg>
-            </div>
-
-            {/* Loading text */}
-            <p className="mt-4 text-lg font-medium">
-              {uiText(locale, "loadingTheMap")}
-            </p>
-          </div>
-        </div>
-      )}
-
       <Modal
-        open={modalOpen}
-        setOpen={setModalOpen}
-        onClose={() => {
-          setModalOpen(false)
-          setActiveExhibitor(null)
+        open={activeBooth !== null}
+        setOpen={open => {
+          if (!open) setActiveBooth(null)
         }}
-        className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-silver" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
-        <div
-          className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-silver" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice border-solid p-4 sm:p-10`}>
-          {activeExhibitor && <ExhibitorDetails exhibitor={activeExhibitor} />}
+        title={t("booth", { booth: activeBooth ?? 0 })}
+        description={activeExhibitors[0]?.room}>
+        <div className="space-y-4 p-4 sm:p-6">
+          {activeBooth !== null && (
+            <h2 className="font-bebas-neue text-3xl">
+              {t("booth", { booth: activeBooth })} · {activeExhibitors[0]?.room}
+            </h2>
+          )}
+          {single?.exhibitor ? (
+            <ExhibitorDetails exhibitor={single.exhibitor} />
+          ) : (
+            <ul className="space-y-4">
+              {activeExhibitors.map(entry => (
+                <li key={entry.exhibitorId} className="space-y-1">
+                  {entry.day && (
+                    <p className="text-sm">{t("day", { day: entry.day })}</p>
+                  )}
+                  {entry.exhibitor ? (
+                    <Link
+                      href={`/student/exhibitors?id=${entry.exhibitorId}`}
+                      className="font-semibold underline underline-offset-4">
+                      {entry.name}
+                    </Link>
+                  ) : (
+                    <p className="font-semibold">{entry.name}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </Modal>
-    </div>
+    </>
   )
 }

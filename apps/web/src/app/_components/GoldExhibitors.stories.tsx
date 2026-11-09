@@ -9,7 +9,6 @@ const exhibitors: Exhibitor[] = [
     name: "Northstar Engineering",
     type: "Company",
     tier: "Gold",
-    fairLocation: "Nymble",
     climateCompensation: false,
     logoFreesize: "/armada_licorice.svg",
     companyWebsite: "https://example.com/engineering",
@@ -21,7 +20,6 @@ const exhibitors: Exhibitor[] = [
     name: "Harbour Systems",
     type: "Company",
     tier: "Gold",
-    fairLocation: "Nymble",
     climateCompensation: false,
     logoFreesize: "/armada_licorice.svg",
     about: "Build the next generation of connected systems with us."

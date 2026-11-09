@@ -9,7 +9,6 @@ const exhibitors: Exhibitor[] = [
     name: "Visible Company",
     type: "Company",
     tier: "Gold",
-    fairLocation: "Nymble",
     climateCompensation: false
   },
   {
@@ -17,7 +16,6 @@ const exhibitors: Exhibitor[] = [
     name: "Linked Company",
     type: "Company",
     tier: "Silver",
-    fairLocation: "Nymble",
     climateCompensation: false,
     about: "Meet us at Armada."
   }

@@ -1,71 +1,58 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import type { SVGProps } from "react"
 import { expect, userEvent, waitFor, within } from "storybook/test"
-import { Page } from "@/components/shared/Page"
 import FairMap from "./FairMap"
+import { MAPS, mapExhibitors, PLACEMENTS } from "./maps"
 
-function ExampleMap(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} viewBox="0 0 400 300">
-      <rect id="example__booth1" x="140" y="100" width="120" height="80" />
-    </svg>
+const placements = mapExhibitors(
+  PLACEMENTS.filter(({ booth }) => booth === 62 || booth === 72).map(
+    ({ exhibitorId, name }) => ({
+      id: exhibitorId,
+      name,
+      type: "company",
+      climateCompensation: false
+    })
   )
-}
+)
 
 const meta = {
   title: "Student/FairMap",
   component: FairMap,
   tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
-  decorators: [
-    Story => (
-      <Page.Boundary className="mt-0 h-dvh">
-        <Story />
-      </Page.Boundary>
-    )
-  ],
   args: {
-    currentFloorIndex: 0,
-    MapComponent: ExampleMap,
-    exhibitors: [
-      {
-        id: 1,
-        name: "Mapped Company",
-        type: "company",
-        fairLocation: "booth1",
-        climateCompensation: false,
-        logoThumbnail: "/armada_licorice.svg",
-        logoFreesize: "/unused-original.png",
-        cities: "Stockholm"
-      }
-    ]
+    floor: MAPS[0],
+    placements: placements.filter(p => p.floor === 2),
+    focus: null
   }
 } satisfies Meta<typeof FairMap>
+
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const ThumbnailAndCompanyDetails: Story = {
-  play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      const logo = canvasElement.querySelector("image[data-logo]")
-      expect(logo?.getAttributeNS("http://www.w3.org/1999/xlink", "href")).toBe(
-        "/armada_licorice.svg"
-      )
-    })
-    await waitFor(() =>
-      expect(
-        within(canvasElement).queryByText("Loading the map...")
-      ).not.toBeInTheDocument()
-    )
-    const booth = canvasElement.querySelector<SVGElement>("#example__booth1")!
-    await expect(booth.ownerSVGElement?.clientWidth).toBe(
-      Math.min(1000, document.documentElement.clientWidth) - 48
-    )
-    await userEvent.click(booth)
+export const SharedBooth: Story = {
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: /booth 62,/i }))
     const dialog = await within(document.body).findByRole("dialog")
-    // The content mounts before the modal's opening animation makes it visible.
+    await expect(within(dialog).getByText("17 November")).toBeVisible()
+    await expect(within(dialog).getByText("18 November")).toBeVisible()
+    await expect(
+      within(dialog).getByRole("link", { name: "Handelsbanken" })
+    ).toHaveAttribute("href", expect.stringContaining("?id="))
+    await expect(
+      within(dialog).getByRole("link", { name: /SKC/ })
+    ).toHaveAttribute("href", expect.stringContaining("?id="))
+  }
+}
+
+export const SwedishKeyboardAndNoLogo: Story = {
+  globals: { locale: "sv" },
+  play: async ({ canvas }) => {
+    const booth = canvas.getByRole("button", { name: "Monter 72, Epiroc" })
+    booth.focus()
+    await userEvent.keyboard("{Enter}")
+    const dialog = await within(document.body).findByRole("dialog")
     await waitFor(() =>
-      expect(within(dialog).getByText("Stockholm")).toBeVisible()
+      expect(within(dialog).getByText("Epiroc")).toBeVisible()
     )
+    await expect(within(dialog).queryByRole("img")).not.toBeInTheDocument()
   }
 }

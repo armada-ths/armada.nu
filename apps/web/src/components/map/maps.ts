@@ -1,15 +1,36 @@
-// import InnovationFloor from "@/assets/KTH_Innovation.svg";
-import InnovationFloor from "@/assets/clean-KTH_Innovation.svg"
-import NymbleFloor1And2 from "@/assets/clean-Nymble_f2-01.svg"
-import NymbleFloor3 from "@/assets/clean-Nymble_f3-01.svg"
+import geometry from "./geometry-2026.json"
+import placements from "./placements-2026.json"
+import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 
-export interface MapDefinition {
+export interface Placement {
+  exhibitorId: number
   name: string
-  component: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+  floor: number
+  booth: number
+  room: string
+  day?: number
 }
 
-export const MAPS: MapDefinition[] = [
-  { name: "Nymble Floor 1 & 2", component: NymbleFloor1And2 },
-  { name: "Nymble Floor 3", component: NymbleFloor3 },
-  { name: "KTH Innovation", component: InnovationFloor }
-]
+export type MapDefinition = (typeof geometry)[number]
+export const MAPS = geometry
+export const PLACEMENTS: Placement[] = placements
+
+export interface MappedExhibitor extends Placement {
+  exhibitor?: Exhibitor
+}
+
+export function mapExhibitors(exhibitors: Exhibitor[]): MappedExhibitor[] {
+  const byId = new Map(exhibitors.map(exhibitor => [exhibitor.id, exhibitor]))
+  return PLACEMENTS.map(placement => {
+    const exhibitor = byId.get(placement.exhibitorId)
+    return {
+      ...placement,
+      name: exhibitor?.name || placement.name,
+      exhibitor
+    }
+  })
+}
+
+export function boothId(floor: number, booth: number) {
+  return `nymble-${floor}-booth-${booth}`
+}

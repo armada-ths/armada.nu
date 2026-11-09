@@ -1,10 +1,6 @@
 "use client"
-import { uiSections } from "@/i18n/ui"
 
-import { useLocale } from "@armada/shared/i18n/client"
-import { normalizeLocale } from "@armada/shared/i18n/routing"
-
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -18,60 +14,72 @@ import {
   PopoverContent,
   PopoverTrigger
 } from "@/components/ui/popover"
-
 import { Search } from "lucide-react"
-
+import { useTranslations } from "next-intl"
 import { useState } from "react"
-
-interface CompanySearchProps {
-  exhibitors: Exhibitor[]
-  onSelect: (exhibitor: Exhibitor) => void
-}
+import type { MappedExhibitor } from "./maps"
 
 export default function CompanySearch({
   exhibitors,
   onSelect
-}: CompanySearchProps) {
-  const locale = normalizeLocale(useLocale())
-  const labels = uiSections[locale].companySearchLabels
+}: {
+  exhibitors: MappedExhibitor[]
+  onSelect: (exhibitor: MappedExhibitor) => void
+}) {
+  const t = useTranslations("FairMap")
   const [open, setOpen] = useState(false)
-
-  const handleSelect = (exhibitor: Exhibitor) => {
-    onSelect(exhibitor)
-    setOpen(false)
-  }
+  const [query, setQuery] = useState("")
 
   return (
-    <div className="absolute top-44 left-6 z-50 w-80">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <button className="bg-snow flex items-center justify-center rounded-lg border border-stone-800 p-2 hover:bg-stone-300">
-            <Search className="h-4 w-4 text-stone-800" />
-          </button>
-        </PopoverTrigger>
+    <Popover
+      open={open}
+      onOpenChange={nextOpen => {
+        setQuery("")
+        setOpen(nextOpen)
+      }}>
+      <PopoverTrigger asChild>
+        <Button variant="neutral" type="button">
+          <Search aria-hidden="true" />
+          {t("search")}
+        </Button>
+      </PopoverTrigger>
 
-        <PopoverContent
-          side="right"
-          align="start"
-          className="w-80 rounded-md border p-0 shadow-xl">
-          <Command className="bg-snow rounded-md">
-            <CommandInput
-              placeholder={labels.placeholder}
-              className="text-licorice"
-            />
-            <CommandList className="max-h-64 overflow-y-auto">
-              <CommandEmpty>{labels.empty}</CommandEmpty>
-              <CommandGroup heading={labels.heading}>
-                {exhibitors.map(ex => (
-                  <CommandItem key={ex.id} onSelect={() => handleSelect(ex)}>
-                    {ex.name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
+      <PopoverContent
+        align="end"
+        className="w-88 max-w-[calc(100vw-1.5rem)] p-0">
+        <Command label={t("search")}>
+          <CommandInput
+            placeholder={t("search")}
+            value={query}
+            onValueChange={setQuery}
+          />
+          <CommandList>
+            <CommandEmpty>{t("noResults")}</CommandEmpty>
+            <CommandGroup heading={t("exhibitors")}>
+              {exhibitors.map(exhibitor => (
+                <CommandItem
+                  key={exhibitor.exhibitorId}
+                  value={String(exhibitor.exhibitorId)}
+                  keywords={[
+                    exhibitor.name,
+                    exhibitor.room,
+                    String(exhibitor.booth)
+                  ]}
+                  onSelect={() => {
+                    onSelect(exhibitor)
+                    setQuery("")
+                    setOpen(false)
+                  }}>
+                  <span>{exhibitor.name}</span>
+                  <span className="ml-auto shrink-0 text-xs">
+                    {t("booth", { booth: exhibitor.booth })}
+                  </span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   )
 }

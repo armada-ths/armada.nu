@@ -10,8 +10,8 @@ const meta = {
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },
   args: {
-    floors: ["Nymble Floor 1 & 2", "Nymble Floor 3", "KTH Innovation"],
-    selectedFloor: "Nymble Floor 1 & 2",
+    floors: ["Nymble plan 2", "Nymble plan 3"],
+    selectedFloor: "Nymble plan 2",
     onSelect: fn()
   },
   decorators: [
@@ -29,7 +29,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Mobile: Story = {
-  globals: { viewport: { value: "mobile", isRotated: false } },
+  globals: { locale: "sv", viewport: { value: "mobile", isRotated: false } },
   play: async ({ canvas, args }) => {
     const frame = canvas.getByTestId("map-frame").getBoundingClientRect()
     for (const floor of canvas.getAllByRole("button")) {
@@ -38,9 +38,7 @@ export const Mobile: Story = {
       await expect(right).toBeLessThanOrEqual(frame.right)
     }
 
-    await userEvent.click(
-      canvas.getByRole("button", { name: "KTH Innovation" })
-    )
-    await expect(args.onSelect).toHaveBeenCalledWith("KTH Innovation")
+    await userEvent.click(canvas.getByRole("button", { name: "Nymble plan 3" }))
+    await expect(args.onSelect).toHaveBeenCalledWith("Nymble plan 3")
   }
 }

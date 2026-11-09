@@ -12,7 +12,6 @@ const meta = {
       id: 1,
       name: "Example Company",
       type: "company",
-      fairLocation: "Nymble",
       climateCompensation: false,
       logoThumbnail: "/armada_licorice.svg",
       logoFreesize: "/unused-original.png"
