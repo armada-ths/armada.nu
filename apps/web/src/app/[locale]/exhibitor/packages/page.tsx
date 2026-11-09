@@ -57,7 +57,7 @@ export default async function ExhibitorPackagesPage() {
           </StatusModuleItem>
         </div>
         <div className="mt-10 flex flex-col">
-          <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row md:gap-3">
+          <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row">
             <Card className="bg-bronze relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
               <h3 className="font-lato text-2xl">
                 <LocalizedText id="bronze" />

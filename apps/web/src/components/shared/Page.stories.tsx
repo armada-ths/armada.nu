@@ -95,7 +95,7 @@ export const ExhibitorKitMargins: Story = {
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
         <div
-          className="flex flex-col-reverse gap-10 md:flex-row md:gap-3"
+          className="flex flex-col-reverse gap-10 md:flex-row"
           data-testid="kit-row">
           <Card className="min-w-48 flex-1 p-5">
             <LocalizedText id="bronze" />
@@ -120,9 +120,9 @@ export const ExhibitorKitMargins: Story = {
     await expect(cards).toHaveLength(3)
     await expect(rowBounds.width).toBeCloseTo(Math.min(1000, pageWidth) - 48, 0)
     if (window.matchMedia("(min-width: 768px)").matches) {
-      await expect(getComputedStyle(row).columnGap).toBe("12px")
+      await expect(getComputedStyle(row).columnGap).toBe("40px")
       for (const card of cardBounds) {
-        await expect(card.width).toBeCloseTo((rowBounds.width - 24) / 3, 0)
+        await expect(card.width).toBeCloseTo((rowBounds.width - 80) / 3, 0)
       }
     }
     await expect(rowBounds.left).toBeCloseTo(pageWidth - rowBounds.right, 0)
