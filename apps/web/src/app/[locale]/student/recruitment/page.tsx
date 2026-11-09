@@ -112,7 +112,7 @@ export default async function RecruitmentPage() {
       <div className="h-20" />
       <RecruitmentBanner />
       <Page.Background withIndents avoidHeader>
-        <Page.Boundary maxWidth={750}>
+        <Page.Boundary>
           <Page.Header>{recruitmentName}</Page.Header>
           <div className="mt-8 mb-20 flex flex-1 flex-col">
             {/* <Page.Header tier="secondary">

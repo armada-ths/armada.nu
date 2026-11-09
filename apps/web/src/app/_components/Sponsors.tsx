@@ -38,7 +38,7 @@ export default function Sponsors() {
     <section
       aria-labelledby="sponsors-heading"
       className="bg-snow text-licorice border-licorice mt-8 border-t-2 border-solid">
-      <Page.Boundary className="mt-0 px-6 py-14 sm:py-16">
+      <Page.Boundary className="mt-0 py-14 sm:py-16">
         <h2
           id="sponsors-heading"
           className="font-bebas-neue text-center text-4xl">

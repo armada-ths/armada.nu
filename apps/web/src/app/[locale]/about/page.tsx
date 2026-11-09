@@ -52,7 +52,7 @@ export default async function RecruitmentPage() {
 
   return (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={750}>
+      <Page.Boundary>
         <Page.Header>{dict.heading}</Page.Header>
         <PhotoSlideCarousel photoSrc={photoSrc} />
         <P className="mt-4">{dict.intro}</P>

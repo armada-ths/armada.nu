@@ -51,7 +51,7 @@ export default async function TimelinePage() {
 
   return (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={1440} className="pb-20">
+      <Page.Boundary className="pb-20">
         <Page.Header className="text-center">
           <LocalizedText id="theHistoryOfArmada" />
         </Page.Header>

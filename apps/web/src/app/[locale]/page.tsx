@@ -145,7 +145,7 @@ export default async function HomePage() {
       <NavigationMenu />
       <Page.Background>
         <RecruitmentBanner />
-        <Page.Boundary className="">
+        <Page.Boundary>
           <Hero1
             heading={pageDict.heroHeading}
             description={pageDict.heroDescription}
@@ -205,7 +205,7 @@ export default async function HomePage() {
             buttons={heroButtons}
           />
         </Page.Boundary>
-        <Page.Boundary className="p-6 pt-12">
+        <Page.Boundary className="pt-12 pb-6">
           {/* Time and place */}
           {/* <div className="flex flex-col items-center gap-4 text-center md:flex-row md:items-end md:pl-4 relative overflow-visible">
             {today < fair_end ? (

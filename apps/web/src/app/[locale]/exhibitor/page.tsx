@@ -55,7 +55,7 @@ export default async function ForExhibitorsPage() {
   ]
   return (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={600} className="pb-20">
+      <Page.Boundary className="pb-20">
         <Page.Header tier="primary">{dict.heading}</Page.Header>
         <div className="h-4" />
 

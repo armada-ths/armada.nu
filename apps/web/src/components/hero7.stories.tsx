@@ -3,12 +3,20 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect } from "storybook/test"
 import en from "../i18n/messages/en.json"
 import sv from "../i18n/messages/sv.json"
+import { Page } from "./shared/Page"
 import { Hero1 } from "./hero7"
 
 const meta = {
   title: "Homepage/Hero",
   component: Hero1,
   tags: ["autodocs"],
+  decorators: [
+    Story => (
+      <Page.Boundary>
+        <Story />
+      </Page.Boundary>
+    )
+  ],
   args: {
     heading: "Set Sail For Success",
     description: "The No. 1 career fair at KTH Royal Institute of Technology"

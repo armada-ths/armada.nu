@@ -47,7 +47,7 @@ export default async function ExhibitorPackagesPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
-        <div className="mx-auto max-w-150">
+        <div>
           <Page.Header>{dict.heading}</Page.Header>
           <div className="mt-4">
             <p className="max-w-125">{dict.intro}</p>
@@ -160,7 +160,7 @@ export default async function ExhibitorPackagesPage() {
           </div>
         </div>
         {/* <p className="mt-4 text-sm">*All prices are ex. VAT. </p> */}
-        <div className="mx-auto mt-12 w-full max-w-150">
+        <div className="mt-12">
           <Page.Header tier="secondary">{dict.customKitHeading}</Page.Header>
           <p className="mt-2">{dict.customKitIntro}</p>
           <ul className="mt-4 ml-4 list-disc space-y-2">
@@ -191,7 +191,7 @@ export default async function ExhibitorPackagesPage() {
             ))}
           </ul>
         </div>
-        <div className="mx-auto mt-10 w-full max-w-150">
+        <div className="mt-10">
           <Page.Header tier="secondary" className="mb-3">
             {dict.faqHeading}
           </Page.Header>

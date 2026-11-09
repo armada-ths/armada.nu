@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import type { SVGProps } from "react"
 import { expect, userEvent, waitFor, within } from "storybook/test"
+import { Page } from "@/components/shared/Page"
 import FairMap from "./FairMap"
 
 function ExampleMap(props: SVGProps<SVGSVGElement>) {
@@ -16,6 +17,13 @@ const meta = {
   component: FairMap,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },
+  decorators: [
+    Story => (
+      <Page.Boundary className="mt-0 h-dvh">
+        <Story />
+      </Page.Boundary>
+    )
+  ],
   args: {
     currentFloorIndex: 0,
     MapComponent: ExampleMap,
@@ -50,6 +58,9 @@ export const ThumbnailAndCompanyDetails: Story = {
       ).not.toBeInTheDocument()
     )
     const booth = canvasElement.querySelector<SVGElement>("#example__booth1")!
+    await expect(booth.ownerSVGElement?.clientWidth).toBe(
+      Math.min(1000, document.documentElement.clientWidth) - 48
+    )
     await userEvent.click(booth)
     const dialog = await within(document.body).findByRole("dialog")
     // The content mounts before the modal's opening animation makes it visible.

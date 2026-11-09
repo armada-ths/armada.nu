@@ -65,7 +65,7 @@ const OrganizationList = ({ group }: { group: Organization }) => {
   return (
     <div key={group.name} className="mt-16">
       <h2 className="font-bebas-neue text-3xl">{groupDisplayName}</h2>
-      <div className="mt-5 flex flex-wrap items-start justify-center gap-6 md:justify-start">
+      <div className="mt-5 flex flex-wrap items-start gap-6">
         {sortedProjectGroup.map(person => (
           <PersonCard key={person.id} person={person} />
         ))}
@@ -75,7 +75,7 @@ const OrganizationList = ({ group }: { group: Organization }) => {
           {sortedProjectGroup.length > 0 && (
             <hr className="mt-6 border-stone-300/60" />
           )}
-          <div className="mt-6 flex flex-wrap items-start justify-center gap-6 md:justify-start">
+          <div className="mt-6 flex flex-wrap items-start gap-6">
             {sortedOperationTeam.map(person => (
               <PersonCard
                 key={person.id}

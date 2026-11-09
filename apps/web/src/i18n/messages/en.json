@@ -142,7 +142,7 @@
     },
     "visitorLabels": {
       "visits": "visits",
-      "students": "Students",
+      "exhibitors": "Exhibitors",
       "networking": "of networking"
     },
     "newStudentsHeading": "New students, every year!",
@@ -438,7 +438,7 @@
       "heroDescription": "Scandinavia's largest student-driven career fair",
       "visitorLabels": {
         "visits": "visits",
-        "students": "Students",
+        "exhibitors": "Exhibitors",
         "networking": "of networking"
       },
       "countdownLabels": {

@@ -31,7 +31,7 @@ export default async function ExhibitorTimelinePage() {
 
   return (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={600} className="pb-20">
+      <Page.Boundary className="pb-20">
         <Page.Header>{dict.title.replace(" - Armada", "")}</Page.Header>
         <p className="mt-4">{dict.intro}</p>
         <ExhibitorTimeline />
