@@ -15,6 +15,8 @@ import {
 } from "react-zoom-pan-pinch"
 import { boothId, type MapDefinition, type MappedExhibitor } from "./maps"
 
+const BOOTH_HEIGHT = 58
+
 function BoothLogo({
   entry,
   cx,
@@ -78,6 +80,52 @@ function BoothLogo({
   )
 }
 
+function BoothLabel({
+  name,
+  cx,
+  cy,
+  box: [x, y, width]
+}: {
+  name: string
+  cx: number
+  cy: number
+  box: MapDefinition["box"]
+}) {
+  const labelWidth = Math.min(500, 2 * Math.min(cx - x, x + width - cx))
+  const labelHeight = 136
+  const below = cy - y < 180
+  const tipY = cy + (below ? BOOTH_HEIGHT / 2 : -BOOTH_HEIGHT / 2)
+  const arrowHeight = below ? 12 : -12
+  const labelY = tipY + arrowHeight - (below ? 0 : labelHeight)
+
+  return (
+    <g aria-hidden="true" pointerEvents="none">
+      <foreignObject
+        x={cx - labelWidth / 2}
+        y={labelY}
+        width={labelWidth}
+        height={labelHeight}
+        className="overflow-visible">
+        <div
+          className={cn(
+            "flex h-full justify-center",
+            below ? "items-start" : "items-end"
+          )}>
+          <span
+            data-map-label
+            className="bg-licorice text-snow max-w-full rounded-lg px-4 py-2 text-center text-[30px] leading-tight font-bold wrap-anywhere shadow-md">
+            {name}
+          </span>
+        </div>
+      </foreignObject>
+      <path
+        d={`M ${cx} ${tipY} l -12 ${arrowHeight} h 24 Z`}
+        className="fill-licorice"
+      />
+    </g>
+  )
+}
+
 export default function FairMap({
   floor,
   placements,
@@ -138,8 +186,7 @@ export default function FairMap({
         maxScale={5}
         wheel={{ step: 0.0025 }}
         pinch={{ step: 3 }}
-        doubleClick={{ disabled: true }}
-        centerOnInit>
+        doubleClick={{ disabled: true }}>
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
             <div className="bg-fair-map-background relative min-h-48 w-full flex-1 overflow-hidden rounded-xl">
@@ -165,8 +212,7 @@ export default function FairMap({
 
                     const selected = focus?.booth === booth
                     const id = boothId(floor.floor, booth)
-                    const cardHeight = 58
-                    const rowHeight = cardHeight / entries.length
+                    const rowHeight = BOOTH_HEIGHT / entries.length
                     return (
                       <g
                         key={booth}
@@ -195,9 +241,9 @@ export default function FairMap({
                           <clipPath id={`${id}-clip`}>
                             <rect
                               x={cx - 35}
-                              y={cy - cardHeight / 2}
+                              y={cy - BOOTH_HEIGHT / 2}
                               width={70}
-                              height={cardHeight}
+                              height={BOOTH_HEIGHT}
                               rx={8}
                             />
                           </clipPath>
@@ -207,7 +253,8 @@ export default function FairMap({
                             entries.length > 1 ? `url(#${id}-clip)` : undefined
                           }>
                           {entries.map((entry, index) => {
-                            const top = cy - cardHeight / 2 + rowHeight * index
+                            const top =
+                              cy - BOOTH_HEIGHT / 2 + rowHeight * index
                             return (
                               <g key={entry.exhibitorId}>
                                 <rect
@@ -233,9 +280,9 @@ export default function FairMap({
                         </g>
                         <rect
                           x={cx - 35}
-                          y={cy - cardHeight / 2}
+                          y={cy - BOOTH_HEIGHT / 2}
                           width={70}
-                          height={cardHeight}
+                          height={BOOTH_HEIGHT}
                           rx={8}
                           pointerEvents="none"
                           className={cn(
@@ -249,29 +296,13 @@ export default function FairMap({
                       </g>
                     )
                   })}
-                  {focusedMarker && (
-                    <g
-                      key={focus?.exhibitorId}
-                      aria-hidden="true"
-                      pointerEvents="none"
-                      className="motion-safe:animate-in motion-safe:zoom-in-75 motion-safe:fade-in origin-center [transform-box:fill-box] motion-safe:duration-500">
-                      <rect
-                        x={focusedMarker[1] - 40}
-                        y={focusedMarker[2] - 34}
-                        width={80}
-                        height={68}
-                        rx={12}
-                        className="stroke-licorice fill-none stroke-8"
-                      />
-                      <rect
-                        x={focusedMarker[1] - 40}
-                        y={focusedMarker[2] - 34}
-                        width={80}
-                        height={68}
-                        rx={12}
-                        className="stroke-snow fill-none stroke-4"
-                      />
-                    </g>
+                  {focus && focusedMarker && (
+                    <BoothLabel
+                      name={focus.name}
+                      cx={focusedMarker[1]}
+                      cy={focusedMarker[2]}
+                      box={floor.box}
+                    />
                   )}
                 </svg>
               </TransformComponent>

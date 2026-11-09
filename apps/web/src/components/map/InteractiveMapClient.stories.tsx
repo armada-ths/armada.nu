@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>
 
 export const SearchAcrossFloors: Story = {
   globals: { viewport: { value: "mobile", isRotated: false } },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, canvasElement }) => {
     const { href } = window.location
     const state = window.history.state
     try {
@@ -44,6 +44,9 @@ export const SearchAcrossFloors: Story = {
         await expect(
           canvas.getByRole("button", { name: new RegExp(name) })
         ).toHaveAttribute("data-selected", "true")
+        await expect(
+          canvasElement.querySelector("[data-map-label]")
+        ).toHaveTextContent(name)
         const id = PLACEMENTS.find(
           placement => placement.name === name
         )?.exhibitorId
@@ -60,6 +63,9 @@ export const SearchAcrossFloors: Story = {
       await expect(new URLSearchParams(window.location.search).has("id")).toBe(
         false
       )
+      await expect(
+        canvasElement.querySelector("[data-map-label]")
+      ).not.toBeInTheDocument()
     } finally {
       window.history.replaceState(state, "", href)
     }
