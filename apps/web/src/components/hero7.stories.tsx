@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect } from "storybook/test"
 import en from "../i18n/messages/en.json"
 import sv from "../i18n/messages/sv.json"
-import { Page } from "./shared/Page"
 import { Hero1 } from "./hero7"
+import { Page } from "./shared/Page"
 
 const meta = {
   title: "Homepage/Hero",
@@ -92,7 +92,7 @@ export const ExhibitorsWithRecruitment: Story = {
 export const ExhibitorsSwedish: Story = {
   globals: { locale: "sv" },
   args: {
-    heading: "Sätt kurs mot framgång",
+    heading: "Set sail for success",
     description: sv.pageTranslations.home.heroDescription,
     buttons: {
       primary: {
