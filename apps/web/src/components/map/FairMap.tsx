@@ -68,7 +68,7 @@ export default function FairMap({
         centerOnInit>
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
-            <div className="bg-fair-map-background relative aspect-4/3 min-h-72 overflow-hidden rounded-xl md:aspect-16/10">
+            <div className="bg-fair-map-background relative aspect-4/3 min-h-72 w-full overflow-hidden rounded-xl md:aspect-16/10">
               <TransformComponent
                 wrapperClass="size-full!"
                 contentClass="size-full!">
