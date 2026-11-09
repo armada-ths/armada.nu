@@ -100,12 +100,12 @@ export const WheelZoom: Story = {
     wheel()
     await waitFor(() => expect(scale()).toBeCloseTo(1.25, 2))
     wheel(true)
-    await waitFor(() => expect(scale()).toBeCloseTo(1.75, 2))
+    await waitFor(() => expect(scale()).toBeCloseTo(1.8125, 2))
 
     fireEvent.keyDown(window, { key: "Control", ctrlKey: true })
     try {
       wheel(true)
-      await waitFor(() => expect(scale()).toBeCloseTo(2, 2))
+      await waitFor(() => expect(scale()).toBeCloseTo(2.0625, 2))
     } finally {
       fireEvent.keyUp(window, { key: "Control", ctrlKey: false })
     }

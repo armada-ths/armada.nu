@@ -5,17 +5,19 @@ import {
   normalizeLocale,
   type Locale
 } from "@armada/shared/i18n/routing"
+import { Link } from "@armada/shared/i18n/navigation"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
-import { ChevronDown, ListFilter } from "lucide-react"
+import { translations } from "@/i18n/dictionaries"
+import { ChevronDown, ListFilter, MapPin } from "lucide-react"
 import { useEffect, useId, useMemo, useState } from "react"
 import ExhibitorSortMenu from "./ExhibitorSortMenu"
 import type { ExhibitorSort } from "./exhibitorSort"
 
 const filterTriggerClassName =
-  "bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2 shadow-shadow transition-all hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
+  "w-full data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
 
 const filterPopoverClassName =
   "max-h-[min(60dvh,var(--radix-popover-content-available-height))]! w-(--radix-popover-trigger-width) max-w-[95vw]"
@@ -41,6 +43,7 @@ interface Props {
     filterIndustry: string
     filterProgram: string
   }
+  mapEnabled?: boolean
   sortBy?: ExhibitorSort
   onSortChange?: (sortBy: ExhibitorSort) => void
 }
@@ -50,6 +53,7 @@ export default function ExhibitorFilterItem({
   searchQueryName,
   onFilterChange,
   labels,
+  mapEnabled,
   sortBy = "tier-gold",
   onSortChange
 }: Props) {
@@ -172,20 +176,30 @@ export default function ExhibitorFilterItem({
 
   return (
     <div className="border-licorice border-t pt-4 pb-2">
-      <Button
-        type="button"
-        variant="neutral"
-        className="group sm:hidden"
-        aria-expanded={filtersOpen}
-        aria-controls={filtersId}
-        onClick={() => setFiltersOpen(open => !open)}>
-        <ListFilter aria-hidden="true" />
-        {labels.filters}
-        <ChevronDown
-          aria-hidden="true"
-          className="group-aria-expanded:rotate-180"
-        />
-      </Button>
+      <div className="flex gap-3 sm:hidden">
+        <Button
+          type="button"
+          variant="neutral"
+          className={cn("group", mapEnabled && "min-w-0 flex-1")}
+          aria-expanded={filtersOpen}
+          aria-controls={filtersId}
+          onClick={() => setFiltersOpen(open => !open)}>
+          <ListFilter aria-hidden="true" />
+          {labels.filters}
+          <ChevronDown
+            aria-hidden="true"
+            className="group-aria-expanded:rotate-180"
+          />
+        </Button>
+        {mapEnabled && (
+          <Button asChild variant="neutral" className="min-w-0 flex-1">
+            <Link href="/student/map">
+              <MapPin aria-hidden="true" />
+              {translations[locale].map}
+            </Link>
+          </Button>
+        )}
+      </div>
 
       <div
         id={filtersId}

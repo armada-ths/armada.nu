@@ -68,6 +68,7 @@ export default function ExhibitorSortMenu({
       <PopoverTrigger asChild>
         <Button
           type="button"
+          variant="neutral"
           role="combobox"
           aria-label={staticT("sortExhibitorsBy")}
           aria-expanded={open}

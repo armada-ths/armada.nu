@@ -16,7 +16,7 @@ import {
 import { boothId, type MapDefinition, type MappedExhibitor } from "./maps"
 
 const BOOTH_HEIGHT = 58
-const TRACKPAD_ZOOM_MULTIPLIER = 2
+const TRACKPAD_ZOOM_MULTIPLIER = 2.25
 
 function BoothLogo({
   entry,

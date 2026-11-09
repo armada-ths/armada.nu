@@ -47,6 +47,7 @@ export default function ExhibitorSearch({ exhibitors, mapEnabled }: Props) {
           searchQueryName={searchQueryName}
           onFilterChange={setFilteredExhibitors}
           labels={dict}
+          mapEnabled={mapEnabled}
           sortBy={sortBy}
           onSortChange={setSortBy}
         />
