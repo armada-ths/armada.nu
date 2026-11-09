@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, within } from "storybook/test"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { PLACEMENTS } from "@/components/map/maps"
 import ExhibitorList from "./ExhibitorList"
 
 const companyWebsite = "https://careers.example.com/engineering"
+const msabPlacementId = PLACEMENTS.find(
+  placement => placement.name === "MSAB"
+)?.id
 
 const exhibitors: Exhibitor[] = [
   {
@@ -14,7 +18,8 @@ const exhibitors: Exhibitor[] = [
     climateCompensation: false
   },
   {
-    id: 4651,
+    id: 14651,
+    eventroId: msabPlacementId,
     name: "Linked Company",
     type: "Company",
     tier: "Silver",
@@ -50,7 +55,7 @@ export const DirectLinkOutsideFilter: Story = {
   parameters: {
     nextjs: {
       appDirectory: true,
-      navigation: { pathname: "/en/student/exhibitors", query: { id: "4651" } }
+      navigation: { pathname: "/en/student/exhibitors", query: { id: "14651" } }
     }
   },
   play: async ({ canvas }) => {
@@ -74,7 +79,7 @@ export const SwedishModalMapLink: Story = {
   parameters: {
     nextjs: {
       appDirectory: true,
-      navigation: { pathname: "/sv/student/exhibitors", query: { id: "4651" } }
+      navigation: { pathname: "/sv/student/exhibitors", query: { id: "14651" } }
     }
   },
   play: async ({ canvas }) => {
@@ -82,7 +87,10 @@ export const SwedishModalMapLink: Story = {
     const mapLink = await within(dialog).findByRole("link", {
       name: "Visa på karta"
     })
-    await expect(mapLink).toHaveAttribute("href", "/sv/student/map?id=4651")
+    await expect(mapLink).toHaveAttribute(
+      "href",
+      `/sv/student/map?id=${msabPlacementId}`
+    )
     const modal = within(dialog)
     const heading = modal.getByRole("heading", { name: "Linked Company" })
     const website = modal.getByRole("link", { name: companyWebsite })

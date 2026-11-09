@@ -321,7 +321,7 @@ export default function FairMap({
                             const top =
                               cy - BOOTH_HEIGHT / 2 + rowHeight * index
                             return (
-                              <g key={entry.exhibitorId}>
+                              <g key={entry.id}>
                                 <rect
                                   x={cx - 35}
                                   y={top}
@@ -418,13 +418,13 @@ export default function FairMap({
           )}
           <ul className="space-y-4">
             {activeExhibitors.map(entry => (
-              <li key={entry.exhibitorId} className="space-y-1">
+              <li key={entry.id} className="space-y-1">
                 {entry.day && (
                   <p className="text-sm">{t("day", { day: entry.day })}</p>
                 )}
                 {entry.exhibitor ? (
                   <Link
-                    href={`/student/exhibitors?id=${entry.exhibitorId}`}
+                    href={`/student/exhibitors?id=${entry.exhibitor.id}`}
                     className="font-semibold underline underline-offset-4">
                     {entry.name}
                   </Link>

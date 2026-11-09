@@ -1,6 +1,12 @@
 import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
-import { MAPS, PLACEMENTS, boothId, mapExhibitors } from "@/components/map/maps"
+import {
+  MAPS,
+  PLACEMENTS,
+  boothId,
+  getExhibitorPlacement,
+  mapExhibitors
+} from "@/components/map/maps"
 
 describe("2026 fair map", () => {
   it("assigns every verified exhibitor to a unique placement on one of the two SVG floors", () => {
@@ -9,7 +15,7 @@ describe("2026 fair map", () => {
       [3, 22]
     ])
     expect(PLACEMENTS).toHaveLength(88)
-    expect(new Set(PLACEMENTS.map(p => p.exhibitorId)).size).toBe(88)
+    expect(new Set(PLACEMENTS.map(p => p.id)).size).toBe(88)
 
     const markers = MAPS.flatMap(({ floor, box, markers }) => {
       const svg = readFileSync(
@@ -34,6 +40,39 @@ describe("2026 fair map", () => {
     expect(
       assignments.filter((key, index) => assignments.indexOf(key) !== index)
     ).toEqual(["nymble-2-booth-62"])
+  })
+
+  it("resolves all placements by identity when the CMS assigns different IDs", () => {
+    const exhibitors = PLACEMENTS.map(
+      ({ id, companyWebsite, name }, index) => ({
+        id: 10001 + index,
+        eventroId: companyWebsite ? undefined : id,
+        companyWebsite,
+        name,
+        type: "company",
+        climateCompensation: false
+      })
+    )
+
+    expect(PLACEMENTS.filter(p => p.companyWebsite).map(p => p.id)).toEqual([
+      "f1rst"
+    ])
+    expect(mapExhibitors(exhibitors).map(p => p.exhibitor?.id)).toEqual(
+      exhibitors.map(exhibitor => exhibitor.id)
+    )
+    const f1rst = exhibitors.find(exhibitor => exhibitor.name === "F1rst")!
+    expect(
+      getExhibitorPlacement({ ...f1rst, companyWebsite: "https://f1rst.se/" })
+    ).toMatchObject({ booth: 87 })
+    expect(
+      getExhibitorPlacement({
+        ...f1rst,
+        companyWebsite: "https://example.test/"
+      })
+    ).toBeUndefined()
+    expect(
+      getExhibitorPlacement({ ...f1rst, eventroId: "unrelated" })
+    ).toBeUndefined()
   })
 
   it("keeps the two dated placements at booth 62 and provides names without a CMS record", () => {

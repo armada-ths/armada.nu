@@ -80,8 +80,8 @@ export default function CompanySearch({
               {(query.trim() ? exhibitors : orderedExhibitors).map(
                 exhibitor => (
                   <CommandItem
-                    key={exhibitor.exhibitorId}
-                    value={String(exhibitor.exhibitorId)}
+                    key={exhibitor.id}
+                    value={exhibitor.id}
                     keywords={[
                       exhibitor.name,
                       exhibitor.room,

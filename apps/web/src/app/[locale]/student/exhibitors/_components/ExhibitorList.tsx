@@ -4,10 +4,8 @@ import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { usePathname, useSearchParams } from "next/navigation"
 import { memo, useState, type MouseEvent } from "react"
 import { ExhibitorCard } from "./ExhibitorCard"
-import { PLACEMENTS } from "@/components/map/maps"
+import { getExhibitorPlacement } from "@/components/map/maps"
 import ExhibitorModal from "./ExhibitorModal"
-
-const placedIds = new Set(PLACEMENTS.map(placement => placement.exhibitorId))
 
 const ExhibitorGrid = memo(function ExhibitorGrid({
   exhibitors
@@ -89,7 +87,11 @@ export default function ExhibitorList({
         open={Boolean(selected)}
         onClose={closeCompany}
         exhibitor={displayed}
-        showMapLink={mapEnabled && !!displayed && placedIds.has(displayed.id)}
+        mapPlacementId={
+          mapEnabled && displayed
+            ? getExhibitorPlacement(displayed)?.id
+            : undefined
+        }
       />
     </>
   )

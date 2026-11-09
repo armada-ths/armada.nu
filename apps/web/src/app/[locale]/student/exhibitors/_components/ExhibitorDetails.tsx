@@ -21,10 +21,10 @@ import { useEffect, useState } from "react"
 
 export default function ExhibitorDetails({
   exhibitor,
-  showMapLink = false
+  mapPlacementId
 }: {
   exhibitor: Exhibitor
-  showMapLink?: boolean
+  mapPlacementId?: string
 }) {
   const t = useTranslations("FairMap")
   const locale = normalizeLocale(useLocale())
@@ -89,9 +89,9 @@ export default function ExhibitorDetails({
               </div>
             )}
           </div>
-          {showMapLink && (
+          {mapPlacementId !== undefined && (
             <Button asChild variant="neutral" size="sm" className="shrink-0">
-              <Link href={`/student/map?id=${exhibitor.id}`} prefetch={false}>
+              <Link href={`/student/map?id=${mapPlacementId}`} prefetch={false}>
                 <MapPin aria-hidden="true" />
                 {t("showOnMap")}
               </Link>

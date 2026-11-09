@@ -12,7 +12,7 @@ export default function ExhibitorModal({
   open,
   onClose,
   exhibitor,
-  showMapLink,
+  mapPlacementId,
   title,
   description,
   children
@@ -20,7 +20,7 @@ export default function ExhibitorModal({
   open: boolean
   onClose: () => void
   exhibitor?: Exhibitor
-  showMapLink?: boolean
+  mapPlacementId?: string
   title?: string
   description?: string
   children?: ReactNode
@@ -42,7 +42,7 @@ export default function ExhibitorModal({
           <ExhibitorDetails
             key={exhibitor.id}
             exhibitor={exhibitor}
-            showMapLink={showMapLink}
+            mapPlacementId={mapPlacementId}
           />
         ) : (
           children

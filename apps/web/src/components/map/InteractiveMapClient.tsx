@@ -9,12 +9,12 @@ import FairMap from "./FairMap"
 import FloorSelector from "./FloorSelector"
 import { MAPS, mapExhibitors, type MappedExhibitor } from "./maps"
 
-function updateExhibitorId(exhibitorId?: number) {
+function updatePlacementId(placementId?: string) {
   const url = new URL(window.location.href)
-  if (exhibitorId === undefined) {
+  if (placementId === undefined) {
     url.searchParams.delete("id")
   } else {
-    url.searchParams.set("id", String(exhibitorId))
+    url.searchParams.set("id", placementId)
   }
   if (url.href !== window.location.href) {
     window.history.replaceState(null, "", url)
@@ -24,19 +24,17 @@ function updateExhibitorId(exhibitorId?: number) {
 export default function InteractiveMapClient({
   title,
   exhibitors,
-  initialExhibitorId
+  initialPlacementId
 }: {
   title: string
   exhibitors: Exhibitor[]
-  initialExhibitorId?: string
+  initialPlacementId?: string
 }) {
   const t = useTranslations("FairMap")
   const placements = useMemo(() => mapExhibitors(exhibitors), [exhibitors])
   const [focus, setFocus] = useState<MappedExhibitor | null>(
     () =>
-      placements.find(
-        placement => String(placement.exhibitorId) === initialExhibitorId
-      ) ?? null
+      placements.find(placement => placement.id === initialPlacementId) ?? null
   )
   const [floor, setFloor] = useState(
     () => MAPS.find(map => map.floor === focus?.floor) ?? MAPS[0]
@@ -45,7 +43,7 @@ export default function InteractiveMapClient({
 
   function clearFocus() {
     setFocus(null)
-    updateExhibitorId()
+    updatePlacementId()
   }
 
   return (
@@ -77,7 +75,7 @@ export default function InteractiveMapClient({
             if (!map) return
             setFloor(map)
             setFocus({ ...placement })
-            updateExhibitorId(placement.exhibitorId)
+            updatePlacementId(placement.id)
           }}
         />
       </div>

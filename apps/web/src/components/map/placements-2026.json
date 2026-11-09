@@ -1,370 +1,370 @@
 [
   {
-    "exhibitorId": 4651,
+    "id": "447e67d6-b69c-4abb-8753-ed85d232d19d",
     "name": "MSAB",
     "floor": 2,
     "booth": 1,
     "room": "Puben"
   },
   {
-    "exhibitorId": 4593,
+    "id": "daa52ec8-c588-4add-a733-24da94824d15",
     "name": "Relox Robotics",
     "floor": 2,
     "booth": 2,
     "room": "Puben"
   },
   {
-    "exhibitorId": 4637,
+    "id": "81594070-333b-4ff3-b17b-515f8e96a2d9",
     "name": "Försvarsmakten",
     "floor": 2,
     "booth": 3,
     "room": "Puben"
   },
   {
-    "exhibitorId": 4624,
+    "id": "e971dedb-c56c-4d98-9849-14b8da27ea66",
     "name": "GKN Aerospace Sweden AB",
     "floor": 2,
     "booth": 4,
     "room": "Puben"
   },
   {
-    "exhibitorId": 4609,
+    "id": "8b36a3eb-e6da-4e70-9c81-70d402b3fe32",
     "name": "ABB AB",
     "floor": 2,
     "booth": 8,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4662,
+    "id": "e5b6ecb2-d226-4222-bb0a-bfe2741484f6",
     "name": "Alleima",
     "floor": 2,
     "booth": 9,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4620,
+    "id": "d1f4f250-6da7-4ab9-971d-ec051f7241be",
     "name": "Bravida",
     "floor": 2,
     "booth": 10,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4647,
+    "id": "353a9513-00e9-48d1-89b5-e7e4ca0d8777",
     "name": "VINCI Energies",
     "floor": 2,
     "booth": 11,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4643,
+    "id": "3f1c8755-707b-4cf4-9a87-6cb62b10198d",
     "name": "Hubexo",
     "floor": 2,
     "booth": 12,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4667,
+    "id": "971191f9-efb3-47e6-aef9-4bc2dd09fc17",
     "name": "Ellevio",
     "floor": 2,
     "booth": 13,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4673,
+    "id": "a672ccf1-5ae9-4a8c-85f3-977c2b94b370",
     "name": "Fortum",
     "floor": 2,
     "booth": 14,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4661,
+    "id": "881c6bec-6588-4edb-b342-0da70e335c33",
     "name": "Gränges Finspång",
     "floor": 2,
     "booth": 15,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4645,
+    "id": "d5f09098-2789-4908-a006-bce03d28b90b",
     "name": "Käppalaförbundet & Norrvatten",
     "floor": 2,
     "booth": 16,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4594,
+    "id": "fb262b2c-897f-4e47-923d-c5e2633cc29c",
     "name": "Munters",
     "floor": 2,
     "booth": 17,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4635,
+    "id": "d553a080-cadf-4acf-9148-91d46958e24c",
     "name": "Sweco Sverige AB",
     "floor": 2,
     "booth": 18,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4674,
+    "id": "23450a11-a9b7-4493-9f3f-cf86925a0173",
     "name": "Volvo Group",
     "floor": 2,
     "booth": 19,
     "room": "Sustainability Room"
   },
   {
-    "exhibitorId": 4648,
+    "id": "b5595f8b-0f0d-4f89-a84c-aa5399b7aeec",
     "name": "Region Stockholm",
     "floor": 2,
     "booth": 22,
     "room": "Bistro"
   },
   {
-    "exhibitorId": 4666,
+    "id": "0821a9ef-2e54-44d2-a615-9fd83fd811aa",
     "name": "Teracom AB",
     "floor": 2,
     "booth": 23,
     "room": "Bistro"
   },
   {
-    "exhibitorId": 4596,
+    "id": "e720f082-dc59-4b71-b13c-64e3dc474061",
     "name": "Siemens Energy AB ",
     "floor": 2,
     "booth": 24,
     "room": "Bistro"
   },
   {
-    "exhibitorId": 4656,
+    "id": "732a8397-c8f5-4217-afb9-036008a0159a",
     "name": "AFRY",
     "floor": 2,
     "booth": 25,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4610,
+    "id": "edfadfe0-7ec3-4c0b-a8d0-feb897844430",
     "name": "Mycronic AB",
     "floor": 2,
     "booth": 26,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4627,
+    "id": "712610a7-ede3-470c-9a36-4a9105f8e679",
     "name": "Postkodlotteriet",
     "floor": 2,
     "booth": 27,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4614,
+    "id": "bf023a92-89e6-4175-af0f-800ac8a4548b",
     "name": "SBAB Bank AB",
     "floor": 2,
     "booth": 28,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4663,
+    "id": "3ee356da-44da-447b-8e58-862a762cf7d0",
     "name": "SSAB AB",
     "floor": 2,
     "booth": 29,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4658,
+    "id": "c3adffa2-c085-4e3a-93c0-a62916768470",
     "name": "Swedbank",
     "floor": 2,
     "booth": 30,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4649,
+    "id": "a4c33c20-7911-4f28-9484-2dfe9cd6bc6d",
     "name": "VAROPreem",
     "floor": 2,
     "booth": 31,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4636,
+    "id": "cde86e03-72fc-4359-b18c-1ac2fde52923",
     "name": "Accenture AB",
     "floor": 2,
     "booth": 32,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4631,
+    "id": "38a568e4-0623-416b-98f7-2df8ad67bab5",
     "name": "knowit",
     "floor": 2,
     "booth": 33,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4659,
+    "id": "1a05d357-8163-46c7-9203-8ae100e38753",
     "name": "KPMG",
     "floor": 2,
     "booth": 34,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4595,
+    "id": "5aa0a980-2939-41a0-93da-b488f8a8b117",
     "name": "Norconsult Sverige AB",
     "floor": 2,
     "booth": 35,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4611,
+    "id": "ece3688c-53ce-4347-9fd1-27f654411ae8",
     "name": "Nordea",
     "floor": 2,
     "booth": 36,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4664,
+    "id": "cde2cedc-ae4c-4b80-8fcd-3164cebea4df",
     "name": "Rejlers",
     "floor": 2,
     "booth": 37,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4654,
+    "id": "1a9b15c8-ba65-4325-9f46-d77b33c399a6",
     "name": "IMC Trading",
     "floor": 2,
     "booth": 38,
     "room": "Diversity Room"
   },
   {
-    "exhibitorId": 4652,
+    "id": "75c7592b-c1ed-43a9-867c-617ccc58af5e",
     "name": "Saab",
     "floor": 2,
     "booth": 40,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4632,
+    "id": "45d36782-7f7e-47b3-9392-d85043d62f03",
     "name": "H&M",
     "floor": 2,
     "booth": 41,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4677,
+    "id": "51846f17-bfc3-4897-bb61-dad21dd6dfa8",
     "name": "Echo State",
     "floor": 2,
     "booth": 42,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4669,
+    "id": "097025c9-f394-4b49-ba66-4ffc2ce090c9",
     "name": "ASSA ABLOY AB",
     "floor": 2,
     "booth": 43,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4634,
+    "id": "3c8468b4-4d21-4bc6-9013-6e159e3a2ef5",
     "name": "E.ON",
     "floor": 2,
     "booth": 44,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4633,
+    "id": "67ba6fa9-80f7-4d6c-bd96-0dc1b8249b28",
     "name": "FRA",
     "floor": 2,
     "booth": 45,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4618,
+    "id": "06012877-b6fd-4f07-8077-9ca82df44a1e",
     "name": "Totalförsvarets forskningsinstitut, FOI",
     "floor": 2,
     "booth": 46,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4644,
+    "id": "0f612628-7d8d-4df2-ae34-356f21159494",
     "name": "FMV - Försvarets Materielverk",
     "floor": 2,
     "booth": 47,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4671,
+    "id": "bf71c8bd-b996-4469-bc98-da05d70a7dcd",
     "name": "Trafikverket",
     "floor": 2,
     "booth": 48,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4680,
+    "id": "58b2e0fe-7294-48ba-9929-521874ac753e",
     "name": "Ericsson",
     "floor": 2,
     "booth": 49,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4629,
+    "id": "cac07e04-63c3-476b-ad9c-3d9adc233da3",
     "name": "BAE Systems Bofors",
     "floor": 2,
     "booth": 50,
     "room": "Nya Matsalen"
   },
   {
-    "exhibitorId": 4640,
+    "id": "ee1fbf40-4fb5-4670-beda-3ba6f81a2f83",
     "name": "ALTEN Sweden",
     "floor": 2,
     "booth": 53,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4606,
+    "id": "2f25b0c3-f376-4b59-bdfc-6f1b634c2f74",
     "name": "Norges Bank Investment Management",
     "floor": 2,
     "booth": 54,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4625,
+    "id": "fe73cdc1-c0f4-4315-bddf-dd0f4fc6bc03",
     "name": "Axis Communcations",
     "floor": 2,
     "booth": 55,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4670,
+    "id": "f55cd518-283c-4f30-b65d-d5be80a2804e",
     "name": "Firefly AB",
     "floor": 2,
     "booth": 56,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4619,
+    "id": "e6453c16-eebb-4b52-baa3-2e867a062d1a",
     "name": "Hitachi Energy",
     "floor": 2,
     "booth": 57,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4612,
+    "id": "2ce727b8-8e8e-4ef8-8f97-8107ed85cba6",
     "name": "Octapharma",
     "floor": 2,
     "booth": 58,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4626,
+    "id": "be0a895c-b7e9-4fea-916f-855e4999d3d9",
     "name": "Arla Foods",
     "floor": 2,
     "booth": 60,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4646,
+    "id": "877db558-f8ed-4f68-829d-8c8c292d6271",
     "name": "Silex Microsystems",
     "floor": 2,
     "booth": 61,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4622,
+    "id": "2cb78dfc-c74e-4913-8c79-934f9683918e",
     "name": "Handelsbanken",
     "floor": 2,
     "booth": 62,
@@ -372,7 +372,7 @@
     "day": 17
   },
   {
-    "exhibitorId": 4675,
+    "id": "995ea7ed-9566-4736-818c-cf1116e63711",
     "name": "Svenskt Kärntekniskt Centrum (SKC)",
     "floor": 2,
     "booth": 62,
@@ -380,238 +380,239 @@
     "day": 18
   },
   {
-    "exhibitorId": 4607,
+    "id": "a61a26ed-c393-468d-a6e8-03d99613f969",
     "name": "Elekta",
     "floor": 2,
     "booth": 63,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4598,
+    "id": "d67fa41f-07bb-4d05-b09f-b13061138b5e",
     "name": "Einride",
     "floor": 2,
     "booth": 64,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4602,
+    "id": "c00a970a-6f6a-4d0a-91de-886f3bcce2d6",
     "name": "Outokumpu Stainless AB",
     "floor": 2,
     "booth": 65,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4616,
+    "id": "3c50b7de-875c-453e-ae56-52451ea71d4c",
     "name": "Westinghouse Electric Sweden",
     "floor": 2,
     "booth": 66,
     "room": "Hyllan"
   },
   {
-    "exhibitorId": 4642,
+    "id": "e76874a7-6b06-4865-8290-983bd0b969c2",
     "name": "European Investment Bank",
     "floor": 2,
     "booth": 69,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4668,
+    "id": "0883fff8-f79a-4c11-bebb-6b068023204a",
     "name": "Sveriges patentbyråers förening",
     "floor": 2,
     "booth": 70,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4657,
+    "id": "0636d6d3-4485-4655-b2e5-a9638c3ecfd0",
     "name": "Sveriges Ingenjörer",
     "floor": 2,
     "booth": 71,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4665,
+    "id": "235c8d24-a28f-48b2-8d21-199fe7e7fdf9",
     "name": "Epiroc",
     "floor": 2,
     "booth": 72,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4621,
+    "id": "3f0ad4f1-5223-4d8d-8e5a-84b42b5025d5",
     "name": "flygresor.se",
     "floor": 2,
     "booth": 73,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4615,
+    "id": "dbd813b4-b45b-43fc-8462-66690bef1930",
     "name": "AWA Sweden AB",
     "floor": 2,
     "booth": 74,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4630,
+    "id": "95e42837-a6a6-4d10-8cdb-d62b01d8fc88",
     "name": "NKT HV Cables AB",
     "floor": 2,
     "booth": 75,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4605,
+    "id": "ca13f3c7-ad3b-474d-bca4-c8ca46dfb6d8",
     "name": "Flow Traders",
     "floor": 2,
     "booth": 76,
     "room": "Gröten"
   },
   {
-    "exhibitorId": 4617,
+    "id": "f300c018-605a-4fe9-af47-06d7280f04cc",
     "name": "Syntronic Research and development",
     "floor": 3,
     "booth": 79,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4603,
+    "id": "06a3b153-98b6-4435-ac53-06b3531aa11b",
     "name": "Adven Group Oy",
     "floor": 3,
     "booth": 80,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4650,
+    "id": "aa163faa-457a-414c-a425-1a82a39ea703",
     "name": "Skandinaviska Enskilda Banken",
     "floor": 3,
     "booth": 81,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4672,
+    "id": "050ba6d9-6d64-40ab-9369-607e1116e43e",
     "name": "Kongsberg Maritime Sweden AB",
     "floor": 3,
     "booth": 82,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4679,
+    "id": "50ee2f37-d8e1-476f-9191-cd3d002bd2a5",
     "name": "ABE School KTH",
     "floor": 3,
     "booth": 83,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4608,
+    "id": "8a4c6922-2f26-40a5-a1e4-c845b29c166b",
     "name": "Getinge",
     "floor": 3,
     "booth": 84,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4655,
+    "id": "688f2fed-89bb-44c6-a1c5-ac5c02829fc6",
     "name": "Coca-Cola Europacific Partners",
     "floor": 3,
     "booth": 85,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4639,
+    "id": "460c5e1c-0fd2-4ea4-92f7-0a46c05ee7b7",
     "name": "Huawei",
     "floor": 3,
     "booth": 86,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4681,
+    "id": "f1rst",
+    "companyWebsite": "https://f1rst.se",
     "name": "F1rst",
     "floor": 3,
     "booth": 87,
     "room": "Tidningsrummet"
   },
   {
-    "exhibitorId": 4653,
+    "id": "97364bde-c597-4d93-91af-be7ca7780c38",
     "name": "Magma Math",
     "floor": 3,
     "booth": 88,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4599,
+    "id": "44c4ba1d-8483-4e60-a7aa-62538fdbbb6b",
     "name": "GS1 Sweden AB",
     "floor": 3,
     "booth": 89,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4604,
+    "id": "f6a82434-e1bc-4880-ba04-6b7241f416eb",
     "name": "ARM Sweden AB",
     "floor": 3,
     "booth": 90,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4601,
+    "id": "bd4a1a87-1d36-4439-b2f6-9cd0e21e5fe8",
     "name": "CGI",
     "floor": 3,
     "booth": 91,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4613,
+    "id": "47a6159b-4c81-469b-a581-2398018e8f1c",
     "name": "Dassault Systèmes",
     "floor": 3,
     "booth": 92,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4638,
+    "id": "a77cb46c-9a9a-46ee-8d27-2835d1e8e98f",
     "name": "Post- och telestyrelsen",
     "floor": 3,
     "booth": 93,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4623,
+    "id": "a05f0e13-57fe-4ecd-9729-ee3b455719e0",
     "name": "Envix Nord AB",
     "floor": 3,
     "booth": 94,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4660,
+    "id": "fc9b2b90-0e21-40ed-84a2-5cb4ec7a497d",
     "name": "AstraZeneca",
     "floor": 3,
     "booth": 98,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4597,
+    "id": "fa632a37-2c4c-4233-80c6-7d6f9f3299ba",
     "name": "ssc space",
     "floor": 3,
     "booth": 99,
     "room": "Galleriet"
   },
   {
-    "exhibitorId": 4641,
+    "id": "803b51f2-16aa-4cf5-85c7-0ebfee7047f1",
     "name": "Medclair",
     "floor": 3,
     "booth": 100,
     "room": "Musikrummet"
   },
   {
-    "exhibitorId": 4678,
+    "id": "ab7e2088-24b9-43b1-8b6d-d050a00139a3",
     "name": "Orica Sweden AB",
     "floor": 3,
     "booth": 101,
     "room": "Musikrummet"
   },
   {
-    "exhibitorId": 4592,
+    "id": "ed566370-8aca-4529-b5c8-d2d887b84a37",
     "name": "Coherent",
     "floor": 3,
     "booth": 102,
     "room": "Musikrummet"
   },
   {
-    "exhibitorId": 4600,
+    "id": "96f84767-0f32-4812-9de0-1b155cc3b45c",
     "name": "Intility",
     "floor": 3,
     "booth": 103,

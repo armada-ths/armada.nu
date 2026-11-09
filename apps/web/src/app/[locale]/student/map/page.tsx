@@ -33,15 +33,15 @@ export default async function StudentMap({
   })
 
   const { id } = await searchParams
-  const initialExhibitorId = typeof id === "string" ? id : undefined
+  const initialPlacementId = typeof id === "string" ? id : undefined
 
   return (
     <Page.Boundary className="mt-20 h-[calc(100dvh-5rem)] min-h-96 gap-2 pt-7 pb-3 sm:pt-9">
       <InteractiveMapClient
         title={translations[locale].map}
-        key={initialExhibitorId}
+        key={initialPlacementId}
         exhibitors={exhibitors}
-        initialExhibitorId={initialExhibitorId}
+        initialPlacementId={initialPlacementId}
       />
     </Page.Boundary>
   )

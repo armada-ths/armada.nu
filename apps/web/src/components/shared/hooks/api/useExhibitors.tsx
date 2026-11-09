@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 
 export interface Exhibitor {
   id: number
+  eventroId?: string | null
   name: string
   type: string
   tier?: string

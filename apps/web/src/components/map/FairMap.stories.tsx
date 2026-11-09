@@ -7,8 +7,9 @@ const placements = mapExhibitors(
   PLACEMENTS.filter(
     ({ booth, name }) =>
       booth === 62 || booth === 72 || name === "Adven Group Oy"
-  ).map(({ exhibitorId, name, day }) => ({
-    id: exhibitorId,
+  ).map(({ id, name, day }, index) => ({
+    id: 10001 + index,
+    eventroId: id,
     name: name === "Epiroc" ? "Epiroc AB" : name,
     type: "company",
     climateCompensation: false,
@@ -55,10 +56,10 @@ export const SharedBooth: Story = {
     await expect(within(dialog).getByText("18 November")).toBeVisible()
     await expect(
       within(dialog).getByRole("link", { name: "Handelsbanken" })
-    ).toHaveAttribute("href", expect.stringContaining("?id="))
+    ).toHaveAttribute("href", "/en/student/exhibitors?id=10001")
     await expect(
       within(dialog).getByRole("link", { name: /SKC/ })
-    ).toHaveAttribute("href", expect.stringContaining("?id="))
+    ).toHaveAttribute("href", "/en/student/exhibitors?id=10002")
   }
 }
 

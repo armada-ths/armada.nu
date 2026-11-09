@@ -47,12 +47,10 @@ export const SearchAcrossFloors: Story = {
         await expect(
           canvasElement.querySelector("[data-map-label]")
         ).toHaveTextContent(name)
-        const id = PLACEMENTS.find(
-          placement => placement.name === name
-        )?.exhibitorId
+        const id = PLACEMENTS.find(placement => placement.name === name)?.id
         await expect(
           new URLSearchParams(window.location.search).get("id")
-        ).toBe(String(id))
+        ).toBe(id)
         await expect(canvas.getByRole("status")).toHaveTextContent(
           `${name} · Floor ${floor} · Booth ${booth}`
         )
@@ -74,9 +72,9 @@ export const SearchAcrossFloors: Story = {
 
 export const LinkedExhibitor: Story = {
   args: {
-    initialExhibitorId: String(
-      PLACEMENTS.find(placement => placement.name === "Coherent")?.exhibitorId
-    )
+    initialPlacementId: PLACEMENTS.find(
+      placement => placement.name === "Coherent"
+    )?.id
   },
   play: async ({ args, canvas, canvasElement }) => {
     await expect(
@@ -91,7 +89,7 @@ export const LinkedExhibitor: Story = {
     const { href } = window.location
     const state = window.history.state
     const url = new URL(href)
-    url.searchParams.set("id", args.initialExhibitorId ?? "")
+    url.searchParams.set("id", args.initialPlacementId ?? "")
     window.history.replaceState(state, "", url)
     try {
       canvas.getByRole("button", { name: /Booth 101, Orica/ }).focus()
@@ -110,8 +108,9 @@ export const LinkedExhibitor: Story = {
 
 export const DefaultTierOrder: Story = {
   args: {
-    exhibitors: PLACEMENTS.slice(0, 4).map(({ exhibitorId, name }, index) => ({
-      id: exhibitorId,
+    exhibitors: PLACEMENTS.slice(0, 4).map(({ id, name }, index) => ({
+      id: 10001 + index,
+      eventroId: id,
       name,
       type: "company",
       climateCompensation: false,
