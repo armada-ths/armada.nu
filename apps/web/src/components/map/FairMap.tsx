@@ -130,14 +130,13 @@ export default function FairMap({
         }}
         minScale={1}
         maxScale={5}
-        wheel={{ disabled: true }}
         doubleClick={{ disabled: true }}
         centerOnInit>
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
             <div className="bg-fair-map-background relative min-h-48 w-full flex-1 overflow-hidden rounded-xl">
               <TransformComponent
-                wrapperClass="size-full!"
+                wrapperClass="size-full! touch-none"
                 contentClass="size-full!">
                 <svg
                   aria-label={t("floor", { floor: floor.floor })}

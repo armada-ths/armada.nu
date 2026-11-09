@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, userEvent, waitFor, within } from "storybook/test"
+import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test"
 import FairMap from "./FairMap"
 import { MAPS, mapExhibitors, PLACEMENTS } from "./maps"
 
@@ -74,5 +74,26 @@ export const SwedishKeyboardAndNoLogo: Story = {
     )
     await expect(within(dialog).queryByRole("img")).not.toBeInTheDocument()
     await expect(dialog).toHaveClass("min-w-[80vw]", "bg-bronze")
+  }
+}
+
+export const WheelZoom: Story = {
+  play: async ({ canvas }) => {
+    const map = canvas.getByLabelText("Nymble floor 2")
+    const content = map.parentElement
+    if (!content) throw new Error("Map transform content is missing")
+
+    const { x, y, width, height } = map.getBoundingClientRect()
+    fireEvent.wheel(map, {
+      deltaY: -200,
+      clientX: x + width / 2,
+      clientY: y + height / 2
+    })
+
+    await waitFor(() =>
+      expect(
+        new DOMMatrix(getComputedStyle(content).transform).a
+      ).toBeGreaterThan(1)
+    )
   }
 }
