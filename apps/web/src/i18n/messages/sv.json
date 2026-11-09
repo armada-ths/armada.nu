@@ -705,7 +705,6 @@
     "booth": "Monter {booth}",
     "day": "{day} november",
     "searchResult": "{name} · Plan {floor} · Monter {booth} · {room}",
-    "instructions": "Välj en monter eller sök efter en utställare.",
     "zoomIn": "Zooma in",
     "zoomOut": "Zooma ut",
     "resetZoom": "Återställ zoom"

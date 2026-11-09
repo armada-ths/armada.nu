@@ -12,6 +12,7 @@ export default function ExhibitorModal({
   open,
   onClose,
   exhibitor,
+  showMapLink,
   title,
   description,
   children
@@ -19,6 +20,7 @@ export default function ExhibitorModal({
   open: boolean
   onClose: () => void
   exhibitor?: Exhibitor
+  showMapLink?: boolean
   title?: string
   description?: string
   children?: ReactNode
@@ -37,7 +39,11 @@ export default function ExhibitorModal({
       <div
         className={cn("border-licorice border-solid p-4 sm:p-10", background)}>
         {exhibitor ? (
-          <ExhibitorDetails key={exhibitor.id} exhibitor={exhibitor} />
+          <ExhibitorDetails
+            key={exhibitor.id}
+            exhibitor={exhibitor}
+            showMapLink={showMapLink}
+          />
         ) : (
           children
         )}

@@ -36,9 +36,9 @@ export default async function StudentMap({
   const initialExhibitorId = typeof id === "string" ? id : undefined
 
   return (
-    <Page.Boundary className="mt-20 h-[calc(100dvh-5rem)] min-h-96 gap-2 py-3">
-      <Page.Header className="shrink-0">{translations[locale].map}</Page.Header>
+    <Page.Boundary className="mt-20 h-[calc(100dvh-5rem)] min-h-96 gap-2 pt-7 pb-3 sm:pt-9">
       <InteractiveMapClient
+        title={translations[locale].map}
         key={initialExhibitorId}
         exhibitors={exhibitors}
         initialExhibitorId={initialExhibitorId}

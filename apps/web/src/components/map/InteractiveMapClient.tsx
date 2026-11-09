@@ -1,5 +1,6 @@
 "use client"
 
+import { Page } from "@/components/shared/Page"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { useTranslations } from "next-intl"
 import { useMemo, useState } from "react"
@@ -9,9 +10,11 @@ import FloorSelector from "./FloorSelector"
 import { MAPS, mapExhibitors, type MappedExhibitor } from "./maps"
 
 export default function InteractiveMapClient({
+  title,
   exhibitors,
   initialExhibitorId
 }: {
+  title: string
   exhibitors: Exhibitor[]
   initialExhibitorId?: string
 }) {
@@ -32,17 +35,22 @@ export default function InteractiveMapClient({
     <section
       aria-label={t("title")}
       className="flex min-h-0 flex-1 flex-col gap-2">
-      <div className="flex shrink-0 flex-wrap items-center justify-between gap-2">
-        <FloorSelector
-          floors={MAPS.map(map => t("floor", { floor: map.floor }))}
-          selectedFloor={t("floor", { floor: floor.floor })}
-          onSelect={name => {
-            const map = MAPS.find(m => t("floor", { floor: m.floor }) === name)
-            if (!map) return
-            setFloor(map)
-            setFocus(null)
-          }}
-        />
+      <div className="grid shrink-0 grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 sm:grid-cols-[auto_1fr_auto]">
+        <Page.Header className="text-4xl sm:text-5xl">{title}</Page.Header>
+        <div className="order-last col-span-2 sm:order-0 sm:col-span-1 sm:justify-self-center">
+          <FloorSelector
+            floors={MAPS.map(map => t("floor", { floor: map.floor }))}
+            selectedFloor={t("floor", { floor: floor.floor })}
+            onSelect={name => {
+              const map = MAPS.find(
+                m => t("floor", { floor: m.floor }) === name
+              )
+              if (!map) return
+              setFloor(map)
+              setFocus(null)
+            }}
+          />
+        </div>
         <CompanySearch
           exhibitors={placements}
           open={searchOpen}
@@ -56,15 +64,14 @@ export default function InteractiveMapClient({
         />
       </div>
 
-      <p className="shrink-0 text-sm" role="status">
-        {focus
-          ? t("searchResult", {
-              name: focus.name,
-              floor: focus.floor,
-              booth: focus.booth,
-              room: focus.room
-            })
-          : t("instructions")}
+      <p className="sr-only" role="status">
+        {focus &&
+          t("searchResult", {
+            name: focus.name,
+            floor: focus.floor,
+            booth: focus.booth,
+            room: focus.room
+          })}
       </p>
       <FairMap
         key={floor.floor}

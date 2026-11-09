@@ -402,7 +402,7 @@
     "timeline": "Timeline",
     "events": "Events",
     "exhibitorsList": "Exhibitors",
-    "map": "Fair map",
+    "map": "Fair Map",
     "recruitment": "Recruitment",
     "blog": "Blog",
     "team": "Team",
@@ -705,7 +705,6 @@
     "booth": "Booth {booth}",
     "day": "{day} November",
     "searchResult": "{name} · Floor {floor} · Booth {booth} · {room}",
-    "instructions": "Choose a booth or search for an exhibitor.",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "resetZoom": "Reset zoom"

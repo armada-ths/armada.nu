@@ -4,20 +4,21 @@ import FairMap from "./FairMap"
 import { MAPS, mapExhibitors, PLACEMENTS } from "./maps"
 
 const placements = mapExhibitors(
-  PLACEMENTS.filter(({ booth }) => booth === 62 || booth === 72).map(
-    ({ exhibitorId, name, day }) => ({
-      id: exhibitorId,
-      name,
-      type: "company",
-      climateCompensation: false,
-      tier: day === 17 ? "Gold" : day === 18 ? "Silver" : "Bronze",
-      ...(day === 17 && { logoThumbnail: "/armada_licorice.svg" }),
-      ...(day === 18 && {
-        logoThumbnail: "/missing-fair-map-test-logo.svg",
-        logoFreesize: "/LogoDCS-300dpi.png"
-      })
+  PLACEMENTS.filter(
+    ({ booth, name }) =>
+      booth === 62 || booth === 72 || name === "Adven Group Oy"
+  ).map(({ exhibitorId, name, day }) => ({
+    id: exhibitorId,
+    name: name === "Epiroc" ? "Epiroc AB" : name,
+    type: "company",
+    climateCompensation: false,
+    tier: day === 17 ? "Gold" : day === 18 ? "Silver" : "Bronze",
+    ...(day === 17 && { logoThumbnail: "/armada_licorice.svg" }),
+    ...(day === 18 && {
+      logoThumbnail: "/missing-fair-map-test-logo.svg",
+      logoFreesize: "/LogoDCS-300dpi.png"
     })
-  )
+  }))
 )
 
 const meta = {
@@ -64,15 +65,18 @@ export const SharedBooth: Story = {
 export const SwedishKeyboardAndNoLogo: Story = {
   globals: { locale: "sv" },
   play: async ({ canvas }) => {
-    const booth = canvas.getByRole("button", { name: "Monter 72, Epiroc" })
+    const booth = canvas.getByRole("button", { name: "Monter 72, Epiroc AB" })
     await expect(within(booth).getByText("EPI")).toBeVisible()
     booth.focus()
     await userEvent.keyboard("{Enter}")
     const dialog = await within(document.body).findByRole("dialog")
     await waitFor(() =>
-      expect(within(dialog).getByText("Epiroc")).toBeVisible()
+      expect(within(dialog).getByText("Epiroc AB")).toBeVisible()
     )
     await expect(within(dialog).queryByRole("img")).not.toBeInTheDocument()
+    await expect(
+      within(dialog).queryByRole("link", { name: "Visa på karta" })
+    ).not.toBeInTheDocument()
     await expect(dialog).toHaveClass("min-w-[80vw]", "bg-bronze")
   }
 }
@@ -96,5 +100,13 @@ export const WheelZoom: Story = {
         2
       )
     )
+  }
+}
+
+export const FinnishCompanySuffix: Story = {
+  args: { floor: MAPS[1], placements: placements.filter(p => p.floor === 3) },
+  play: async ({ canvas }) => {
+    const adven = canvas.getByRole("button", { name: /Adven Group Oy/ })
+    await expect(within(adven).getByText("AG")).toBeVisible()
   }
 }

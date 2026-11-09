@@ -7,7 +7,7 @@ const meta = {
   title: "Student/InteractiveMap",
   component: InteractiveMapClient,
   tags: ["autodocs"],
-  args: { exhibitors: [] }
+  args: { title: "Fair Map", exhibitors: [] }
 } satisfies Meta<typeof InteractiveMapClient>
 
 export default meta
@@ -58,5 +58,44 @@ export const LinkedExhibitor: Story = {
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Coherent · Floor 3 · Booth 102"
     )
+  }
+}
+
+export const DefaultTierOrder: Story = {
+  args: {
+    exhibitors: PLACEMENTS.slice(0, 4).map(({ exhibitorId, name }, index) => ({
+      id: exhibitorId,
+      name,
+      type: "company",
+      climateCompensation: false,
+      tier: [undefined, "Bronze", "Silver", "Gold"][index]
+    }))
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Find an exhibitor" })
+    )
+    const body = within(document.body)
+    const input = await body.findByRole("combobox")
+    const expected = args.exhibitors
+      .toReversed()
+      .map(exhibitor => exhibitor.name)
+    const expectTierOrder = () => {
+      const options = body.getAllByRole("option")
+      expect(
+        options.slice(0, 4).map(option => option.firstElementChild?.textContent)
+      ).toEqual(expected)
+    }
+
+    await waitFor(expectTierOrder)
+    await userEvent.type(input, "MSAB")
+    await expect(
+      await body.findByRole("option", { name: /MSAB/ })
+    ).toBeVisible()
+    await expect(
+      body.queryByRole("option", { name: /GKN Aerospace/ })
+    ).not.toBeInTheDocument()
+    await userEvent.clear(input)
+    await waitFor(expectTierOrder)
   }
 }

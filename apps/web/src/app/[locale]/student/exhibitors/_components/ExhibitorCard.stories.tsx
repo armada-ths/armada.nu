@@ -44,12 +44,12 @@ export const OriginalFallback: Story = {
   }
 }
 
-export const SwedishMapLink: Story = {
+export const SwedishCardLink: Story = {
   globals: { locale: "sv" },
-  args: { showMapLink: true },
   play: async ({ canvas }) => {
-    const link = canvas.getByRole("link", { name: "Visa på karta" })
-    await expect(link).toHaveAttribute("href", "/sv/student/map?id=1")
+    await expect(
+      canvas.queryByRole("link", { name: "Visa på karta" })
+    ).not.toBeInTheDocument()
     await expect(
       canvas.getByRole("link", { name: /Example Company/ })
     ).toHaveAttribute("href", "/sv/student/exhibitors?id=1")

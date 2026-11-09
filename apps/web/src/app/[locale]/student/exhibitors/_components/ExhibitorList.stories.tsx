@@ -12,7 +12,7 @@ const exhibitors: Exhibitor[] = [
     climateCompensation: false
   },
   {
-    id: 2,
+    id: 4651,
     name: "Linked Company",
     type: "Company",
     tier: "Silver",
@@ -47,7 +47,7 @@ export const DirectLinkOutsideFilter: Story = {
   parameters: {
     nextjs: {
       appDirectory: true,
-      navigation: { pathname: "/en/student/exhibitors", query: { id: "2" } }
+      navigation: { pathname: "/en/student/exhibitors", query: { id: "4651" } }
     }
   },
   play: async ({ canvas }) => {
@@ -59,5 +59,29 @@ export const DirectLinkOutsideFilter: Story = {
       canvas.queryByRole("heading", { level: 3, name: "Linked Company" })
     ).not.toBeInTheDocument()
     await expect(within(document.body).getAllByRole("dialog")).toHaveLength(1)
+    await expect(
+      within(dialog).queryByRole("link", { name: "Show on map" })
+    ).not.toBeInTheDocument()
+  }
+}
+
+export const SwedishModalMapLink: Story = {
+  globals: { locale: "sv" },
+  args: { mapEnabled: true },
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: { pathname: "/sv/student/exhibitors", query: { id: "4651" } }
+    }
+  },
+  play: async ({ canvas }) => {
+    const dialog = await within(document.body).findByRole("dialog")
+    const mapLink = await within(dialog).findByRole("link", {
+      name: "Visa på karta"
+    })
+    await expect(mapLink).toHaveAttribute("href", "/sv/student/map?id=4651")
+    await expect(
+      canvas.queryByRole("link", { name: "Visa på karta", hidden: true })
+    ).not.toBeInTheDocument()
   }
 }

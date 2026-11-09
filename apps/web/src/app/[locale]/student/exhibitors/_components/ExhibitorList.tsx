@@ -10,22 +10,16 @@ import ExhibitorModal from "./ExhibitorModal"
 const placedIds = new Set(PLACEMENTS.map(placement => placement.exhibitorId))
 
 const ExhibitorGrid = memo(function ExhibitorGrid({
-  exhibitors,
-  mapEnabled
+  exhibitors
 }: {
   exhibitors: Exhibitor[]
-  mapEnabled: boolean
 }) {
   return (
     <div
       data-exhibitor-list
       className="mx-auto grid max-w-300 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {exhibitors.map(exhibitor => (
-        <ExhibitorCard
-          key={exhibitor.id}
-          exhibitor={exhibitor}
-          showMapLink={mapEnabled && placedIds.has(exhibitor.id)}
-        />
+        <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
       ))}
     </div>
   )
@@ -89,12 +83,13 @@ export default function ExhibitorList({
   return (
     <>
       <div onClickCapture={openCompany}>
-        <ExhibitorGrid exhibitors={visibleExhibitors} mapEnabled={mapEnabled} />
+        <ExhibitorGrid exhibitors={visibleExhibitors} />
       </div>
       <ExhibitorModal
         open={Boolean(selected)}
         onClose={closeCompany}
         exhibitor={displayed}
+        showMapLink={mapEnabled && !!displayed && placedIds.has(displayed.id)}
       />
     </>
   )

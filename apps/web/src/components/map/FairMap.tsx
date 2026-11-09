@@ -50,7 +50,12 @@ function BoothLogo({
     )
   }
 
-  const words = entry.name.trim().split(/\s+/)
+  const name = entry.name.trim()
+  const brand = name.replace(
+    /(?:[\s,]+(?:ab|hb|kb|ag|as|asa|a\/s|aps|oyj?|ltd|limited|llc|llp|plc|inc|corp|corporation|gmbh(?:\s+&\s+co\.?\s+kg)?|kgaa|kg|b\.?v|n\.?v|s\.?a|s\.?a\.?s|s\.?a\.?r\.?l|s\.?r\.?l|s\.?p\.?a|s\.?l)\.?)+(?:\s*\(publ\))?$/i,
+    ""
+  )
+  const words = (brand || name).split(/\s+/)
   const initials =
     words.length === 1
       ? words[0].slice(0, 3)

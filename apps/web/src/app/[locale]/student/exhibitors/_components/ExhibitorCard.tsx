@@ -4,24 +4,14 @@ import BadgeCollection from "@/app/[locale]/student/exhibitors/_components/Badge
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 
 import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Card } from "@/components/ui/card"
 import { shouldBypassNextImageOptimization } from "@/lib/utils"
 import Image from "next/image"
 import { Link } from "@armada/shared/i18n/navigation"
-import { MapPin } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { exhibitorTierColors } from "./exhibitorTierColors"
 
-export function ExhibitorCard({
-  exhibitor,
-  showMapLink = false
-}: {
-  exhibitor: Exhibitor
-  showMapLink?: boolean
-}) {
-  const t = useTranslations("FairMap")
+export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   const logoSrc =
     exhibitor.logoSquared ??
     exhibitor.logoThumbnail ??
@@ -73,14 +63,6 @@ export function ExhibitorCard({
           badgeClassName="text-[0.65em] flex-initial truncate inline-block"
         />
       </Link>
-      {showMapLink && (
-        <Button asChild variant="neutral" size="sm" className="mx-auto mb-3">
-          <Link href={`/student/map?id=${exhibitor.id}`} prefetch={false}>
-            <MapPin aria-hidden="true" />
-            {t("showOnMap")}
-          </Link>
-        </Button>
-      )}
     </Card>
   )
 }
