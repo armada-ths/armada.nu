@@ -10,6 +10,7 @@ const placements = mapExhibitors(
       name,
       type: "company",
       climateCompensation: false,
+      tier: day === 17 ? "Gold" : day === 18 ? "Silver" : "Bronze",
       ...(day === 17 && { logoThumbnail: "/armada_licorice.svg" }),
       ...(day === 18 && {
         logoThumbnail: "/missing-fair-map-test-logo.svg",
@@ -43,6 +44,8 @@ export const SharedBooth: Story = {
         )
       ).toEqual(["/armada_licorice.svg", "/LogoDCS-300dpi.png"])
     )
+    await expect(booth.querySelector(".fill-pineapple")).toBeInTheDocument()
+    await expect(booth.querySelector(".fill-silver")).toBeInTheDocument()
     await userEvent.click(booth)
     const dialog = await within(document.body).findByRole("dialog")
     await waitFor(() =>
@@ -70,5 +73,6 @@ export const SwedishKeyboardAndNoLogo: Story = {
       expect(within(dialog).getByText("Epiroc")).toBeVisible()
     )
     await expect(within(dialog).queryByRole("img")).not.toBeInTheDocument()
+    await expect(dialog).toHaveClass("min-w-[80vw]", "bg-bronze")
   }
 }

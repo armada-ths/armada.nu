@@ -9,18 +9,30 @@ import FloorSelector from "./FloorSelector"
 import { MAPS, mapExhibitors, type MappedExhibitor } from "./maps"
 
 export default function InteractiveMapClient({
-  exhibitors
+  exhibitors,
+  initialExhibitorId
 }: {
   exhibitors: Exhibitor[]
+  initialExhibitorId?: string
 }) {
   const t = useTranslations("FairMap")
-  const [floor, setFloor] = useState(MAPS[0])
-  const [focus, setFocus] = useState<MappedExhibitor | null>(null)
   const placements = useMemo(() => mapExhibitors(exhibitors), [exhibitors])
+  const [focus, setFocus] = useState<MappedExhibitor | null>(
+    () =>
+      placements.find(
+        placement => String(placement.exhibitorId) === initialExhibitorId
+      ) ?? null
+  )
+  const [floor, setFloor] = useState(
+    () => MAPS.find(map => map.floor === focus?.floor) ?? MAPS[0]
+  )
+  const [searchOpen, setSearchOpen] = useState(false)
 
   return (
-    <section aria-label={t("title")} className="space-y-3 pb-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <section
+      aria-label={t("title")}
+      className="flex min-h-0 flex-1 flex-col gap-2">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-2">
         <FloorSelector
           floors={MAPS.map(map => t("floor", { floor: map.floor }))}
           selectedFloor={t("floor", { floor: floor.floor })}
@@ -33,6 +45,8 @@ export default function InteractiveMapClient({
         />
         <CompanySearch
           exhibitors={placements}
+          open={searchOpen}
+          onOpenChange={setSearchOpen}
           onSelect={placement => {
             const map = MAPS.find(m => m.floor === placement.floor)
             if (!map) return
@@ -42,7 +56,7 @@ export default function InteractiveMapClient({
         />
       </div>
 
-      <p className="text-sm" role="status">
+      <p className="shrink-0 text-sm" role="status">
         {focus
           ? t("searchResult", {
               name: focus.name,
@@ -57,6 +71,7 @@ export default function InteractiveMapClient({
         floor={floor}
         placements={placements.filter(p => p.floor === floor.floor)}
         focus={focus}
+        suppressHover={searchOpen}
       />
     </section>
   )

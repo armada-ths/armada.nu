@@ -1,25 +1,31 @@
 "use client"
 
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
-import { useScreenSize } from "@/components/shared/hooks/useScreenSize"
-import Modal from "@/components/ui/Modal"
-import { cn } from "@/lib/utils"
 import { usePathname, useSearchParams } from "next/navigation"
 import { memo, useState, type MouseEvent } from "react"
 import { ExhibitorCard } from "./ExhibitorCard"
-import ExhibitorDetails from "./ExhibitorDetails"
+import { PLACEMENTS } from "@/components/map/maps"
+import ExhibitorModal from "./ExhibitorModal"
+
+const placedIds = new Set(PLACEMENTS.map(placement => placement.exhibitorId))
 
 const ExhibitorGrid = memo(function ExhibitorGrid({
-  exhibitors
+  exhibitors,
+  mapEnabled
 }: {
   exhibitors: Exhibitor[]
+  mapEnabled: boolean
 }) {
   return (
     <div
       data-exhibitor-list
       className="mx-auto grid max-w-300 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {exhibitors.map(exhibitor => (
-        <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
+        <ExhibitorCard
+          key={exhibitor.id}
+          exhibitor={exhibitor}
+          showMapLink={mapEnabled && placedIds.has(exhibitor.id)}
+        />
       ))}
     </div>
   )
@@ -27,14 +33,15 @@ const ExhibitorGrid = memo(function ExhibitorGrid({
 
 export default function ExhibitorList({
   exhibitors,
-  visibleExhibitors
+  visibleExhibitors,
+  mapEnabled = false
 }: {
   exhibitors: Exhibitor[]
   visibleExhibitors: Exhibitor[]
+  mapEnabled?: boolean
 }) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
-  const { width } = useScreenSize()
   const selected = exhibitors.find(
     exhibitor => String(exhibitor.id) === searchParams.get("id")
   )
@@ -42,11 +49,6 @@ export default function ExhibitorList({
   // Keep the last company visible during the modal's closing animation.
   if (selected && selected !== lastSelected) setLastSelected(selected)
   const displayed = selected ?? lastSelected
-  const tierClassName = cn({
-    "bg-pineapple": displayed?.tier === "Gold",
-    "bg-silver": displayed?.tier === "Silver",
-    "bg-bronze": displayed?.tier === "Bronze"
-  })
 
   function openCompany(event: MouseEvent<HTMLDivElement>) {
     if (
@@ -87,24 +89,13 @@ export default function ExhibitorList({
   return (
     <>
       <div onClickCapture={openCompany}>
-        <ExhibitorGrid exhibitors={visibleExhibitors} />
+        <ExhibitorGrid exhibitors={visibleExhibitors} mapEnabled={mapEnabled} />
       </div>
-      <Modal
-        open={Boolean(selected) && width !== undefined}
-        setOpen={open => {
-          if (!open) closeCompany()
-        }}
-        className={cn("border-licorice min-w-[80vw] p-0", tierClassName)}>
-        {displayed && (
-          <div
-            className={cn(
-              "border-licorice border-solid p-4 sm:p-10",
-              tierClassName
-            )}>
-            <ExhibitorDetails key={displayed.id} exhibitor={displayed} />
-          </div>
-        )}
-      </Modal>
+      <ExhibitorModal
+        open={Boolean(selected)}
+        onClose={closeCompany}
+        exhibitor={displayed}
+      />
     </>
   )
 }

@@ -21,13 +21,16 @@ import type { MappedExhibitor } from "./maps"
 
 export default function CompanySearch({
   exhibitors,
+  open,
+  onOpenChange,
   onSelect
 }: {
   exhibitors: MappedExhibitor[]
+  open: boolean
+  onOpenChange: (open: boolean) => void
   onSelect: (exhibitor: MappedExhibitor) => void
 }) {
   const t = useTranslations("FairMap")
-  const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
 
   return (
@@ -35,10 +38,17 @@ export default function CompanySearch({
       open={open}
       onOpenChange={nextOpen => {
         setQuery("")
-        setOpen(nextOpen)
+        onOpenChange(nextOpen)
       }}>
       <PopoverTrigger asChild>
-        <Button variant="neutral" type="button">
+        <Button
+          variant="neutral"
+          type="button"
+          className={
+            open
+              ? "hover:shadow-shadow! transition-none hover:translate-none!"
+              : undefined
+          }>
           <Search aria-hidden="true" />
           {t("search")}
         </Button>
@@ -68,7 +78,7 @@ export default function CompanySearch({
                   onSelect={() => {
                     onSelect(exhibitor)
                     setQuery("")
-                    setOpen(false)
+                    onOpenChange(false)
                   }}>
                   <span>{exhibitor.name}</span>
                   <span className="ml-auto shrink-0 text-xs">

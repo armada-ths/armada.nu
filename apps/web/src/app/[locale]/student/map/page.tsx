@@ -16,7 +16,11 @@ export async function generateMetadata() {
   })
 }
 
-export default async function StudentMap() {
+export default async function StudentMap({
+  searchParams
+}: {
+  searchParams: Promise<{ id?: string | string[] }>
+}) {
   const locale = await getRequestLocale()
   const showMap = await feature("MAP_PAGE")
   if (!showMap) {
@@ -28,10 +32,17 @@ export default async function StudentMap() {
     return []
   })
 
+  const { id } = await searchParams
+  const initialExhibitorId = typeof id === "string" ? id : undefined
+
   return (
-    <Page.Boundary>
-      <Page.Header>{translations[locale].map}</Page.Header>
-      <InteractiveMapClient exhibitors={exhibitors} />
+    <Page.Boundary className="mt-20 h-[calc(100dvh-5rem)] min-h-96 gap-2 py-3">
+      <Page.Header className="shrink-0">{translations[locale].map}</Page.Header>
+      <InteractiveMapClient
+        key={initialExhibitorId}
+        exhibitors={exhibitors}
+        initialExhibitorId={initialExhibitorId}
+      />
     </Page.Boundary>
   )
 }

@@ -21,7 +21,10 @@ export async function generateMetadata() {
 export default async function ExhibitorsPage() {
   const locale = await getRequestLocale()
   const dict = translations[locale]
-  const showExhibitors = await feature("EXHIBITOR_PAGE")
+  const [showExhibitors, mapEnabled] = await Promise.all([
+    feature("EXHIBITOR_PAGE"),
+    feature("MAP_PAGE")
+  ])
   if (!showExhibitors) {
     return <ComingSoonPage title={dict.companies} />
   }
@@ -36,7 +39,7 @@ export default async function ExhibitorsPage() {
         <Page.Header>{uiText(locale, "companiesAtTheFair2026")}</Page.Header>{" "}
         {/* TODO: Make year dynamic based on CMS data */}
         <Suspense>
-          <ExhibitorSearch exhibitors={exhibitors} />
+          <ExhibitorSearch exhibitors={exhibitors} mapEnabled={mapEnabled} />
         </Suspense>
       </Page.Boundary>
     </Page.Background>

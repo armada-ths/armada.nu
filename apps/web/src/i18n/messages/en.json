@@ -695,6 +695,7 @@
     "disabledSuffix": ", disabled"
   },
   "FairMap": {
+    "showOnMap": "Show on map",
     "title": "2026 fair map",
     "floor": "Nymble floor {floor}",
     "floors": "Map floors",

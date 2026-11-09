@@ -695,6 +695,7 @@
     "disabledSuffix": ", inaktiverat"
   },
   "FairMap": {
+    "showOnMap": "Visa på karta",
     "title": "Mässkarta 2026",
     "floor": "Nymble plan {floor}",
     "floors": "Kartans våningar",

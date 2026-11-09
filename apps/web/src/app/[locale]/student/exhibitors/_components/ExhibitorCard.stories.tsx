@@ -43,3 +43,15 @@ export const OriginalFallback: Story = {
     ).toHaveAttribute("src", expect.stringContaining("armada_licorice.svg"))
   }
 }
+
+export const SwedishMapLink: Story = {
+  globals: { locale: "sv" },
+  args: { showMapLink: true },
+  play: async ({ canvas }) => {
+    const link = canvas.getByRole("link", { name: "Visa på karta" })
+    await expect(link).toHaveAttribute("href", "/sv/student/map?id=1")
+    await expect(
+      canvas.getByRole("link", { name: /Example Company/ })
+    ).toHaveAttribute("href", "/sv/student/exhibitors?id=1")
+  }
+}

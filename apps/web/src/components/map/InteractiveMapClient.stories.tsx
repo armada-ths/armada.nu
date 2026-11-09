@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, userEvent, waitFor, within } from "storybook/test"
 import InteractiveMapClient from "./InteractiveMapClient"
+import { PLACEMENTS } from "./maps"
 
 const meta = {
   title: "Student/InteractiveMap",
@@ -22,6 +23,9 @@ export const SearchAcrossFloors: Story = {
       await userEvent.click(
         canvas.getByRole("button", { name: "Find an exhibitor" })
       )
+      await expect(
+        canvas.getByRole("button", { name: "Find an exhibitor" })
+      ).toHaveClass("transition-none")
       const body = within(document.body)
       const input = await body.findByRole("combobox")
       await userEvent.type(input, name)
@@ -38,5 +42,21 @@ export const SearchAcrossFloors: Story = {
         `${name} · Floor ${floor} · Booth ${booth}`
       )
     }
+  }
+}
+
+export const LinkedExhibitor: Story = {
+  args: {
+    initialExhibitorId: String(
+      PLACEMENTS.find(placement => placement.name === "Coherent")?.exhibitorId
+    )
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Nymble floor 3" })
+    ).toHaveAttribute("aria-pressed", "true")
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Coherent · Floor 3 · Booth 102"
+    )
   }
 }
