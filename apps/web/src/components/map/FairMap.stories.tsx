@@ -85,15 +85,16 @@ export const WheelZoom: Story = {
 
     const { x, y, width, height } = map.getBoundingClientRect()
     fireEvent.wheel(map, {
-      deltaY: -200,
+      deltaY: -100,
       clientX: x + width / 2,
       clientY: y + height / 2
     })
 
     await waitFor(() =>
-      expect(
-        new DOMMatrix(getComputedStyle(content).transform).a
-      ).toBeGreaterThan(1)
+      expect(new DOMMatrix(getComputedStyle(content).transform).a).toBeCloseTo(
+        1.25,
+        2
+      )
     )
   }
 }
