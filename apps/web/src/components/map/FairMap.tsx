@@ -14,6 +14,64 @@ import {
 } from "react-zoom-pan-pinch"
 import { boothId, type MapDefinition, type MappedExhibitor } from "./maps"
 
+function BoothLogo({
+  entry,
+  cx,
+  cy,
+  height
+}: {
+  entry: MappedExhibitor
+  cx: number
+  cy: number
+  height: number
+}) {
+  const [failedSources, setFailedSources] = useState<string[]>([])
+  const logo = [
+    entry.exhibitor?.logoThumbnail,
+    entry.exhibitor?.logoFreesize,
+    entry.exhibitor?.logoSquared
+  ].find(source => source && !failedSources.includes(source))
+
+  if (logo) {
+    return (
+      <image
+        key={logo}
+        href={logo}
+        x={cx - 26}
+        y={cy - height / 2}
+        width={52}
+        height={height}
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+        pointerEvents="none"
+        onError={() => setFailedSources(sources => [...sources, logo])}
+      />
+    )
+  }
+
+  const words = entry.name.trim().split(/\s+/)
+  const initials =
+    words.length === 1
+      ? words[0].slice(0, 3)
+      : words
+          .slice(0, 3)
+          .map(word => word[0])
+          .join("")
+  return (
+    <text
+      x={cx}
+      y={cy}
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={Math.min(19, height)}
+      className="fill-licorice font-bold"
+      aria-hidden="true"
+      pointerEvents="none">
+      {initials.toUpperCase()}
+    </text>
+  )
+}
+
 export default function FairMap({
   floor,
   placements,
@@ -113,18 +171,41 @@ export default function FairMap({
                             setActiveBooth(booth)
                           }
                         }}>
+                        <title>
+                          {entries.map(entry => entry.name).join(" · ")}
+                        </title>
                         <rect
                           x={cx - 33}
                           y={cy - 32}
                           width={66}
                           height={64}
                           rx={12}
+                          className="fill-transparent"
+                        />
+                        <rect
+                          x={cx - 30}
+                          y={cy - 25}
+                          width={60}
+                          height={50}
+                          rx={8}
                           className={
                             selected
-                              ? "fill-pineapple/30 stroke-licorice stroke-3"
-                              : `group-hover:stroke-licorice group-focus-visible:stroke-licorice fill-transparent stroke-3 ${isGold ? "stroke-pineapple" : "stroke-transparent"}`
+                              ? "fill-silver stroke-licorice stroke-4"
+                              : `group-hover:stroke-licorice group-focus-visible:stroke-licorice fill-silver stroke-3 ${isGold ? "stroke-pineapple" : "stroke-licorice/25"}`
                           }
                         />
+                        {entries.map((entry, index) => {
+                          const rowHeight = 44 / entries.length
+                          return (
+                            <BoothLogo
+                              key={entry.exhibitorId}
+                              entry={entry}
+                              cx={cx}
+                              cy={cy - 22 + rowHeight * (index + 0.5)}
+                              height={rowHeight - 4}
+                            />
+                          )
+                        })}
                       </g>
                     )
                   })}

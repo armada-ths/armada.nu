@@ -17,10 +17,7 @@ describe("2026 fair map", () => {
         "utf8"
       )
       expect(svg).toContain(`viewBox="${box.join(" ")}"`)
-      const printedNumbers = [...svg.matchAll(/data-booth-label="(\d+)"/g)].map(
-        ([, number]) => Number(number)
-      )
-      expect(printedNumbers).toEqual(markers.map(([number]) => number))
+      expect(svg).not.toContain("data-booth-label=")
       const [x, y, width, height] = box
       return markers.map(([booth, cx, cy]) => {
         expect(cx).toBeGreaterThan(x)

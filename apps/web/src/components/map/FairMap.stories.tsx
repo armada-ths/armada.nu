@@ -5,11 +5,16 @@ import { MAPS, mapExhibitors, PLACEMENTS } from "./maps"
 
 const placements = mapExhibitors(
   PLACEMENTS.filter(({ booth }) => booth === 62 || booth === 72).map(
-    ({ exhibitorId, name }) => ({
+    ({ exhibitorId, name, day }) => ({
       id: exhibitorId,
       name,
       type: "company",
-      climateCompensation: false
+      climateCompensation: false,
+      ...(day === 17 && { logoThumbnail: "/armada_licorice.svg" }),
+      ...(day === 18 && {
+        logoThumbnail: "/missing-fair-map-test-logo.svg",
+        logoFreesize: "/LogoDCS-300dpi.png"
+      })
     })
   )
 )
@@ -30,7 +35,15 @@ type Story = StoryObj<typeof meta>
 
 export const SharedBooth: Story = {
   play: async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: /booth 62,/i }))
+    const booth = canvas.getByRole("button", { name: /booth 62,/i })
+    await waitFor(() =>
+      expect(
+        Array.from(booth.querySelectorAll("image"), image =>
+          image.getAttribute("href")
+        )
+      ).toEqual(["/armada_licorice.svg", "/LogoDCS-300dpi.png"])
+    )
+    await userEvent.click(booth)
     const dialog = await within(document.body).findByRole("dialog")
     await waitFor(() =>
       expect(within(dialog).getByText("17 November")).toBeVisible()
@@ -49,6 +62,7 @@ export const SwedishKeyboardAndNoLogo: Story = {
   globals: { locale: "sv" },
   play: async ({ canvas }) => {
     const booth = canvas.getByRole("button", { name: "Monter 72, Epiroc" })
+    await expect(within(booth).getByText("EPI")).toBeVisible()
     booth.focus()
     await userEvent.keyboard("{Enter}")
     const dialog = await within(document.body).findByRole("dialog")
