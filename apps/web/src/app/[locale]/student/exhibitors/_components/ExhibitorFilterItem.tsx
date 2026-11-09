@@ -7,6 +7,7 @@ import {
 } from "@armada/shared/i18n/routing"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
 import { ChevronDown, ListFilter } from "lucide-react"
 import { useEffect, useId, useMemo, useState } from "react"
@@ -171,70 +172,69 @@ export default function ExhibitorFilterItem({
 
   return (
     <div className="border-licorice border-t pt-4 pb-2">
-      <div className="flex items-center gap-3">
-        <div className="w-56 min-w-0">
+      <Button
+        type="button"
+        variant="neutral"
+        className="group sm:hidden"
+        aria-expanded={filtersOpen}
+        aria-controls={filtersId}
+        onClick={() => setFiltersOpen(open => !open)}>
+        <ListFilter aria-hidden="true" />
+        {labels.filters}
+        <ChevronDown
+          aria-hidden="true"
+          className="group-aria-expanded:rotate-180"
+        />
+      </Button>
+
+      <div
+        id={filtersId}
+        className={cn(
+          "flex-col gap-3 sm:flex sm:flex-row sm:flex-wrap sm:items-end",
+          filtersOpen ? "mt-3 flex sm:mt-0" : "hidden"
+        )}>
+        <div className="min-w-0 flex-1 sm:min-w-48">
           <ExhibitorSortMenu
             value={sortBy}
             onValueChange={onSortChange}
             triggerClassName={filterTriggerClassName}
           />
         </div>
-        <Button
-          type="button"
-          variant="neutral"
-          className="group shrink-0"
-          aria-expanded={filtersOpen}
-          aria-controls={filtersId}
-          onClick={() => setFiltersOpen(open => !open)}>
-          <ListFilter aria-hidden="true" />
-          {labels.filters}
-          <ChevronDown
-            aria-hidden="true"
-            className="group-aria-expanded:rotate-180"
+        {/* Employment Filter */}
+        <div className="min-w-0 flex-1 sm:min-w-48">
+          <MultiSelect
+            options={employmentOptions}
+            defaultValue={selectedEmploymentIds}
+            onValueChange={setSelectedEmploymentIds}
+            placeholder={labels.filterEmployment}
+            popoverClassName={filterPopoverClassName}
+            className={filterTriggerClassName}
           />
-        </Button>
-      </div>
+        </div>
 
-      <div id={filtersId} hidden={!filtersOpen}>
-        {filtersOpen && (
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
-            {/* Employment Filter */}
-            <div className="min-w-0 flex-1 sm:min-w-48">
-              <MultiSelect
-                options={employmentOptions}
-                defaultValue={selectedEmploymentIds}
-                onValueChange={setSelectedEmploymentIds}
-                placeholder={labels.filterEmployment}
-                popoverClassName={filterPopoverClassName}
-                className={filterTriggerClassName}
-              />
-            </div>
+        {/* Industries Filter */}
+        <div className="min-w-0 flex-1 sm:min-w-48">
+          <MultiSelect
+            options={industriesOptions}
+            defaultValue={selectedIndustriesIds}
+            onValueChange={setSelectedIndustriesIds}
+            placeholder={labels.filterIndustry}
+            popoverClassName={filterPopoverClassName}
+            className={filterTriggerClassName}
+          />
+        </div>
 
-            {/* Industries Filter */}
-            <div className="min-w-0 flex-1 sm:min-w-48">
-              <MultiSelect
-                options={industriesOptions}
-                defaultValue={selectedIndustriesIds}
-                onValueChange={setSelectedIndustriesIds}
-                placeholder={labels.filterIndustry}
-                popoverClassName={filterPopoverClassName}
-                className={filterTriggerClassName}
-              />
-            </div>
-
-            {/* Program Filter */}
-            <div className="min-w-0 flex-1 sm:min-w-48">
-              <MultiSelect
-                options={programOptions}
-                defaultValue={selectedProgramsIds}
-                onValueChange={setSelectedProgramsIds}
-                placeholder={labels.filterProgram}
-                popoverClassName={filterPopoverClassName}
-                className={filterTriggerClassName}
-              />
-            </div>
-          </div>
-        )}
+        {/* Program Filter */}
+        <div className="min-w-0 flex-1 sm:min-w-48">
+          <MultiSelect
+            options={programOptions}
+            defaultValue={selectedProgramsIds}
+            onValueChange={setSelectedProgramsIds}
+            placeholder={labels.filterProgram}
+            popoverClassName={filterPopoverClassName}
+            className={filterTriggerClassName}
+          />
+        </div>
       </div>
     </div>
   )

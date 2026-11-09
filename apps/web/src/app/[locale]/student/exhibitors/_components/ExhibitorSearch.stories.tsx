@@ -155,10 +155,26 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const FilteringAndSorting: Story = {
-  play: async ({ canvas }) => {
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  play: async ({ canvas, canvasElement }) => {
     const searchInput = canvas.getByPlaceholderText("Search by company name")
     const companyHeadings = canvas.getAllByRole("heading", { level: 3 })
     await expect(companyHeadings[0]).toHaveTextContent("Beta Industries")
+
+    const searchBounds = searchInput.getBoundingClientRect()
+    for (const card of canvasElement.querySelectorAll(
+      "[data-exhibitor-list] > *"
+    )) {
+      const bounds = card.getBoundingClientRect()
+      await expect(bounds.left).toBeCloseTo(searchBounds.left)
+      await expect(bounds.right).toBeCloseTo(searchBounds.right)
+    }
+
+    const filters = canvas.getByRole("button", { name: "Filters" })
+    await expect(searchInput).toBeVisible()
+    await expect(filters).toHaveAttribute("aria-expanded", "false")
+    await expect(canvas.queryByRole("combobox")).not.toBeInTheDocument()
+    await userEvent.click(filters)
 
     const sortTrigger = canvas.getByRole("combobox", {
       name: "Sort exhibitors by"
@@ -180,19 +196,21 @@ export const FilteringAndSorting: Story = {
       )
     })
 
-    const filters = canvas.getByRole("button", { name: "Filters" })
-    await expect(filters).toHaveAttribute("aria-expanded", "false")
-    await expect(
-      canvas.queryByRole("combobox", { name: /Filter by Industry/ })
-    ).not.toBeInTheDocument()
-    await userEvent.click(filters)
     const industryTrigger = canvas.getByRole("combobox", {
       name: /Filter by Industry/
     })
     await userEvent.click(industryTrigger)
-    const industryListbox = await within(document.body).findByRole("listbox", {
+    const body = within(document.body)
+    const industryListbox = await body.findByRole("listbox", {
       name: "Available options"
     })
+    const filterSearch = body.getByPlaceholderText("Search options...")
+    await waitFor(() =>
+      expect(filterSearch.closest("[data-slot=command]")).toHaveFocus()
+    )
+    await expect(filterSearch).not.toHaveFocus()
+    await userEvent.tab()
+    await expect(filterSearch).toHaveFocus()
     await userEvent.click(
       within(industryListbox).getByRole("option", {
         name: /Technology & Software Development, not selected/
@@ -228,11 +246,14 @@ export const FilteringAndSorting: Story = {
 
     await userEvent.click(filters)
     await expect(filters).toHaveAttribute("aria-expanded", "false")
+    await expect(searchInput).toBeVisible()
+    await expect(canvas.queryByRole("combobox")).not.toBeInTheDocument()
     await expect(canvas.getAllByRole("heading", { level: 3 })).toHaveLength(1)
     await expect(canvas.getByRole("heading", { level: 3 })).toHaveTextContent(
       "Beta Industries"
     )
     await userEvent.click(filters)
+    await expect(sortTrigger).toHaveTextContent("Name: A–Z")
     await userEvent.click(
       canvas.getByRole("button", {
         name: /Remove Technology & Software Development/
@@ -274,6 +295,7 @@ export const ClosingCompanyModal: Story = {
 }
 
 export const RandomizedWithinTiers: Story = {
+  globals: { viewport: { value: "desktop", isRotated: false } },
   render: args => <RefreshableExhibitorSearch {...args} />,
   args: {
     exhibitors: ["Gold", "Silver", "Bronze"].flatMap((tier, tierIndex) =>
@@ -314,6 +336,10 @@ export const RandomizedWithinTiers: Story = {
       )
     }
     await waitFor(() => expect(names()).toEqual(goldFirst))
+    await expect(
+      canvas.queryByRole("button", { name: "Filters" })
+    ).not.toBeInTheDocument()
+    await expect(canvas.getAllByRole("combobox")).toHaveLength(4)
     await chooseSort("Name: A–Z")
     await waitFor(() =>
       expect(names()).toEqual([...goldFirst].sort((a, b) => a.localeCompare(b)))
@@ -462,7 +488,7 @@ export const FiltersUseCurrentExhibitorCategories: Story = {
     ]
   },
   play: async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Filters" }))
+    await canvas.findByRole("combobox", { name: /Filter by Employment/ })
     for (const { trigger, expected, legacy, count } of [
       {
         trigger: /Filter by Employment/,
@@ -529,7 +555,7 @@ export const FiltersUseCurrentExhibitorCategories: Story = {
 }
 
 export const Swedish: Story = {
-  globals: { locale: "sv" },
+  globals: { locale: "sv", viewport: { value: "mobile", isRotated: false } },
   parameters: {
     nextjs: {
       appDirectory: true,

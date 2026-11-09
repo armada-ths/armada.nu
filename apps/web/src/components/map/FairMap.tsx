@@ -16,6 +16,7 @@ import {
 import { boothId, type MapDefinition, type MappedExhibitor } from "./maps"
 
 const BOOTH_HEIGHT = 58
+const TRACKPAD_ZOOM_MULTIPLIER = 2
 
 function BoothLogo({
   entry,
@@ -144,6 +145,7 @@ export default function FairMap({
   const [dialogOpen, setDialogOpen] = useState(false)
   const [ready, setReady] = useState(false)
   const transform = useRef<ReactZoomPanPinchRef | null>(null)
+  const mapViewport = useRef<HTMLDivElement>(null)
   const panned = useRef(false)
   const markers = new Map<number, MappedExhibitor[]>()
   for (const placement of placements) {
@@ -161,6 +163,64 @@ export default function FairMap({
     setActiveBooth(booth)
     setDialogOpen(true)
   }
+
+  useEffect(() => {
+    const viewport = mapViewport.current
+    if (!viewport) return
+
+    const controller = new AbortController()
+    const { signal } = controller
+    let controlHeld = false
+    let forwardingPinch = false
+
+    const updateControl = (event: KeyboardEvent) => {
+      controlHeld = event.ctrlKey
+    }
+    window.addEventListener("keydown", updateControl, { capture: true, signal })
+    window.addEventListener("keyup", updateControl, { capture: true, signal })
+    window.addEventListener(
+      "blur",
+      () => {
+        controlHeld = false
+      },
+      { signal }
+    )
+
+    viewport.addEventListener(
+      "wheel",
+      event => {
+        if (!event.ctrlKey || controlHeld || forwardingPinch || !event.target)
+          return
+
+        // Browsers send trackpad pinches as Ctrl-modified wheel events. Forward
+        // a larger delta so the zoom library still handles anchoring and bounds.
+        event.preventDefault()
+        event.stopPropagation()
+        forwardingPinch = true
+        try {
+          event.target.dispatchEvent(
+            new WheelEvent("wheel", {
+              bubbles: true,
+              cancelable: true,
+              clientX: event.clientX,
+              clientY: event.clientY,
+              ctrlKey: event.ctrlKey,
+              shiftKey: event.shiftKey,
+              altKey: event.altKey,
+              metaKey: event.metaKey,
+              deltaMode: event.deltaMode,
+              deltaY: event.deltaY * TRACKPAD_ZOOM_MULTIPLIER
+            })
+          )
+        } finally {
+          forwardingPinch = false
+        }
+      },
+      { capture: true, passive: false, signal }
+    )
+
+    return () => controller.abort()
+  }, [])
 
   useEffect(() => {
     if (!focus || !ready) return
@@ -192,7 +252,9 @@ export default function FairMap({
         doubleClick={{ disabled: true }}>
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
-            <div className="bg-fair-map-background relative min-h-48 w-full flex-1 overflow-hidden rounded-xl">
+            <div
+              ref={mapViewport}
+              className="bg-fair-map-background relative min-h-48 w-full flex-1 overflow-hidden rounded-xl">
               <TransformComponent
                 wrapperClass="size-full! touch-none"
                 contentClass="size-full!">

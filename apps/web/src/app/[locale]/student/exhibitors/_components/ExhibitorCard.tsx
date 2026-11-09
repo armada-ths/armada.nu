@@ -26,7 +26,7 @@ export function ExhibitorCard({ exhibitor }: { exhibitor: Exhibitor }) {
   return (
     <Card
       className={cn(
-        "group border-licorice flex h-full w-full max-w-[90vw] flex-col rounded-md border-2 border-solid px-3 filter transition hover:scale-[1.02] hover:brightness-95 sm:max-w-95",
+        "group border-licorice flex h-full w-full flex-col rounded-md border-2 border-solid px-3 filter transition hover:scale-[1.02] hover:brightness-95",
         exhibitorTierColors(exhibitor.tier).background
       )}>
       <Link

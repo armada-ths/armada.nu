@@ -703,7 +703,6 @@
     "floors": "Map floors",
     "search": "Find an exhibitor",
     "noResults": "No exhibitors found.",
-    "exhibitors": "Exhibitors",
     "booth": "Booth {booth}",
     "day": "{day} November",
     "searchResult": "{name} · Floor {floor} · Booth {booth} · {room}",

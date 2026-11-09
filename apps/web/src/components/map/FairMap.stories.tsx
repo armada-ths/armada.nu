@@ -88,18 +88,27 @@ export const WheelZoom: Story = {
     if (!content) throw new Error("Map transform content is missing")
 
     const { x, y, width, height } = map.getBoundingClientRect()
-    fireEvent.wheel(map, {
-      deltaY: -100,
-      clientX: x + width / 2,
-      clientY: y + height / 2
-    })
+    const wheel = (ctrlKey = false) =>
+      fireEvent.wheel(map, {
+        ctrlKey,
+        deltaY: -100,
+        clientX: x + width / 2,
+        clientY: y + height / 2
+      })
+    const scale = () => new DOMMatrix(getComputedStyle(content).transform).a
 
-    await waitFor(() =>
-      expect(new DOMMatrix(getComputedStyle(content).transform).a).toBeCloseTo(
-        1.25,
-        2
-      )
-    )
+    wheel()
+    await waitFor(() => expect(scale()).toBeCloseTo(1.25, 2))
+    wheel(true)
+    await waitFor(() => expect(scale()).toBeCloseTo(1.75, 2))
+
+    fireEvent.keyDown(window, { key: "Control", ctrlKey: true })
+    try {
+      wheel(true)
+      await waitFor(() => expect(scale()).toBeCloseTo(2, 2))
+    } finally {
+      fireEvent.keyUp(window, { key: "Control", ctrlKey: false })
+    }
   }
 }
 

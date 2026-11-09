@@ -124,6 +124,8 @@ export const DefaultTierOrder: Story = {
     )
     const body = within(document.body)
     const input = await body.findByRole("combobox")
+    const list = body.getByRole("listbox")
+    await expect(within(list).queryByText("Exhibitors")).not.toBeInTheDocument()
     const expected = args.exhibitors
       .toReversed()
       .map(exhibitor => exhibitor.name)

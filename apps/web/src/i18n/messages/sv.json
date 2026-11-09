@@ -703,7 +703,6 @@
     "floors": "Kartans våningar",
     "search": "Hitta en utställare",
     "noResults": "Inga utställare hittades.",
-    "exhibitors": "Utställare",
     "booth": "Monter {booth}",
     "day": "{day} november",
     "searchResult": "{name} · Plan {floor} · Monter {booth} · {room}",

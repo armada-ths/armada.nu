@@ -76,9 +76,7 @@ export default function CompanySearch({
             <CommandEmpty>{t("noResults")}</CommandEmpty>
             {/* cmdk sorts matching DOM nodes in place. Remount the group when
                 clearing the query to restore the default tier order. */}
-            <CommandGroup
-              key={query.trim() ? "matches" : "all"}
-              heading={t("exhibitors")}>
+            <CommandGroup key={query.trim() ? "matches" : "all"}>
               {(query.trim() ? exhibitors : orderedExhibitors).map(
                 exhibitor => (
                   <CommandItem

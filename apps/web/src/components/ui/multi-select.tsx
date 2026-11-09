@@ -398,6 +398,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
     }, [defaultValue, onValueChange])
 
     const buttonRef = React.useRef<HTMLButtonElement>(null)
+    const commandRef = React.useRef<HTMLDivElement>(null)
 
     React.useImperativeHandle(
       ref,
@@ -1045,8 +1046,12 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
               touchAction: "manipulation"
             }}
             align="start"
+            onOpenAutoFocus={event => {
+              event.preventDefault()
+              commandRef.current?.focus({ preventScroll: true })
+            }}
             onEscapeKeyDown={() => setIsPopoverOpen(false)}>
-            <Command className="bg-snow min-h-0">
+            <Command ref={commandRef} tabIndex={-1} className="bg-snow min-h-0">
               {searchable && (
                 <CommandInput
                   placeholder={staticT("searchOptions")}

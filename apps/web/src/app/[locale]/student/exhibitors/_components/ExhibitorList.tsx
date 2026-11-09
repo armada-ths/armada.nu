@@ -17,7 +17,7 @@ const ExhibitorGrid = memo(function ExhibitorGrid({
   return (
     <div
       data-exhibitor-list
-      className="mx-auto grid max-w-300 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      className="mx-auto grid max-w-300 grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {exhibitors.map(exhibitor => (
         <ExhibitorCard key={exhibitor.id} exhibitor={exhibitor} />
       ))}
