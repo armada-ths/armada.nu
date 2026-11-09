@@ -199,7 +199,7 @@ export default function FairMap({
   }
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black">
+    <div className="relative size-full overflow-hidden bg-black">
       <TransformWrapper
         ref={transformRef}
         initialScale={isMobile ? 1.8 : 1}
@@ -208,10 +208,10 @@ export default function FairMap({
         maxScale={5}
         limitToBounds
         smooth>
-        <TransformComponent>
+        <TransformComponent wrapperClass="size-full!" contentClass="size-full!">
           <MapComponent
             ref={svgRef}
-            className="h-screen w-screen"
+            className="size-full"
             onClick={handleClick}
           />
         </TransformComponent>

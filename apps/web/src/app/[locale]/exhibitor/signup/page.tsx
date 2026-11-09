@@ -102,7 +102,7 @@ export default async function SignupPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
-        <div className="mx-auto max-w-150 text-center">
+        <div className="text-center">
           <Page.Header>{heading}</Page.Header>
           {body}
           <div className="mt-6">

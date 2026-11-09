@@ -112,7 +112,7 @@ export const exhibitorPageTranslations = {
     photos: [string, string, string, string]
     visitorLabels: {
       visits: string
-      students: string
+      exhibitors: string
       networking: string
     }
     newStudentsHeading: string
@@ -483,7 +483,7 @@ export const pageTranslations = {
       heroDescription: string
       visitorLabels: {
         visits: string
-        students: string
+        exhibitors: string
         networking: string
       }
       countdownLabels: {

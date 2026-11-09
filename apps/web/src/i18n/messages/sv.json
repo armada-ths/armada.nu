@@ -142,8 +142,8 @@
     },
     "visitorLabels": {
       "visits": "besök",
-      "students": "Studenter",
-      "networking": "med nätverkande"
+      "exhibitors": "Utställare",
+      "networking": "av nätverkande"
     },
     "newStudentsHeading": "Nya studenter, varje år!",
     "newStudentsBody": "Varje år börjar omkring 4000 nya studenter på KTH. Nästan lika många studenter får sitt första heltidsjobb eller sin första praktikplats. Genom att delta i Armada får ni tillgång till dem alla, kan bygga kännedom hos yngre studenter och vara ett självklart val när studenterna senare börjar söka jobb. Välkomna!",
@@ -438,8 +438,8 @@
       "heroDescription": "Skandinaviens största studentdrivna arbetsmarknadsmässa",
       "visitorLabels": {
         "visits": "besökare",
-        "students": "Studenter",
-        "networking": "med nätverkande"
+        "exhibitors": "Utställare",
+        "networking": "av nätverkande"
       },
       "countdownLabels": {
         "days": "Dagar",

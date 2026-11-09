@@ -59,7 +59,7 @@ function EventCard({
           alt={imageAlt}
           fill
           loading={eager ? "eager" : "lazy"}
-          sizes="(min-width: 1040px) 317px, (min-width: 1024px) calc((100vw - 88px) / 3), (min-width: 640px) calc((100vw - 64px) / 2), calc(100vw - 40px)"
+          sizes="(min-width: 1024px) 302px, (min-width: 1000px) 464px, (min-width: 640px) calc((100vw - 72px) / 2), calc(100vw - 48px)"
           className="object-cover"
         />
       </span>
@@ -127,7 +127,7 @@ export function ExhibitorEvents() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
-        <div className="w-full max-w-150">
+        <div>
           <Page.Header>
             <LocalizedText id="exhibitorEvents" />
           </Page.Header>

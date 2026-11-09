@@ -2,6 +2,7 @@ import { pageMetadata } from "@/i18n/metadata"
 import { localeAlternates } from "@/i18n/metadata"
 import InteractiveMapClient from "@/components/map/InteractiveMapClient"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
+import { Page } from "@/components/shared/Page"
 import { feature } from "@/components/shared/feature"
 import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
 import { translations } from "@/i18n/dictionaries"
@@ -24,5 +25,9 @@ export default async function StudentMap() {
 
   const exhibitors = await fetchExhibitors()
 
-  return <InteractiveMapClient exhibitors={exhibitors} />
+  return (
+    <Page.Boundary className="mt-0">
+      <InteractiveMapClient exhibitors={exhibitors} />
+    </Page.Boundary>
+  )
 }

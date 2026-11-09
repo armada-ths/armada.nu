@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>
 export const LandingLayout: Story = {
   render: () => (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={820} className="gap-6 pb-16">
+      <Page.Boundary className="gap-6 pb-16" data-testid="page-boundary">
         <Page.Header>About Armada</Page.Header>
         <P className="max-w-2xl">
           Armada connects KTH students with employers through a career fair,
@@ -43,6 +43,14 @@ export const LandingLayout: Story = {
     </Page.Background>
   ),
   play: async ({ canvas }) => {
+    const boundary = canvas.getByTestId("page-boundary")
+    const styles = getComputedStyle(boundary)
+    await expect(styles.maxWidth).toBe("1000px")
+    await expect(styles.paddingLeft).toBe("24px")
+    await expect(styles.paddingRight).toBe("24px")
+    await expect(boundary.getBoundingClientRect().width).toBe(
+      Math.min(1000, document.documentElement.clientWidth)
+    )
     await expect(
       canvas.getByRole("heading", {
         name: "About Armada"
@@ -58,8 +66,8 @@ export const LandingLayout: Story = {
 
 export const CompactSection: Story = {
   render: () => (
-    <Page.Background avoidHeader className="px-5 py-8">
-      <Page.Boundary maxWidth={700} className="gap-4">
+    <Page.Background avoidHeader className="py-8">
+      <Page.Boundary className="gap-4">
         <Page.Header tier="secondary" className="text-melon">
           Upcoming deadlines
         </Page.Header>

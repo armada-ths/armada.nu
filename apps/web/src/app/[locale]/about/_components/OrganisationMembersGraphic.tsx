@@ -281,14 +281,14 @@ export function OrganisationMembersGraphic() {
   })
 
   return (
-    <figure className="relative mt-8 mb-4 w-9/12 object-scale-down">
+    <figure className="relative mt-8 mb-4 w-2/3 max-w-140 min-w-48">
       <svg viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg">
         <circle fill="orange" cx="85" cy="85" r={memberRadius} opacity={1} />
         {pgCircles}
         {otCircles}
         {hostCircles}
       </svg>
-      <figcaption className="bottom-0 opacity-90 md:absolute">
+      <figcaption className="bottom-0 w-full opacity-90 md:absolute">
         <OrganisationMembersInfo title={dict.title}>
           {dict.body}
           <ul>
