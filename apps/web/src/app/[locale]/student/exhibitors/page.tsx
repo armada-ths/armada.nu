@@ -42,7 +42,7 @@ export default async function ExhibitorsPage() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Page.Header>{uiText(locale, "companiesAtTheFair2026")}</Page.Header>
           {mapEnabled && (
-            <Button asChild variant="neutral" size="sm" className="ml-auto">
+            <Button asChild variant="neutral" size="sm">
               <Link href="/student/map">
                 <MapPin aria-hidden="true" />
                 {dict.map}

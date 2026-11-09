@@ -1,5 +1,6 @@
 {
   "Common": {
+    "navigationMenu": "Navigeringsmeny",
     "switchLanguage": "Byt språk till engelska",
     "loading": "Laddar…",
     "error": "Något gick fel. Försök igen.",
@@ -312,6 +313,7 @@
     "emptySuffix": "för de senaste nyheterna!"
   },
   "exhibitorSearchText": {
+    "filters": "Filter",
     "searchPlaceholder": "Sök efter företagsnamn",
     "filterEmployment": "Filtrera på anställningsform",
     "filterIndustry": "Filtrera på bransch",

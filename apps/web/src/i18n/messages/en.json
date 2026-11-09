@@ -1,5 +1,6 @@
 {
   "Common": {
+    "navigationMenu": "Navigation menu",
     "switchLanguage": "Switch language to Swedish",
     "loading": "Loading…",
     "error": "Something went wrong. Please try again.",
@@ -312,6 +313,7 @@
     "emptySuffix": "for latest news!"
   },
   "exhibitorSearchText": {
+    "filters": "Filters",
     "searchPlaceholder": "Search by company name",
     "filterEmployment": "Filter by Employment",
     "filterIndustry": "Filter by Industry",

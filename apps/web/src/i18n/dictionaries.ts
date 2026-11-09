@@ -320,6 +320,7 @@ export const exhibitorSearchText = {
   Locale,
   {
     searchPlaceholder: string
+    filters: string
     filterEmployment: string
     filterIndustry: string
     filterProgram: string

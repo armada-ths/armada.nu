@@ -180,6 +180,12 @@ export const FilteringAndSorting: Story = {
       )
     })
 
+    const filters = canvas.getByRole("button", { name: "Filters" })
+    await expect(filters).toHaveAttribute("aria-expanded", "false")
+    await expect(
+      canvas.queryByRole("combobox", { name: /Filter by Industry/ })
+    ).not.toBeInTheDocument()
+    await userEvent.click(filters)
     const industryTrigger = canvas.getByRole("combobox", {
       name: /Filter by Industry/
     })
@@ -220,7 +226,18 @@ export const FilteringAndSorting: Story = {
     )
     await expect(industryTrigger.className).toContain("hover:shadow-none")
 
-    await userEvent.click(removeIndustry)
+    await userEvent.click(filters)
+    await expect(filters).toHaveAttribute("aria-expanded", "false")
+    await expect(canvas.getAllByRole("heading", { level: 3 })).toHaveLength(1)
+    await expect(canvas.getByRole("heading", { level: 3 })).toHaveTextContent(
+      "Beta Industries"
+    )
+    await userEvent.click(filters)
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: /Remove Technology & Software Development/
+      })
+    )
 
     await userEvent.type(searchInput, "Gamma")
     await expect(canvas.getByText("Gamma Group")).toBeInTheDocument()
@@ -445,7 +462,7 @@ export const FiltersUseCurrentExhibitorCategories: Story = {
     ]
   },
   play: async ({ canvas }) => {
-    await canvas.findByRole("combobox", { name: /Filter by Employment/ })
+    await userEvent.click(canvas.getByRole("button", { name: "Filters" }))
     for (const { trigger, expected, legacy, count } of [
       {
         trigger: /Filter by Employment/,
@@ -528,6 +545,7 @@ export const Swedish: Story = {
     await expect(
       canvas.getByPlaceholderText("Sök efter företagsnamn")
     ).toBeVisible()
+    await userEvent.click(canvas.getByRole("button", { name: "Filter" }))
     await userEvent.click(
       canvas.getByRole("combobox", { name: /anställning/i })
     )

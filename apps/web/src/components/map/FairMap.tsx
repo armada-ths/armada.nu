@@ -188,7 +188,7 @@ export default function FairMap({
         minScale={1}
         maxScale={5}
         wheel={{ step: 0.0025 }}
-        pinch={{ step: 3 }}
+        pinch={{ step: 3.5 }}
         doubleClick={{ disabled: true }}>
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
