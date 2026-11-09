@@ -32,7 +32,9 @@ export const SharedBooth: Story = {
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: /booth 62,/i }))
     const dialog = await within(document.body).findByRole("dialog")
-    await expect(within(dialog).getByText("17 November")).toBeVisible()
+    await waitFor(() =>
+      expect(within(dialog).getByText("17 November")).toBeVisible()
+    )
     await expect(within(dialog).getByText("18 November")).toBeVisible()
     await expect(
       within(dialog).getByRole("link", { name: "Handelsbanken" })
