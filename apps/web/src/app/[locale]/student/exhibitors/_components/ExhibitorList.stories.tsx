@@ -3,6 +3,8 @@ import { expect, within } from "storybook/test"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import ExhibitorList from "./ExhibitorList"
 
+const companyWebsite = "https://careers.example.com/engineering"
+
 const exhibitors: Exhibitor[] = [
   {
     id: 1,
@@ -18,7 +20,7 @@ const exhibitors: Exhibitor[] = [
     tier: "Silver",
     climateCompensation: false,
     about: "Meet us at Armada.",
-    companyWebsite: "https://careers.example.com/engineering"
+    companyWebsite
   }
 ]
 
@@ -83,7 +85,8 @@ export const SwedishModalMapLink: Story = {
     await expect(mapLink).toHaveAttribute("href", "/sv/student/map?id=4651")
     const modal = within(dialog)
     const heading = modal.getByRole("heading", { name: "Linked Company" })
-    const website = modal.getByRole("link", { name: /careers.example.com/ })
+    const website = modal.getByRole("link", { name: companyWebsite })
+    await expect(website).toHaveAttribute("href", companyWebsite)
     await document.fonts.ready
     const headingRect = heading.getBoundingClientRect()
     const websiteRect = website.getBoundingClientRect()
