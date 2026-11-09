@@ -4,6 +4,8 @@ import { expect } from "storybook/test"
 
 import { P } from "@/app/_components/Paragraph"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { LocalizedText } from "@/i18n/text"
 
 import { Page } from "./Page"
 
@@ -85,4 +87,51 @@ export const CompactSection: Story = {
       })
     ).toBeInTheDocument()
   }
+}
+
+export const ExhibitorKitMargins: Story = {
+  globals: { viewport: { value: "desktop", isRotated: false } },
+  render: () => (
+    <Page.Background withIndents className="px-5">
+      <Page.Boundary className="px-0 pb-20">
+        <div
+          className="flex flex-col-reverse gap-10 md:flex-row"
+          data-testid="kit-row">
+          <Card className="min-w-48 flex-1 p-5">
+            <LocalizedText id="bronze" />
+          </Card>
+          <Card className="min-w-48 flex-1 p-5">
+            <LocalizedText id="silver" />
+          </Card>
+          <Card className="min-w-48 flex-1 p-5">
+            <LocalizedText id="gold" />
+          </Card>
+        </div>
+      </Page.Boundary>
+    </Page.Background>
+  ),
+  play: async ({ canvas }) => {
+    const row = canvas.getByTestId("kit-row")
+    const cards = [...row.querySelectorAll('[data-slot="card"]')]
+    const rowBounds = row.getBoundingClientRect()
+    const cardBounds = cards.map(card => card.getBoundingClientRect())
+    const pageWidth = document.documentElement.clientWidth
+
+    await expect(cards).toHaveLength(3)
+    await expect(rowBounds.width).toBeCloseTo(Math.min(1000, pageWidth - 40), 0)
+    await expect(rowBounds.left).toBeCloseTo(pageWidth - rowBounds.right, 0)
+    await expect(Math.min(...cardBounds.map(card => card.left))).toBeCloseTo(
+      rowBounds.left,
+      0
+    )
+    await expect(Math.max(...cardBounds.map(card => card.right))).toBeCloseTo(
+      rowBounds.right,
+      0
+    )
+  }
+}
+
+export const SwedishExhibitorKitMargins: Story = {
+  ...ExhibitorKitMargins,
+  globals: { locale: "sv", viewport: { value: "mobile", isRotated: false } }
 }

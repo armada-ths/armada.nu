@@ -45,8 +45,8 @@ export default async function ExhibitorPackagesPage() {
   const signupUrl = await getSignupUrl()
 
   return (
-    <Page.Background withIndents>
-      <Page.Boundary className="pb-20">
+    <Page.Background withIndents className="px-5">
+      <Page.Boundary className="px-0 pb-20">
         <div>
           <Page.Header>{dict.heading}</Page.Header>
           <div className="mt-4">
