@@ -113,14 +113,14 @@ function BoothLabel({
           )}>
           <span
             data-map-label
-            className="bg-licorice text-snow max-w-full rounded-lg px-4 py-2 text-center text-[30px] leading-tight font-bold wrap-anywhere shadow-md">
+            className="bg-licorice text-snow pointer-events-auto max-w-full rounded-lg px-4 py-2 text-center text-[30px] leading-tight font-bold wrap-anywhere shadow-md">
             {name}
           </span>
         </div>
       </foreignObject>
       <path
         d={`M ${cx} ${tipY} l -12 ${arrowHeight} h 24 Z`}
-        className="fill-licorice"
+        className="fill-licorice pointer-events-auto"
       />
     </g>
   )
@@ -130,11 +130,13 @@ export default function FairMap({
   floor,
   placements,
   focus,
+  onBoothOpen,
   suppressHover = false
 }: {
   floor: MapDefinition
   placements: MappedExhibitor[]
   focus: MappedExhibitor | null
+  onBoothOpen?: (booth: number) => void
   suppressHover?: boolean
 }) {
   const t = useTranslations("FairMap")
@@ -155,6 +157,7 @@ export default function FairMap({
   const focusedMarker = floor.markers.find(([booth]) => booth === focus?.booth)
 
   function openBooth(booth: number) {
+    onBoothOpen?.(booth)
     setActiveBooth(booth)
     setDialogOpen(true)
   }

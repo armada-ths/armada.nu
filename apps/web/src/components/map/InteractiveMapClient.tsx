@@ -43,6 +43,11 @@ export default function InteractiveMapClient({
   )
   const [searchOpen, setSearchOpen] = useState(false)
 
+  function clearFocus() {
+    setFocus(null)
+    updateExhibitorId()
+  }
+
   return (
     <section
       aria-label={t("title")}
@@ -59,8 +64,7 @@ export default function InteractiveMapClient({
               )
               if (!map) return
               setFloor(map)
-              setFocus(null)
-              updateExhibitorId()
+              clearFocus()
             }}
           />
         </div>
@@ -92,6 +96,9 @@ export default function InteractiveMapClient({
         floor={floor}
         placements={placements.filter(p => p.floor === floor.floor)}
         focus={focus}
+        onBoothOpen={booth => {
+          if (focus && booth !== focus.booth) clearFocus()
+        }}
         suppressHover={searchOpen}
       />
     </section>

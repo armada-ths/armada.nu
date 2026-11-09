@@ -78,13 +78,33 @@ export const LinkedExhibitor: Story = {
       PLACEMENTS.find(placement => placement.name === "Coherent")?.exhibitorId
     )
   },
-  play: async ({ canvas }) => {
+  play: async ({ args, canvas, canvasElement }) => {
     await expect(
       canvas.getByRole("button", { name: "Nymble floor 3" })
     ).toHaveAttribute("aria-pressed", "true")
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Coherent · Floor 3 · Booth 102"
     )
+    const label = canvasElement.querySelector("[data-map-label]")
+    await expect(label).toHaveStyle({ pointerEvents: "auto" })
+
+    const { href } = window.location
+    const state = window.history.state
+    const url = new URL(href)
+    url.searchParams.set("id", args.initialExhibitorId ?? "")
+    window.history.replaceState(state, "", url)
+    try {
+      canvas.getByRole("button", { name: /Booth 101, Orica/ }).focus()
+      await userEvent.keyboard("{Enter}")
+      const dialog = await within(document.body).findByRole("dialog")
+      await expect(within(dialog).getByText("Orica Sweden AB")).toBeVisible()
+      await expect(label).not.toBeInTheDocument()
+      await expect(new URLSearchParams(window.location.search).has("id")).toBe(
+        false
+      )
+    } finally {
+      window.history.replaceState(state, "", href)
+    }
   }
 }
 
