@@ -5,9 +5,12 @@ import ExhibitorSearch from "@/app/[locale]/student/exhibitors/_components/Exhib
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
 import { fetchExhibitors } from "@/components/shared/hooks/api/useExhibitors"
+import { Button } from "@/components/ui/button"
 import { Page } from "@/components/shared/Page"
 import { translations } from "@/i18n/dictionaries"
 import { getRequestLocale } from "@/lib/i18n-server"
+import { Link } from "@armada/shared/i18n/navigation"
+import { MapPin } from "lucide-react"
 import { Suspense } from "react"
 
 export async function generateMetadata() {
@@ -36,7 +39,17 @@ export default async function ExhibitorsPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary>
-        <Page.Header>{uiText(locale, "companiesAtTheFair2026")}</Page.Header>{" "}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Page.Header>{uiText(locale, "companiesAtTheFair2026")}</Page.Header>
+          {mapEnabled && (
+            <Button asChild variant="neutral" size="sm" className="ml-auto">
+              <Link href="/student/map">
+                <MapPin aria-hidden="true" />
+                {dict.map}
+              </Link>
+            </Button>
+          )}
+        </div>
         {/* TODO: Make year dynamic based on CMS data */}
         <Suspense>
           <ExhibitorSearch exhibitors={exhibitors} mapEnabled={mapEnabled} />

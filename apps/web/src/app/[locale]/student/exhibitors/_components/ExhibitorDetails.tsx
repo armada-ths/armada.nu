@@ -69,34 +69,33 @@ export default function ExhibitorDetails({
           />
         )}
 
-        <div className="flex flex-col items-center sm:ml-2 sm:items-start">
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:justify-start">
+        <div className="flex min-w-0 flex-wrap items-start justify-center gap-x-8 gap-y-3 sm:ml-2 sm:justify-start">
+          <div className="flex max-w-full min-w-0 flex-col items-center sm:items-start">
             <Page.Header className="text-licorice text-center sm:text-left">
               {exhibitor.name}
             </Page.Header>
-            {showMapLink && (
-              <Button asChild variant="neutral" size="sm" className="shrink-0">
-                <Link href={`/student/map?id=${exhibitor.id}`} prefetch={false}>
-                  <MapPin aria-hidden="true" />
-                  {t("showOnMap")}
+            {exhibitor.companyWebsite && (
+              <div className="mt-2 flex min-w-0 items-center gap-1 text-base font-semibold">
+                <Globe size={16} className="shrink-0" />
+                <Link
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={exhibitor.companyWebsite}
+                  className="line-clamp-1 overflow-hidden break-all hover:underline">
+                  {exhibitor.companyWebsite.length > 40
+                    ? exhibitor.companyWebsite.slice(0, 40) + "..."
+                    : exhibitor.companyWebsite}
                 </Link>
-              </Button>
+              </div>
             )}
           </div>
-
-          {exhibitor.companyWebsite && (
-            <div className="mt-2 flex items-center gap-1 text-base font-semibold">
-              <Globe size={16} />
-              <Link
-                rel="noopener noreferrer"
-                target="_blank"
-                href={exhibitor.companyWebsite}
-                className="line-clamp-1 overflow-hidden break-all transition-colors hover:text-emerald-100/90 hover:underline">
-                {exhibitor.companyWebsite.length > 40
-                  ? exhibitor.companyWebsite.slice(0, 40) + "..."
-                  : exhibitor.companyWebsite}
+          {showMapLink && (
+            <Button asChild variant="neutral" size="sm" className="shrink-0">
+              <Link href={`/student/map?id=${exhibitor.id}`} prefetch={false}>
+                <MapPin aria-hidden="true" />
+                {t("showOnMap")}
               </Link>
-            </div>
+            </Button>
           )}
         </div>
       </div>

@@ -9,6 +9,18 @@ import FairMap from "./FairMap"
 import FloorSelector from "./FloorSelector"
 import { MAPS, mapExhibitors, type MappedExhibitor } from "./maps"
 
+function updateExhibitorId(exhibitorId?: number) {
+  const url = new URL(window.location.href)
+  if (exhibitorId === undefined) {
+    url.searchParams.delete("id")
+  } else {
+    url.searchParams.set("id", String(exhibitorId))
+  }
+  if (url.href !== window.location.href) {
+    window.history.replaceState(null, "", url)
+  }
+}
+
 export default function InteractiveMapClient({
   title,
   exhibitors,
@@ -48,6 +60,7 @@ export default function InteractiveMapClient({
               if (!map) return
               setFloor(map)
               setFocus(null)
+              updateExhibitorId()
             }}
           />
         </div>
@@ -60,6 +73,7 @@ export default function InteractiveMapClient({
             if (!map) return
             setFloor(map)
             setFocus({ ...placement })
+            updateExhibitorId(placement.exhibitorId)
           }}
         />
       </div>

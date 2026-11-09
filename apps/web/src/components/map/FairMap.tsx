@@ -104,6 +104,7 @@ export default function FairMap({
     activeBooth === null ? [] : (markers.get(activeBooth) ?? [])
   const single = activeExhibitors.length === 1 ? activeExhibitors[0] : undefined
   const [x, y, width, height] = floor.box
+  const focusedMarker = floor.markers.find(([booth]) => booth === focus?.booth)
 
   function openBooth(booth: number) {
     setActiveBooth(booth)
@@ -118,7 +119,7 @@ export default function FairMap({
     transform.current?.zoomToElement(
       boothId(floor.floor, focus.booth),
       window.innerWidth < 768 ? 4 : 2.5,
-      reduceMotion ? 0 : 250
+      reduceMotion ? 0 : 400
     )
   }, [floor.floor, focus, ready])
 
@@ -170,6 +171,7 @@ export default function FairMap({
                       <g
                         key={booth}
                         id={id}
+                        data-selected={selected || undefined}
                         role="button"
                         tabIndex={0}
                         aria-label={`${t("booth", { booth })}, ${entries.map(entry => entry.name).join(", ")}`}
@@ -247,6 +249,30 @@ export default function FairMap({
                       </g>
                     )
                   })}
+                  {focusedMarker && (
+                    <g
+                      key={focus?.exhibitorId}
+                      aria-hidden="true"
+                      pointerEvents="none"
+                      className="motion-safe:animate-in motion-safe:zoom-in-75 motion-safe:fade-in origin-center [transform-box:fill-box] motion-safe:duration-500">
+                      <rect
+                        x={focusedMarker[1] - 40}
+                        y={focusedMarker[2] - 34}
+                        width={80}
+                        height={68}
+                        rx={12}
+                        className="stroke-licorice fill-none stroke-8"
+                      />
+                      <rect
+                        x={focusedMarker[1] - 40}
+                        y={focusedMarker[2] - 34}
+                        width={80}
+                        height={68}
+                        rx={12}
+                        className="stroke-snow fill-none stroke-4"
+                      />
+                    </g>
+                  )}
                 </svg>
               </TransformComponent>
             </div>

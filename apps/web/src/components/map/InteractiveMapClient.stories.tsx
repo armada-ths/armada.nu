@@ -16,31 +16,52 @@ type Story = StoryObj<typeof meta>
 export const SearchAcrossFloors: Story = {
   globals: { viewport: { value: "mobile", isRotated: false } },
   play: async ({ canvas }) => {
-    for (const [name, floor, booth] of [
-      ["Coherent", 3, 102],
-      ["Epiroc", 2, 72]
-    ] as const) {
+    const { href } = window.location
+    const state = window.history.state
+    try {
+      for (const [name, floor, booth] of [
+        ["Coherent", 3, 102],
+        ["Epiroc", 2, 72]
+      ] as const) {
+        await userEvent.click(
+          canvas.getByRole("button", { name: "Find an exhibitor" })
+        )
+        await expect(
+          canvas.getByRole("button", { name: "Find an exhibitor" })
+        ).toHaveClass("transition-none")
+        const body = within(document.body)
+        const input = await body.findByRole("combobox")
+        await userEvent.type(input, name)
+        await userEvent.click(
+          await body.findByRole("option", { name: new RegExp(name) })
+        )
+        await expect(
+          canvas.getByRole("button", { name: `Nymble floor ${floor}` })
+        ).toHaveAttribute("aria-pressed", "true")
+        await waitFor(() =>
+          expect(body.queryByRole("combobox")).not.toBeInTheDocument()
+        )
+        await expect(
+          canvas.getByRole("button", { name: new RegExp(name) })
+        ).toHaveAttribute("data-selected", "true")
+        const id = PLACEMENTS.find(
+          placement => placement.name === name
+        )?.exhibitorId
+        await expect(
+          new URLSearchParams(window.location.search).get("id")
+        ).toBe(String(id))
+        await expect(canvas.getByRole("status")).toHaveTextContent(
+          `${name} · Floor ${floor} · Booth ${booth}`
+        )
+      }
       await userEvent.click(
-        canvas.getByRole("button", { name: "Find an exhibitor" })
+        canvas.getByRole("button", { name: "Nymble floor 3" })
       )
-      await expect(
-        canvas.getByRole("button", { name: "Find an exhibitor" })
-      ).toHaveClass("transition-none")
-      const body = within(document.body)
-      const input = await body.findByRole("combobox")
-      await userEvent.type(input, name)
-      await userEvent.click(
-        await body.findByRole("option", { name: new RegExp(name) })
+      await expect(new URLSearchParams(window.location.search).has("id")).toBe(
+        false
       )
-      await expect(
-        canvas.getByRole("button", { name: `Nymble floor ${floor}` })
-      ).toHaveAttribute("aria-pressed", "true")
-      await waitFor(() =>
-        expect(body.queryByRole("combobox")).not.toBeInTheDocument()
-      )
-      await expect(canvas.getByRole("status")).toHaveTextContent(
-        `${name} · Floor ${floor} · Booth ${booth}`
-      )
+    } finally {
+      window.history.replaceState(state, "", href)
     }
   }
 }

@@ -17,7 +17,8 @@ const exhibitors: Exhibitor[] = [
     type: "Company",
     tier: "Silver",
     climateCompensation: false,
-    about: "Meet us at Armada."
+    about: "Meet us at Armada.",
+    companyWebsite: "https://careers.example.com/engineering"
   }
 ]
 
@@ -80,6 +81,17 @@ export const SwedishModalMapLink: Story = {
       name: "Visa på karta"
     })
     await expect(mapLink).toHaveAttribute("href", "/sv/student/map?id=4651")
+    const modal = within(dialog)
+    const heading = modal.getByRole("heading", { name: "Linked Company" })
+    const website = modal.getByRole("link", { name: /careers.example.com/ })
+    await document.fonts.ready
+    const headingRect = heading.getBoundingClientRect()
+    const websiteRect = website.getBoundingClientRect()
+    const mapLinkRect = mapLink.getBoundingClientRect()
+    await expect(mapLinkRect.top).toBeCloseTo(headingRect.top)
+    await expect(mapLinkRect.left).toBeGreaterThan(
+      Math.max(headingRect.right, websiteRect.right) + 24
+    )
     await expect(
       canvas.queryByRole("link", { name: "Visa på karta", hidden: true })
     ).not.toBeInTheDocument()
