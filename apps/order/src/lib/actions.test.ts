@@ -167,7 +167,9 @@ describe("persistent order submission and notification", () => {
       expect(
         vi
           .mocked(fetch)
-          .mock.calls.some(([url]) => String(url).includes("hooks.slack.com"))
+          .mock.calls.some(
+            ([url]) => new URL(String(url)).hostname === "hooks.slack.com"
+          )
       ).toBe(false)
       expect(
         JSON.parse(String(vi.mocked(fetch).mock.calls[2][1]?.body)).error
