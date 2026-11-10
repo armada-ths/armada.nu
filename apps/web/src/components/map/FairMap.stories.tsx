@@ -120,3 +120,31 @@ export const FinnishCompanySuffix: Story = {
     await expect(within(adven).getByText("AG")).toBeVisible()
   }
 }
+
+export const MobileStandardExhibitor: Story = {
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  args: {
+    floor: MAPS[1],
+    placements: mapExhibitors([
+      {
+        id: 10001,
+        name: "F1rst",
+        type: "company",
+        tier: "Standard",
+        companyWebsite: "https://f1rst.se",
+        climateCompensation: false
+      }
+    ]).filter(p => p.floor === 3)
+  },
+  play: async ({ canvas }) => {
+    const booth = canvas.getByRole("button", { name: "Booth 87, F1rst" })
+    booth.focus()
+    await userEvent.keyboard("{Enter}")
+    const dialog = await within(document.body).findByRole("dialog")
+    await expect(dialog).toHaveAttribute("data-vaul-drawer")
+    await expect(dialog).toHaveClass("bg-background")
+    await expect(
+      await within(dialog).findByRole("heading", { name: "F1rst" })
+    ).toBeVisible()
+  }
+}

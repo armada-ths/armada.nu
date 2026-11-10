@@ -7,6 +7,6 @@ export function exhibitorTierColors(tier?: string) {
     case "Bronze":
       return { background: "bg-bronze", fill: "fill-bronze" }
     default:
-      return { background: undefined, fill: "fill-snow" }
+      return { background: "bg-background", fill: "fill-snow" }
   }
 }
