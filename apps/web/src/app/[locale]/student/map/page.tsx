@@ -16,18 +16,33 @@ export async function generateMetadata() {
   })
 }
 
-export default async function StudentMap() {
+export default async function StudentMap({
+  searchParams
+}: {
+  searchParams: Promise<{ id?: string | string[] }>
+}) {
   const locale = await getRequestLocale()
   const showMap = await feature("MAP_PAGE")
   if (!showMap) {
     return <ComingSoonPage title={translations[locale].map} />
   }
 
-  const exhibitors = await fetchExhibitors()
+  const exhibitors = await fetchExhibitors().catch((error: unknown) => {
+    console.error("Failed to load exhibitors for the fair map", error)
+    return []
+  })
+
+  const { id } = await searchParams
+  const initialPlacementId = typeof id === "string" ? id : undefined
 
   return (
-    <Page.Boundary className="mt-0">
-      <InteractiveMapClient exhibitors={exhibitors} />
+    <Page.Boundary className="mt-20 h-[calc(100dvh-5rem)] min-h-96 gap-2 pt-7 pb-3 sm:pt-9">
+      <InteractiveMapClient
+        title={translations[locale].map}
+        key={initialPlacementId}
+        exhibitors={exhibitors}
+        initialPlacementId={initialPlacementId}
+      />
     </Page.Boundary>
   )
 }

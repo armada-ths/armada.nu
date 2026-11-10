@@ -1,11 +1,12 @@
 "use client"
 import { Link } from "@armada/shared/i18n/navigation"
+import { useTranslations } from "next-intl"
 import { LanguageSwitcher } from "@armada/shared/i18n/client"
 
 import { track } from "@vercel/analytics"
 import { Menu } from "lucide-react"
 
-import type { ComponentPropsWithRef } from "react"
+import { useState, type ComponentPropsWithRef } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -82,6 +83,9 @@ const Navbar1 = ({
   },
   menu = []
 }: Navbar1Props) => {
+  const t = useTranslations("Common")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   return (
     <section className="bg-melon border-licorice flex h-20 items-center border-b-2">
       {/* Desktop Menu */}
@@ -115,16 +119,26 @@ const Navbar1 = ({
             <LogoLink logo={logo} />
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
-              <Sheet>
+              <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <SheetTrigger asChild>
                   <Button
                     variant="neutral"
                     size="icon"
-                    className="border-licorice">
-                    <Menu className="size-4" />
+                    className="border-licorice"
+                    aria-label={t("navigationMenu")}>
+                    <Menu aria-hidden="true" className="size-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent className="bg-coconut overflow-y-auto">
+                <SheetContent
+                  className="bg-coconut overflow-y-auto"
+                  onClickCapture={event => {
+                    if (
+                      event.target instanceof Element &&
+                      event.target.closest("a[href]")
+                    ) {
+                      setMobileMenuOpen(false)
+                    }
+                  }}>
                   <SheetHeader>
                     <SheetTitle>
                       <LogoLink logo={logo} />

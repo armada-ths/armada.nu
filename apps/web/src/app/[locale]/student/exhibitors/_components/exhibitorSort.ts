@@ -15,7 +15,7 @@ const TIER_RANK = {
   Bronze: 2
 } as const
 
-function getTierRank(tier: Exhibitor["tier"]) {
+export function getTierRank(tier: Exhibitor["tier"]) {
   return TIER_RANK[tier as keyof typeof TIER_RANK] ?? Number.MAX_SAFE_INTEGER
 }
 

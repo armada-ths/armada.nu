@@ -11,7 +11,6 @@ const meta = {
       id: 1,
       name: "Example Engineering",
       type: "company",
-      fairLocation: "Nymble",
       climateCompensation: false,
       logoThumbnail: "/armada_licorice.svg",
       logoFreesize: "/unused-original.png",
@@ -42,7 +41,6 @@ export const MissingOptionalData: Story = {
       id: 2,
       name: "Minimal company",
       type: "company",
-      fairLocation: "Nymble",
       climateCompensation: false
     }
   },

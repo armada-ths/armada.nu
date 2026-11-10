@@ -12,7 +12,6 @@ const meta = {
       id: 1,
       name: "Example Company",
       type: "company",
-      fairLocation: "Nymble",
       climateCompensation: false,
       logoThumbnail: "/armada_licorice.svg",
       logoFreesize: "/unused-original.png"
@@ -42,5 +41,17 @@ export const OriginalFallback: Story = {
     await expect(
       canvas.getByRole("img", { name: "Example Company" })
     ).toHaveAttribute("src", expect.stringContaining("armada_licorice.svg"))
+  }
+}
+
+export const SwedishCardLink: Story = {
+  globals: { locale: "sv" },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.queryByRole("link", { name: "Visa på karta" })
+    ).not.toBeInTheDocument()
+    await expect(
+      canvas.getByRole("link", { name: /Example Company/ })
+    ).toHaveAttribute("href", "/sv/student/exhibitors?id=1")
   }
 }

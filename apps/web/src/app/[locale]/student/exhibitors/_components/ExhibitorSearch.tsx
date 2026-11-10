@@ -13,11 +13,12 @@ import { sortExhibitors, type ExhibitorSort } from "./exhibitorSort"
 
 interface Props {
   exhibitors: Exhibitor[]
+  mapEnabled?: boolean
 }
 
 const getExhibitorId = (exhibitor: Exhibitor) => exhibitor.id
 
-export default function ExhibitorSearch({ exhibitors }: Props) {
+export default function ExhibitorSearch({ exhibitors, mapEnabled }: Props) {
   const locale = normalizeLocale(useLocale())
   const dict = exhibitorSearchText[locale]
   const shuffledExhibitors = useShuffledItems(exhibitors, getExhibitorId)
@@ -46,6 +47,7 @@ export default function ExhibitorSearch({ exhibitors }: Props) {
           searchQueryName={searchQueryName}
           onFilterChange={setFilteredExhibitors}
           labels={dict}
+          mapEnabled={mapEnabled}
           sortBy={sortBy}
           onSortChange={setSortBy}
         />
@@ -55,6 +57,7 @@ export default function ExhibitorSearch({ exhibitors }: Props) {
         <ExhibitorList
           exhibitors={exhibitors}
           visibleExhibitors={sortedExhibitors}
+          mapEnabled={mapEnabled}
         />
       </div>
     </div>

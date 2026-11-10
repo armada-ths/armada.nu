@@ -11,17 +11,22 @@ import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 
 import { cn, shouldBypassNextImageOptimization } from "@/lib/utils"
 
-import { Globe } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Globe, MapPin } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { Link } from "@armada/shared/i18n/navigation"
 
 import { useEffect, useState } from "react"
 
 export default function ExhibitorDetails({
-  exhibitor
+  exhibitor,
+  mapPlacementId
 }: {
   exhibitor: Exhibitor
+  mapPlacementId?: string
 }) {
+  const t = useTranslations("FairMap")
   const locale = normalizeLocale(useLocale())
   const about = localizedText(locale, exhibitor.about, exhibitor.aboutSv)
   const logoSrc =
@@ -50,12 +55,12 @@ export default function ExhibitorDetails({
   return (
     <div className="pb-5">
       {/* --- HEADER + LOGO --- */}
-      <div className="flex flex-col-reverse items-center gap-6 sm:h-25 sm:flex-row">
+      <div className="flex flex-col-reverse items-center gap-6 sm:min-h-25 sm:flex-row">
         {(exhibitor.logoSquared ||
           exhibitor.logoThumbnail ||
           exhibitor.logoFreesize) && (
           <Image
-            className="h-20 w-auto object-contain sm:h-full sm:max-w-[25%] sm:min-w-28"
+            className="h-20 w-auto object-contain sm:h-25 sm:max-w-[25%] sm:min-w-28"
             src={logoSrc}
             alt={exhibitor.name}
             unoptimized={shouldBypassLogoOptimization}
@@ -64,24 +69,33 @@ export default function ExhibitorDetails({
           />
         )}
 
-        <div className="flex flex-col items-center sm:ml-2 sm:items-start">
-          <Page.Header className={`text-licorice text-center sm:text-left`}>
-            {exhibitor.name}
-          </Page.Header>
-
-          {exhibitor.companyWebsite && (
-            <div className="mt-2 flex items-center gap-1 text-base font-semibold">
-              <Globe size={16} />
-              <Link
-                rel="noopener noreferrer"
-                target="_blank"
-                href={exhibitor.companyWebsite}
-                className="line-clamp-1 overflow-hidden break-all transition-colors hover:text-emerald-100/90 hover:underline">
-                {exhibitor.companyWebsite.length > 40
-                  ? exhibitor.companyWebsite.slice(0, 40) + "..."
-                  : exhibitor.companyWebsite}
+        <div className="flex min-w-0 flex-wrap items-start justify-center gap-x-8 gap-y-3 sm:ml-2 sm:justify-start">
+          <div className="flex max-w-full min-w-0 flex-col items-center sm:items-start">
+            <Page.Header className="text-licorice text-center sm:text-left">
+              {exhibitor.name}
+            </Page.Header>
+            {exhibitor.companyWebsite && (
+              <div className="mt-2 flex min-w-0 items-center gap-1 text-base font-semibold">
+                <Globe size={16} className="shrink-0" />
+                <Link
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={exhibitor.companyWebsite}
+                  className="line-clamp-1 overflow-hidden break-all hover:underline">
+                  {exhibitor.companyWebsite.length > 40
+                    ? exhibitor.companyWebsite.slice(0, 40) + "..."
+                    : exhibitor.companyWebsite}
+                </Link>
+              </div>
+            )}
+          </div>
+          {mapPlacementId !== undefined && (
+            <Button asChild variant="neutral" size="sm" className="shrink-0">
+              <Link href={`/student/map?id=${mapPlacementId}`} prefetch={false}>
+                <MapPin aria-hidden="true" />
+                {t("showOnMap")}
               </Link>
-            </div>
+            </Button>
           )}
         </div>
       </div>

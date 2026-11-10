@@ -398,6 +398,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
     }, [defaultValue, onValueChange])
 
     const buttonRef = React.useRef<HTMLButtonElement>(null)
+    const commandHelpRef = React.useRef<HTMLDivElement>(null)
 
     React.useImperativeHandle(
       ref,
@@ -821,6 +822,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             <Button
               ref={buttonRef}
               {...props}
+              variant="neutral"
               onClick={handleTogglePopover}
               disabled={disabled}
               role="combobox"
@@ -834,7 +836,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 arg2: placeholder ?? ""
               })}
               className={cn(
-                "flex h-auto min-h-10 items-center justify-between rounded-md border bg-inherit p-1 hover:bg-inherit [&_svg]:pointer-events-auto",
+                "flex h-auto min-h-10 items-center justify-between rounded-md p-1 [&_svg]:pointer-events-auto",
                 autoSize ? "w-auto" : "w-full",
                 responsiveSettings.compactMode && "min-h-8 text-sm",
                 screenSize === "mobile" && "min-h-12 text-base",
@@ -1045,8 +1047,25 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
               touchAction: "manipulation"
             }}
             align="start"
+            onOpenAutoFocus={event => {
+              event.preventDefault()
+              commandHelpRef.current?.focus({ preventScroll: true })
+            }}
             onEscapeKeyDown={() => setIsPopoverOpen(false)}>
             <Command className="bg-snow min-h-0">
+              <div
+                ref={commandHelpRef}
+                id={`${multiSelectId}-search-help`}
+                tabIndex={-1}
+                className="sr-only">
+                <LocalizedText
+                  id={
+                    searchable
+                      ? "typeToFilterOptionsUseArrowKeys"
+                      : "multiselectDropdownUseArrowKeysToNavigate"
+                  }
+                />
+              </div>
               {searchable && (
                 <CommandInput
                   placeholder={staticT("searchOptions")}
@@ -1056,11 +1075,6 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                   aria-label={staticT("searchThroughAvailableOptions")}
                   aria-describedby={`${multiSelectId}-search-help`}
                 />
-              )}
-              {searchable && (
-                <div id={`${multiSelectId}-search-help`} className="sr-only">
-                  <LocalizedText id="typeToFilterOptionsUseArrowKeys" />
-                </div>
               )}
               <CommandList
                 label={staticT("availableOptions")}

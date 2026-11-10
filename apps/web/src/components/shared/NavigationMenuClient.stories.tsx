@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import { DateTime } from "luxon"
-import { expect } from "storybook/test"
+import { expect, waitFor, within } from "storybook/test"
 
 import { COMING_SOON_TEXT } from "./ComingSoonPage"
 import { NavigationMenuClient } from "./NavigationMenuClient"
@@ -113,5 +113,27 @@ export const WithComingSoonItem: Story = {
       canvas.queryByRole("link", { name: /^Map/ })
     ).not.toBeInTheDocument()
     await expect(trigger).toHaveAttribute("aria-expanded", "true")
+  }
+}
+
+export const MobileClosesOnNavigation: Story = {
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  play: async ({ canvas, userEvent }) => {
+    const menu = canvas.getByRole("button", { name: "Navigation menu" })
+    await userEvent.click(menu)
+    const body = within(document.body)
+    const sheet = await body.findByRole("dialog")
+    await userEvent.click(
+      within(sheet).getByRole("button", { name: "For Students" })
+    )
+    await expect(menu).toHaveAttribute("aria-expanded", "true")
+    within(sheet)
+      .getByRole("link", { name: /^Exhibitors/ })
+      .focus()
+    await userEvent.keyboard("{Enter}")
+    await waitFor(() => {
+      expect(menu).toHaveAttribute("aria-expanded", "false")
+      expect(body.queryByRole("dialog")).not.toBeInTheDocument()
+    })
   }
 }

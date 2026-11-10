@@ -1,7 +1,7 @@
 import { useState, useSyncExternalStore, type ComponentProps } from "react"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { useSearchParams } from "@storybook/nextjs-vite/navigation.mock"
-import { expect, userEvent, waitFor, within } from "storybook/test"
+import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test"
 
 import type {
   Employment,
@@ -106,7 +106,6 @@ const exhibitors: Exhibitor[] = [
     name: "Beta Industries",
     type: "Company",
     tier: "Gold",
-    fairLocation: "Nymble",
     climateCompensation: false,
     employments: [internship],
     industries: [software],
@@ -117,7 +116,6 @@ const exhibitors: Exhibitor[] = [
     name: "Alpha Systems",
     type: "Company",
     tier: "Bronze",
-    fairLocation: "Nymble",
     climateCompensation: false,
     employments: [],
     industries: [],
@@ -128,7 +126,6 @@ const exhibitors: Exhibitor[] = [
     name: "Gamma Group",
     type: "Company",
     tier: "Silver",
-    fairLocation: "Nymble",
     climateCompensation: false,
     employments: [],
     industries: [],
@@ -158,10 +155,35 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const FilteringAndSorting: Story = {
-  play: async ({ canvas }) => {
+  globals: { viewport: { value: "mobile", isRotated: false } },
+  args: { mapEnabled: true },
+  play: async ({ canvas, canvasElement }) => {
     const searchInput = canvas.getByPlaceholderText("Search by company name")
     const companyHeadings = canvas.getAllByRole("heading", { level: 3 })
     await expect(companyHeadings[0]).toHaveTextContent("Beta Industries")
+
+    const searchBounds = searchInput.getBoundingClientRect()
+    for (const card of canvasElement.querySelectorAll(
+      "[data-exhibitor-list] > *"
+    )) {
+      const bounds = card.getBoundingClientRect()
+      await expect(bounds.left).toBeCloseTo(searchBounds.left)
+      await expect(bounds.right).toBeCloseTo(searchBounds.right)
+    }
+
+    const filters = canvas.getByRole("button", { name: "Filters" })
+    const mapLink = canvas.getByRole("link", { name: "Fair Map" })
+    const filterBounds = filters.getBoundingClientRect()
+    const mapBounds = mapLink.getBoundingClientRect()
+    await expect(mapLink).toHaveAttribute("href", "/en/student/map")
+    await expect(filterBounds.left).toBeCloseTo(searchBounds.left)
+    await expect(mapBounds.right).toBeCloseTo(searchBounds.right)
+    await expect(mapBounds.top).toBeCloseTo(filterBounds.top)
+    await expect(mapBounds.left).toBeGreaterThan(filterBounds.right)
+    await expect(searchInput).toBeVisible()
+    await expect(filters).toHaveAttribute("aria-expanded", "false")
+    await expect(canvas.queryByRole("combobox")).not.toBeInTheDocument()
+    await userEvent.click(filters)
 
     const sortTrigger = canvas.getByRole("combobox", {
       name: "Sort exhibitors by"
@@ -187,14 +209,27 @@ export const FilteringAndSorting: Story = {
       name: /Filter by Industry/
     })
     await userEvent.click(industryTrigger)
-    const industryListbox = await within(document.body).findByRole("listbox", {
+    const body = within(document.body)
+    const industryListbox = await body.findByRole("listbox", {
       name: "Available options"
     })
-    await userEvent.click(
-      within(industryListbox).getByRole("option", {
-        name: /Technology & Software Development, not selected/
-      })
+    const filterSearch = body.getByPlaceholderText("Search options...")
+    const help = body.getByText(
+      "Type to filter options. Use arrow keys to navigate results."
     )
+    await waitFor(() => expect(help).toHaveFocus())
+    const industry = within(industryListbox).getByRole("option", {
+      name: /Technology & Software Development, not selected/
+    })
+    fireEvent.pointerMove(industry)
+    await waitFor(() =>
+      expect(industry).toHaveAttribute("data-selected", "true")
+    )
+    await expect(help).toHaveFocus()
+    await expect(filterSearch).not.toHaveFocus()
+    await userEvent.tab()
+    await expect(filterSearch).toHaveFocus()
+    await userEvent.click(industry)
     await userEvent.click(
       within(document.body).getByRole("button", { name: "Close" })
     )
@@ -223,7 +258,21 @@ export const FilteringAndSorting: Story = {
     )
     await expect(industryTrigger.className).toContain("hover:shadow-none")
 
-    await userEvent.click(removeIndustry)
+    await userEvent.click(filters)
+    await expect(filters).toHaveAttribute("aria-expanded", "false")
+    await expect(searchInput).toBeVisible()
+    await expect(canvas.queryByRole("combobox")).not.toBeInTheDocument()
+    await expect(canvas.getAllByRole("heading", { level: 3 })).toHaveLength(1)
+    await expect(canvas.getByRole("heading", { level: 3 })).toHaveTextContent(
+      "Beta Industries"
+    )
+    await userEvent.click(filters)
+    await expect(sortTrigger).toHaveTextContent("Name: A–Z")
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: /Remove Technology & Software Development/
+      })
+    )
 
     await userEvent.type(searchInput, "Gamma")
     await expect(canvas.getByText("Gamma Group")).toBeInTheDocument()
@@ -260,6 +309,7 @@ export const ClosingCompanyModal: Story = {
 }
 
 export const RandomizedWithinTiers: Story = {
+  globals: { viewport: { value: "desktop", isRotated: false } },
   render: args => <RefreshableExhibitorSearch {...args} />,
   args: {
     exhibitors: ["Gold", "Silver", "Bronze"].flatMap((tier, tierIndex) =>
@@ -300,6 +350,14 @@ export const RandomizedWithinTiers: Story = {
       )
     }
     await waitFor(() => expect(names()).toEqual(goldFirst))
+    await expect(
+      canvas.queryByRole("button", { name: "Filters" })
+    ).not.toBeInTheDocument()
+    const controls = canvas.getAllByRole("combobox")
+    await expect(controls).toHaveLength(4)
+    for (const control of controls) {
+      await expect(control).toHaveClass("bg-secondary-background")
+    }
     await chooseSort("Name: A–Z")
     await waitFor(() =>
       expect(names()).toEqual([...goldFirst].sort((a, b) => a.localeCompare(b)))
@@ -515,7 +573,7 @@ export const FiltersUseCurrentExhibitorCategories: Story = {
 }
 
 export const Swedish: Story = {
-  globals: { locale: "sv" },
+  globals: { locale: "sv", viewport: { value: "mobile", isRotated: false } },
   parameters: {
     nextjs: {
       appDirectory: true,
@@ -531,6 +589,7 @@ export const Swedish: Story = {
     await expect(
       canvas.getByPlaceholderText("Sök efter företagsnamn")
     ).toBeVisible()
+    await userEvent.click(canvas.getByRole("button", { name: "Filter" }))
     await userEvent.click(
       canvas.getByRole("combobox", { name: /anställning/i })
     )

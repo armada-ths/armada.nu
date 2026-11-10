@@ -1,71 +1,104 @@
 "use client"
 
-import CompanySearch from "@/components/map/CompanySearch"
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
-import { useState } from "react"
+import { Page } from "@/components/shared/Page"
+import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { useTranslations } from "next-intl"
+import { useMemo, useState } from "react"
+import CompanySearch from "./CompanySearch"
 import FairMap from "./FairMap"
 import FloorSelector from "./FloorSelector"
-import { MAPS } from "./maps"
+import { MAPS, mapExhibitors, type MappedExhibitor } from "./maps"
 
-interface InteractiveMapClientProps {
-  exhibitors: Exhibitor[]
+function updatePlacementId(placementId?: string) {
+  const url = new URL(window.location.href)
+  if (placementId === undefined) {
+    url.searchParams.delete("id")
+  } else {
+    url.searchParams.set("id", placementId)
+  }
+  if (url.href !== window.location.href) {
+    window.history.replaceState(null, "", url)
+  }
 }
 
 export default function InteractiveMapClient({
-  exhibitors
-}: InteractiveMapClientProps) {
-  const [selectedMapIndex, setSelectedMapIndex] = useState(0)
-  const selectedMap = MAPS[selectedMapIndex]
-  const [selectedExhibitor, setSelectedExhibitor] = useState<Exhibitor | null>(
-    null
+  title,
+  exhibitors,
+  initialPlacementId
+}: {
+  title: string
+  exhibitors: Exhibitor[]
+  initialPlacementId?: string
+}) {
+  const t = useTranslations("FairMap")
+  const placements = useMemo(() => mapExhibitors(exhibitors), [exhibitors])
+  const [focus, setFocus] = useState<MappedExhibitor | null>(
+    () =>
+      placements.find(placement => placement.id === initialPlacementId) ?? null
   )
+  const [floor, setFloor] = useState(
+    () => MAPS.find(map => map.floor === focus?.floor) ?? MAPS[0]
+  )
+  const [searchOpen, setSearchOpen] = useState(false)
 
-  const handleCompanySelect = (ex: Exhibitor) => {
-    const boothNumber = parseInt(ex.fairLocation.replace("booth", ""), 10)
-    let targetFloorIndex = 0
-    if (boothNumber >= 71 && boothNumber <= 96) targetFloorIndex = 1
-    else if (boothNumber >= 97 && boothNumber <= 111) targetFloorIndex = 2
-
-    setSelectedMapIndex(targetFloorIndex)
-    setSelectedExhibitor(ex)
-
-    setTimeout(() => setSelectedExhibitor(null), 3000)
+  function clearFocus() {
+    setFocus(null)
+    updatePlacementId()
   }
 
   return (
-    <div className="relative h-dvh w-full overflow-hidden">
-      <CompanySearch
-        exhibitors={exhibitors.filter(e => e.fairLocation)}
-        onSelect={handleCompanySelect}
-      />
-
-      <FloorSelector
-        floors={MAPS.map(m => m.name)}
-        selectedFloor={selectedMap.name}
-        onSelect={name => {
-          const index = MAPS.findIndex(m => m.name === name)
-          if (index !== -1) setSelectedMapIndex(index)
-        }}
-      />
-
-      <div className="relative h-full w-full">
-        {MAPS.map((m, i) => (
-          <div
-            key={m.name}
-            className={`absolute inset-0 transition-opacity duration-300 ${
-              i === selectedMapIndex
-                ? "z-10 opacity-100"
-                : "pointer-events-none z-0 opacity-0"
-            }`}>
-            <FairMap
-              exhibitors={exhibitors}
-              MapComponent={m.component}
-              currentFloorIndex={i}
-              selectedExhibitor={selectedExhibitor}
-            />
-          </div>
-        ))}
+    <section
+      aria-label={t("title")}
+      className="flex min-h-0 flex-1 flex-col gap-2">
+      <div className="grid shrink-0 grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 sm:grid-cols-[auto_1fr_auto]">
+        <Page.Header className="text-4xl sm:text-5xl">{title}</Page.Header>
+        <div className="order-last col-span-2 sm:order-0 sm:col-span-1 sm:justify-self-center">
+          <FloorSelector
+            floors={MAPS.map(map => t("floor", { floor: map.floor }))}
+            selectedFloor={t("floor", { floor: floor.floor })}
+            onSelect={name => {
+              const map = MAPS.find(
+                m => t("floor", { floor: m.floor }) === name
+              )
+              if (!map) return
+              setFloor(map)
+              clearFocus()
+            }}
+          />
+        </div>
+        <CompanySearch
+          exhibitors={placements}
+          open={searchOpen}
+          onOpenChange={setSearchOpen}
+          onSelect={placement => {
+            const map = MAPS.find(m => m.floor === placement.floor)
+            if (!map) return
+            setFloor(map)
+            setFocus({ ...placement })
+            updatePlacementId(placement.id)
+          }}
+        />
       </div>
-    </div>
+
+      <p className="sr-only" role="status">
+        {focus &&
+          t("searchResult", {
+            name: focus.name,
+            floor: focus.floor,
+            booth: focus.booth,
+            room: focus.room
+          })}
+      </p>
+      <FairMap
+        key={floor.floor}
+        floor={floor}
+        placements={placements.filter(p => p.floor === floor.floor)}
+        focus={focus}
+        onBoothOpen={booth => {
+          if (focus && booth !== focus.booth) clearFocus()
+        }}
+        suppressHover={searchOpen}
+      />
+    </section>
   )
 }

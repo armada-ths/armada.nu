@@ -1,6 +1,7 @@
 export const HEX_COLORS = {
   melon: "#48bc8e",
   grapefruit: "#e73953",
+  fairMapBackground: "#232424",
   licorice: "#2d2d2c",
   coconut: "#fff0d9",
   snow: "#ffffff",
