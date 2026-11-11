@@ -20,7 +20,8 @@ async function fetchValidated<T>(
     if (!response.ok) {
       console.error("Order CMS request failed", {
         path,
-        status: response.status
+        status: response.status,
+        url: response.url
       })
       return null
     }

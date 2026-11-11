@@ -91,9 +91,10 @@ describe("persistent order submission and notification", () => {
     })
     expect(JSON.parse(String(calls[0][1]?.body))).toEqual(input)
     expect(String(calls[2][0])).toBe(state.env.SLACK_ORDER_TEST_HOOK_URL)
-    expect(JSON.parse(String(calls[2][1]?.body)).text).toContain(
-      "[STAGING TEST] Order #42 for Gold AB:\nDrinks\n- Coffee x1"
-    )
+    expect(JSON.parse(String(calls[2][1]?.body))).toEqual({
+      text: "*[STAGING TEST]*\n*Order #42 —— Gold AB:*\n\n*_Drinks:_*\n- Coffee x 1",
+      mrkdwn: true
+    })
     expect(JSON.parse(String(calls[3][1]?.body))).toEqual({
       claimToken: "claim",
       status: "sent"

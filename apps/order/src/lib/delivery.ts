@@ -114,10 +114,15 @@ function slackText(order: AcceptedOrder) {
       name: plain(line.categoryName),
       lines: []
     }
-    group.lines.push(`- ${plain(line.itemName)} x${line.quantity}`)
+    group.lines.push(`- ${plain(line.itemName)} x ${line.quantity}`)
     groups.set(line.categoryId, group)
   }
-  return `${order.isTest ? "[STAGING TEST] " : ""}Order #${order.id} for ${plain(order.companyName)}:\n${[...groups.values()].map(group => `${group.name}\n${group.lines.join("\n")}`).join("\n\n")}`
+  const heading = `*Order #${order.id} —— ${plain(order.companyName)}:*`
+  const stagingLabel = order.isTest ? "*[STAGING TEST]*\n" : ""
+  const categories = [...groups.values()]
+    .map(group => `*_${group.name}:_*\n${group.lines.join("\n")}`)
+    .join("\n\n")
+  return `${stagingLabel}${heading}\n\n${categories}`
 }
 
 async function sendSlack(
@@ -151,7 +156,7 @@ async function sendSlack(
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: slackText(order), mrkdwn: false }),
+      body: JSON.stringify({ text: slackText(order), mrkdwn: true }),
       redirect: "error",
       signal: AbortSignal.timeout(10000)
     })

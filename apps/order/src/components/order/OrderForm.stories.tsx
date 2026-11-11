@@ -112,7 +112,65 @@ export const CustomCompanyRejected: Story = {
     await userEvent.click(
       canvas.getAllByRole("button", { name: "Increase" })[0]
     )
-    await expect(canvas.getByRole("button", { name: "Send" })).toBeDisabled()
+    await expect(canvas.getByRole("button", { name: "Send" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    )
+    await userEvent.click(canvas.getByRole("button", { name: "Send" }))
+    await expect(
+      canvas.getByText("Please select a Gold exhibitor.")
+    ).toBeVisible()
+    await expect(
+      canvas.getByRole("combobox", { name: "Company" })
+    ).toHaveFocus()
+    await expect(args.submitOrder).not.toHaveBeenCalled()
+  }
+}
+
+export const MissingCompanyAndCart: Story = {
+  play: async ({ canvas, args }) => {
+    const company = canvas.getByRole("combobox", { name: "Company" })
+    const send = canvas.getByRole("button", { name: "Send" })
+    await expect(company).toBeRequired()
+    await expect(canvas.getByText("(required)")).toBeVisible()
+    await userEvent.click(send)
+    await expect(company).toHaveFocus()
+    await expect(company).toHaveAttribute("aria-invalid", "true")
+    await expect(
+      canvas.getByText("Please select a Gold exhibitor.")
+    ).toBeVisible()
+    await expect(canvas.getByText("Your cart is empty.")).toBeVisible()
+    await expect(args.submitOrder).not.toHaveBeenCalled()
+    await selectCompany(canvas)
+    await expect(
+      canvas.queryByText("Please select a Gold exhibitor.")
+    ).not.toBeInTheDocument()
+    send.focus()
+    await userEvent.keyboard("{Enter}")
+    await expect(canvas.getByText("Your cart is empty.")).toBeVisible()
+    await expect(args.submitOrder).not.toHaveBeenCalled()
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "Increase" })[0]
+    )
+    await expect(
+      canvas.queryByText("Your cart is empty.")
+    ).not.toBeInTheDocument()
+    await expect(send).toHaveAttribute("aria-disabled", "false")
+  }
+}
+
+export const SwedishMissingCompanyAndCart: Story = {
+  globals: { locale: "sv" },
+  play: async ({ canvas, args }) => {
+    const send = canvas.getByRole("button", { name: "Skicka" })
+    await expect(canvas.getByText("(obligatoriskt)")).toBeVisible()
+    send.focus()
+    await userEvent.keyboard("{Enter}")
+    await expect(canvas.getByText("Välj en guldutställare.")).toBeVisible()
+    await expect(canvas.getByText("Varukorgen är tom.")).toBeVisible()
+    await expect(
+      canvas.getByRole("combobox", { name: "Företag" })
+    ).toHaveFocus()
     await expect(args.submitOrder).not.toHaveBeenCalled()
   }
 }

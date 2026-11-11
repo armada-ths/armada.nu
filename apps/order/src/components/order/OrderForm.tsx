@@ -63,9 +63,13 @@ export function OrderForm({
     payload: string
   } | null>("submissionAttempt", null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showValidation, setShowValidation] = useState(false)
+  const companyInput = useRef<HTMLInputElement>(null)
   const [showDropdown, setShowDropdown] = useState(false)
   const [activeOption, setActiveOption] = useState(-1)
   const listId = useId()
+  const companyErrorId = useId()
+  const cartErrorId = useId()
   const filteredCompanies = data.exhibitors.filter(item =>
     item.name.toLowerCase().includes(company.toLowerCase())
   )
@@ -122,6 +126,8 @@ export function OrderForm({
   })
   const invalidCart = lines.some(line => line.invalid)
   const blocked = Boolean(refreshError) || isRefreshing || isSubmitting
+  const companyError = showValidation && !selectedCompany
+  const cartError = showValidation && lines.length === 0
   const nameOf = (item: LoungeItem) =>
     localizedText(locale, item.name, item.nameSv)
 
@@ -157,12 +163,9 @@ export function OrderForm({
 
   async function sendMessage() {
     if (submissionLock.current || blocked) return
-    if (!selectedCompany) {
-      toast.warning(<OrderFeedback code="emptyCompany" />)
-      return
-    }
-    if (lines.length === 0) {
-      toast.warning(<OrderFeedback code="emptyCart" />)
+    if (!selectedCompany || lines.length === 0) {
+      setShowValidation(true)
+      if (!selectedCompany) companyInput.current?.focus()
       return
     }
     if (invalidCart) {
@@ -187,6 +190,7 @@ export function OrderForm({
       if (result.success) {
         toast.success(<OrderFeedback code="submittedToast" />)
         setSubmitted(true)
+        setShowValidation(false)
         setOrderId(result.orderId ?? null)
         setAttempt(null)
         setCompany("")
@@ -253,13 +257,28 @@ export function OrderForm({
         </div>
       )}
       <div className="mt-6">
-        <label className="mb-1 text-sm" htmlFor="company">
+        <label
+          className="mb-1 flex items-center gap-2 text-sm font-semibold"
+          htmlFor="company">
           {t("companyLabel")}
+          <span aria-hidden="true" className="text-xs">
+            {t("required")}
+          </span>
         </label>
         <div className="relative">
           <Input
             id="company"
+            ref={companyInput}
             role="combobox"
+            required
+            aria-required="true"
+            aria-invalid={companyError}
+            aria-describedby={companyError ? companyErrorId : undefined}
+            className={
+              companyError
+                ? "border-red-700 focus-visible:ring-red-700"
+                : undefined
+            }
             autoComplete="off"
             aria-autocomplete="list"
             aria-expanded={showDropdown}
@@ -327,6 +346,14 @@ export function OrderForm({
             </div>
           )}
         </div>
+        {companyError && (
+          <p
+            id={companyErrorId}
+            role="alert"
+            className="mt-2 text-sm text-red-700">
+            {t("emptyCompany")}
+          </p>
+        )}
         {company && !selectedCompany && (
           <p role="status" className="mt-2 text-sm">
             {t("selectGoldCompany")}
@@ -440,6 +467,11 @@ export function OrderForm({
             ))}
           </ul>
         )}
+        {cartError && (
+          <p id={cartErrorId} role="alert" className="mt-2 text-red-700">
+            {t("emptyCart")}
+          </p>
+        )}
         {invalidCart && (
           <p role="alert" className="mt-2">
             {t("invalidCart")}
@@ -449,9 +481,12 @@ export function OrderForm({
       <div className="mt-4 flex justify-end">
         <Button
           onClick={sendMessage}
-          disabled={
+          disabled={blocked || invalidCart}
+          aria-disabled={
             blocked || invalidCart || !selectedCompany || !lines.length
-          }>
+          }
+          aria-describedby={cartError ? cartErrorId : undefined}
+          className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50">
           {isSubmitting ? t("sending") : t("send")}
         </Button>
       </div>
