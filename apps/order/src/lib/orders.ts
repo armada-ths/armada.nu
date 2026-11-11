@@ -6,8 +6,6 @@ export type OrderErrorCode =
   | "orders_closed"
   | "invalid_order"
   | "availability_unavailable"
-  | "delivery_unavailable"
-  | "delivery_failed"
   | "submission_failed"
   | "company_ineligible"
   | "items_changed"

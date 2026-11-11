@@ -2,7 +2,7 @@
 import { cookies } from "next/headers"
 import { env } from "@order/env"
 import { fetchOrderAvailability, fetchOrderData } from "@order/lib/cms"
-import { saveOrder, deliverSavedOrder } from "@order/lib/delivery"
+import { saveOrder } from "@order/lib/submission"
 import {
   hasOrderAccess,
   orderInputSchema,
@@ -41,9 +41,5 @@ export async function sendOrder(input: OrderInput): Promise<OrderResult> {
     return { success: false, errorCode: "access_required" }
   const parsed = orderInputSchema.safeParse(input)
   if (!parsed.success) return { success: false, errorCode: "invalid_order" }
-  const saved = await saveOrder(parsed.data)
-  if (!saved.success) return saved
-  // Persistence is authoritative; a notification failure never loses the order.
-  await deliverSavedOrder(saved.data.id)
-  return { success: true, orderId: saved.data.id }
+  return saveOrder(parsed.data)
 }

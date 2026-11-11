@@ -57,8 +57,6 @@
     "company_ineligible": "Det valda företaget är inte längre behörigt. Välj en guldutställare.",
     "items_changed": "Menyn har ändrats. Ta bort otillgängliga varor eller rätta antalet innan du skickar igen.",
     "availability_unavailable": "Beställningar är tillfälligt otillgängliga. Försök igen om en stund.",
-    "delivery_unavailable": "Beställningar är tillfälligt otillgängliga. Kontakta utställarloungen.",
-    "delivery_failed": "Det gick inte att skicka beställningen. Försök igen.",
     "submission_failed": "Det gick inte att skicka beställningen. Kontrollera anslutningen och försök igen."
   },
   "Metadata": {

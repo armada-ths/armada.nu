@@ -36,10 +36,6 @@ locals {
     order_token_preview                                           = { app = "order", key = "EXPO_ACCESS_TOKEN", target = ["preview"], sensitive = true }
     order_submission_production                                   = { app = "order", key = "LOUNGE_ORDER_SUBMISSION_SECRET", target = ["production"], sensitive = true }
     order_submission_preview                                      = { app = "order", key = "LOUNGE_ORDER_TEST_SUBMISSION_SECRET", target = ["preview"], sensitive = true }
-    order_retry_production                                        = { app = "order", key = "ORDER_INTERNAL_SECRET", target = ["production"], sensitive = true }
-    order_retry_staging                                           = { app = "order", key = "ORDER_INTERNAL_SECRET", target = ["preview"], sensitive = true, git_branch = "staging" }
-    order_hook_production                                         = { app = "order", key = "SLACK_ORDER_HOOK_URL", target = ["production"], sensitive = true }
-    order_hook_preview                                            = { app = "order", key = "SLACK_ORDER_TEST_HOOK_URL", target = ["preview"], sensitive = true }
   }
 }
 

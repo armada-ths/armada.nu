@@ -46,7 +46,7 @@ Terraform controls key names, environment targets, sensitivity, project links an
 
 These definitions link to all three projects. All preview branches use staging; local apps can override the API in their own `.env.local`. Public values must be available at build time. Changes to Vercel environment values require a new deployment to take effect.
 
-Web owns sales, reCAPTCHA, Eventro, feature flag and revalidation variables. Photos owns its public reCAPTCHA keys. Order owns production/preview access tokens, the production `SLACK_ORDER_HOOK_URL` and preview-only `SLACK_ORDER_TEST_HOOK_URL`. Order's test delivery never falls back to the production hook.
+Web owns sales, reCAPTCHA, Eventro, feature flag and revalidation variables. Photos owns its public reCAPTCHA keys. Order owns production/preview access tokens and the corresponding CMS submission credentials.
 
 To add a new variable that does not already exist in Vercel:
 

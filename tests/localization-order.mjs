@@ -6,7 +6,7 @@ import { once } from "node:events"
 import { readFile, mkdir } from "node:fs/promises"
 import { setTimeout as delay } from "node:timers/promises"
 import path from "node:path"
-import { fileURLToPath, pathToFileURL } from "node:url"
+import { fileURLToPath } from "node:url"
 import { chromium } from "playwright"
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const en = JSON.parse(
@@ -26,7 +26,6 @@ let storage = "fail",
   app,
   browser,
   logs = ""
-const delivered = []
 const saved = new Map()
 const attempts = []
 const categories = [{ id: 1, name: "Drinks", nameSv: "Dryck", sortOrder: 0 }]
@@ -95,30 +94,6 @@ const cms = createServer(async (request, response) => {
     response.end(JSON.stringify(saved.get(input.idempotencyKey)))
     return
   }
-  if (request.url === "/api/v1/lounge-orders/42/claim") {
-    const order = [...saved.values()][0]
-    response.end(
-      JSON.stringify({ claimed: true, claimToken: "fixture-claim", order })
-    )
-    return
-  }
-  if (request.url === "/api/v1/lounge-orders/42/delivery") {
-    let body = ""
-    for await (const chunk of request) body += chunk
-    const outcome = JSON.parse(body)
-    const order = [...saved.values()][0]
-    order.deliveryStatus = outcome.status
-    response.end(JSON.stringify({ success: true }))
-    return
-  }
-  if (request.url === "/__slack") {
-    let body = ""
-    for await (const chunk of request) body += chunk
-    delivered.push(JSON.parse(body))
-    response.statusCode = 503
-    response.end("{}")
-    return
-  }
   response.statusCode = 404
   response.end("{}")
 })
@@ -129,8 +104,6 @@ try {
   app = spawn(
     process.execPath,
     [
-      "--import",
-      pathToFileURL(path.join(root, "tests/order-fetch-fixture.mjs")).href,
       path.join(root, "node_modules/next/dist/bin/next"),
       "start",
       "-H",
@@ -143,11 +116,8 @@ try {
       env: {
         ...process.env,
         NEXT_PUBLIC_API_URL: "http://127.0.0.1:19080",
-        ORDER_FIXTURE_URL: "http://127.0.0.1:19080",
         EXPO_ACCESS_TOKEN: "local-order-fixture",
         LOUNGE_ORDER_TEST_SUBMISSION_SECRET: "fixture-test-service",
-        SLACK_ORDER_TEST_HOOK_URL:
-          "https://hooks.slack.com/services/local-fixture",
         VERCEL_ENV: "preview",
         NEXT_TELEMETRY_DISABLED: "1"
       },
@@ -240,11 +210,8 @@ try {
   await page
     .getByRole("heading", { name: sv.Order.submittedHeading, exact: true })
     .waitFor()
-  assert.equal(delivered.length, 1)
-  assert.match(delivered[0].text, /Order #42 .* Example AB:/)
-  assert.match(delivered[0].text, /- Coffee x 1/)
   assert.equal(saved.size, 1)
-  assert.equal([...saved.values()][0].deliveryStatus, "failed")
+  assert.equal([...saved.values()][0].deliveryStatus, "pending")
   assert.equal(attempts[0].idempotencyKey, attempts[1].idempotencyKey)
   await page.getByText("Beställningsnummer: #42", { exact: true }).waitFor()
   closed = true
@@ -270,7 +237,7 @@ try {
   })
   assert.deepEqual(errors, [])
   console.log(
-    "PASS: localized categories/access, idempotency after language change and reload, persisted acceptance despite failed Slack, closed and denied states"
+    "PASS: localized categories/access, idempotency after language change and reload, persisted acceptance while notification is queued, closed and denied states"
   )
 } catch (error) {
   console.error(logs)

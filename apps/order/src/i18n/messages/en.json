@@ -57,8 +57,6 @@
     "company_ineligible": "Your selected company is no longer eligible. Please select a Gold exhibitor.",
     "items_changed": "The menu has changed. Remove unavailable items or correct quantities before sending again.",
     "availability_unavailable": "Ordering is temporarily unavailable. Please try again shortly.",
-    "delivery_unavailable": "Ordering is temporarily unavailable. Please contact the exhibitor lounge.",
-    "delivery_failed": "Could not deliver your order. Please try again.",
     "submission_failed": "Could not submit your order. Check your connection and try again."
   },
   "Metadata": {
