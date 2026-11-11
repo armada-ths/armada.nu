@@ -52,7 +52,7 @@
   },
   "OrderErrors": {
     "access_required": "Öppna åtkomstlänken som ditt företag har fått.",
-    "orders_closed": "Beställningsformuläret är stängt. Beställning är möjlig under en del av mässans öppettider.",
+    "orders_closed": "Beställningsformuläret är stängt. Beställning är möjlig under mässans öppettider.",
     "invalid_order": "Kontrollera det valda företaget och varorna.",
     "company_ineligible": "Det valda företaget är inte längre behörigt. Välj en guldutställare.",
     "items_changed": "Menyn har ändrats. Ta bort otillgängliga varor eller rätta antalet innan du skickar igen.",
