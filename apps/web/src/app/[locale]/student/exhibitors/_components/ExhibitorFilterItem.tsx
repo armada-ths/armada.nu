@@ -5,16 +5,22 @@ import {
   normalizeLocale,
   type Locale
 } from "@armada/shared/i18n/routing"
+import { Link } from "@armada/shared/i18n/navigation"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select"
-import { useEffect, useMemo } from "react"
+import { translations } from "@/i18n/dictionaries"
+import { ChevronDown, ListFilter, MapPin } from "lucide-react"
+import { useEffect, useId, useMemo, useState } from "react"
 import ExhibitorSortMenu from "./ExhibitorSortMenu"
 import type { ExhibitorSort } from "./exhibitorSort"
 
 const filterTriggerClassName =
-  "bg-melon border-licorice text-licorice! hover:bg-melon w-full border-2 shadow-shadow transition-all hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
+  "w-full data-[state=open]:translate-x-0 data-[state=open]:translate-y-0 data-[state=open]:shadow-shadow data-[state=open]:hover:translate-x-0 data-[state=open]:hover:translate-y-0"
 
-const filterPopoverClassName = "w-(--radix-popover-trigger-width) max-w-[95vw]"
+const filterPopoverClassName =
+  "max-h-[min(60dvh,var(--radix-popover-content-available-height))]! w-(--radix-popover-trigger-width) max-w-[95vw]"
 
 function categoryOptions(
   categories: { id: number; name: string; nameSv?: string | null }[],
@@ -32,10 +38,12 @@ interface Props {
   searchQueryName: string
   onFilterChange?: (filtered: Exhibitor[]) => void
   labels: {
+    filters: string
     filterEmployment: string
     filterIndustry: string
     filterProgram: string
   }
+  mapEnabled?: boolean
   sortBy?: ExhibitorSort
   onSortChange?: (sortBy: ExhibitorSort) => void
 }
@@ -45,10 +53,13 @@ export default function ExhibitorFilterItem({
   searchQueryName,
   onFilterChange,
   labels,
+  mapEnabled,
   sortBy = "tier-gold",
   onSortChange
 }: Props) {
   const locale = normalizeLocale(useLocale())
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const filtersId = useId()
   // 1. STATE CHANGE: Hold an array of selected employment IDs as STRINGS
   const [selectedEmploymentIds, setSelectedEmploymentIds] = useDraftState<
     string[]
@@ -165,8 +176,37 @@ export default function ExhibitorFilterItem({
 
   return (
     <div className="border-licorice border-t pt-4 pb-2">
-      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
-        {/* Sort By Filter */}
+      <div className="flex gap-3 sm:hidden">
+        <Button
+          type="button"
+          variant="neutral"
+          className={cn("group", mapEnabled && "min-w-0 flex-1")}
+          aria-expanded={filtersOpen}
+          aria-controls={filtersId}
+          onClick={() => setFiltersOpen(open => !open)}>
+          <ListFilter aria-hidden="true" />
+          {labels.filters}
+          <ChevronDown
+            aria-hidden="true"
+            className="group-aria-expanded:rotate-180"
+          />
+        </Button>
+        {mapEnabled && (
+          <Button asChild variant="neutral" className="min-w-0 flex-1">
+            <Link href="/student/map">
+              <MapPin aria-hidden="true" />
+              {translations[locale].map}
+            </Link>
+          </Button>
+        )}
+      </div>
+
+      <div
+        id={filtersId}
+        className={cn(
+          "flex-col gap-3 sm:flex sm:flex-row sm:flex-wrap sm:items-end",
+          filtersOpen ? "mt-3 flex sm:mt-0" : "hidden"
+        )}>
         <div className="min-w-0 flex-1 sm:min-w-48">
           <ExhibitorSortMenu
             value={sortBy}
@@ -174,11 +214,11 @@ export default function ExhibitorFilterItem({
             triggerClassName={filterTriggerClassName}
           />
         </div>
-
         {/* Employment Filter */}
         <div className="min-w-0 flex-1 sm:min-w-48">
           <MultiSelect
             options={employmentOptions}
+            defaultValue={selectedEmploymentIds}
             onValueChange={setSelectedEmploymentIds}
             placeholder={labels.filterEmployment}
             popoverClassName={filterPopoverClassName}
@@ -190,6 +230,7 @@ export default function ExhibitorFilterItem({
         <div className="min-w-0 flex-1 sm:min-w-48">
           <MultiSelect
             options={industriesOptions}
+            defaultValue={selectedIndustriesIds}
             onValueChange={setSelectedIndustriesIds}
             placeholder={labels.filterIndustry}
             popoverClassName={filterPopoverClassName}
@@ -201,6 +242,7 @@ export default function ExhibitorFilterItem({
         <div className="min-w-0 flex-1 sm:min-w-48">
           <MultiSelect
             options={programOptions}
+            defaultValue={selectedProgramsIds}
             onValueChange={setSelectedProgramsIds}
             placeholder={labels.filterProgram}
             popoverClassName={filterPopoverClassName}

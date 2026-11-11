@@ -10,10 +10,10 @@ const meta = {
   parameters: { layout: "fullscreen" },
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole("region", { name: "Our sponsors" })
+      canvas.getByRole("region", { name: "Product Sponsors" })
     ).toBeInTheDocument()
     await expect(
-      canvas.getByRole("heading", { name: "Our sponsors", level: 2 })
+      canvas.getByRole("heading", { name: "Product Sponsors", level: 2 })
     ).toBeInTheDocument()
     for (const [name, href] of [
       ["Barilla", "https://www.barilla.com/sv-se"],

@@ -1,5 +1,6 @@
 {
   "Common": {
+    "navigationMenu": "Navigeringsmeny",
     "switchLanguage": "Byt språk till engelska",
     "loading": "Laddar…",
     "error": "Något gick fel. Försök igen.",
@@ -142,8 +143,8 @@
     },
     "visitorLabels": {
       "visits": "besök",
-      "students": "Studenter",
-      "networking": "med nätverkande"
+      "exhibitors": "Utställare",
+      "networking": "av nätverkande"
     },
     "newStudentsHeading": "Nya studenter, varje år!",
     "newStudentsBody": "Varje år börjar omkring 4000 nya studenter på KTH. Nästan lika många studenter får sitt första heltidsjobb eller sin första praktikplats. Genom att delta i Armada får ni tillgång till dem alla, kan bygga kännedom hos yngre studenter och vara ett självklart val när studenterna senare börjar söka jobb. Välkomna!",
@@ -312,6 +313,7 @@
     "emptySuffix": "för de senaste nyheterna!"
   },
   "exhibitorSearchText": {
+    "filters": "Filter",
     "searchPlaceholder": "Sök efter företagsnamn",
     "filterEmployment": "Filtrera på anställningsform",
     "filterIndustry": "Filtrera på bransch",
@@ -402,7 +404,7 @@
     "timeline": "Tidslinje",
     "events": "Event",
     "exhibitorsList": "Utställare",
-    "map": "Karta",
+    "map": "Mässkarta",
     "recruitment": "Rekrytering",
     "blog": "Blogg",
     "team": "Team",
@@ -434,12 +436,12 @@
   },
   "pageTranslations": {
     "home": {
-      "heroHeading": "Ditt nästa kapitel börjar här",
+      "heroHeading": "Set sail for success",
       "heroDescription": "Skandinaviens största studentdrivna arbetsmarknadsmässa",
       "visitorLabels": {
         "visits": "besökare",
-        "students": "Studenter",
-        "networking": "med nätverkande"
+        "exhibitors": "Utställare",
+        "networking": "av nätverkande"
       },
       "countdownLabels": {
         "days": "Dagar",
@@ -585,7 +587,7 @@
     "pauseSlideshow": "Pausa bildspel",
     "readMore": "Läs mer",
     "readLess": "Läs mindre",
-    "ourSponsors": "Våra sponsorer"
+    "ourSponsors": "Produktsponsorer"
   },
   "Accessibility": {
     "emailPerson": "Mejla {name}",
@@ -614,7 +616,7 @@
     "dateTBA": "Datum kommer",
     "detailsAndRegistrationInformationForName": "Detaljer och anmälningsinformation för {name}",
     "registrationCloses": "Anmälan stänger",
-    "companiesAtTheFair2026": "Företag på ARMADA 2026",
+    "companiesAtTheFair2026": "Utställare på ARMADA 2026",
     "mapOfExhibitorLocation": "Karta över utställarens plats",
     "industries": "Branscher",
     "employments": "Anställningsformer",
@@ -693,5 +695,19 @@
     "selectedSuffix": ", valt",
     "notSelectedSuffix": ", inte valt",
     "disabledSuffix": ", inaktiverat"
+  },
+  "FairMap": {
+    "showOnMap": "Visa på karta",
+    "title": "Mässkarta 2026",
+    "floor": "Nymble plan {floor}",
+    "floors": "Kartans våningar",
+    "search": "Hitta en utställare",
+    "noResults": "Inga utställare hittades.",
+    "booth": "Monter {booth}",
+    "day": "{day} november",
+    "searchResult": "{name} · Plan {floor} · Monter {booth} · {room}",
+    "zoomIn": "Zooma in",
+    "zoomOut": "Zooma ut",
+    "resetZoom": "Återställ zoom"
   }
 }

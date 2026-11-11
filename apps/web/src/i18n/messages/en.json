@@ -1,5 +1,6 @@
 {
   "Common": {
+    "navigationMenu": "Navigation menu",
     "switchLanguage": "Switch language to Swedish",
     "loading": "Loading…",
     "error": "Something went wrong. Please try again.",
@@ -142,7 +143,7 @@
     },
     "visitorLabels": {
       "visits": "visits",
-      "students": "Students",
+      "exhibitors": "Exhibitors",
       "networking": "of networking"
     },
     "newStudentsHeading": "New students, every year!",
@@ -312,6 +313,7 @@
     "emptySuffix": "for latest news!"
   },
   "exhibitorSearchText": {
+    "filters": "Filters",
     "searchPlaceholder": "Search by company name",
     "filterEmployment": "Filter by Employment",
     "filterIndustry": "Filter by Industry",
@@ -402,7 +404,7 @@
     "timeline": "Timeline",
     "events": "Events",
     "exhibitorsList": "Exhibitors",
-    "map": "Map",
+    "map": "Fair Map",
     "recruitment": "Recruitment",
     "blog": "Blog",
     "team": "Team",
@@ -438,7 +440,7 @@
       "heroDescription": "Scandinavia's largest student-driven career fair",
       "visitorLabels": {
         "visits": "visits",
-        "students": "Students",
+        "exhibitors": "Exhibitors",
         "networking": "of networking"
       },
       "countdownLabels": {
@@ -585,7 +587,7 @@
     "pauseSlideshow": "Pause slideshow",
     "readMore": "Read more",
     "readLess": "Read less",
-    "ourSponsors": "Our sponsors"
+    "ourSponsors": "Product Sponsors"
   },
   "Accessibility": {
     "emailPerson": "Email {name}",
@@ -614,7 +616,7 @@
     "dateTBA": "Date TBA",
     "detailsAndRegistrationInformationForName": "Details and registration information for {name}",
     "registrationCloses": "Registration closes",
-    "companiesAtTheFair2026": "Companies at ARMADA 2026",
+    "companiesAtTheFair2026": "Exhibitors at ARMADA 2026",
     "mapOfExhibitorLocation": "Map of exhibitor location",
     "industries": "Industries",
     "employments": "Employments",
@@ -693,5 +695,19 @@
     "selectedSuffix": ", selected",
     "notSelectedSuffix": ", not selected",
     "disabledSuffix": ", disabled"
+  },
+  "FairMap": {
+    "showOnMap": "Show on map",
+    "title": "2026 fair map",
+    "floor": "Nymble floor {floor}",
+    "floors": "Map floors",
+    "search": "Find an exhibitor",
+    "noResults": "No exhibitors found.",
+    "booth": "Booth {booth}",
+    "day": "{day} November",
+    "searchResult": "{name} · Floor {floor} · Booth {booth} · {room}",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom"
   }
 }

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 
 export interface Exhibitor {
   id: number
+  eventroId?: string | null
   name: string
   type: string
   tier?: string
@@ -25,7 +26,6 @@ export interface Exhibitor {
   //average_age?: unknown // TODO Define this
   //founded?: unknown // TODO Define this
   //groups?: Group[]
-  fairLocation: string
   vyerPosition?: string
   locationSpecial?: string
   climateCompensation: boolean

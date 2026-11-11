@@ -37,7 +37,7 @@ export default async function BlogPostPage({
 
   return (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={800}>
+      <Page.Boundary>
         <Link
           href="/blog"
           className="text-licorice/60 hover:text-melon mb-4 inline-flex items-center gap-1 text-sm transition-colors">

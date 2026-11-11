@@ -6,7 +6,7 @@ export function NumberCountUp(props: {
   start: number
   end: number
   duration: number
-  isVisit?: boolean
+  showPlus?: boolean
   isDays?: boolean
 }) {
   const format = useFormatter()
@@ -21,7 +21,7 @@ export function NumberCountUp(props: {
           format.number(value, { maximumFractionDigits: 0 })
         }
       />
-      {props.isVisit && "+"}
+      {props.showPlus && "+"}
       {props.isDays && ` ${t("days")}`}
     </p>
   )

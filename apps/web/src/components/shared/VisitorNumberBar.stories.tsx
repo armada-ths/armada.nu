@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryContext, StoryObj } from "@storybook/nextjs-vite"
+import type { ComponentProps } from "react"
 import { expect } from "storybook/test"
 import en from "../../i18n/messages/en.json"
 import sv from "../../i18n/messages/sv.json"
@@ -10,18 +11,24 @@ const meta = {
   component: VisitorNumberBar,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },
-  args: { disableAnimation: true },
-  play: async ({ canvas, canvasElement, args, globals }) => {
+  args: {
+    disableAnimation: true,
+    labels: en.pageTranslations.home.visitorLabels
+  },
+  play: async ({
+    canvas,
+    canvasElement,
+    args: { labels },
+    globals
+  }: StoryContext<ComponentProps<typeof VisitorNumberBar>>) => {
     const messages = globals.locale === "sv" ? sv : en
-    await expect(
-      canvas.getByText(args.labels?.visits ?? "visits")
-    ).toBeVisible()
-    await expect(
-      canvas.getByText(args.labels?.students ?? "Students")
-    ).toBeVisible()
-    await expect(
-      canvas.getByText(args.labels?.networking ?? "of networking")
-    ).toBeVisible()
+    await expect(canvas.getByText(labels.visits)).toBeVisible()
+    const exhibitorLabel = canvas.getByText(labels.exhibitors)
+    await expect(exhibitorLabel).toBeVisible()
+    await expect(exhibitorLabel.previousElementSibling).toHaveTextContent(
+      /^80\+$/
+    )
+    await expect(canvas.getByText(labels.networking)).toBeVisible()
     const dayCount = canvas.getByText(messages.Static.days, { exact: false })
     await expect(dayCount).toHaveTextContent(
       new RegExp(`^2\\s+${messages.Static.days}$`)

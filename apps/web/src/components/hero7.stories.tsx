@@ -1,14 +1,23 @@
+import { Countdown } from "@/app/_components/Countdown"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import { expect } from "storybook/test"
 import en from "../i18n/messages/en.json"
 import sv from "../i18n/messages/sv.json"
 import { Hero1 } from "./hero7"
+import { Page } from "./shared/Page"
 
 const meta = {
   title: "Homepage/Hero",
   component: Hero1,
   tags: ["autodocs"],
+  decorators: [
+    Story => (
+      <Page.Boundary>
+        <Story />
+      </Page.Boundary>
+    )
+  ],
   args: {
     heading: "Set Sail For Success",
     description: "The No. 1 career fair at KTH Royal Institute of Technology"
@@ -84,7 +93,7 @@ export const ExhibitorsWithRecruitment: Story = {
 export const ExhibitorsSwedish: Story = {
   globals: { locale: "sv" },
   args: {
-    heading: "Ditt nästa kapitel börjar här",
+    heading: "Set sail for success",
     description: sv.pageTranslations.home.heroDescription,
     buttons: {
       primary: {
@@ -114,5 +123,23 @@ export const ExhibitorsSwedish: Story = {
     await expect(
       canvas.queryByRole("link", { name: "Explore exhibitors" })
     ).not.toBeInTheDocument()
+  }
+}
+
+export const AfterTheFair: Story = {
+  globals: { viewport: { value: "desktop", isRotated: false } },
+  args: {
+    heading: en.pageTranslations.home.heroHeading,
+    description: en.pageTranslations.home.heroDescription,
+    buttons: {
+      primary: { text: "Join Armada", url: "/student/recruitment" }
+    },
+    bottomContent: <Countdown fairDays={["2025-11-18", "2025-11-19"]} />,
+    sideContent: <div />
+  },
+  play: async ({ canvas }) => {
+    const date = canvas.getByText("18–19 Nov 2025 | Nymble, KTH")
+    await expect(date).toBeVisible()
+    await expect(date.parentElement?.children).toHaveLength(1)
   }
 }

@@ -1,6 +1,7 @@
 import { pageMetadata } from "@/i18n/metadata"
 import { localeAlternates } from "@/i18n/metadata"
 import OrganizationList from "@/app/[locale]/about/_components/OrganizationList"
+import { TeamBoundary } from "@/app/[locale]/about/_components/TeamBoundary"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { feature } from "@/components/shared/feature"
 import { fetchOrganization } from "@/components/shared/hooks/api/useOrganization"
@@ -45,14 +46,12 @@ export default async function TeamPage() {
 
   return (
     <Page.Background withIndents className="justify-start">
-      <Page.Boundary>
+      <TeamBoundary>
         <Page.Header>{dict.heading}</Page.Header>
-        <div className="">
-          {sortedOrganization.map(group => (
-            <OrganizationList key={group.name} group={group} />
-          ))}
-        </div>
-      </Page.Boundary>
+        {sortedOrganization.map(group => (
+          <OrganizationList key={group.name} group={group} />
+        ))}
+      </TeamBoundary>
       <div className="h-20" />
     </Page.Background>
   )

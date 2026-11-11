@@ -112,7 +112,7 @@ export const exhibitorPageTranslations = {
     photos: [string, string, string, string]
     visitorLabels: {
       visits: string
-      students: string
+      exhibitors: string
       networking: string
     }
     newStudentsHeading: string
@@ -320,6 +320,7 @@ export const exhibitorSearchText = {
   Locale,
   {
     searchPlaceholder: string
+    filters: string
     filterEmployment: string
     filterIndustry: string
     filterProgram: string
@@ -483,7 +484,7 @@ export const pageTranslations = {
       heroDescription: string
       visitorLabels: {
         visits: string
-        students: string
+        exhibitors: string
         networking: string
       }
       countdownLabels: {

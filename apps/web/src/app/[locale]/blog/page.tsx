@@ -32,7 +32,7 @@ export default async function BlogPage() {
 
   return (
     <Page.Background withIndents>
-      <Page.Boundary maxWidth={1100}>
+      <Page.Boundary>
         <Page.Header>{dict.title}</Page.Header>
         <p className="text-licorice/70 mt-2 mb-8">{dict.intro}</p>
         {posts.length > 0 ? (

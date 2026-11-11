@@ -1,276 +1,441 @@
 "use client"
-import { uiText } from "@/i18n/ui"
 
+import ExhibitorModal from "@/app/[locale]/student/exhibitors/_components/ExhibitorModal"
+import { exhibitorTierColors } from "@/app/[locale]/student/exhibitors/_components/exhibitorTierColors"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Link } from "@armada/shared/i18n/navigation"
+import { Minus, Plus, RotateCcw } from "lucide-react"
 import { useTranslations } from "next-intl"
-
-import { useLocale } from "@armada/shared/i18n/client"
-import { normalizeLocale } from "@armada/shared/i18n/routing"
-
-import ExhibitorDetails from "@/app/[locale]/student/exhibitors/_components/ExhibitorDetails"
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
-import Modal from "@/components/ui/Modal"
-import { HEX_COLORS } from "@/lib/colors"
-
-import Image from "next/image"
-
 import { useEffect, useRef, useState } from "react"
 import {
-  ReactZoomPanPinchRef,
   TransformComponent,
-  TransformWrapper
+  TransformWrapper,
+  type ReactZoomPanPinchRef
 } from "react-zoom-pan-pinch"
+import { boothId, type MapDefinition, type MappedExhibitor } from "./maps"
 
-const fadeOutDelay = 500
+const BOOTH_HEIGHT = 58
+const TRACKPAD_ZOOM_MULTIPLIER = 2.25
 
-interface FairMapProps {
-  exhibitors: Exhibitor[]
-  MapComponent: React.FC<React.SVGProps<SVGSVGElement>>
-  currentFloorIndex: number
-  selectedExhibitor?: Exhibitor | null
-  onRequestFloorChange?: (floorIndex: number) => void
+function BoothLogo({
+  entry,
+  cx,
+  cy,
+  height
+}: {
+  entry: MappedExhibitor
+  cx: number
+  cy: number
+  height: number
+}) {
+  const [failedSources, setFailedSources] = useState<string[]>([])
+  const logo = [
+    entry.exhibitor?.logoThumbnail,
+    entry.exhibitor?.logoFreesize,
+    entry.exhibitor?.logoSquared
+  ].find(source => source && !failedSources.includes(source))
+
+  if (logo) {
+    return (
+      <image
+        key={logo}
+        href={logo}
+        x={cx - 31}
+        y={cy - height / 2}
+        width={62}
+        height={height}
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+        pointerEvents="none"
+        onError={() => setFailedSources(sources => [...sources, logo])}
+      />
+    )
+  }
+
+  const name = entry.name.trim()
+  const brand = name.replace(
+    /(?:[\s,]+(?:ab|hb|kb|ag|as|asa|a\/s|aps|oyj?|ltd|limited|llc|llp|plc|inc|corp|corporation|gmbh(?:\s+&\s+co\.?\s+kg)?|kgaa|kg|b\.?v|n\.?v|s\.?a|s\.?a\.?s|s\.?a\.?r\.?l|s\.?r\.?l|s\.?p\.?a|s\.?l)\.?)+(?:\s*\(publ\))?$/i,
+    ""
+  )
+  const words = (brand || name).split(/\s+/)
+  const initials =
+    words.length === 1
+      ? words[0].slice(0, 3)
+      : words
+          .slice(0, 3)
+          .map(word => word[0])
+          .join("")
+  return (
+    <text
+      x={cx}
+      y={cy}
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={Math.min(19, height)}
+      className="fill-licorice font-bold"
+      aria-hidden="true"
+      pointerEvents="none">
+      {initials.toUpperCase()}
+    </text>
+  )
 }
 
-const tierColors: Record<string, { fill: string; stroke: string }> = {
-  gold: { fill: "var(--color-pineapple)", stroke: "var(--color-pineapple)" },
-  silver: { fill: "var(--color-silver)", stroke: "var(--color-silver)" },
-  bronze: { fill: "var(--color-bronze)", stroke: "var(--color-bronze)" },
-  default: { fill: HEX_COLORS.lightGray, stroke: HEX_COLORS.mediumGray }
-}
+function BoothLabel({
+  name,
+  cx,
+  cy,
+  box: [x, y, width]
+}: {
+  name: string
+  cx: number
+  cy: number
+  box: MapDefinition["box"]
+}) {
+  const labelWidth = Math.min(500, 2 * Math.min(cx - x, x + width - cx))
+  const labelHeight = 136
+  const below = cy - y < 180
+  const tipY = cy + (below ? BOOTH_HEIGHT / 2 : -BOOTH_HEIGHT / 2)
+  const arrowHeight = below ? 12 : -12
+  const labelY = tipY + arrowHeight - (below ? 0 : labelHeight)
 
-// function parseRotation(transform?: string | null) {
-//   if (!transform?.startsWith("rotate(")) return null
-//   const match = transform.match(
-//     /rotate\(([-0-9.]+)[ ,]([-0-9.]+)?[ ,]([-0-9.]+)?\)/
-//   )
-//   if (!match) return null
-//   return {
-//     angle: parseFloat(match[1]),
-//     cx: match[2] ? parseFloat(match[2]) : undefined,
-//     cy: match[3] ? parseFloat(match[3]) : undefined
-//   }
-// }
+  return (
+    <g aria-hidden="true" pointerEvents="none">
+      <foreignObject
+        x={cx - labelWidth / 2}
+        y={labelY}
+        width={labelWidth}
+        height={labelHeight}
+        className="overflow-visible">
+        <div
+          className={cn(
+            "flex h-full justify-center",
+            below ? "items-start" : "items-end"
+          )}>
+          <span
+            data-map-label
+            className="bg-licorice text-snow pointer-events-auto max-w-full rounded-lg px-4 py-2 text-center text-[30px] leading-tight font-bold wrap-anywhere shadow-md">
+            {name}
+          </span>
+        </div>
+      </foreignObject>
+      <path
+        d={`M ${cx} ${tipY} l -12 ${arrowHeight} h 24 Z`}
+        className="fill-licorice pointer-events-auto"
+      />
+    </g>
+  )
+}
 
 export default function FairMap({
-  exhibitors,
-  MapComponent,
-  selectedExhibitor = null
-}: FairMapProps) {
-  const staticT = useTranslations("Static")
+  floor,
+  placements,
+  focus,
+  onBoothOpen,
+  suppressHover = false
+}: {
+  floor: MapDefinition
+  placements: MappedExhibitor[]
+  focus: MappedExhibitor | null
+  onBoothOpen?: (booth: number) => void
+  suppressHover?: boolean
+}) {
+  const t = useTranslations("FairMap")
+  const [activeBooth, setActiveBooth] = useState<number | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [ready, setReady] = useState(false)
+  const transform = useRef<ReactZoomPanPinchRef | null>(null)
+  const mapViewport = useRef<HTMLDivElement>(null)
+  const panned = useRef(false)
+  const markers = new Map<number, MappedExhibitor[]>()
+  for (const placement of placements) {
+    const existing = markers.get(placement.booth) ?? []
+    markers.set(placement.booth, [...existing, placement])
+  }
+  const activeExhibitors =
+    activeBooth === null ? [] : (markers.get(activeBooth) ?? [])
+  const single = activeExhibitors.length === 1 ? activeExhibitors[0] : undefined
+  const [x, y, width, height] = floor.box
+  const focusedMarker = floor.markers.find(([booth]) => booth === focus?.booth)
 
-  const locale = normalizeLocale(useLocale())
-  const [modalOpen, setModalOpen] = useState(false)
-  const [activeExhibitor, setActiveExhibitor] = useState<Exhibitor | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  const svgRef = useRef<SVGSVGElement | null>(null)
-  const transformRef = useRef<ReactZoomPanPinchRef | null>(null)
-
-  const [isMobile, setIsMobile] = useState<boolean>(
-    typeof window !== "undefined" && window.innerWidth < 768
-  )
+  function openBooth(booth: number) {
+    onBoothOpen?.(booth)
+    setActiveBooth(booth)
+    setDialogOpen(true)
+  }
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
+    const viewport = mapViewport.current
+    if (!viewport) return
+
+    const controller = new AbortController()
+    const { signal } = controller
+    let controlHeld = false
+    let forwardingPinch = false
+
+    const updateControl = (event: KeyboardEvent) => {
+      controlHeld = event.ctrlKey
+    }
+    window.addEventListener("keydown", updateControl, { capture: true, signal })
+    window.addEventListener("keyup", updateControl, { capture: true, signal })
+    window.addEventListener(
+      "blur",
+      () => {
+        controlHeld = false
+      },
+      { signal }
+    )
+
+    viewport.addEventListener(
+      "wheel",
+      event => {
+        if (!event.ctrlKey || controlHeld || forwardingPinch || !event.target)
+          return
+
+        // Browsers send trackpad pinches as Ctrl-modified wheel events. Forward
+        // a larger delta so the zoom library still handles anchoring and bounds.
+        event.preventDefault()
+        event.stopPropagation()
+        forwardingPinch = true
+        try {
+          event.target.dispatchEvent(
+            new WheelEvent("wheel", {
+              bubbles: true,
+              cancelable: true,
+              clientX: event.clientX,
+              clientY: event.clientY,
+              ctrlKey: event.ctrlKey,
+              shiftKey: event.shiftKey,
+              altKey: event.altKey,
+              metaKey: event.metaKey,
+              deltaMode: event.deltaMode,
+              deltaY: event.deltaY * TRACKPAD_ZOOM_MULTIPLIER
+            })
+          )
+        } finally {
+          forwardingPinch = false
+        }
+      },
+      { capture: true, passive: false, signal }
+    )
+
+    return () => controller.abort()
   }, [])
 
   useEffect(() => {
-    if (!selectedExhibitor?.fairLocation) return
-    const svg = svgRef.current
-    const api = transformRef.current
-    if (!svg || !api) return
-
-    const timeout = setTimeout(() => {
-      const booth = svg.querySelector<SVGGraphicsElement>(
-        `[id$="__${selectedExhibitor.fairLocation}"]`
-      )
-      if (!booth) return
-
-      api.zoomToElement(booth as unknown as HTMLElement, isMobile ? 4 : 3, 300)
-
-      // Highlight glow
-      const tier = (selectedExhibitor.tier || "").toLowerCase()
-      const colors = tierColors[tier] || tierColors.default
-      const highlightColor = colors.stroke
-
-      const glow = booth.cloneNode(true) as SVGGraphicsElement
-      glow.setAttribute("stroke", highlightColor)
-      glow.setAttribute("opacity", "1")
-      glow.style.pointerEvents = "none"
-      glow.style.filter = `drop-shadow(0 0 4px ${highlightColor}) drop-shadow(0 0 8px ${highlightColor})`
-      glow.classList.add("animate-pulse")
-      glow.style.animationDuration = "1.5s"
-
-      booth.parentNode?.appendChild(glow)
-      setTimeout(() => glow.remove(), 3000)
-    }, 350)
-
-    return () => clearTimeout(timeout)
-  }, [selectedExhibitor])
-
-  // Draw map + exhibitors
-  useEffect(() => {
-    const svg = svgRef.current
-    if (!svg) return
-
-    setIsLoading(true)
-    requestAnimationFrame(() => {
-      svg
-        .querySelectorAll("image[data-logo], text[data-initial]")
-        .forEach(el => el.remove())
-
-      const booths = svg.querySelectorAll<SVGElement>("[id*='__booth']")
-      booths.forEach(el => {
-        el.setAttribute("fill", HEX_COLORS.snow)
-        el.setAttribute("stroke", HEX_COLORS.boothStroke)
-        el.setAttribute("stroke-width", "1")
-        el.classList.add("cursor-pointer", "transition-all", "duration-200")
-      })
-
-      exhibitors.forEach(ex => {
-        if (!ex.fairLocation) return
-        const booth = svg.querySelector<SVGGraphicsElement>(
-          `[id$="__${ex.fairLocation}"]`
-        )
-        if (!booth) return
-
-        const tier = (ex.tier || "").toLowerCase()
-        const colors = tierColors[tier] || tierColors.default
-        booth.setAttribute("fill", colors.fill)
-        booth.setAttribute("stroke", colors.stroke)
-        booth.setAttribute("stroke-width", "1.2")
-
-        const bbox = booth.getBBox()
-        const boothTransform = booth.getAttribute("transform")
-        const cx = bbox.x + bbox.width / 2
-        const cy = bbox.y + bbox.height / 2
-
-        const logoSrc = ex.logoThumbnail ?? ex.logoFreesize
-        if (logoSrc) {
-          const logo = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "image"
-          )
-          const sizeFactor = 0.9
-          const width = bbox.width * sizeFactor
-          const height = bbox.height * sizeFactor
-          logo.setAttributeNS("http://www.w3.org/1999/xlink", "href", logoSrc)
-          logo.setAttribute("data-logo", "true")
-          logo.setAttribute("width", String(width))
-          logo.setAttribute("height", String(height))
-          logo.setAttribute("x", String(cx - width / 2))
-          logo.setAttribute("y", String(cy - height / 2))
-          logo.setAttribute("preserveAspectRatio", "xMidYMid meet")
-          logo.style.pointerEvents = "none"
-
-          logo.setAttribute("transform", boothTransform || "")
-
-          svg.appendChild(logo)
-        }
-      })
-
-      // delay a bit for smooth fade-out
-      setTimeout(() => setIsLoading(false), fadeOutDelay)
-    })
-  }, [exhibitors])
-
-  const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
-    const target = event.target as SVGElement
-    const rawId = target.id
-    if (!rawId) return
-    const boothId = rawId.replace(/^.*__/, "")
-    if (!boothId.startsWith("booth")) return
-    const exhibitor = exhibitors.find(e => e.fairLocation === boothId)
-    if (!exhibitor) return
-
-    setActiveExhibitor(exhibitor)
-    setModalOpen(true)
-    const api = transformRef.current
-    if (api) {
-      setTimeout(() => {
-        api.zoomToElement(
-          target as unknown as HTMLElement,
-          isMobile ? 4 : 3,
-          200
-        )
-      }, 100) // small delay for mobile gesture processing
-    }
-  }
+    if (!focus || !ready) return
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+    transform.current?.zoomToElement(
+      boothId(floor.floor, focus.booth),
+      window.innerWidth < 768 ? 4 : 2.5,
+      reduceMotion ? 0 : 400
+    )
+  }, [floor.floor, focus, ready])
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black">
+    <>
       <TransformWrapper
-        ref={transformRef}
-        initialScale={isMobile ? 1.8 : 1}
-        centerOnInit
+        ref={transform}
+        onInit={() => setReady(true)}
+        onPanningStart={() => {
+          panned.current = false
+        }}
+        onPanning={() => {
+          panned.current = true
+        }}
         minScale={1}
         maxScale={5}
-        limitToBounds
-        smooth>
-        <TransformComponent>
-          <MapComponent
-            ref={svgRef}
-            className="h-screen w-screen"
-            onClick={handleClick}
-          />
-        </TransformComponent>
+        wheel={{ step: 0.0025 }}
+        pinch={{ step: 3.5 }}
+        doubleClick={{ disabled: true }}>
+        {({ zoomIn, zoomOut, resetTransform }) => (
+          <>
+            <div
+              ref={mapViewport}
+              className="bg-fair-map-background relative min-h-48 w-full flex-1 overflow-hidden rounded-xl">
+              <TransformComponent
+                wrapperClass="size-full! touch-none"
+                contentClass="size-full!">
+                <svg
+                  aria-label={t("floor", { floor: floor.floor })}
+                  className="block size-full select-none"
+                  viewBox={floor.box.join(" ")}>
+                  <image
+                    href={`/fair-map/nymble-${floor.floor}.svg`}
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height}
+                    aria-hidden="true"
+                    pointerEvents="none"
+                  />
+                  {floor.markers.map(([booth, cx, cy]) => {
+                    const entries = markers.get(booth)
+                    if (!entries) return null
+
+                    const selected = focus?.booth === booth
+                    const id = boothId(floor.floor, booth)
+                    const rowHeight = BOOTH_HEIGHT / entries.length
+                    return (
+                      <g
+                        key={booth}
+                        id={id}
+                        data-selected={selected || undefined}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`${t("booth", { booth })}, ${entries.map(entry => entry.name).join(", ")}`}
+                        className="group cursor-pointer outline-none"
+                        onPointerDown={() => {
+                          panned.current = false
+                        }}
+                        onClick={() => {
+                          if (!panned.current) openBooth(booth)
+                        }}
+                        onKeyDown={event => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault()
+                            openBooth(booth)
+                          }
+                        }}>
+                        <title>
+                          {entries.map(entry => entry.name).join(" · ")}
+                        </title>
+                        {entries.length > 1 && (
+                          <clipPath id={`${id}-clip`}>
+                            <rect
+                              x={cx - 35}
+                              y={cy - BOOTH_HEIGHT / 2}
+                              width={70}
+                              height={BOOTH_HEIGHT}
+                              rx={8}
+                            />
+                          </clipPath>
+                        )}
+                        <g
+                          clipPath={
+                            entries.length > 1 ? `url(#${id}-clip)` : undefined
+                          }>
+                          {entries.map((entry, index) => {
+                            const top =
+                              cy - BOOTH_HEIGHT / 2 + rowHeight * index
+                            return (
+                              <g key={entry.id}>
+                                <rect
+                                  x={cx - 35}
+                                  y={top}
+                                  width={70}
+                                  height={rowHeight}
+                                  rx={entries.length === 1 ? 8 : undefined}
+                                  className={
+                                    exhibitorTierColors(entry.exhibitor?.tier)
+                                      .fill
+                                  }
+                                />
+                                <BoothLogo
+                                  entry={entry}
+                                  cx={cx}
+                                  cy={top + rowHeight / 2}
+                                  height={rowHeight - 8}
+                                />
+                              </g>
+                            )
+                          })}
+                        </g>
+                        <rect
+                          x={cx - 35}
+                          y={cy - BOOTH_HEIGHT / 2}
+                          width={70}
+                          height={BOOTH_HEIGHT}
+                          rx={8}
+                          pointerEvents="none"
+                          className={cn(
+                            "group-focus-visible:stroke-licorice fill-none",
+                            !suppressHover && "group-hover:stroke-licorice",
+                            selected
+                              ? "stroke-licorice stroke-4"
+                              : "stroke-licorice/25 stroke-2"
+                          )}
+                        />
+                      </g>
+                    )
+                  })}
+                  {focus && focusedMarker && (
+                    <BoothLabel
+                      name={focus.name}
+                      cx={focusedMarker[1]}
+                      cy={focusedMarker[2]}
+                      box={floor.box}
+                    />
+                  )}
+                </svg>
+              </TransformComponent>
+            </div>
+            <div className="flex shrink-0 justify-end gap-2">
+              <Button
+                type="button"
+                size="icon"
+                variant="neutral"
+                aria-label={t("zoomIn")}
+                onClick={() => zoomIn()}>
+                <Plus aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="neutral"
+                aria-label={t("zoomOut")}
+                onClick={() => zoomOut()}>
+                <Minus aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="neutral"
+                aria-label={t("resetZoom")}
+                onClick={() => resetTransform()}>
+                <RotateCcw aria-hidden="true" />
+              </Button>
+            </div>
+          </>
+        )}
       </TransformWrapper>
 
-      {isLoading && (
-        <div className="text-snow absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-xs transition-opacity duration-500">
-          <div className="flex flex-col items-center space-y-6">
-            {/* Spinner with logo inside */}
-            <div className="relative flex h-20 w-20 items-center justify-center">
-              {/* Logo */}
-              <Image
-                src="/armada_white.svg"
-                alt={staticT("fairLogo")}
-                width={50}
-                height={50}
-                priority
-                className="opacity-95 drop-shadow-[0_0_6px_rgba(255,255,255,0.4)] select-none"
-              />
-
-              {/* Rotating ring */}
-              <svg
-                className="absolute inset-0 h-full w-full"
-                viewBox="0 0 100 100"
-                xmlns="http://www.w3.org/2000/svg">
-                <g className="origin-center animate-[spin_1.5s_linear_infinite]">
-                  <path
-                    d="M50 5 a45 45 0 0 1 0 90 a45 45 0 0 1 0 -90"
-                    fill="none"
-                    stroke={HEX_COLORS.emeraldAccent}
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray="70 270"
-                  />
-                </g>
-              </svg>
-            </div>
-
-            {/* Loading text */}
-            <p className="mt-4 text-lg font-medium">
-              {uiText(locale, "loadingTheMap")}
-            </p>
-          </div>
+      <ExhibitorModal
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        exhibitor={single?.exhibitor}
+        title={
+          activeBooth !== null ? t("booth", { booth: activeBooth }) : undefined
+        }
+        description={activeExhibitors[0]?.room}>
+        <div className="space-y-4">
+          {activeBooth !== null && (
+            <h2 className="font-bebas-neue text-3xl">
+              {t("booth", { booth: activeBooth })} · {activeExhibitors[0]?.room}
+            </h2>
+          )}
+          <ul className="space-y-4">
+            {activeExhibitors.map(entry => (
+              <li key={entry.id} className="space-y-1">
+                {entry.day && (
+                  <p className="text-sm">{t("day", { day: entry.day })}</p>
+                )}
+                {entry.exhibitor ? (
+                  <Link
+                    href={`/student/exhibitors?id=${entry.exhibitor.id}`}
+                    className="font-semibold underline underline-offset-4">
+                    {entry.name}
+                  </Link>
+                ) : (
+                  <p className="font-semibold">{entry.name}</p>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
-      )}
-
-      <Modal
-        open={modalOpen}
-        setOpen={setModalOpen}
-        onClose={() => {
-          setModalOpen(false)
-          setActiveExhibitor(null)
-        }}
-        className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-silver" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice min-w-[80vw] p-0`}>
-        <div
-          className={` ${activeExhibitor && activeExhibitor.tier === "Gold" ? "bg-pineapple" : ""} ${activeExhibitor && activeExhibitor.tier === "Silver" ? "bg-silver" : ""} ${activeExhibitor && activeExhibitor.tier === "Bronze" ? "bg-bronze" : ""} border-licorice border-solid p-4 sm:p-10`}>
-          {activeExhibitor && <ExhibitorDetails exhibitor={activeExhibitor} />}
-        </div>
-      </Modal>
-    </div>
+      </ExhibitorModal>
+    </>
   )
 }

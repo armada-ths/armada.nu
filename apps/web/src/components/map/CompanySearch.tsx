@@ -1,10 +1,7 @@
 "use client"
-import { uiSections } from "@/i18n/ui"
 
-import { useLocale } from "@armada/shared/i18n/client"
-import { normalizeLocale } from "@armada/shared/i18n/routing"
-
-import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
+import { getTierRank } from "@/app/[locale]/student/exhibitors/_components/exhibitorSort"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -18,60 +15,94 @@ import {
   PopoverContent,
   PopoverTrigger
 } from "@/components/ui/popover"
-
 import { Search } from "lucide-react"
-
-import { useState } from "react"
-
-interface CompanySearchProps {
-  exhibitors: Exhibitor[]
-  onSelect: (exhibitor: Exhibitor) => void
-}
+import { useTranslations } from "next-intl"
+import { useMemo, useState } from "react"
+import type { MappedExhibitor } from "./maps"
 
 export default function CompanySearch({
   exhibitors,
+  open,
+  onOpenChange,
   onSelect
-}: CompanySearchProps) {
-  const locale = normalizeLocale(useLocale())
-  const labels = uiSections[locale].companySearchLabels
-  const [open, setOpen] = useState(false)
-
-  const handleSelect = (exhibitor: Exhibitor) => {
-    onSelect(exhibitor)
-    setOpen(false)
-  }
+}: {
+  exhibitors: MappedExhibitor[]
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onSelect: (exhibitor: MappedExhibitor) => void
+}) {
+  const t = useTranslations("FairMap")
+  const [query, setQuery] = useState("")
+  const orderedExhibitors = useMemo(
+    () =>
+      exhibitors.toSorted(
+        (a, b) =>
+          getTierRank(a.exhibitor?.tier) - getTierRank(b.exhibitor?.tier)
+      ),
+    [exhibitors]
+  )
 
   return (
-    <div className="absolute top-44 left-6 z-50 w-80">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <button className="bg-snow flex items-center justify-center rounded-lg border border-stone-800 p-2 hover:bg-stone-300">
-            <Search className="h-4 w-4 text-stone-800" />
-          </button>
-        </PopoverTrigger>
+    <Popover
+      open={open}
+      onOpenChange={nextOpen => {
+        setQuery("")
+        onOpenChange(nextOpen)
+      }}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="neutral"
+          type="button"
+          className={
+            open
+              ? "hover:shadow-shadow! transition-none hover:translate-none!"
+              : undefined
+          }>
+          <Search aria-hidden="true" />
+          {t("search")}
+        </Button>
+      </PopoverTrigger>
 
-        <PopoverContent
-          side="right"
-          align="start"
-          className="w-80 rounded-md border p-0 shadow-xl">
-          <Command className="bg-snow rounded-md">
-            <CommandInput
-              placeholder={labels.placeholder}
-              className="text-licorice"
-            />
-            <CommandList className="max-h-64 overflow-y-auto">
-              <CommandEmpty>{labels.empty}</CommandEmpty>
-              <CommandGroup heading={labels.heading}>
-                {exhibitors.map(ex => (
-                  <CommandItem key={ex.id} onSelect={() => handleSelect(ex)}>
-                    {ex.name}
+      <PopoverContent
+        align="end"
+        className="w-88 max-w-[calc(100vw-1.5rem)] bg-white p-0">
+        <Command label={t("search")} className="bg-white">
+          <CommandInput
+            placeholder={t("search")}
+            value={query}
+            onValueChange={setQuery}
+          />
+          <CommandList>
+            <CommandEmpty>{t("noResults")}</CommandEmpty>
+            {/* cmdk sorts matching DOM nodes in place. Remount the group when
+                clearing the query to restore the default tier order. */}
+            <CommandGroup key={query.trim() ? "matches" : "all"}>
+              {(query.trim() ? exhibitors : orderedExhibitors).map(
+                exhibitor => (
+                  <CommandItem
+                    key={exhibitor.id}
+                    value={exhibitor.id}
+                    keywords={[
+                      exhibitor.name,
+                      exhibitor.room,
+                      String(exhibitor.booth)
+                    ]}
+                    onSelect={() => {
+                      onSelect(exhibitor)
+                      setQuery("")
+                      onOpenChange(false)
+                    }}>
+                    <span>{exhibitor.name}</span>
+                    <span className="ml-auto shrink-0 text-xs">
+                      {t("booth", { booth: exhibitor.booth })}
+                    </span>
                   </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
+                )
+              )}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   )
 }

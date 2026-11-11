@@ -73,7 +73,7 @@ export default async function EventPage() {
   return (
     <Page.Background withIndents>
       <Page.Boundary className="items-center pb-20">
-        <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+        <div className="flex w-full flex-col items-center text-center">
           <Page.Header>{translations[locale].events}</Page.Header>
           <P className="mt-4 max-w-2xl">{dict.intro}</P>
           {orderedEvents.length > 0 ? (
