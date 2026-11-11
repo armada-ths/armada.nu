@@ -21,7 +21,14 @@ const post = {
   createdAt: "2026-10-13"
 }
 const dates = {
-  fair: { description: "Fair", days: ["2026-11-17"] },
+  fair: {
+    description: "Fair",
+    days: ["2026-11-17", "2026-11-18"],
+    openingHours: [
+      { opensAt: "11:15", closesAt: "17:00" },
+      { opensAt: "09:30", closesAt: "14:15" }
+    ]
+  },
   ir: { start: "2026-01-01", end: "2026-02-01", acceptance: "2026-03-01" },
   fr: { start: "2026-04-01", end: "2026-05-01" },
   events: { start: "2026-09-01" }

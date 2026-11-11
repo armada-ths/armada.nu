@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { createTranslator } from "next-intl"
-import { ITEMS } from "./catalogue"
+import { localizedText } from "@armada/shared/i18n/routing"
 import en from "../i18n/messages/en.json"
 import sv from "../i18n/messages/sv.json"
 function flat(value: object, prefix = ""): Record<string, string> {
@@ -13,10 +13,10 @@ function flat(value: object, prefix = ""): Record<string, string> {
   )
 }
 describe("order translations", () => {
-  it("covers every product ID while keeping catalog rules in the catalog", () => {
-    const ids = ITEMS.map(item => item.id).sort()
-    expect(Object.keys(en.Products).sort()).toEqual(ids)
-    expect(Object.keys(sv.Products).sort()).toEqual(ids)
+  it("uses per-field CMS translations with English fallback", () => {
+    expect(localizedText("sv", "Coffee", "Kaffe")).toBe("Kaffe")
+    expect(localizedText("sv", "Coffee", null)).toBe("Coffee")
+    expect(localizedText("en", "Coffee", "Kaffe")).toBe("Coffee")
   })
   it("has matching messages and valid placeholders", () => {
     expect(Object.keys(flat(en)).sort()).toEqual(Object.keys(flat(sv)).sort())

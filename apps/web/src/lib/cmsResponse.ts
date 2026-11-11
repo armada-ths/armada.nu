@@ -32,7 +32,18 @@ export const blogPostSchema = z.object({
 })
 
 export const fairDateSchema = z.object({
-  fair: z.object({ description: z.string(), days: z.array(z.string()) }),
+  fair: z.object({
+    description: z.string(),
+    days: z.array(z.string()),
+    openingHours: z
+      .array(
+        z.object({
+          opensAt: z.iso.time({ precision: -1 }),
+          closesAt: z.iso.time({ precision: -1 })
+        })
+      )
+      .optional()
+  }),
   ir: z.object({ start: z.string(), end: z.string(), acceptance: z.string() }),
   fr: z.object({ start: z.string(), end: z.string() }),
   events: z.object({ start: z.string() })

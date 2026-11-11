@@ -6,6 +6,7 @@ import {
   useCountdownAnimation
 } from "@/app/_components/CountdownTimer"
 import { NauticalCard } from "@/components/ui/nautical-card"
+import type { FairDate } from "@/components/shared/hooks/api/useDates"
 import { cn } from "@/lib/utils"
 import { DateTime } from "luxon"
 import { useMemo } from "react"
@@ -28,6 +29,7 @@ const defaultLabels: CountdownLabels = {
 
 interface CountdownProps {
   fairDays: string[]
+  openingHours?: FairDate["fair"]["openingHours"]
   centered?: boolean
   labels?: CountdownLabels
 }
@@ -47,6 +49,7 @@ export function Countdown(props: CountdownProps) {
 
 function FairCountdown({
   fairDays,
+  openingHours,
   centered,
   labels = defaultLabels
 }: CountdownProps) {
@@ -61,7 +64,16 @@ function FairCountdown({
   const endDt = DateTime.fromISO(fairDays[fairDays.length - 1], {
     zone: "Europe/Stockholm"
   }).setLocale(locale)
-  const fairHasEnded = now >= endDt.startOf("day").plus({ days: 1 })
+  const [openHour, openMinute] = (openingHours?.[0]?.opensAt ?? "10:00")
+    .split(":")
+    .map(Number)
+  const lastDayHours = openingHours?.[fairDays.length - 1]
+  const fairEnd = lastDayHours
+    ? DateTime.fromISO(`${endDt.toISODate()}T${lastDayHours.closesAt}`, {
+        zone: "Europe/Stockholm"
+      })
+    : endDt.startOf("day").plus({ days: 1 })
+  const fairHasEnded = now >= fairEnd
   const showYear = fairHasEnded || endDt.year !== now.year
 
   const dateLabel = `${startDt.toFormat("d")}–${endDt.toFormat(`d MMM${showYear ? " yyyy" : ""}`)}`
@@ -79,7 +91,10 @@ function FairCountdown({
 
       {!fairHasEnded && (
         <OpeningCountdown
-          targetTime={startDt.set({ hour: 10 }).toMillis()}
+          targetTime={startDt
+            .startOf("day")
+            .set({ hour: openHour, minute: openMinute })
+            .toMillis()}
           centered={centered}
           labels={labels}
         />
@@ -218,10 +233,19 @@ function Divider({ centered }: { centered?: boolean }) {
 
 // Countdown wrapped in the same nautical-card shell as HighlightCard,
 // used as sideContent in the hero when no highlight card is available.
-export function CountdownCard({ fairDays, labels }: CountdownProps) {
+export function CountdownCard({
+  fairDays,
+  openingHours,
+  labels
+}: CountdownProps) {
   return (
     <NauticalCard>
-      <Countdown fairDays={fairDays} labels={labels} centered />
+      <Countdown
+        fairDays={fairDays}
+        openingHours={openingHours}
+        labels={labels}
+        centered
+      />
     </NauticalCard>
   )
 }
