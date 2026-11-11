@@ -15,8 +15,11 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
+    container:
+      # Keep this version in sync with Playwright in pnpm-lock.yaml.
+      image: mcr.microsoft.com/playwright:v1.65.0-noble
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
@@ -27,7 +30,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec vitest run --project unit
       # Interaction tests must still run when Chromatic snapshot capacity is exhausted.
-      - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm exec vitest run --project storybook --maxWorkers=2
 
   lint:
