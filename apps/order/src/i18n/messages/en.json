@@ -52,7 +52,7 @@
   },
   "OrderErrors": {
     "access_required": "Please open the access link provided to your company.",
-    "orders_closed": "The order form is currently closed. Ordering is available during the fair’s opening hours.",
+    "orders_closed": "The order form is currently closed. Ordering is available during the lounge’s opening hours.",
     "invalid_order": "Please check your selected company and items.",
     "company_ineligible": "Your selected company is no longer eligible. Please select a Gold exhibitor.",
     "items_changed": "The menu has changed. Remove unavailable items or correct quantities before sending again.",
