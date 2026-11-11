@@ -71,8 +71,11 @@ export function OrderForm({
     null
   )
   const [storageReady, setStorageReady] = useState(false)
+  const restoredAttempt = useRef(false)
 
   useEffect(() => {
+    if (restoredAttempt.current) return
+    restoredAttempt.current = true
     try {
       const stored = window.sessionStorage.getItem(attemptStorageKey)
       if (stored) {
