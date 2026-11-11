@@ -300,15 +300,33 @@ function AppCamera({
 
   return (
     <div className="mt-3 space-y-3">
-      <video
-        ref={videoRef}
-        hidden={state === "error"}
-        autoPlay
-        playsInline
-        muted
-        aria-label={t("appCameraPreview")}
-        className="max-h-96 w-full rounded-xl bg-black object-contain"
-      />
+      <div className="relative min-h-16 rounded-xl bg-black">
+        <video
+          ref={videoRef}
+          hidden={state === "error"}
+          autoPlay
+          playsInline
+          muted
+          aria-label={t("appCameraPreview")}
+          className="max-h-96 w-full rounded-xl object-contain"
+        />
+        <button
+          type="button"
+          disabled={state === "starting" || state === "capturing"}
+          onClick={() => {
+            setCaptureFailed(false)
+            setState("starting")
+            setFacingMode(nextFacingMode)
+          }}
+          aria-label={t(
+            nextFacingMode === "user"
+              ? "appCameraSwitchFront"
+              : "appCameraSwitchRear"
+          )}
+          className="absolute right-3 bottom-3 grid size-11 place-items-center rounded-xl border border-white/70 bg-black/75 text-white disabled:opacity-60">
+          <SwitchCamera aria-hidden="true" size={22} />
+        </button>
+      </div>
       {state === "error" && (
         <p role="alert" className="text-red-700">
           {t("appCameraUnavailable")}
@@ -330,22 +348,6 @@ function AppCamera({
             {t("appCameraCapture")}
           </button>
         )}
-        <button
-          type="button"
-          disabled={state === "starting" || state === "capturing"}
-          onClick={() => {
-            setCaptureFailed(false)
-            setState("starting")
-            setFacingMode(nextFacingMode)
-          }}
-          aria-label={t(
-            nextFacingMode === "user"
-              ? "appCameraSwitchFront"
-              : "appCameraSwitchRear"
-          )}
-          className="grid size-11 place-items-center rounded-xl border disabled:opacity-60">
-          <SwitchCamera aria-hidden="true" size={22} />
-        </button>
         <button
           type="button"
           onClick={onClose}
