@@ -127,6 +127,8 @@
     "openCamera": "Öppna kameran",
     "appCameraOpen": "Använd appkameran",
     "appCameraClose": "Stäng kameran",
+    "appCameraSwitchFront": "Byt till främre kameran",
+    "appCameraSwitchRear": "Byt till bakre kameran",
     "appCameraPreview": "Kamerans förhandsvisning",
     "appCameraStarting": "Startar kameran…",
     "appCameraUnavailable": "Kameran är inte tillgänglig. Kontrollera webbläsarens behörigheter och försök igen.",

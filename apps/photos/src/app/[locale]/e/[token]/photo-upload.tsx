@@ -2,7 +2,7 @@
 import { Link } from "@armada/shared/i18n/navigation"
 import { useTranslations, useFormatter } from "next-intl"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { X } from "lucide-react"
+import { SwitchCamera, X } from "lucide-react"
 import type { EventInfo } from "./photo-types"
 import type { usePhotoUploads } from "./use-photo-uploads"
 
@@ -195,6 +195,10 @@ function AppCamera({
   const t = useTranslations("Photos")
   const videoRef = useRef<HTMLVideoElement>(null)
   const session = useRef<AbortController | null>(null)
+  const [facingMode, setFacingMode] = useState<"environment" | "user" | null>(
+    null
+  )
+  const nextFacingMode = facingMode === "user" ? "environment" : "user"
   const [state, setState] = useState<
     "starting" | "ready" | "capturing" | "error"
   >("starting")
@@ -230,7 +234,9 @@ function AppCamera({
         const result = await navigator.mediaDevices.getUserMedia({
           audio: false,
           video: {
-            facingMode: { ideal: "environment" },
+            facingMode: facingMode
+              ? { exact: facingMode }
+              : { ideal: "environment" },
             width: { ideal: 2560 },
             height: { ideal: 1440 }
           }
@@ -251,7 +257,7 @@ function AppCamera({
 
     void start()
     return stop
-  }, [onClose])
+  }, [facingMode, onClose])
 
   const [captureFailed, setCaptureFailed] = useState(false)
   const capture = () => {
@@ -314,7 +320,7 @@ function AppCamera({
         </p>
       )}
       {state === "starting" && <p role="status">{t("appCameraStarting")}</p>}
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         {state !== "error" && (
           <button
             type="button"
@@ -324,6 +330,22 @@ function AppCamera({
             {t("appCameraCapture")}
           </button>
         )}
+        <button
+          type="button"
+          disabled={state === "starting" || state === "capturing"}
+          onClick={() => {
+            setCaptureFailed(false)
+            setState("starting")
+            setFacingMode(nextFacingMode)
+          }}
+          aria-label={t(
+            nextFacingMode === "user"
+              ? "appCameraSwitchFront"
+              : "appCameraSwitchRear"
+          )}
+          className="grid size-11 place-items-center rounded-xl border disabled:opacity-60">
+          <SwitchCamera aria-hidden="true" size={22} />
+        </button>
         <button
           type="button"
           onClick={onClose}

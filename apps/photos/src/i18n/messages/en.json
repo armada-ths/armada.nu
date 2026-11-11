@@ -127,6 +127,8 @@
     "openCamera": "Open camera",
     "appCameraOpen": "Use in-app camera",
     "appCameraClose": "Close camera",
+    "appCameraSwitchFront": "Switch to front camera",
+    "appCameraSwitchRear": "Switch to rear camera",
     "appCameraPreview": "Live camera preview",
     "appCameraStarting": "Starting camera…",
     "appCameraUnavailable": "Camera access is unavailable. Check your browser permissions and try again.",

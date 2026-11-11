@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, fn, spyOn, userEvent, waitFor } from "storybook/test"
+import { expect, fn, mocked, spyOn, userEvent, waitFor } from "storybook/test"
 import { PhotoUpload } from "./photo-upload"
 import { usePhotoUploads } from "./use-photo-uploads"
 
@@ -68,16 +68,21 @@ export const AppCameraCapture: Story = {
     source.width = 320
     source.height = 240
     const context = source.getContext("2d")!
-    const stream = source.captureStream(10)
-    const track = stream.getVideoTracks()[0]
+    const streams: MediaStream[] = []
     const draw = window.setInterval(() => context.fillRect(0, 0, 320, 240), 100)
     const getUserMedia = spyOn(
       navigator.mediaDevices,
       "getUserMedia"
-    ).mockResolvedValue(stream)
+    ).mockImplementation(async () => {
+      const stream = source.captureStream(10)
+      streams.push(stream)
+      return stream
+    })
     return () => {
       window.clearInterval(draw)
-      track.stop()
+      streams.forEach(stream =>
+        stream.getTracks().forEach(track => track.stop())
+      )
       getUserMedia.mockRestore()
     }
   },
@@ -92,17 +97,37 @@ export const AppCameraCapture: Story = {
     const preview = canvas.getByLabelText<HTMLVideoElement>(
       "Kamerans förhandsvisning"
     )
-    const track = (
-      await waitFor(() => {
-        const stream = preview.srcObject as MediaStream | null
-        if (!stream) throw new Error("Camera preview has no stream")
-        return stream
-      })
-    ).getVideoTracks()[0]
     const capture = canvas.getByRole("button", { name: "Ta foto" })
-    await waitFor(() => expect(capture).toBeEnabled())
+    const getTrack = async () => {
+      await waitFor(() => expect(capture).toBeEnabled())
+      return (preview.srcObject as MediaStream).getVideoTracks()[0]
+    }
+    const getUserMedia = mocked(navigator.mediaDevices.getUserMedia)
+    const firstRearTrack = await getTrack()
+    await expect(getUserMedia).toHaveBeenLastCalledWith({
+      audio: false,
+      video: expect.objectContaining({ facingMode: { ideal: "environment" } })
+    })
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Byt till främre kameran" })
+    )
+    const frontTrack = await getTrack()
+    await expect(firstRearTrack.readyState).toBe("ended")
+    await expect(getUserMedia).toHaveBeenLastCalledWith({
+      audio: false,
+      video: expect.objectContaining({ facingMode: { exact: "user" } })
+    })
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Byt till bakre kameran" })
+    )
+    const rearTrack = await getTrack()
+    await expect(frontTrack.readyState).toBe("ended")
+    await expect(getUserMedia).toHaveBeenLastCalledWith({
+      audio: false,
+      video: expect.objectContaining({ facingMode: { exact: "environment" } })
+    })
     await userEvent.click(capture)
-    await waitFor(() => expect(track.readyState).toBe("ended"))
+    await waitFor(() => expect(rearTrack.readyState).toBe("ended"))
     await expect(
       canvas.getByRole("button", { name: "Ta ett till foto" })
     ).toBeEnabled()
