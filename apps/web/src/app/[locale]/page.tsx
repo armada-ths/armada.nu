@@ -188,6 +188,7 @@ export default async function HomePage() {
               ) : dates?.fair.days && dates.fair.days.length > 0 ? (
                 <CountdownCard
                   fairDays={dates.fair.days}
+                  openingHours={dates.fair.openingHours}
                   labels={pageDict.countdownLabels}
                 />
               ) : undefined
@@ -198,6 +199,7 @@ export default async function HomePage() {
               dates.fair.days.length > 0 ? (
                 <Countdown
                   fairDays={dates.fair.days}
+                  openingHours={dates.fair.openingHours}
                   labels={pageDict.countdownLabels}
                 />
               ) : undefined

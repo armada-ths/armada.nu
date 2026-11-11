@@ -8,6 +8,7 @@ export interface FairDate {
     description: string
     descriptionSv?: string | null
     days: string[]
+    openingHours?: { opensAt: string; closesAt: string }[]
   }
   ir: {
     start: string
