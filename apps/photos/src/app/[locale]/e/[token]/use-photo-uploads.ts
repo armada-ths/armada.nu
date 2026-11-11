@@ -151,7 +151,11 @@ export function usePhotoUploads({
   const onCameraPhoto = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0]
     event.currentTarget.value = ""
-    if (!file || !mobileDevice) return
+    if (file) stagePhoto(file)
+  }
+
+  const stagePhoto = (file: File) => {
+    if (!mobileDevice || !confirmed || !info?.uploads_open) return
     if (
       (file.type && !file.type.startsWith("image/")) ||
       file.size > 25 * 1024 * 1024
@@ -227,6 +231,7 @@ export function usePhotoUploads({
     cameraError,
     cameraInputRef,
     onCameraPhoto,
+    stagePhoto,
     removeStagedPhoto,
     uploadStagedPhotos,
     retryUpload

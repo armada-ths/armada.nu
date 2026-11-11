@@ -1,6 +1,7 @@
 "use client"
 import { Link } from "@armada/shared/i18n/navigation"
 import { useTranslations, useFormatter } from "next-intl"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { X } from "lucide-react"
 import type { EventInfo } from "./photo-types"
 import type { usePhotoUploads } from "./use-photo-uploads"
@@ -26,10 +27,15 @@ export function PhotoUpload({
     cameraError,
     cameraInputRef,
     onCameraPhoto,
+    stagePhoto,
     removeStagedPhoto,
     uploadStagedPhotos,
     retryUpload
   } = upload
+  const [appCameraOpen, setAppCameraOpen] = useState(false)
+  const closeAppCamera = useCallback(() => setAppCameraOpen(false), [])
+  const canTakePhoto =
+    confirmed && info.uploads_open && stagedPhotos.length < info.remaining
   return !mobileDevice ? (
     <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm">
       <h2 className="text-2xl font-bold">{text("uploadFromYourPhone")}</h2>
@@ -51,6 +57,7 @@ export function PhotoUpload({
           checked={confirmed}
           onChange={event => {
             setConfirmed(event.target.checked)
+            if (!event.target.checked) closeAppCamera()
           }}
           className="mt-1"
         />
@@ -78,14 +85,24 @@ export function PhotoUpload({
       <button
         type="button"
         className="mt-6 block w-full rounded-xl bg-[#172b35] p-4 text-center font-semibold text-white disabled:opacity-60"
-        disabled={
-          !confirmed ||
-          !info.uploads_open ||
-          stagedPhotos.length >= info.remaining
-        }
-        onClick={() => cameraInputRef.current?.click()}>
+        disabled={!canTakePhoto}
+        onClick={() => {
+          closeAppCamera()
+          cameraInputRef.current?.click()
+        }}>
         {stagedPhotos.length > 0 ? t("takeAnother") : t("openCamera")}
       </button>
+      {appCameraOpen && canTakePhoto ? (
+        <AppCamera onClose={closeAppCamera} onCapture={stagePhoto} />
+      ) : (
+        <button
+          type="button"
+          className="mt-3 w-full rounded-xl border px-4 py-2 font-semibold disabled:opacity-60"
+          disabled={!canTakePhoto}
+          onClick={() => setAppCameraOpen(true)}>
+          {t("appCameraOpen")}
+        </button>
+      )}
       {stagedPhotos.length > 0 && (
         <div className="mt-4">
           <p className="mb-3 font-semibold">
@@ -165,5 +182,155 @@ export function PhotoUpload({
         ))}
       </ul>
     </section>
+  )
+}
+
+function AppCamera({
+  onClose,
+  onCapture
+}: {
+  onClose: () => void
+  onCapture: (file: File) => void
+}) {
+  const t = useTranslations("Photos")
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const session = useRef<AbortController | null>(null)
+  const [state, setState] = useState<
+    "starting" | "ready" | "capturing" | "error"
+  >("starting")
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
+    session.current = controller
+    const video = videoRef.current
+    if (!video) return
+    let stream: MediaStream | undefined
+
+    const stop = () => {
+      controller.abort()
+      stream?.getTracks().forEach(track => track.stop())
+      video.srcObject = null
+    }
+    const fail = () => {
+      if (signal.aborted) return
+      stop()
+      setState("error")
+    }
+    const closeWhenHidden = () => {
+      if (document.visibilityState === "hidden") {
+        stop()
+        onClose()
+      }
+    }
+    document.addEventListener("visibilitychange", closeWhenHidden, { signal })
+
+    const start = async () => {
+      try {
+        const result = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: {
+            facingMode: { ideal: "environment" },
+            width: { ideal: 2560 },
+            height: { ideal: 1440 }
+          }
+        })
+        if (signal.aborted) {
+          result.getTracks().forEach(track => track.stop())
+          return
+        }
+        stream = result
+        stream.getVideoTracks()[0]?.addEventListener("ended", fail, { signal })
+        video.srcObject = stream
+        await video.play()
+        if (!signal.aborted) setState("ready")
+      } catch {
+        fail()
+      }
+    }
+
+    void start()
+    return stop
+  }, [onClose])
+
+  const [captureFailed, setCaptureFailed] = useState(false)
+  const capture = () => {
+    setCaptureFailed(false)
+    const video = videoRef.current
+    if (!video?.videoWidth || !video.videoHeight || video.readyState < 2) {
+      setCaptureFailed(true)
+      return
+    }
+    const activeSession = session.current
+    const canvas = document.createElement("canvas")
+    const scale = Math.min(
+      1,
+      2560 / Math.max(video.videoWidth, video.videoHeight)
+    )
+    canvas.width = Math.round(video.videoWidth * scale)
+    canvas.height = Math.round(video.videoHeight * scale)
+    const context = canvas.getContext("2d")
+    if (!context) {
+      setCaptureFailed(true)
+      return
+    }
+    context.drawImage(video, 0, 0, canvas.width, canvas.height)
+    setState("capturing")
+    canvas.toBlob(
+      blob => {
+        if (!activeSession || activeSession.signal.aborted) return
+        if (blob?.type !== "image/jpeg") {
+          setCaptureFailed(true)
+          setState("ready")
+          return
+        }
+        onCapture(new File([blob], "photo.jpg", { type: blob.type }))
+        onClose()
+      },
+      "image/jpeg",
+      0.9
+    )
+  }
+
+  return (
+    <div className="mt-3 space-y-3">
+      <video
+        ref={videoRef}
+        hidden={state === "error"}
+        autoPlay
+        playsInline
+        muted
+        aria-label={t("appCameraPreview")}
+        className="max-h-96 w-full rounded-xl bg-black object-contain"
+      />
+      {state === "error" && (
+        <p role="alert" className="text-red-700">
+          {t("appCameraUnavailable")}
+        </p>
+      )}
+      {captureFailed && state !== "error" && (
+        <p role="alert" className="text-red-700">
+          {t("appCameraCaptureFailed")}
+        </p>
+      )}
+      {state === "starting" && <p role="status">{t("appCameraStarting")}</p>}
+      <div className="flex gap-3">
+        {state !== "error" && (
+          <button
+            type="button"
+            disabled={state !== "ready"}
+            onClick={capture}
+            className="flex-1 rounded-xl bg-[#172b35] px-4 py-2 font-semibold text-white disabled:opacity-60">
+            {t("appCameraCapture")}
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-xl border px-4 py-2 font-semibold">
+          {t("appCameraClose")}
+        </button>
+      </div>
+    </div>
   )
 }

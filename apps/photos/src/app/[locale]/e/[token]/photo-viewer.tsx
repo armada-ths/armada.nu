@@ -1,5 +1,7 @@
 "use client"
 import { PhotoText } from "@photos/i18n/text"
+import { useState } from "react"
+import { Download } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { photoStorageURL } from "@photos/lib/photoClient"
 import { localApi } from "./photo-client"
@@ -24,6 +26,33 @@ export function PhotoViewer({
 }) {
   const photoStatic = useTranslations("PhotosStatic")
   const t = useTranslations("Photos")
+  const [downloading, setDownloading] = useState(false)
+  const [failedPhotoID, setFailedPhotoID] = useState<number | null>(null)
+  const imageURL = photoStorageURL(photo.url, localApi)
+
+  async function downloadPhoto() {
+    setDownloading(true)
+    setFailedPhotoID(null)
+    if (playing) onTogglePlaying()
+
+    try {
+      const response = await fetch(imageURL)
+      if (!response.ok) throw new Error("Photo download failed")
+      const objectURL = URL.createObjectURL(await response.blob())
+      const link = document.createElement("a")
+      link.href = objectURL
+      link.download = `armada-photo-${photo.id}.jpg`
+      document.body.append(link)
+      link.click()
+      link.remove()
+      // Give the browser time to begin reading the blob.
+      window.setTimeout(() => URL.revokeObjectURL(objectURL), 30_000)
+    } catch {
+      setFailedPhotoID(photo.id)
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   return (
     <div
@@ -59,7 +88,7 @@ export function PhotoViewer({
           ‹
         </button>
         <img
-          src={photoStorageURL(photo.url, localApi)}
+          src={imageURL}
           alt={t("photoNumber", { index: index + 1 })}
           className="max-h-full max-w-[85vw] min-w-0 object-contain"
         />
@@ -70,6 +99,21 @@ export function PhotoViewer({
           onClick={() => onMove(1)}>
           ›
         </button>
+      </div>
+      <div className="mt-3 text-center">
+        <button
+          type="button"
+          disabled={downloading}
+          onClick={() => void downloadPhoto()}
+          className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 font-semibold text-black disabled:opacity-60">
+          <Download aria-hidden="true" size={18} />
+          {downloading ? t("downloadingPhoto") : t("downloadPhoto")}
+        </button>
+        {failedPhotoID === photo.id && (
+          <p className="mt-2" role="alert">
+            {t("downloadPhotoFailed")}
+          </p>
+        )}
       </div>
       <p className="p-4 text-center">
         {t("photoPosition", { index: index + 1, total })}
