@@ -20,6 +20,7 @@
     "heading": "Order",
     "submittedHeading": "Order submitted!",
     "submittedBody": "We'll deliver your order as soon as possible.",
+    "pendingSubmission": "Send again to check whether your previous order was received. Your order is registered only once.",
     "orderReference": "Order reference: #{id}",
     "readMore": "Read more",
     "closeDetails": "Close",

@@ -17,6 +17,7 @@ import {
   useState
 } from "react"
 import { toast } from "sonner"
+import { orderInputSchema } from "@order/lib/orders"
 import type { LoungeItem, OrderData } from "@order/lib/catalogue"
 import type {
   OrderInput,
@@ -25,14 +26,19 @@ import type {
   OrderDataResult
 } from "@order/lib/orders"
 
+const attemptStorageKey = "armada-lounge-submission"
+const emptyOrderData: OrderData = { categories: [], items: [], exhibitors: [] }
+
 type OrderFormProps = {
-  data: OrderData
+  data?: OrderData
+  initialError?: OrderErrorCode
   refreshData: () => Promise<OrderDataResult>
   submitOrder: (input: OrderInput) => Promise<OrderResult>
 }
 
 export function OrderForm({
   data: initialData,
+  initialError,
   refreshData,
   submitOrder
 }: OrderFormProps) {
@@ -40,8 +46,10 @@ export function OrderForm({
   const locale = normalizeLocale(useLocale())
   const t = useTranslations("Order")
   const errors = useTranslations("OrderErrors")
-  const [data, setData] = useState(initialData)
-  const [refreshError, setRefreshError] = useState<OrderErrorCode>()
+  const [data, setData] = useState(initialData ?? emptyOrderData)
+  const [refreshError, setRefreshError] = useState<OrderErrorCode | undefined>(
+    initialError
+  )
   const [isRefreshing, setIsRefreshing] = useState(false)
   const refreshLock = useRef(false)
   const mounted = useRef(true)
@@ -58,10 +66,35 @@ export function OrderForm({
   )
   const [submitted, setSubmitted] = useDraftState("submitted", false)
   const [orderId, setOrderId] = useDraftState<number | null>("orderId", null)
-  const [attempt, setAttempt] = useDraftState<{
-    key: string
-    payload: string
-  } | null>("submissionAttempt", null)
+  const [attempt, setAttempt] = useDraftState<OrderInput | null>(
+    "submissionAttempt",
+    null
+  )
+  const [storageReady, setStorageReady] = useState(false)
+
+  useEffect(() => {
+    try {
+      const stored = window.sessionStorage.getItem(attemptStorageKey)
+      if (stored) {
+        const parsed = orderInputSchema.safeParse(JSON.parse(stored))
+        if (parsed.success) setAttempt(parsed.data)
+      }
+    } catch {
+      // The in-memory draft still supports retries if storage is unavailable.
+    }
+    setStorageReady(true)
+  }, [setAttempt])
+
+  function rememberAttempt(input: OrderInput | null) {
+    try {
+      if (input)
+        window.sessionStorage.setItem(attemptStorageKey, JSON.stringify(input))
+      else window.sessionStorage.removeItem(attemptStorageKey)
+    } catch {
+      // Keep the attempt in the locale provider for the current page session.
+    }
+    setAttempt(input)
+  }
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showValidation, setShowValidation] = useState(false)
   const companyInput = useRef<HTMLInputElement>(null)
@@ -125,7 +158,10 @@ export function OrderForm({
     return { id, quantity, item, invalid, current }
   })
   const invalidCart = lines.some(line => line.invalid)
-  const blocked = Boolean(refreshError) || isRefreshing || isSubmitting
+  const blocked =
+    !storageReady ||
+    isSubmitting ||
+    (!attempt && (Boolean(refreshError) || isRefreshing))
   const companyError = showValidation && !selectedCompany
   const cartError = showValidation && lines.length === 0
   const nameOf = (item: LoungeItem) =>
@@ -163,43 +199,45 @@ export function OrderForm({
 
   async function sendMessage() {
     if (submissionLock.current || blocked) return
-    if (!selectedCompany || lines.length === 0) {
-      setShowValidation(true)
-      if (!selectedCompany) companyInput.current?.focus()
-      return
-    }
-    if (invalidCart) {
-      toast.warning(<OrderErrorFeedback code="items_changed" />)
-      return
+    let input = attempt
+    if (!input) {
+      if (!selectedCompany || lines.length === 0) {
+        setShowValidation(true)
+        if (!selectedCompany) companyInput.current?.focus()
+        return
+      }
+      if (invalidCart) {
+        toast.warning(<OrderErrorFeedback code="items_changed" />)
+        return
+      }
+      input = {
+        exhibitorId: selectedCompany.id,
+        items: lines.map(({ id, quantity }) => ({ id, quantity })),
+        idempotencyKey: crypto.randomUUID()
+      }
     }
     submissionLock.current = true
     setIsSubmitting(true)
-    const payload = {
-      exhibitorId: selectedCompany.id,
-      items: lines.map(({ id, quantity }) => ({ id, quantity }))
-    }
-    const signature = JSON.stringify(payload)
-    const key =
-      attempt?.payload === signature ? attempt.key : crypto.randomUUID()
-    setAttempt({ key, payload: signature })
+    rememberAttempt(input)
     try {
-      const result = await submitOrder({
-        ...payload,
-        idempotencyKey: key
-      })
+      const result = await submitOrder(input)
       if (result.success) {
         toast.success(<OrderFeedback code="submittedToast" />)
         setSubmitted(true)
         setShowValidation(false)
         setOrderId(result.orderId ?? null)
-        setAttempt(null)
+        rememberAttempt(null)
         setCompany("")
         setExhibitorId(null)
         setCart({})
         setCartItems({})
       } else {
-        if (result.errorCode && result.errorCode !== "submission_failed")
-          setAttempt(null)
+        if (
+          result.errorCode &&
+          result.errorCode !== "submission_failed" &&
+          result.errorCode !== "access_required"
+        )
+          rememberAttempt(null)
         toast.error(
           <OrderErrorFeedback code={result.errorCode ?? "submission_failed"} />
         )
@@ -234,6 +272,37 @@ export function OrderForm({
             {t("newOrder")}
           </Button>
         </div>
+      </Page.Boundary>
+    )
+
+  if (attempt)
+    return (
+      <Page.Boundary maxWidth={750}>
+        <Page.Header>{t("heading")}</Page.Header>
+        <p className="mt-3" role="status">
+          {t("pendingSubmission")}
+        </p>
+        <Button className="mt-3" disabled={blocked} onClick={sendMessage}>
+          {isSubmitting ? t("sending") : t("send")}
+        </Button>
+      </Page.Boundary>
+    )
+
+  if (refreshError && data === emptyOrderData)
+    return (
+      <Page.Boundary maxWidth={750}>
+        <Page.Header>{t("heading")}</Page.Header>
+        <p className="mt-3" role="alert">
+          {errors(refreshError)}
+        </p>
+        {refreshError !== "orders_closed" && (
+          <Button
+            className="mt-3"
+            disabled={isRefreshing}
+            onClick={() => void reload()}>
+            {t("retry")}
+          </Button>
+        )}
       </Page.Boundary>
     )
 

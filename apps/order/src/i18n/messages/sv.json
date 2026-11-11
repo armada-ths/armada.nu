@@ -20,6 +20,7 @@
     "heading": "Beställning",
     "submittedHeading": "Beställningen är skickad!",
     "submittedBody": "Vi levererar er beställning så snart som möjligt.",
+    "pendingSubmission": "Skicka igen för att kontrollera om din tidigare beställning kom fram. Samma beställning registreras bara en gång.",
     "orderReference": "Beställningsnummer: #{id}",
     "readMore": "Läs mer",
     "closeDetails": "Stäng",

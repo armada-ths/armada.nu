@@ -34,6 +34,6 @@ export async function POST(request: Request) {
       { error: "Invalid delivery environment" },
       { status: 400 }
     )
-  const result = await deliverSavedOrder(parsed.data.orderId)
+  const result = await deliverSavedOrder(parsed.data.orderId, true)
   return Response.json(result, { status: result.success ? 200 : 502 })
 }

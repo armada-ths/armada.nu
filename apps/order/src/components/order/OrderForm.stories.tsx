@@ -48,7 +48,7 @@ const meta = {
   beforeEach: ({ args }) => {
     mocked(args.refreshData).mockResolvedValue({
       success: true,
-      data: args.data
+      data: args.data ?? data
     })
     mocked(args.submitOrder).mockResolvedValue({ success: true, orderId: 42 })
   },
@@ -188,10 +188,12 @@ export const KeyboardSelection: Story = {
 
 export const PersistenceFailure: Story = {
   beforeEach: ({ args }) => {
+    sessionStorage.removeItem("armada-lounge-submission")
     mocked(args.submitOrder).mockResolvedValue({
       success: false,
       errorCode: "submission_failed"
     })
+    return () => sessionStorage.removeItem("armada-lounge-submission")
   },
   args: {
     submitOrder: fn().mockResolvedValue({

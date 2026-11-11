@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 vi.mock("@order/env", () => ({
   env: { NEXT_PUBLIC_API_URL: "https://cms.example" }
 }))
-import { fetchOrderData } from "./cms"
+import { fetchOrderAvailability, fetchOrderData } from "./cms"
 const item = {
   id: 1,
   categoryId: 1,
@@ -15,6 +15,18 @@ const company = { id: 1, name: "Gold AB", tier: "Gold" }
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.restoreAllMocks()
+})
+it("uses the CMS ordering decision without caching", async () => {
+  const fetch = vi.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ open: false })
+  })
+  vi.stubGlobal("fetch", fetch)
+  expect(await fetchOrderAvailability()).toEqual({ open: false })
+  expect(fetch).toHaveBeenCalledWith(
+    "https://cms.example/api/v1/lounge-orders/availability",
+    expect.objectContaining({ cache: "no-store" })
+  )
 })
 describe("live CMS order data", () => {
   it("requests the full Gold list without caching and includes sold-out products", async () => {

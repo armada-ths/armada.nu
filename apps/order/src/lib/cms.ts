@@ -1,5 +1,4 @@
 import { env } from "@order/env"
-import type { FairDates } from "./orders"
 import { z } from "zod"
 import {
   exhibitorSchema,
@@ -37,10 +36,10 @@ async function fetchValidated<T>(
   }
 }
 
-export async function fetchDates(): Promise<FairDates | null> {
+export async function fetchOrderAvailability() {
   return fetchValidated(
-    "dates",
-    z.object({ fair: z.object({ days: z.array(z.string()).min(2) }) })
+    "lounge-orders/availability",
+    z.object({ open: z.boolean() })
   )
 }
 

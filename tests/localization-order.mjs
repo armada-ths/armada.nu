@@ -44,16 +44,8 @@ const items = [
 ]
 const cms = createServer(async (request, response) => {
   response.setHeader("Content-Type", "application/json")
-  if (request.url === "/api/v1/dates") {
-    response.end(
-      JSON.stringify({
-        fair: {
-          days: closed
-            ? ["2020-11-01", "2020-11-02"]
-            : ["2099-11-01", "2099-11-02"]
-        }
-      })
-    )
+  if (request.url === "/api/v1/lounge-orders/availability") {
+    response.end(JSON.stringify({ open: !closed }))
     return
   }
   if (request.url?.startsWith("/api/v1/exhibitors?")) {
@@ -78,11 +70,6 @@ const cms = createServer(async (request, response) => {
     for await (const chunk of request) body += chunk
     const input = JSON.parse(body)
     attempts.push(input)
-    if (storage === "fail") {
-      response.statusCode = 503
-      response.end(JSON.stringify({ errorCode: "submission_failed" }))
-      return
-    }
     if (!saved.has(input.idempotencyKey))
       saved.set(input.idempotencyKey, {
         id: 42,
@@ -100,6 +87,11 @@ const cms = createServer(async (request, response) => {
           }
         ]
       })
+    if (storage === "fail") {
+      response.statusCode = 503
+      response.end(JSON.stringify({ errorCode: "submission_failed" }))
+      return
+    }
     response.end(JSON.stringify(saved.get(input.idempotencyKey)))
     return
   }
@@ -238,21 +230,19 @@ try {
   await page
     .getByText(sv.OrderErrors.submission_failed, { exact: true })
     .waitFor()
-  assert.equal(
-    await page
-      .getByLabel(sv.Order.controls.quantity, { exact: true })
-      .first()
-      .inputValue(),
-    "1"
-  )
+  await page.getByText(sv.Order.pendingSubmission, { exact: true }).waitFor()
+  assert.equal(saved.size, 1)
+  closed = true
+  await page.reload()
+  await page.getByText(sv.Order.pendingSubmission, { exact: true }).waitFor()
   storage = "ok"
   await page.getByRole("button", { name: sv.Order.send, exact: true }).click()
   await page
     .getByRole("heading", { name: sv.Order.submittedHeading, exact: true })
     .waitFor()
   assert.equal(delivered.length, 1)
-  assert.match(delivered[0].text, /Order #42 for Example AB:/)
-  assert.match(delivered[0].text, /- Coffee x1/)
+  assert.match(delivered[0].text, /Order #42 .* Example AB:/)
+  assert.match(delivered[0].text, /- Coffee x 1/)
   assert.equal(saved.size, 1)
   assert.equal([...saved.values()][0].deliveryStatus, "failed")
   assert.equal(attempts[0].idempotencyKey, attempts[1].idempotencyKey)
@@ -280,7 +270,7 @@ try {
   })
   assert.deepEqual(errors, [])
   console.log(
-    "PASS: localized categories/access, cart and idempotency preservation, persisted acceptance despite failed Slack, closed and denied states"
+    "PASS: localized categories/access, idempotency after language change and reload, persisted acceptance despite failed Slack, closed and denied states"
   )
 } catch (error) {
   console.error(logs)

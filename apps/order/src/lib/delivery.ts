@@ -17,7 +17,7 @@ export const acceptedOrderSchema = z.object({
   id,
   companyName: text,
   isTest: z.boolean(),
-  status: z.enum(["pending", "completed", "cancelled"]),
+  status: z.enum(["pending", "completed"]),
   deliveryStatus: z.enum(["pending", "sending", "sent", "failed", "unknown"]),
   lines: z.array(lineSchema).min(1)
 })
@@ -176,10 +176,10 @@ async function sendSlack(
   }
 }
 
-export async function deliverSavedOrder(orderId: number) {
+export async function deliverSavedOrder(orderId: number, retry = false) {
   const claim = await cmsMutation(
     `lounge-orders/${orderId}/claim`,
-    {},
+    { retry },
     z.object({
       claimed: z.boolean(),
       claimToken: z.string().min(1).optional(),
