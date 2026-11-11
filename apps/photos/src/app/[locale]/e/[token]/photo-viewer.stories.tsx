@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, fn, userEvent } from "storybook/test"
+import { expect, fn, spyOn, userEvent, waitFor } from "storybook/test"
 import { PhotoViewer } from "./photo-viewer"
 const meta = {
   title: "Photos/PhotoViewer",
@@ -34,5 +34,36 @@ export const Open: Story = {
     await expect(args.onMove).toHaveBeenCalledWith(1)
     await userEvent.click(canvas.getByRole("button", { name: "Close" }))
     await expect(args.onClose).toHaveBeenCalled()
+  }
+}
+
+export const SwedishDownload: Story = {
+  globals: { locale: "sv" },
+  play: async ({ canvas, args }) => {
+    const fetchPhoto = spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(new Blob(["photo"], { type: "image/jpeg" }))
+    )
+    const startDownload = fn()
+    const clickLink = spyOn(
+      HTMLAnchorElement.prototype,
+      "click"
+    ).mockImplementation(function (this: HTMLAnchorElement) {
+      startDownload(this.download, this.protocol)
+    })
+    try {
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Ladda ner fotot" })
+      )
+      await waitFor(() =>
+        expect(startDownload).toHaveBeenCalledWith(
+          "armada-photo-1.jpg",
+          "blob:"
+        )
+      )
+      await expect(fetchPhoto).toHaveBeenCalledWith(args.photo.url)
+    } finally {
+      clickLink.mockRestore()
+      fetchPhoto.mockRestore()
+    }
   }
 }
