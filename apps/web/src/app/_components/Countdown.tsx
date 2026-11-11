@@ -1,5 +1,5 @@
 "use client"
-import { useLocale } from "next-intl"
+import { useLocale, useNow } from "next-intl"
 
 import {
   ConfettiBurst,
@@ -8,6 +8,7 @@ import {
 import { NauticalCard } from "@/components/ui/nautical-card"
 import { cn } from "@/lib/utils"
 import { DateTime } from "luxon"
+import { useMemo } from "react"
 
 type CountdownLabels = {
   days: string
@@ -38,13 +39,21 @@ type CountdownDisplayTime = {
   seconds: number
 }
 
-export function Countdown({
+export function Countdown(props: CountdownProps) {
+  if (props.fairDays.length === 0) return null
+
+  return <FairCountdown {...props} />
+}
+
+function FairCountdown({
   fairDays,
   centered,
   labels = defaultLabels
 }: CountdownProps) {
   const locale = useLocale()
-  if (fairDays.length === 0) return null
+  const now = DateTime.fromJSDate(useNow({ updateInterval: 1000 }), {
+    zone: "Europe/Stockholm"
+  })
 
   const startDt = DateTime.fromISO(fairDays[0], {
     zone: "Europe/Stockholm"
@@ -52,18 +61,14 @@ export function Countdown({
   const endDt = DateTime.fromISO(fairDays[fairDays.length - 1], {
     zone: "Europe/Stockholm"
   }).setLocale(locale)
-  const showYear = endDt.year !== DateTime.now().year
-  const targetDate = startDt.set({ hour: 10 }).toJSDate()
-
-  const { displayTime, animationStage } = useCountdownAnimation(targetDate)
+  const fairHasEnded = now >= endDt.startOf("day").plus({ days: 1 })
+  const showYear = fairHasEnded || endDt.year !== now.year
 
   const dateLabel = `${startDt.toFormat("d")}–${endDt.toFormat(`d MMM${showYear ? " yyyy" : ""}`)}`
 
   return (
     <div
       className={cn("relative overflow-visible", centered ? "w-full" : "mt-6")}>
-      {animationStage === "celebration" && <ConfettiBurst />}
-
       <p
         className={cn(
           "font-bebas-neue text-melon mb-1 text-center",
@@ -72,6 +77,32 @@ export function Countdown({
         {dateLabel} | Nymble, KTH
       </p>
 
+      {!fairHasEnded && (
+        <OpeningCountdown
+          targetTime={startDt.set({ hour: 10 }).toMillis()}
+          centered={centered}
+          labels={labels}
+        />
+      )}
+    </div>
+  )
+}
+
+function OpeningCountdown({
+  targetTime,
+  centered,
+  labels
+}: {
+  targetTime: number
+  centered?: boolean
+  labels: CountdownLabels
+}) {
+  const targetDate = useMemo(() => new Date(targetTime), [targetTime])
+  const { displayTime, animationStage } = useCountdownAnimation(targetDate)
+
+  return (
+    <>
+      {animationStage === "celebration" && <ConfettiBurst />}
       {animationStage === "celebration" ? (
         <div className="relative">
           <div aria-hidden className="invisible">
@@ -98,7 +129,7 @@ export function Countdown({
           labels={labels}
         />
       )}
-    </div>
+    </>
   )
 }
 

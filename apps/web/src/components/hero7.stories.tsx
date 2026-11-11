@@ -1,3 +1,4 @@
+import { Countdown } from "@/app/_components/Countdown"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import { expect } from "storybook/test"
@@ -122,5 +123,23 @@ export const ExhibitorsSwedish: Story = {
     await expect(
       canvas.queryByRole("link", { name: "Explore exhibitors" })
     ).not.toBeInTheDocument()
+  }
+}
+
+export const AfterTheFair: Story = {
+  globals: { viewport: { value: "desktop", isRotated: false } },
+  args: {
+    heading: en.pageTranslations.home.heroHeading,
+    description: en.pageTranslations.home.heroDescription,
+    buttons: {
+      primary: { text: "Join Armada", url: "/student/recruitment" }
+    },
+    bottomContent: <Countdown fairDays={["2025-11-18", "2025-11-19"]} />,
+    sideContent: <div />
+  },
+  play: async ({ canvas }) => {
+    const date = canvas.getByText("18–19 Nov 2025 | Nymble, KTH")
+    await expect(date).toBeVisible()
+    await expect(date.parentElement?.children).toHaveLength(1)
   }
 }
