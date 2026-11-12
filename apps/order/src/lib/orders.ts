@@ -33,6 +33,10 @@ export type OrderDataResult =
   | { success: true; data: OrderData }
   | { success: false; errorCode: OrderErrorCode }
 
+export function isManagedOrderToken(token: string | undefined) {
+  return /^lo_[0-9a-f]{64}$/.test(token ?? "")
+}
+
 export function hasOrderAccess(
   cookie: string | undefined,
   secret: string | undefined

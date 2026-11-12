@@ -38,6 +38,18 @@ describe("localized order access", () => {
     )
     expect(response.headers.get("location")).toBe("https://order.armada.nu/sv")
   })
+  it("strips a managed link token and passes it to server-side validation in an HTTP-only cookie", () => {
+    const token = "lo_" + "a".repeat(64)
+    const response = proxy(
+      new NextRequest(`https://order.armada.nu/en?access=${token}`)
+    )
+    expect(response.headers.get("location")).toBe("https://order.armada.nu/en")
+    expect(response.cookies.get("_ea")).toMatchObject({
+      value: token,
+      httpOnly: true,
+      secure: true
+    })
+  })
   it("never grants access for an invalid token", () => {
     vi.stubEnv("EXPO_ACCESS_TOKEN", "secret")
     const response = proxy(

@@ -8,6 +8,7 @@ const acceptedOrderSchema = z.object({
 })
 const cmsErrorSchema = z.object({
   errorCode: z.enum([
+    "access_required",
     "orders_closed",
     "invalid_order",
     "company_ineligible",
@@ -16,7 +17,10 @@ const cmsErrorSchema = z.object({
   ])
 })
 
-export async function saveOrder(input: OrderInput): Promise<OrderResult> {
+export async function saveOrder(
+  input: OrderInput,
+  token: string
+): Promise<OrderResult> {
   const isTest = process.env.VERCEL_ENV !== "production"
   const secret = isTest
     ? env.LOUNGE_ORDER_TEST_SUBMISSION_SECRET
@@ -32,7 +36,8 @@ export async function saveOrder(input: OrderInput): Promise<OrderResult> {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${secret}`
+          Authorization: `Bearer ${secret}`,
+          "X-Lounge-Access": token
         },
         body: JSON.stringify(input),
         redirect: "error",
