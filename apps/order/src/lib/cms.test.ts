@@ -17,15 +17,22 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 it("uses the CMS ordering decision without caching", async () => {
+  const token = "lo_" + "a".repeat(64)
   const fetch = vi.fn().mockResolvedValue({
     ok: true,
-    json: async () => ({ open: false })
+    json: async () => ({ open: false, accessGranted: true })
   })
   vi.stubGlobal("fetch", fetch)
-  expect(await fetchOrderAvailability()).toEqual({ open: false })
+  expect(await fetchOrderAvailability(token)).toEqual({
+    open: false,
+    accessGranted: true
+  })
   expect(fetch).toHaveBeenCalledWith(
     "https://cms.example/api/v1/lounge-orders/availability",
-    expect.objectContaining({ cache: "no-store" })
+    expect.objectContaining({
+      cache: "no-store",
+      headers: { "X-Lounge-Access": token }
+    })
   )
 })
 describe("live CMS order data", () => {

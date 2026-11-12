@@ -1,24 +1,23 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { describe, expect, it } from "vitest"
 import { NextRequest } from "next/server"
 import { proxy, config } from "../proxy"
 import { unstable_doesMiddlewareMatch } from "next/experimental/testing/server"
 
-afterEach(() => vi.unstubAllEnvs())
+const token = "lo_" + "a".repeat(64)
 describe("localized order access", () => {
   it.each(["en", "sv"])(
     "strips the access token on /%s and keeps other query values",
     locale => {
-      vi.stubEnv("EXPO_ACCESS_TOKEN", "secret")
       const response = proxy(
         new NextRequest(
-          "https://order.armada.nu/" + locale + "?access=secret&view=cart"
+          "https://order.armada.nu/" + locale + `?access=${token}&view=cart`
         )
       )
       expect(response.headers.get("location")).toBe(
         "https://order.armada.nu/" + locale + "?view=cart"
       )
       expect(response.cookies.get("_ea")).toMatchObject({
-        value: "secret",
+        value: token,
         httpOnly: true,
         secure: true,
         sameSite: "lax",
@@ -30,16 +29,14 @@ describe("localized order access", () => {
     }
   )
   it("negotiates a regional browser language before completing access", () => {
-    vi.stubEnv("EXPO_ACCESS_TOKEN", "secret")
     const response = proxy(
-      new NextRequest("https://order.armada.nu/?access=secret", {
+      new NextRequest(`https://order.armada.nu/?access=${token}`, {
         headers: { "accept-language": "sv-SE" }
       })
     )
     expect(response.headers.get("location")).toBe("https://order.armada.nu/sv")
   })
   it("strips a managed link token and passes it to server-side validation in an HTTP-only cookie", () => {
-    const token = "lo_" + "a".repeat(64)
     const response = proxy(
       new NextRequest(`https://order.armada.nu/en?access=${token}`)
     )
@@ -51,9 +48,8 @@ describe("localized order access", () => {
     })
   })
   it("never grants access for an invalid token", () => {
-    vi.stubEnv("EXPO_ACCESS_TOKEN", "secret")
     const response = proxy(
-      new NextRequest("https://order.armada.nu/sv?access=wrong")
+      new NextRequest("https://order.armada.nu/sv?access=old-expo-token")
     )
     expect(response.cookies.get("_ea")).toBeUndefined()
     expect(response.headers.get("location")).toBe("https://order.armada.nu/sv")

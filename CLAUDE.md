@@ -13,7 +13,7 @@ Also check:
 - This repo owns the Web, Photos and Order Next.js apps; backend/admin changes belong in `../ArmadaCMS` as well.
 - Use `pnpm` only, with Node 24.x.
 - When the validation policy above warrants it, validate with `pnpm lint`, `pnpm type-check`, and `pnpm build`; for UI or story work also run `pnpm test` and the relevant Storybook check when practical.
-- Add application env vars to the owning app's `src/env.ts`; preserve and document framework/tooling variables and the Order proxy's `EXPO_ACCESS_TOKEN` entry-point exception.
+- Add application env vars to the owning app's `src/env.ts`; preserve and document framework/tooling variables.
 - Reuse `packages/shared/src/Page.tsx` for full-page layout structure.
 - Preserve ISR/revalidation by keeping API hook cache tags in sync.
 - Update `apps/web/src/app/sitemap.ts` when public routes change.

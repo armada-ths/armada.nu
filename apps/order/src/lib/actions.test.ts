@@ -1,10 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 const state = vi.hoisted(() => ({
-  cookie: "secret",
+  cookie: "lo_" + "a".repeat(64),
   env: {
     NEXT_PUBLIC_API_URL: "https://cms.example",
-    EXPO_ACCESS_TOKEN: "secret",
     LOUNGE_ORDER_SUBMISSION_SECRET: "live-service",
     LOUNGE_ORDER_TEST_SUBMISSION_SECRET: "test-service"
   }
@@ -25,13 +24,17 @@ const jsonResponse = (data: unknown, status = 200) =>
 
 describe("persistent order submission", () => {
   beforeEach(() => {
-    state.cookie = "secret"
+    state.cookie = "lo_" + "a".repeat(64)
     state.env.LOUNGE_ORDER_TEST_SUBMISSION_SECRET = "test-service"
     vi.stubEnv("VERCEL_ENV", "preview")
     vi.spyOn(console, "error").mockImplementation(() => {})
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => jsonResponse(order, 201))
+      vi.fn(async (url: string) =>
+        url.endsWith("/availability")
+          ? jsonResponse({ open: true, accessGranted: true })
+          : jsonResponse(order, 201)
+      )
     )
   })
   afterEach(() => {
@@ -40,8 +43,12 @@ describe("persistent order submission", () => {
     vi.restoreAllMocks()
   })
   it("rejects direct submissions without access", async () => {
-    state.cookie = "wrong"
+    state.cookie = "old-expo-token"
     expect(await sendOrder(input)).toEqual({
+      success: false,
+      errorCode: "access_required"
+    })
+    expect(await refreshOrderData()).toEqual({
       success: false,
       errorCode: "access_required"
     })
@@ -50,7 +57,7 @@ describe("persistent order submission", () => {
   it("rejects a rotated link on refresh and direct submission", async () => {
     state.cookie = "lo_" + "a".repeat(64)
     vi.mocked(fetch).mockImplementation(async () =>
-      jsonResponse({ open: true, managedLink: true, accessGranted: false })
+      jsonResponse({ open: true, accessGranted: false })
     )
     const denied = { success: false, errorCode: "access_required" }
     expect(await refreshOrderData()).toEqual(denied)
@@ -61,10 +68,22 @@ describe("persistent order submission", () => {
       expect.objectContaining({ headers: { "X-Lounge-Access": state.cookie } })
     )
   })
+  it("requires an explicit access decision from CMS", async () => {
+    vi.mocked(fetch).mockImplementation(async () =>
+      jsonResponse({ open: true })
+    )
+    const unavailable = {
+      success: false,
+      errorCode: "availability_unavailable"
+    }
+    expect(await refreshOrderData()).toEqual(unavailable)
+    expect(await sendOrder(input)).toEqual(unavailable)
+    expect(fetch).toHaveBeenCalledTimes(2)
+  })
   it("submits with a CMS-approved order link", async () => {
     state.cookie = "lo_" + "b".repeat(64)
     vi.mocked(fetch).mockResolvedValueOnce(
-      jsonResponse({ open: true, managedLink: true, accessGranted: true })
+      jsonResponse({ open: true, accessGranted: true })
     )
     expect(await sendOrder(input)).toEqual({ success: true, orderId: 42 })
     expect(fetch).toHaveBeenLastCalledWith(
@@ -74,10 +93,12 @@ describe("persistent order submission", () => {
       })
     )
   })
-  it("surfaces CMS revocation of a legacy session at submission", async () => {
-    vi.mocked(fetch).mockResolvedValueOnce(
-      jsonResponse({ errorCode: "access_required" }, 401)
-    )
+  it("surfaces CMS revocation between access verification and submission", async () => {
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(jsonResponse({ open: true, accessGranted: true }))
+      .mockResolvedValueOnce(
+        jsonResponse({ errorCode: "access_required" }, 401)
+      )
     expect(await sendOrder(input)).toEqual({
       success: false,
       errorCode: "access_required"
@@ -92,12 +113,12 @@ describe("persistent order submission", () => {
   })
   it("submits once to CMS using server-only test credentials", async () => {
     expect(await sendOrder(input)).toEqual({ success: true, orderId: 42 })
-    expect(fetch).toHaveBeenCalledExactlyOnceWith(
+    expect(fetch).toHaveBeenLastCalledWith(
       "https://cms.example/api/v1/lounge-orders/submit",
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: "Bearer test-service",
-          "X-Lounge-Access": "secret"
+          "X-Lounge-Access": state.cookie
         }),
         body: JSON.stringify(input)
       })
@@ -105,11 +126,11 @@ describe("persistent order submission", () => {
   })
   it("uses live credentials in production", async () => {
     vi.stubEnv("VERCEL_ENV", "production")
-    vi.mocked(fetch).mockResolvedValueOnce(
-      jsonResponse({ ...order, isTest: false })
-    )
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(jsonResponse({ open: true, accessGranted: true }))
+      .mockResolvedValueOnce(jsonResponse({ ...order, isTest: false }))
     expect(await sendOrder(input)).toEqual({ success: true, orderId: 42 })
-    expect(vi.mocked(fetch).mock.calls[0][1]?.headers).toMatchObject({
+    expect(vi.mocked(fetch).mock.lastCall?.[1]?.headers).toMatchObject({
       Authorization: "Bearer live-service"
     })
   })
@@ -119,31 +140,35 @@ describe("persistent order submission", () => {
     "company_ineligible",
     "availability_unavailable"
   ])("surfaces CMS validation %s without sending Slack", async errorCode => {
-    vi.mocked(fetch).mockResolvedValueOnce(jsonResponse({ errorCode }, 400))
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(jsonResponse({ open: true, accessGranted: true }))
+      .mockResolvedValueOnce(jsonResponse({ errorCode }, 400))
     expect(await sendOrder(input)).toEqual({ success: false, errorCode })
-    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledTimes(2)
   })
   it("fails if persistence is unavailable and never sends Slack", async () => {
-    vi.mocked(fetch).mockRejectedValueOnce(new Error("offline"))
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(jsonResponse({ open: true, accessGranted: true }))
+      .mockRejectedValueOnce(new Error("offline"))
     expect(await sendOrder(input)).toEqual({
       success: false,
       errorCode: "submission_failed"
     })
-    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledTimes(2)
   })
   it("does not fall back to production CMS credentials", async () => {
     state.env.LOUNGE_ORDER_TEST_SUBMISSION_SECRET = ""
     expect((await sendOrder(input)).success).toBe(false)
-    expect(fetch).not.toHaveBeenCalled()
+    expect(fetch).toHaveBeenCalledTimes(1)
   })
   it("rejects a saved order from a mismatched environment", async () => {
-    vi.mocked(fetch).mockResolvedValueOnce(
-      jsonResponse({ ...order, isTest: false })
-    )
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(jsonResponse({ open: true, accessGranted: true }))
+      .mockResolvedValueOnce(jsonResponse({ ...order, isTest: false }))
     expect(await sendOrder(input)).toEqual({
       success: false,
       errorCode: "submission_failed"
     })
-    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledTimes(2)
   })
 })

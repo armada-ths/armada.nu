@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { localeProxy } from "@armada/shared/i18n/proxy"
-import { hasOrderAccess, isManagedOrderToken } from "./lib/orders"
+import { isManagedOrderToken } from "./lib/orders"
 
 export function proxy(request: NextRequest) {
   const localized = localeProxy(request)
@@ -12,10 +12,7 @@ export function proxy(request: NextRequest) {
   for (const cookie of localized.cookies.getAll()) response.cookies.set(cookie)
   response.headers.set("Referrer-Policy", "no-referrer")
   response.headers.set("Cache-Control", "no-store")
-  if (
-    hasOrderAccess(token, process.env.EXPO_ACCESS_TOKEN) ||
-    isManagedOrderToken(token)
-  ) {
+  if (isManagedOrderToken(token)) {
     response.cookies.set("_ea", token, {
       httpOnly: true,
       secure: url.protocol === "https:",

@@ -39,15 +39,14 @@ async function fetchValidated<T>(
   }
 }
 
-export async function fetchOrderAvailability(token?: string) {
+export async function fetchOrderAvailability(token: string) {
   return fetchValidated(
     "lounge-orders/availability",
     z.object({
       open: z.boolean(),
-      managedLink: z.boolean().optional(),
-      accessGranted: z.boolean().optional()
+      accessGranted: z.boolean()
     }),
-    token ? { "X-Lounge-Access": token } : undefined
+    { "X-Lounge-Access": token }
   )
 }
 
