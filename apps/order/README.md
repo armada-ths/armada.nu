@@ -6,9 +6,9 @@ The form refreshes the catalogue while visible and when the page regains focus. 
 
 ## Local development
 
-Copy [`.env.example`](.env.example) to `.env.local` and set `NEXT_PUBLIC_API_URL`, `EXPO_ACCESS_TOKEN`, and `LOUNGE_ORDER_TEST_SUBMISSION_SECRET`. Match the submission secret to the CMS test credential. Local and preview orders are test orders. Production uses the separate `LOUNGE_ORDER_SUBMISSION_SECRET`.
+Copy [`.env.example`](.env.example) to `.env.local` and set `NEXT_PUBLIC_API_URL` and `LOUNGE_ORDER_TEST_SUBMISSION_SECRET`. Match the submission secret to the CMS test credential. Local and preview orders are test orders. Production uses the separate `LOUNGE_ORDER_SUBMISSION_SECRET`.
 
-From the repository root, run `pnpm dev:order` and open `http://localhost:8002/?access=<EXPO_ACCESS_TOKEN>` with your local token. The CMS environment needs a catalogue, an eligible exhibitor, and an open ordering window to accept a new order.
+From the repository root, run `pnpm dev:order` and open the current link from **Lounge orders** in the local CMS. The CMS environment needs a catalogue, an eligible exhibitor, and an open ordering window to accept a new order.
 
 ## Tests
 

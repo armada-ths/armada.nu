@@ -32,8 +32,6 @@ locals {
     web_revalidation_secret                                       = { app = "web", key = "REVALIDATION_SECRET", target = ["production", "preview"], sensitive = true }
     photos_captcha_production                                     = { app = "photos", key = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY", target = ["production"], sensitive = false }
     photos_captcha_preview                                        = { app = "photos", key = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY", target = ["preview"], sensitive = false }
-    order_token_production                                        = { app = "order", key = "EXPO_ACCESS_TOKEN", target = ["production"], sensitive = true }
-    order_token_preview                                           = { app = "order", key = "EXPO_ACCESS_TOKEN", target = ["preview"], sensitive = true }
     order_submission_production                                   = { app = "order", key = "LOUNGE_ORDER_SUBMISSION_SECRET", target = ["production"], sensitive = true }
     order_submission_preview                                      = { app = "order", key = "LOUNGE_ORDER_TEST_SUBMISSION_SECRET", target = ["preview"], sensitive = true }
   }

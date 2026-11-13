@@ -58,7 +58,7 @@ The site uses **ISR + on-demand revalidation** to keep content fresh without ful
 
 ## Conventions
 
-- **Env vars:** application env vars should be registered in the owning app's `src/env.ts`. `EXPO_ACCESS_TOKEN` is read by the Order app and its proxy; framework/tooling variables such as `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` also stay outside the helper. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
+- **Env vars:** application env vars should be registered in the owning app's `src/env.ts`. Framework/tooling variables such as `FLAGS_SECRET`, `ENABLE_EXPERIMENTAL_COREPACK`, and `CHROMATIC_PROJECT_TOKEN` also stay outside the helper. `NEXT_PUBLIC_*` is client-safe; everything else stays server-only.
 - **Routing/layout:** routes live under `apps/web/src/app/`. Prefer colocated route-specific components in `_components/`; shared UI belongs in `apps/web/src/components/ui/` or `apps/web/src/components/shared/`.
 - **Shared layout primitives:** use `Page.Boundary`, `Page.Header`, and `Page.Background` from `@armada/shared/Page` for consistent page structure.
 - **Data fetching:** API hooks in `apps/web/src/components/shared/hooks/api/` follow a dual-export pattern: `fetch*()` for server components and `use*()` for client components. Each hook sets `next: { revalidate: 86400, tags: ["<tag>"] }` for ISR and on-demand revalidation (see _Cache revalidation_ above). Hooks accept an `options?: RequestInit` parameter that allows callers to merge or override `next` settings.

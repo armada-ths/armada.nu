@@ -1,10 +1,9 @@
 "use server"
 import { cookies } from "next/headers"
-import { env } from "@order/env"
 import { fetchOrderAvailability, fetchOrderData } from "@order/lib/cms"
 import { saveOrder } from "@order/lib/submission"
 import {
-  hasOrderAccess,
+  isManagedOrderToken,
   orderInputSchema,
   type OrderInput,
   type OrderResult,
@@ -12,17 +11,15 @@ import {
 } from "@order/lib/orders"
 
 export async function refreshOrderData(): Promise<OrderDataResult> {
-  if (
-    !hasOrderAccess((await cookies()).get("_ea")?.value, env.EXPO_ACCESS_TOKEN)
-  ) {
-    return {
-      success: false,
-      errorCode: "access_required"
-    }
-  }
-  const availability = await fetchOrderAvailability()
+  const token = (await cookies()).get("_ea")?.value
+  if (!isManagedOrderToken(token))
+    return { success: false, errorCode: "access_required" }
+
+  const availability = await fetchOrderAvailability(token)
   if (!availability)
     return { success: false, errorCode: "availability_unavailable" }
+  if (!availability.accessGranted)
+    return { success: false, errorCode: "access_required" }
   if (!availability.open)
     return {
       success: false,
@@ -35,11 +32,18 @@ export async function refreshOrderData(): Promise<OrderDataResult> {
 }
 
 export async function sendOrder(input: OrderInput): Promise<OrderResult> {
-  if (
-    !hasOrderAccess((await cookies()).get("_ea")?.value, env.EXPO_ACCESS_TOKEN)
-  )
+  const token = (await cookies()).get("_ea")?.value
+  if (!isManagedOrderToken(token))
     return { success: false, errorCode: "access_required" }
+
   const parsed = orderInputSchema.safeParse(input)
   if (!parsed.success) return { success: false, errorCode: "invalid_order" }
-  return saveOrder(parsed.data)
+
+  const availability = await fetchOrderAvailability(token)
+  if (!availability)
+    return { success: false, errorCode: "availability_unavailable" }
+  if (!availability.accessGranted)
+    return { success: false, errorCode: "access_required" }
+
+  return saveOrder(parsed.data, token)
 }

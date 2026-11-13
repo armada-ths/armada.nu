@@ -21,6 +21,7 @@ const sv = JSON.parse(
     "utf8"
   )
 )
+const accessToken = "lo_" + "a".repeat(64)
 let storage = "fail",
   closed = false,
   app,
@@ -44,7 +45,12 @@ const items = [
 const cms = createServer(async (request, response) => {
   response.setHeader("Content-Type", "application/json")
   if (request.url === "/api/v1/lounge-orders/availability") {
-    response.end(JSON.stringify({ open: !closed }))
+    response.end(
+      JSON.stringify({
+        open: !closed,
+        accessGranted: request.headers["x-lounge-access"] === accessToken
+      })
+    )
     return
   }
   if (request.url?.startsWith("/api/v1/exhibitors?")) {
@@ -65,6 +71,7 @@ const cms = createServer(async (request, response) => {
   }
   if (request.url === "/api/v1/lounge-orders/submit") {
     assert.equal(request.headers.authorization, "Bearer fixture-test-service")
+    assert.equal(request.headers["x-lounge-access"], accessToken)
     let body = ""
     for await (const chunk of request) body += chunk
     const input = JSON.parse(body)
@@ -116,7 +123,6 @@ try {
       env: {
         ...process.env,
         NEXT_PUBLIC_API_URL: "http://127.0.0.1:19080",
-        EXPO_ACCESS_TOKEN: "local-order-fixture",
         LOUNGE_ORDER_TEST_SUBMISSION_SECRET: "fixture-test-service",
         VERCEL_ENV: "preview",
         NEXT_TELEMETRY_DISABLED: "1"
@@ -144,7 +150,7 @@ try {
   const page = await context.newPage(),
     errors = []
   page.on("pageerror", error => errors.push(error.message))
-  await page.goto(origin + "/sv?access=local-order-fixture&source=test#cart")
+  await page.goto(origin + `/sv?access=${accessToken}&source=test#cart`)
   assert.equal(new URL(page.url()).pathname, "/sv")
   assert.equal(new URL(page.url()).search, "?source=test")
   assert.equal(new URL(page.url()).hash, "#cart")

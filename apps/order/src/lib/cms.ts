@@ -9,11 +9,14 @@ import {
 
 async function fetchValidated<T>(
   path: string,
-  schema: z.ZodType<T>
+  schema: z.ZodType<T>,
+  headers?: HeadersInit
 ): Promise<T | null> {
   try {
     const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/v1/${path}`, {
       cache: "no-store",
+      headers,
+      redirect: headers ? "error" : "follow",
       signal: AbortSignal.timeout(10000)
     })
     if (!response.ok) {
@@ -36,10 +39,14 @@ async function fetchValidated<T>(
   }
 }
 
-export async function fetchOrderAvailability() {
+export async function fetchOrderAvailability(token: string) {
   return fetchValidated(
     "lounge-orders/availability",
-    z.object({ open: z.boolean() })
+    z.object({
+      open: z.boolean(),
+      accessGranted: z.boolean()
+    }),
+    { "X-Lounge-Access": token }
   )
 }
 

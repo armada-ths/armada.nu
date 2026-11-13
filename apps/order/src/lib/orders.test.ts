@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest"
-import { hasOrderAccess } from "./orders"
+import { isManagedOrderToken } from "./orders"
 
-describe("order access", () => {
-  it("fails closed when the secret or cookie is missing", () => {
-    expect(hasOrderAccess(undefined, undefined)).toBe(false)
-    expect(hasOrderAccess("", "")).toBe(false)
-    expect(hasOrderAccess("wrong", "secret")).toBe(false)
-    expect(hasOrderAccess("secret", "secret")).toBe(true)
+describe("order link token format", () => {
+  it("requires a CMS-generated token", () => {
+    expect(isManagedOrderToken(undefined)).toBe(false)
+    expect(isManagedOrderToken("")).toBe(false)
+    expect(isManagedOrderToken("old-expo-token")).toBe(false)
+    expect(isManagedOrderToken("lo_" + "a".repeat(64))).toBe(true)
   })
 })
