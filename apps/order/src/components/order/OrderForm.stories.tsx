@@ -133,6 +133,7 @@ export const MissingCompanyAndCart: Story = {
     const send = canvas.getByRole("button", { name: "Send" })
     await expect(company).toBeRequired()
     await expect(canvas.getByText("(required)")).toBeVisible()
+    await waitFor(() => expect(send).toBeEnabled())
     await userEvent.click(send)
     await expect(company).toHaveFocus()
     await expect(company).toHaveAttribute("aria-invalid", "true")
@@ -164,6 +165,7 @@ export const SwedishMissingCompanyAndCart: Story = {
   play: async ({ canvas, args }) => {
     const send = canvas.getByRole("button", { name: "Skicka" })
     await expect(canvas.getByText("(obligatoriskt)")).toBeVisible()
+    await waitFor(() => expect(send).toBeEnabled())
     send.focus()
     await userEvent.keyboard("{Enter}")
     await expect(canvas.getByText("Välj en guldutställare.")).toBeVisible()
@@ -336,12 +338,12 @@ export const CartRows: Story = {
     }
   },
   play: async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getAllByRole("button", { name: "Increase" })[0]
-    )
-    await userEvent.click(
-      canvas.getAllByRole("button", { name: "Increase" })[1]
-    )
+    const [increaseCoffee, increaseBun] = canvas.getAllByRole("button", {
+      name: "Increase"
+    })
+    await waitFor(() => expect(increaseCoffee).toBeEnabled())
+    await userEvent.click(increaseCoffee)
+    await userEvent.click(increaseBun)
     const cart = within(canvas.getByRole("region", { name: "Cart:" }))
     const removeCoffee = cart.getByRole("button", { name: "Remove Coffee" })
     const removeBun = cart.getByRole("button", { name: "Remove Cinnamon bun" })
@@ -370,7 +372,9 @@ export const CartRows: Story = {
 export const SwedishCart: Story = {
   globals: { locale: "sv" },
   play: async ({ canvas }) => {
-    await userEvent.click(canvas.getAllByRole("button", { name: "Öka" })[0])
+    const [increaseCoffee] = canvas.getAllByRole("button", { name: "Öka" })
+    await waitFor(() => expect(increaseCoffee).toBeEnabled())
+    await userEvent.click(increaseCoffee)
     const cart = within(canvas.getByRole("region", { name: "Varukorg:" }))
     await userEvent.click(cart.getByRole("button", { name: "Ta bort Kaffe" }))
     await expect(cart.getByText("(tom)")).toBeVisible()
@@ -429,8 +433,10 @@ export const EqualSizedCategories: Story = {
           cards[0].getBoundingClientRect().top
       )
     }
-    const details = canvas.getAllByRole("button", { name: "Read more" })
-    await userEvent.click(details[details.length - 1])
+    const fruit = within(cards[cards.length - 1] as HTMLElement)
+    await userEvent.click(
+      await fruit.findByRole("button", { name: "Read more" })
+    )
     await expect(canvas.getByRole("dialog")).toBeVisible()
     await userEvent.keyboard("{Escape}")
     await waitFor(() =>
@@ -446,8 +452,8 @@ export const SwedishCategories: Story = {
     const cards = [...canvasElement.querySelectorAll('[data-slot="card"]')]
     for (const card of cards)
       await expect(card.getBoundingClientRect().height).toBe(128)
-    const details = canvas.getAllByRole("button", { name: "Läs mer" })
-    await userEvent.click(details[details.length - 1])
+    const fruit = within(cards[cards.length - 1] as HTMLElement)
+    await userEvent.click(await fruit.findByRole("button", { name: "Läs mer" }))
     await expect(canvas.getByRole("dialog")).toBeVisible()
     await userEvent.click(canvas.getByRole("button", { name: "Stäng" }))
   }

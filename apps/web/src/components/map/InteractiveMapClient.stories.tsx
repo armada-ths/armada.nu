@@ -95,7 +95,9 @@ export const LinkedExhibitor: Story = {
       canvas.getByRole("button", { name: /Booth 101, Orica/ }).focus()
       await userEvent.keyboard("{Enter}")
       const dialog = await within(document.body).findByRole("dialog")
-      await expect(within(dialog).getByText("Orica Sweden AB")).toBeVisible()
+      await waitFor(() =>
+        expect(within(dialog).getByText("Orica Sweden AB")).toBeVisible()
+      )
       await expect(label).not.toBeInTheDocument()
       await expect(new URLSearchParams(window.location.search).has("id")).toBe(
         false

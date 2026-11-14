@@ -64,7 +64,7 @@ export const ThumbnailOnly: Story = {
   },
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole("img", { name: "Northstar Engineering logo" })
+      await canvas.findByRole("img", { name: "Northstar Engineering logo" })
     ).toHaveAttribute("src", expect.stringContaining("armada_licorice.svg"))
   }
 }
@@ -75,7 +75,7 @@ export const Default: Story = {
       canvas.getByRole("heading", { name: "Gold Exhibitors", level: 2 })
     ).toBeInTheDocument()
     await expect(
-      canvas.getByRole("link", { name: "Northstar Engineering" })
+      await canvas.findByRole("link", { name: "Northstar Engineering" })
     ).toHaveAttribute("href", "https://example.com/engineering")
     await expect(
       canvas.getByRole("heading", { name: "Northstar Engineering", level: 3 })
@@ -104,7 +104,9 @@ export const LongDescription: Story = {
     ]
   },
   play: async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Read more" }))
+    await userEvent.click(
+      await canvas.findByRole("button", { name: "Read more" })
+    )
     await expect(
       canvas.getByText(
         "Explore careers in engineering, design and sustainable technology. "
@@ -127,7 +129,7 @@ export const WithoutLogoOrWebsite: Story = {
   },
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole("heading", { name: "Northstar Engineering" })
+      await canvas.findByRole("heading", { name: "Northstar Engineering" })
     ).toBeInTheDocument()
     await expect(canvas.queryByRole("img")).not.toBeInTheDocument()
     await expect(canvas.queryByRole("link")).not.toBeInTheDocument()
@@ -143,10 +145,10 @@ export const IndependentExpansion: Story = {
     }))
   },
   play: async ({ canvas, canvasElement }) => {
+    const buttons = await canvas.findAllByRole("button", { name: "Read more" })
     const cards =
       canvasElement.querySelectorAll<HTMLElement>('[data-slot="card"]')
     const secondHeight = cards[1].getBoundingClientRect().height
-    const buttons = canvas.getAllByRole("button", { name: "Read more" })
     await expect(buttons[1]).toHaveAttribute("aria-expanded", "false")
     await userEvent.click(buttons[0])
     await expect(buttons[0]).toHaveAttribute("aria-expanded", "true")
@@ -366,7 +368,7 @@ export const RotationControlPlacement: Story = {
 
 export const HoverReflectsPlayback: Story = {
   play: async ({ canvas, canvasElement }) => {
-    const carousel = canvas.getByRole("region")
+    const carousel = await canvas.findByRole("region")
     await userEvent.hover(carousel)
     await expect(
       await canvas.findByRole("button", { name: "Play slideshow" })
@@ -461,7 +463,7 @@ export const TouchSwipePausesAutoplay: Story = {
       changedTouches: [end]
     })
     await expect(
-      canvas.getByRole("button", { name: "Play slideshow" })
+      await canvas.findByRole("button", { name: "Play slideshow" })
     ).toBeEnabled()
     const secondSlide = canvas.getByRole("button", { name: "Go to slide 2" })
     await waitFor(
@@ -542,7 +544,7 @@ export const Swedish: Story = {
       canvas.getByRole("heading", { name: "Guldutställare" })
     ).toBeVisible()
     await expect(
-      canvas.getByRole("heading", { name: "Northstar Engineering" })
+      await canvas.findByRole("heading", { name: "Northstar Engineering" })
     ).toBeVisible()
     await expect(
       canvas.getByText("Träffa våra ingenjörer och utforska hållbar teknik.")
