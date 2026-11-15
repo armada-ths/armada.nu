@@ -74,7 +74,8 @@ export default async function ExhibitorPackagesPage() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto flex flex-col items-center justify-center py-6 text-center">
+                {/* Bronze price */}
+                <div className="mt-auto flex flex-col items-center justify-center pt-6 pb-1 text-center">
                   <p className="font-lato text-licorice text-[17px] font-semibold">
                     {dict.standardRegistrationPrice}
                   </p>
@@ -105,7 +106,8 @@ export default async function ExhibitorPackagesPage() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto flex flex-col items-center justify-center py-6 text-center">
+                {/* Silver price */}
+                <div className="mt-auto flex flex-col items-center justify-center pt-6 pb-1 text-center">
                   <p className="font-lato text-licorice text-[17px] font-semibold">
                     {dict.standardRegistrationPrice}
                   </p>
@@ -145,7 +147,8 @@ export default async function ExhibitorPackagesPage() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto flex flex-col items-center justify-center py-6 text-center">
+                {/* Gold price */}
+                <div className="mt-auto flex flex-col items-center justify-center pt-6 pb-1 text-center">
                   <p className="font-lato text-licorice text-[17px] font-semibold">
                     {dict.standardRegistrationPrice}
                   </p>

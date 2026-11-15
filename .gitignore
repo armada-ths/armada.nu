@@ -61,3 +61,6 @@ storybook-static
 **/node_modules/
 **/.next/
 **/out/
+
+# Playwright MCP logs
+.playwright-mcp/
