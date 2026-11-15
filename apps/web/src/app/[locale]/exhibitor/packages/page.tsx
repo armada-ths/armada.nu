@@ -1,7 +1,3 @@
-import { pageMetadata } from "@/i18n/metadata"
-import { getFormatter } from "next-intl/server"
-import { localeAlternates } from "@/i18n/metadata"
-import { LocalizedText } from "@/i18n/text"
 import { StatusModuleItem } from "@/app/[locale]/exhibitor/_components/StatusModuleItem"
 import { ComingSoonPage } from "@/components/shared/ComingSoonPage"
 import { Page } from "@/components/shared/Page"
@@ -14,13 +10,14 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-
-import { getRequestLocale } from "@/lib/i18n-server"
-import { Metadata } from "next"
-import { Link } from "@armada/shared/i18n/navigation"
-
 import { packagesPageTranslations } from "@/i18n/dictionaries"
+import { localeAlternates, pageMetadata } from "@/i18n/metadata"
+import { LocalizedText } from "@/i18n/text"
+import { getRequestLocale } from "@/lib/i18n-server"
+import { Link } from "@armada/shared/i18n/navigation"
+import { Check } from "lucide-react"
+import { Metadata } from "next"
+import { getFormatter } from "next-intl/server"
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale()
@@ -44,6 +41,9 @@ export default async function ExhibitorPackagesPage() {
   }
   const signupUrl = await getSignupUrl()
 
+  // Index of "One event of your choosing" in goldItems (after dict reordering to match Figma)
+  const goldEventIndex = 7
+
   return (
     <Page.Background withIndents>
       <Page.Boundary className="pb-20">
@@ -58,108 +58,109 @@ export default async function ExhibitorPackagesPage() {
         </div>
         <div className="mt-10 flex flex-col">
           <div className="mt-2 flex flex-col-reverse justify-stretch gap-10 md:flex-row">
-            <Card className="bg-bronze relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
-              <h3 className="font-lato text-2xl">
-                <LocalizedText id="bronze" />
-              </h3>
-              <ul className="font-lato mt-2">
-                {dict.bronzeItems.map((item, index) => (
-                  <li
-                    className={index < 3 ? "my-2 font-extrabold" : "my-2"}
-                    key={item}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="absolute bottom-4">
-                {/* <p className="text-sm font-bold">
-                  Priority registration price:
-                </p>
-                <p className="font-bold">45 000 SEK</p> */}
-                <p className="text-sm font-bold">
-                  {dict.standardRegistrationPrice}
-                </p>
-                <p className="font-bold">
-                  {format.number(48000, {
-                    style: "currency",
-                    currency: "SEK",
-                    maximumFractionDigits: 0
-                  })}
-                </p>
+            {/* Bronze */}
+            <div className="flex min-w-48 flex-1 flex-col">
+              <div className="shadow-shadow rounded-base border-licorice bg-bronze flex items-center justify-center border-2 px-4 py-4">
+                <span className="font-bebas-neue text-licorice text-[32px] leading-none">
+                  <LocalizedText id="bronze" />
+                </span>
               </div>
-              {/* 							<p className="absolute bottom-4">46 000 SEK*</p> */}
-            </Card>
-            <Card className="bg-silver relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
-              <h3 className="font-lato text-2xl">
-                <LocalizedText id="silver" />
-              </h3>
-              <ul className="font-lato mt-2">
-                {dict.silverItems.map((item, index) => (
-                  <li
-                    className={index < 7 ? "my-2 font-extrabold" : "my-2"}
-                    key={item}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="absolute bottom-4">
-                {/* <p className="text-sm font-bold">
-                  Priority registration price:
-                </p>
-                <p className="font-bold">69 000 SEK</p> */}
-                <p className="text-sm font-bold">
-                  {dict.standardRegistrationPrice}
-                </p>
-                <p className="font-bold">
-                  {format.number(78000, {
-                    style: "currency",
-                    currency: "SEK",
-                    maximumFractionDigits: 0
-                  })}
-                </p>
+              <div className="shadow-shadow rounded-base border-licorice bg-snow mt-2 flex flex-1 flex-col border-2 px-[18px] py-6">
+                <ul className="flex flex-col gap-[10px]">
+                  {dict.bronzeItems.map(item => (
+                    <li key={item} className="flex items-start gap-3">
+                      <Check className="text-licorice mt-0.5 size-4 shrink-0" />
+                      <span className="font-lato text-sm">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto flex flex-col items-center justify-center py-6 text-center">
+                  <p className="font-lato text-licorice text-[17px] font-semibold">
+                    {dict.standardRegistrationPrice}
+                  </p>
+                  <p className="font-lato text-licorice text-xl font-bold">
+                    {format.number(48000, {
+                      style: "currency",
+                      currency: "SEK",
+                      maximumFractionDigits: 0
+                    })}
+                  </p>
+                </div>
               </div>
-              {/* 							<p className="absolute bottom-4">71 500 SEK*</p> */}
-            </Card>
-            <Card className="bg-pineapple relative flex min-w-48 flex-1 flex-col rounded-lg p-5 pb-32">
-              <h3 className="font-lato text-licorice text-2xl">
-                <LocalizedText id="gold" />
-              </h3>
-              <ul className="font-lato text-licorice mt-2">
-                {dict.goldItems.slice(0, 6).map(item => (
-                  <li className="my-2 font-extrabold" key={item}>
-                    {item}
-                  </li>
-                ))}
-                <li className="my-2 ml-4 text-sm">{dict.goldEventDetails}</li>
-                {dict.goldItems.slice(6).map((item, index) => (
-                  <li
-                    className={index < 3 ? "my-2 font-extrabold" : "my-2"}
-                    key={item}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="absolute bottom-4">
-                {/* <p className="text-sm font-bold">
-                  Priority registration price:
-                </p>
-                <p className="font-bold">105 000 SEK</p> */}
-                <p className="text-sm font-bold">
-                  {dict.standardRegistrationPrice}
-                </p>
-                <p className="font-bold">
-                  {format.number(120000, {
-                    style: "currency",
-                    currency: "SEK",
-                    maximumFractionDigits: 0
-                  })}
-                </p>
+            </div>
+
+            {/* Silver */}
+            <div className="flex min-w-48 flex-1 flex-col">
+              <div className="shadow-shadow rounded-base border-licorice bg-silver flex items-center justify-center border-2 px-4 py-4">
+                <span className="font-bebas-neue text-licorice text-[32px] leading-none">
+                  <LocalizedText id="silver" />
+                </span>
               </div>
-              {/* 							<p className="absolute bottom-4">108 500 SEK*</p> */}
-            </Card>
+              <div className="shadow-shadow rounded-base border-licorice bg-snow mt-2 flex flex-1 flex-col border-2 px-[18px] py-6">
+                <ul className="flex flex-col gap-[10px]">
+                  {dict.silverItems.map(item => (
+                    <li key={item} className="flex items-start gap-3">
+                      <Check className="text-licorice mt-0.5 size-4 shrink-0" />
+                      <span className="font-lato text-sm">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto flex flex-col items-center justify-center py-6 text-center">
+                  <p className="font-lato text-licorice text-[17px] font-semibold">
+                    {dict.standardRegistrationPrice}
+                  </p>
+                  <p className="font-lato text-licorice text-xl font-bold">
+                    {format.number(78000, {
+                      style: "currency",
+                      currency: "SEK",
+                      maximumFractionDigits: 0
+                    })}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Gold */}
+            <div className="flex min-w-48 flex-1 flex-col">
+              <div className="shadow-shadow rounded-base border-licorice bg-pineapple flex items-center justify-center border-2 px-4 py-4">
+                <span className="font-bebas-neue text-licorice text-[32px] leading-none">
+                  <LocalizedText id="gold" />
+                </span>
+              </div>
+              <div className="shadow-shadow rounded-base border-licorice bg-snow mt-2 flex flex-1 flex-col border-2 px-[18px] py-6">
+                <ul className="flex flex-col gap-[10px]">
+                  {dict.goldItems.map((item, index) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <Check className="text-licorice mt-0.5 size-4 shrink-0" />
+                      {index === goldEventIndex ? (
+                        <div>
+                          <span className="font-lato text-sm">{item}:</span>
+                          <p className="font-lato text-sm">
+                            {dict.goldEventDetails}
+                          </p>
+                        </div>
+                      ) : (
+                        <span className="font-lato text-sm">{item}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto flex flex-col items-center justify-center py-6 text-center">
+                  <p className="font-lato text-licorice text-[17px] font-semibold">
+                    {dict.standardRegistrationPrice}
+                  </p>
+                  <p className="font-lato text-licorice text-xl font-bold">
+                    {format.number(120000, {
+                      style: "currency",
+                      currency: "SEK",
+                      maximumFractionDigits: 0
+                    })}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        {/* <p className="mt-4 text-sm">*All prices are ex. VAT. </p> */}
         <div className="mt-12">
           <Page.Header tier="secondary">{dict.customKitHeading}</Page.Header>
           <p className="mt-2">{dict.customKitIntro}</p>
