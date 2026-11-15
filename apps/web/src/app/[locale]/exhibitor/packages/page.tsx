@@ -4,6 +4,10 @@ import { Page } from "@/components/shared/Page"
 import { TrackedLink } from "@/components/shared/TrackedLink"
 import { feature, getSignupUrl } from "@/components/shared/feature"
 import {
+  fetchDates,
+  getExhibitorSignupPhase
+} from "@/components/shared/hooks/api/useDates"
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -18,6 +22,21 @@ import { Link } from "@armada/shared/i18n/navigation"
 import { Check } from "lucide-react"
 import { Metadata } from "next"
 import { getFormatter } from "next-intl/server"
+
+function BoldText({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/)
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") ? (
+          <strong key={i}>{part.slice(2, -2)}</strong>
+        ) : (
+          part
+        )
+      )}
+    </>
+  )
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale()
@@ -41,8 +60,17 @@ export default async function ExhibitorPackagesPage() {
   }
   const signupUrl = await getSignupUrl()
 
-  // Index of "One event of your choosing" in goldItems (after dict reordering to match Figma)
-  const goldEventIndex = 7
+  // Index of "One event of your choosing" in goldItems
+  const goldEventIndex = 8
+
+  let showPriorityPrice = false
+  try {
+    const dates = await fetchDates()
+    const phase = getExhibitorSignupPhase(dates)
+    showPriorityPrice = phase === "before-ir" || phase === "ir-open"
+  } catch {
+    // Fall back to showing only the standard price
+  }
 
   return (
     <Page.Background withIndents>
@@ -70,16 +98,34 @@ export default async function ExhibitorPackagesPage() {
                   {dict.bronzeItems.map(item => (
                     <li key={item} className="flex items-start gap-3">
                       <Check className="text-licorice mt-0.5 size-4 shrink-0" />
-                      <span className="font-lato text-sm">{item}</span>
+                      <span className="font-lato text-sm">
+                        <BoldText text={item} />
+                      </span>
                     </li>
                   ))}
                 </ul>
                 {/* Bronze price */}
                 <div className="mt-auto flex flex-col items-center justify-center pt-6 pb-1 text-center">
-                  <p className="font-lato text-licorice text-[17px] font-semibold">
+                  {showPriorityPrice && (
+                    <>
+                      <p className="font-lato text-licorice text-[17px] font-semibold">
+                        {dict.priorityRegistrationPrice}
+                      </p>
+                      <p className="font-lato text-licorice text-xl font-bold">
+                        {format.number(45000, {
+                          style: "currency",
+                          currency: "SEK",
+                          maximumFractionDigits: 0
+                        })}
+                      </p>
+                    </>
+                  )}
+                  <p
+                    className={`font-lato text-licorice font-semibold ${showPriorityPrice ? "mt-3 text-sm" : "text-[17px]"}`}>
                     {dict.standardRegistrationPrice}
                   </p>
-                  <p className="font-lato text-licorice text-xl font-bold">
+                  <p
+                    className={`font-lato text-licorice font-bold ${showPriorityPrice ? "text-base" : "text-xl"}`}>
                     {format.number(48000, {
                       style: "currency",
                       currency: "SEK",
@@ -102,16 +148,34 @@ export default async function ExhibitorPackagesPage() {
                   {dict.silverItems.map(item => (
                     <li key={item} className="flex items-start gap-3">
                       <Check className="text-licorice mt-0.5 size-4 shrink-0" />
-                      <span className="font-lato text-sm">{item}</span>
+                      <span className="font-lato text-sm">
+                        <BoldText text={item} />
+                      </span>
                     </li>
                   ))}
                 </ul>
                 {/* Silver price */}
                 <div className="mt-auto flex flex-col items-center justify-center pt-6 pb-1 text-center">
-                  <p className="font-lato text-licorice text-[17px] font-semibold">
+                  {showPriorityPrice && (
+                    <>
+                      <p className="font-lato text-licorice text-[17px] font-semibold">
+                        {dict.priorityRegistrationPrice}
+                      </p>
+                      <p className="font-lato text-licorice text-xl font-bold">
+                        {format.number(69000, {
+                          style: "currency",
+                          currency: "SEK",
+                          maximumFractionDigits: 0
+                        })}
+                      </p>
+                    </>
+                  )}
+                  <p
+                    className={`font-lato text-licorice font-semibold ${showPriorityPrice ? "mt-3 text-sm" : "text-[17px]"}`}>
                     {dict.standardRegistrationPrice}
                   </p>
-                  <p className="font-lato text-licorice text-xl font-bold">
+                  <p
+                    className={`font-lato text-licorice font-bold ${showPriorityPrice ? "text-base" : "text-xl"}`}>
                     {format.number(78000, {
                       style: "currency",
                       currency: "SEK",
@@ -136,23 +200,43 @@ export default async function ExhibitorPackagesPage() {
                       <Check className="text-licorice mt-0.5 size-4 shrink-0" />
                       {index === goldEventIndex ? (
                         <div>
-                          <span className="font-lato text-sm">{item}:</span>
+                          <span className="font-lato text-sm">
+                            <BoldText text={item} />:
+                          </span>
                           <p className="font-lato text-sm">
                             {dict.goldEventDetails}
                           </p>
                         </div>
                       ) : (
-                        <span className="font-lato text-sm">{item}</span>
+                        <span className="font-lato text-sm">
+                          <BoldText text={item} />
+                        </span>
                       )}
                     </li>
                   ))}
                 </ul>
                 {/* Gold price */}
                 <div className="mt-auto flex flex-col items-center justify-center pt-6 pb-1 text-center">
-                  <p className="font-lato text-licorice text-[17px] font-semibold">
+                  {showPriorityPrice && (
+                    <>
+                      <p className="font-lato text-licorice text-[17px] font-semibold">
+                        {dict.priorityRegistrationPrice}
+                      </p>
+                      <p className="font-lato text-licorice text-xl font-bold">
+                        {format.number(105000, {
+                          style: "currency",
+                          currency: "SEK",
+                          maximumFractionDigits: 0
+                        })}
+                      </p>
+                    </>
+                  )}
+                  <p
+                    className={`font-lato text-licorice font-semibold ${showPriorityPrice ? "mt-3 text-sm" : "text-[17px]"}`}>
                     {dict.standardRegistrationPrice}
                   </p>
-                  <p className="font-lato text-licorice text-xl font-bold">
+                  <p
+                    className={`font-lato text-licorice font-bold ${showPriorityPrice ? "text-base" : "text-xl"}`}>
                     {format.number(120000, {
                       style: "currency",
                       currency: "SEK",

@@ -64,6 +64,7 @@ export const packagesPageTranslations = {
     intro: string
     didYouKnowTitle: string
     didYouKnowBody: string
+    priorityRegistrationPrice: string
     standardRegistrationPrice: string
     bronzeItems: string[]
     silverItems: string[]
