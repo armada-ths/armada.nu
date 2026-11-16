@@ -85,6 +85,7 @@ export default function ExhibitorList({
       </div>
       <ExhibitorModal
         open={Boolean(selected)}
+        location="student_exhibitors"
         onClose={closeCompany}
         exhibitor={displayed}
         mapPlacementId={

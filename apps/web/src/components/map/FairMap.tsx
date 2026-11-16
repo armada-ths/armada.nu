@@ -404,6 +404,7 @@ export default function FairMap({
 
       <ExhibitorModal
         open={dialogOpen}
+        location="student_map"
         onClose={() => setDialogOpen(false)}
         exhibitor={single?.exhibitor}
         title={
