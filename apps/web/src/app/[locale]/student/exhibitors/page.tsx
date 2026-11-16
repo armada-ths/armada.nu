@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Page } from "@/components/shared/Page"
 import { translations } from "@/i18n/dictionaries"
 import { getRequestLocale } from "@/lib/i18n-server"
-import { Link } from "@armada/shared/i18n/navigation"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import { MapPin } from "lucide-react"
 import { Suspense } from "react"
 
@@ -47,10 +47,15 @@ export default async function ExhibitorsPage() {
               variant="neutral"
               size="sm"
               className="hidden sm:inline-flex">
-              <Link href="/student/map">
+              <TrackedLink
+                href="/student/map"
+                tracking={{
+                  eventName: "student_map_click",
+                  eventData: { location: "student_exhibitors" }
+                }}>
                 <MapPin aria-hidden="true" />
                 {dict.map}
-              </Link>
+              </TrackedLink>
             </Button>
           )}
         </div>

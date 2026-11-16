@@ -124,7 +124,12 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
               }>
               {dict.exhibitorsList}
             </Link>
-            <Link href={"/student/map"} className="hover:text-melon">
+            <Link
+              href={"/student/map"}
+              className="hover:text-melon"
+              onClick={() =>
+                track("student_map_click", { location: "footer" })
+              }>
               {dict.map}
             </Link>
           </div>
@@ -246,7 +251,13 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                   }>
                   {dict.exhibitorsList}
                 </Link>
-                <Link href={"/student/map"}>{dict.map}</Link>
+                <Link
+                  href={"/student/map"}
+                  onClick={() =>
+                    track("student_map_click", { location: "footer" })
+                  }>
+                  {dict.map}
+                </Link>
               </div>
             </AccordionContent>
           </AccordionItem>

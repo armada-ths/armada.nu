@@ -174,6 +174,10 @@ export function NavigationMenuClient({
           url: "/student/map",
           description: descriptions.map,
           icon: <MapPinnedIcon className="size-5 shrink-0" />,
+          tracking: {
+            eventName: "student_map_click",
+            eventData: { location: "topnav" }
+          },
           disabled: !mapEnabled
         },
         {

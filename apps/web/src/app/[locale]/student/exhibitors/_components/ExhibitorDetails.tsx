@@ -7,6 +7,7 @@ import { normalizeLocale, localizedText } from "@armada/shared/i18n/routing"
 import { P } from "@/app/_components/Paragraph"
 import BadgeCollection from "@/app/[locale]/student/exhibitors/_components/BadgeCollection"
 import { Page } from "@/components/shared/Page"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 
 import { cn, shouldBypassNextImageOptimization } from "@/lib/utils"
@@ -91,10 +92,19 @@ export default function ExhibitorDetails({
           </div>
           {mapPlacementId !== undefined && (
             <Button asChild variant="neutral" size="sm" className="shrink-0">
-              <Link href={`/student/map?id=${mapPlacementId}`} prefetch={false}>
+              <TrackedLink
+                href={`/student/map?id=${mapPlacementId}`}
+                prefetch={false}
+                tracking={{
+                  eventName: "student_map_click",
+                  eventData: {
+                    location: "exhibitor_details",
+                    exhibitor_name: exhibitor.name
+                  }
+                }}>
                 <MapPin aria-hidden="true" />
                 {t("showOnMap")}
-              </Link>
+              </TrackedLink>
             </Button>
           )}
         </div>

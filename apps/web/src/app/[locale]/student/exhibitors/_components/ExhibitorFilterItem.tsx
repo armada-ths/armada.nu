@@ -5,7 +5,7 @@ import {
   normalizeLocale,
   type Locale
 } from "@armada/shared/i18n/routing"
-import { Link } from "@armada/shared/i18n/navigation"
+import { TrackedLink } from "@/components/shared/TrackedLink"
 import type { Exhibitor } from "@/components/shared/hooks/api/useExhibitors"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -193,10 +193,15 @@ export default function ExhibitorFilterItem({
         </Button>
         {mapEnabled && (
           <Button asChild variant="neutral" className="min-w-0 flex-1">
-            <Link href="/student/map">
+            <TrackedLink
+              href="/student/map"
+              tracking={{
+                eventName: "student_map_click",
+                eventData: { location: "student_exhibitors" }
+              }}>
               <MapPin aria-hidden="true" />
               {translations[locale].map}
-            </Link>
+            </TrackedLink>
           </Button>
         )}
       </div>
