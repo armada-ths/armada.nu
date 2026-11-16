@@ -77,7 +77,7 @@ export async function ExhibitorTimeline() {
             tracking={{
               eventName: "exhibitor_signup_click",
               eventData: {
-                location: "exhibitor_timeline_priority_registration"
+                location: "exhibitor_timeline_priority"
               }
             }}>
             <Button className="bg-grapefruit text-snow cursor-pointer">
@@ -122,7 +122,7 @@ export async function ExhibitorTimeline() {
             tracking={{
               eventName: "exhibitor_signup_click",
               eventData: {
-                location: "exhibitor_timeline_standard_registration"
+                location: "exhibitor_timeline_standard"
               }
             }}>
             <Button className="bg-grapefruit text-snow cursor-pointer">

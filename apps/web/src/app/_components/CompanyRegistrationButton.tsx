@@ -29,7 +29,7 @@ export function CompanyRegistrationButton({
       href={signupUrl}
       onClick={() =>
         track("exhibitor_signup_click", {
-          location: "exhibitor_page_registration"
+          location: "exhibitor_page"
         })
       }>
       <Button>{uiText(locale, "exhibitorSignup")}</Button>
