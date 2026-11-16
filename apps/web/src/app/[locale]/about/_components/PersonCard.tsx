@@ -1,14 +1,14 @@
 "use client"
-import { useLocale, useTranslations } from "next-intl"
-import { localizedText, normalizeLocale } from "@armada/shared/i18n/routing"
 import { Person } from "@/components/shared/hooks/api/useOrganization"
 import { LinkedInIcon } from "@/components/shared/icons/LinkedInIcon"
 import { Card } from "@/components/ui/card"
 import { cn, shouldBypassNextImageOptimization } from "@/lib/utils"
+import { Link } from "@armada/shared/i18n/navigation"
+import { localizedText, normalizeLocale } from "@armada/shared/i18n/routing"
 import { PersonIcon } from "@radix-ui/react-icons"
 import { MailIcon } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 import Image from "next/image"
-import { Link } from "@armada/shared/i18n/navigation"
 
 const PersonCard = ({
   person,
@@ -32,11 +32,11 @@ const PersonCard = ({
       <Card
         key={person.id}
         className={cn(
-          "w-full py-0 pb-4 transition-all hover:scale-105 sm:w-56",
-          isCompact ? "pt-4" : "sm:h-96"
+          "bg-snow w-full gap-3 py-0 pb-4 transition-all hover:scale-105 sm:w-56",
+          isCompact ? "pt-4" : "sm:h-85"
         )}>
         {isCompact ? null : !hasPicture ? (
-          <div className="flex aspect-square w-52 flex-1 items-center justify-center">
+          <div className="flex aspect-square w-full items-center justify-center">
             <PersonIcon className="text-melon m-auto h-20 w-20" />
           </div>
         ) : (
@@ -52,9 +52,9 @@ const PersonCard = ({
             />
           </div>
         )}
-        <div className="px-4">
-          <p className="text-melon">{person.name}</p>
-          <p className="mt-1 text-sm text-stone-400">
+        <div className="px-3">
+          <p className="font-semibold text-[#2BA669]">{person.name}</p>
+          <p className="mt-1 text-sm text-[#57534E]">
             {localizedText(locale, person.role, person.roleSv)?.trim()}
           </p>
           <div className="mt-2 flex gap-x-2">
