@@ -99,7 +99,7 @@ export function NavigationMenuClient({
           icon: <ClipboardPenIcon className="size-5 shrink-0" />,
           tracking: {
             eventName: "exhibitor_signup_click",
-            eventData: { location: "topnav_exhibitor_registration" }
+            eventData: { location: "topnav" }
           },
           disabled: !exhibitorSignupEnabled
         },
@@ -145,6 +145,10 @@ export function NavigationMenuClient({
           url: "/student/exhibitors",
           description: descriptions.exhibitorsList,
           icon: <Building2Icon className="size-5 shrink-0" />,
+          tracking: {
+            eventName: "student_exhibitors_click",
+            eventData: { location: "topnav" }
+          },
           disabled: !exhibitorPageEnabled
         },
         {
@@ -161,7 +165,7 @@ export function NavigationMenuClient({
           icon: <BriefcaseIcon className="size-5 shrink-0" />,
           tracking: {
             eventName: "student_signup_click",
-            eventData: { location: "topnav_recruitment" }
+            eventData: { location: "topnav" }
           },
           disabled: !studentRecruitmentEnabled
         },
@@ -209,7 +213,7 @@ export function NavigationMenuClient({
           icon: <NotebookPenIcon className="size-5 shrink-0" />,
           tracking: {
             eventName: "blog_click",
-            eventData: { location: "topnav_blog" }
+            eventData: { location: "topnav" }
           },
           disabled: !blogEnabled
         },
