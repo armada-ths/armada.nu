@@ -75,22 +75,19 @@ describe("2026 fair map", () => {
     ).toBeUndefined()
   })
 
-  it("keeps the two dated placements at booth 62 and provides names without a CMS record", () => {
-    const placements = mapExhibitors([])
-    expect(placements.filter(p => p.floor === 2 && p.booth === 62)).toEqual([
-      expect.objectContaining({ name: "Handelsbanken", day: 17 }),
-      expect.objectContaining({
-        name: "Svenskt Kärntekniskt Centrum (SKC)",
-        day: 18
-      })
+  it("only maps CMS exhibitors, including at a booth shared across days", () => {
+    const placement = PLACEMENTS.find(p => p.name === "Handelsbanken")!
+    const exhibitor = {
+      id: 10001,
+      eventroId: placement.id,
+      name: "Handelsbanken",
+      type: "company" as const,
+      climateCompensation: false
+    }
+
+    expect(mapExhibitors([exhibitor])).toEqual([
+      expect.objectContaining({ floor: 2, booth: 62, day: 17, exhibitor })
     ])
-    expect(placements.find(p => p.name === "Epiroc")).toMatchObject({
-      floor: 2,
-      booth: 72
-    })
-    expect(placements.find(p => p.name === "Coherent")).toMatchObject({
-      floor: 3,
-      booth: 102
-    })
+    expect(mapExhibitors([])).toEqual([])
   })
 })

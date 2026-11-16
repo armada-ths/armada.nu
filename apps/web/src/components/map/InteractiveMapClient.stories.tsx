@@ -7,7 +7,18 @@ const meta = {
   title: "Student/InteractiveMap",
   component: InteractiveMapClient,
   tags: ["autodocs"],
-  args: { title: "Fair Map", exhibitors: [] }
+  args: {
+    title: "Fair Map",
+    exhibitors: PLACEMENTS.filter(p =>
+      ["Coherent", "Epiroc", "Orica Sweden AB"].includes(p.name)
+    ).map(({ id, name }, index) => ({
+      id: 10001 + index,
+      eventroId: id,
+      name,
+      type: "company",
+      climateCompensation: false
+    }))
+  }
 } satisfies Meta<typeof InteractiveMapClient>
 
 export default meta

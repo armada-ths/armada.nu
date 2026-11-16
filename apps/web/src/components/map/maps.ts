@@ -46,13 +46,11 @@ export function mapExhibitors(exhibitors: Exhibitor[]): MappedExhibitor[] {
     if (placement) byPlacementId.set(placement.id, exhibitor)
   }
 
-  return PLACEMENTS.map(placement => {
+  return PLACEMENTS.flatMap(placement => {
     const exhibitor = byPlacementId.get(placement.id)
-    return {
-      ...placement,
-      name: exhibitor?.name || placement.name,
-      exhibitor
-    }
+    if (!exhibitor) return []
+
+    return [{ ...placement, name: exhibitor.name || placement.name, exhibitor }]
   })
 }
 
