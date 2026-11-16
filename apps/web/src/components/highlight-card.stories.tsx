@@ -72,5 +72,34 @@ export const InformationalOnly: Story = {
         name: /explore roles/i
       })
     ).not.toBeInTheDocument()
+    await expect(canvas.getByText(/Keep an eye on the homepage/)).toBeVisible()
+  }
+}
+
+export const OpeningHoursSwedishMobile: Story = {
+  args: {
+    title: "Träffa din framtida arbetsgivare",
+    subtitle: "Skandinaviens största karriärmässa",
+    description: [
+      "**Mässans öppettider**",
+      "",
+      "Tisdag 17 november · 10:00–16:00\\",
+      "Onsdag 18 november · 10:00–15:00",
+      "",
+      "[Se vilka som ställer ut](/student/exhibitors)"
+    ].join("\n")
+  },
+  globals: { locale: "sv", viewport: { value: "mobile", isRotated: false } },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Mässans öppettider", { selector: "strong" })
+    ).toBeVisible()
+    const hours = canvas.getByText(/Tisdag 17 november/)
+    await expect(hours).toBeVisible()
+    await expect(hours.querySelector("br")).toBeInTheDocument()
+    await expect(hours).toHaveTextContent("Onsdag 18 november · 10:00–15:00")
+    await expect(
+      canvas.getByRole("link", { name: "Se vilka som ställer ut" })
+    ).toBeVisible()
   }
 }

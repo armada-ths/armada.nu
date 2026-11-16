@@ -1,7 +1,7 @@
 import { Link } from "@armada/shared/i18n/navigation"
-import { P } from "@/app/_components/Paragraph"
 import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
 import { NauticalCard } from "@/components/ui/nautical-card"
+import ReactMarkdown from "react-markdown"
 
 interface HighlightCardProps {
   brand?: string
@@ -45,7 +45,32 @@ const HighlightCard = ({
             </Link>
           ))}
       </h2>
-      <P className="pb-3 text-sm">{description}</P>
+      {description && (
+        <div className="text-licorice mt-2 space-y-2 pb-3 text-sm">
+          <ReactMarkdown
+            skipHtml
+            components={{
+              a: ({ children, href }) =>
+                href ? (
+                  <Link href={href} className="underline hover:no-underline">
+                    {children}
+                  </Link>
+                ) : (
+                  children
+                ),
+              ul: ({ children }) => (
+                <ul className="list-inside list-disc">{children}</ul>
+              ),
+              ol: ({ children, start }) => (
+                <ol start={start} className="list-inside list-decimal">
+                  {children}
+                </ol>
+              )
+            }}>
+            {description}
+          </ReactMarkdown>
+        </div>
+      )}
     </NauticalCard>
   )
 }
