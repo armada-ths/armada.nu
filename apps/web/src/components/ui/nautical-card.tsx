@@ -1,8 +1,8 @@
 import { Card } from "@/components/ui/card"
-import { ReactNode } from "react"
+import type { ReactNode } from "react"
 
 interface NauticalCardProps {
-  brand?: string
+  brand?: ReactNode
   children: ReactNode
 }
 

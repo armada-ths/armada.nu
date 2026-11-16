@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import Image from "next/image"
 
 import { expect } from "storybook/test"
 
@@ -80,6 +81,7 @@ export const OpeningHoursSwedishMobile: Story = {
   args: {
     title: "Träffa din framtida arbetsgivare",
     subtitle: "Skandinaviens största karriärmässa",
+    brand: <Image src="/oldlogo.svg" alt="Armada" width={88} height={32} />,
     description: [
       "**Mässans öppettider**",
       "",

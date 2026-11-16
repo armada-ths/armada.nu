@@ -1,10 +1,11 @@
 import { Link } from "@armada/shared/i18n/navigation"
 import { TrackedLink, TrackingConfig } from "@/components/shared/TrackedLink"
 import { NauticalCard } from "@/components/ui/nautical-card"
+import type { ReactNode } from "react"
 import ReactMarkdown from "react-markdown"
 
 interface HighlightCardProps {
-  brand?: string
+  brand?: ReactNode
   title: string
   subtitle: string
   ctaText?: string

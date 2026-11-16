@@ -26,6 +26,7 @@ import { pageTranslations, translations } from "@/i18n/dictionaries"
 import { localizedText } from "@armada/shared/i18n/routing"
 import { getRequestLocale } from "@/lib/i18n-server"
 import { DateTime } from "luxon"
+import Image from "next/image"
 import { Link } from "@armada/shared/i18n/navigation"
 
 export async function generateMetadata() {
@@ -167,7 +168,15 @@ export default async function HomePage() {
                     highlightCard.description,
                     highlightCard.descriptionSv
                   )}
-                  brand={highlightCard.brand}
+                  brand={
+                    <Image
+                      src="/oldlogo.svg"
+                      alt="Armada"
+                      width={88}
+                      height={32}
+                      className="h-8 w-auto"
+                    />
+                  }
                   ctaText={
                     localizedText(
                       locale,
