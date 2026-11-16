@@ -106,7 +106,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
               className="hover:text-melon"
               onClick={() =>
                 track("student_signup_click", {
-                  location: "footer_student_recruitment_desktop"
+                  location: "footer"
                 })
               }>
               {dict.recruitment}
@@ -114,7 +114,14 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
             <Link href={"/student/events"} className="hover:text-melon">
               {dict.events}
             </Link>
-            <Link href={"/student/exhibitors"} className="hover:text-melon">
+            <Link
+              href={"/student/exhibitors"}
+              className="hover:text-melon"
+              onClick={() =>
+                track("student_exhibitors_click", {
+                  location: "footer"
+                })
+              }>
               {dict.exhibitorsList}
             </Link>
             <Link href={"/student/map"} className="hover:text-melon">
@@ -132,7 +139,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
               className="hover:text-melon"
               onClick={() =>
                 track("exhibitor_signup_click", {
-                  location: "footer_exhibitor_desktop"
+                  location: "footer"
                 })
               }>
               {dict.registration}
@@ -167,7 +174,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
               className="hover:text-melon"
               onClick={() =>
                 track("blog_click", {
-                  location: "footer_blog_desktop"
+                  location: "footer"
                 })
               }>
               {dict.blog}
@@ -224,13 +231,21 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                   href={"/student/recruitment"}
                   onClick={() =>
                     track("student_signup_click", {
-                      location: "footer_student_recruitment_mobile"
+                      location: "footer"
                     })
                   }>
                   {dict.recruitment}
                 </Link>
                 <Link href={"/student/events"}>{dict.events}</Link>
-                <Link href={"/student/exhibitors"}>{dict.exhibitorsList}</Link>
+                <Link
+                  href={"/student/exhibitors"}
+                  onClick={() =>
+                    track("student_exhibitors_click", {
+                      location: "footer"
+                    })
+                  }>
+                  {dict.exhibitorsList}
+                </Link>
                 <Link href={"/student/map"}>{dict.map}</Link>
               </div>
             </AccordionContent>
@@ -246,7 +261,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                   href={signupUrl}
                   onClick={() =>
                     track("exhibitor_signup_click", {
-                      location: "footer_exhibitor_mobile"
+                      location: "footer"
                     })
                   }>
                   {dict.registration}
@@ -271,7 +286,7 @@ export function Footer({ signupUrl }: { signupUrl: string }) {
                   href={"/blog"}
                   onClick={() =>
                     track("blog_click", {
-                      location: "footer_blog_mobile"
+                      location: "footer"
                     })
                   }>
                   {dict.blog}
